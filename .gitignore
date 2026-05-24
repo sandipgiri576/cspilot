@@ -69,6 +69,10 @@ env.bak/
 venv.bak/
 .github/
 .vscode
+.codegrah/
+.pytest_cache/
+.ruff_cache/
+
 
 # Files
 
