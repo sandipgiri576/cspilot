@@ -69,3 +69,7 @@ env.bak/
 venv.bak/
 .github/
 .vscode
+
+# Files
+
+planning.md
