@@ -73,7 +73,7 @@ venv.bak/
 .pytest_cache/
 .ruff_cache/
 opi-example/
-run/
+runs/
 
 # Files
 
