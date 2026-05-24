@@ -1,5 +1,5 @@
 [project]
-name = "matexp"
+name = "cspilot"
 version = "0.1.0"
 description = "material explore with agent"
 readme = "README.md"
@@ -20,12 +20,12 @@ docs = [
 ]
 
 [project.urls]
-repository = "https://github.com/sandipgiri576/matexp"
-documentation = "https://sandipgiri576.github.io/matexp/"
-changelog = "https://github.com/sandipgiri576/matexp/blob/main/CHANGELOG.md"
+repository = "https://github.com/sandipgiri576/cspilot"
+documentation = "https://sandipgiri576.github.io/cspilot/"
+changelog = "https://github.com/sandipgiri576/cspilot/blob/main/CHANGELOG.md"
 
 [tool.setuptools.package-data]
-matexp = ["py.typed"]
+cspilot = ["py.typed"]
 
 
 [tool.pytest.ini_options]
@@ -113,7 +113,7 @@ lint.unfixable = [
   "F841", # Removes unused variables
 ]
 lint.pydocstyle.convention = "numpy"
-lint.isort.known-first-party = ["matexp"]
+lint.isort.known-first-party = ["cspilot"]
 lint.isort.required-imports = ["from __future__ import annotations"]
 lint.isort.split-on-trailing-comma=false
 extend-include = ["*.ipynb"]

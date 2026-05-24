@@ -308,7 +308,7 @@ wheels = [
 ]
 
 [[package]]
-name = "matexp"
+name = "cspilot"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

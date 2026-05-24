@@ -1,5 +1,5 @@
 def main():
-    print("Hello from matexp!")
+    print("Hello from cspilot!")
 
 
 if __name__ == "__main__":
