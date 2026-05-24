@@ -22,7 +22,7 @@ pip install -e ".[mace]"
 ```bash
 export ORCA_COMMAND=orca
 export XTB_COMMAND=xtb
-CSPILOT_RUNS_DIR=runs
+export CSPILOT_RUNS_DIR=runs
 ```
 
 ## CLI
