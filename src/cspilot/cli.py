@@ -14,8 +14,13 @@ from cspilot.tools.mace_tools import optimize_with_mace
 from cspilot.tools.opi_orca_tools import single_point_with_orca
 from cspilot.tools.xtb_tools import optimize_with_xtb
 from cspilot.utils.runner import copy_input, make_run_dir, write_json
+from cspilot.workflows.mace_to_orca import run_mace_to_orca
+from cspilot.workflows.xtb_to_orca_freq import run_xtb_to_orca_freq
+from cspilot.workflows.xtb_to_orca_sp import run_xtb_to_orca_sp
 
 app = typer.Typer(help="Computational chemistry workflow CLI.")
+workflow_app = typer.Typer(help="Multi-step computational chemistry workflows.")
+app.add_typer(workflow_app, name="workflow")
 console = Console()
 
 
@@ -32,6 +37,19 @@ def _finish(result: CommandResult) -> None:
     console.print(f"Run directory: {result.run_dir}")
     if result.message:
         console.print(result.message)
+
+
+def _finish_workflow(result: dict[str, object]) -> None:
+    status = str(result.get("status", "failed"))
+    status_style = {"ok": "green", "failed": "red", "skipped": "yellow"}.get(status, "red")
+    console.print(f"[{status_style}]{status.upper()}[/] {result.get('workflow')}")
+    console.print(f"Run directory: {result.get('workdir')}")
+    console.print(f"Result: {result.get('workflow_result_path')}")
+    final_energy = result.get("final_energy_hartree")
+    if final_energy is not None:
+        console.print(f"Final energy: {final_energy} Eh")
+    if result.get("message"):
+        console.print(str(result["message"]))
 
 
 @app.command()
@@ -159,6 +177,85 @@ def mace_opt(
             parameters={"model": str(model), "fmax": fmax, "steps": steps},
             outputs=outputs,
             message=message,
+        )
+    )
+
+
+@workflow_app.command("xtb-orca-sp")
+def workflow_xtb_orca_sp(
+    input_path: InputPath,
+    charge: Annotated[int, typer.Option(help="Molecular charge.")] = 0,
+    mult: Annotated[int, typer.Option(help="Spin multiplicity.")] = 1,
+    method: Annotated[str, typer.Option(help="ORCA method keyword.")] = "r2scan-3c",
+    basis: Annotated[str, typer.Option(help="ORCA basis keyword.")] = "def2-SVP",
+    uhf: Annotated[int, typer.Option(help="Number of unpaired electrons for xTB.")] = 0,
+    nprocs: Annotated[int, typer.Option(help="ORCA processor count.")] = 1,
+) -> None:
+    """Run xTB optimization followed by an ORCA single point."""
+    _finish_workflow(
+        run_xtb_to_orca_sp(
+            input_path,
+            charge=charge,
+            mult=mult,
+            method=method,
+            basis=basis,
+            uhf=uhf,
+            nprocs=nprocs,
+        )
+    )
+
+
+@workflow_app.command("mace-orca")
+def workflow_mace_orca(
+    input_path: InputPath,
+    charge: Annotated[int, typer.Option(help="Molecular charge.")] = 0,
+    mult: Annotated[int, typer.Option(help="Spin multiplicity.")] = 1,
+    method: Annotated[str, typer.Option(help="ORCA method keyword.")] = "r2scan-3c",
+    basis: Annotated[str, typer.Option(help="ORCA basis keyword.")] = "def2-SVP",
+    model: Annotated[
+        Path | None,
+        typer.Option(help="Path to a MACE model file. Defaults to MACE_MODEL or model_path."),
+    ] = None,
+    fmax: Annotated[float, typer.Option(help="MACE force convergence threshold in eV/A.")] = 0.05,
+    steps: Annotated[int, typer.Option(help="Maximum MACE optimizer steps.")] = 200,
+    nprocs: Annotated[int, typer.Option(help="ORCA processor count.")] = 1,
+) -> None:
+    """Run MACE optimization followed by an ORCA single point."""
+    _finish_workflow(
+        run_mace_to_orca(
+            input_path,
+            charge=charge,
+            mult=mult,
+            method=method,
+            basis=basis,
+            model=model,
+            fmax=fmax,
+            steps=steps,
+            nprocs=nprocs,
+        )
+    )
+
+
+@workflow_app.command("xtb-orca-freq")
+def workflow_xtb_orca_freq(
+    input_path: InputPath,
+    charge: Annotated[int, typer.Option(help="Molecular charge.")] = 0,
+    mult: Annotated[int, typer.Option(help="Spin multiplicity.")] = 1,
+    method: Annotated[str, typer.Option(help="ORCA method keyword.")] = "r2scan-3c",
+    basis: Annotated[str, typer.Option(help="ORCA basis keyword.")] = "def2-SVP",
+    uhf: Annotated[int, typer.Option(help="Number of unpaired electrons for xTB.")] = 0,
+    nprocs: Annotated[int, typer.Option(help="ORCA processor count.")] = 1,
+) -> None:
+    """Run xTB optimization followed by an ORCA frequency calculation."""
+    _finish_workflow(
+        run_xtb_to_orca_freq(
+            input_path,
+            charge=charge,
+            mult=mult,
+            method=method,
+            basis=basis,
+            uhf=uhf,
+            nprocs=nprocs,
         )
     )
 

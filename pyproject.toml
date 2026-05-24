@@ -29,6 +29,7 @@ docs = [
 
 [project.scripts]
 cspilot = "cspilot.cli:app"
+cspiolt = "cspilot.cli:app"
 
 [project.urls]
 repository = "https://github.com/sandipgiri576/cspilot"

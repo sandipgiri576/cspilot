@@ -53,7 +53,7 @@ def orca_optimize(
     basis: str,
     charge: int = 0,
     mult: int = 1,
-    nprocs: int = 4,
+    nprocs: int = 1,
     *,
     orca_command: str | None = None,
 ) -> dict[str, Any]:
@@ -77,7 +77,7 @@ def orca_frequency(
     basis: str,
     charge: int = 0,
     mult: int = 1,
-    nprocs: int = 4,
+    nprocs: int = 1,
     *,
     orca_command: str | None = None,
 ) -> dict[str, Any]:
@@ -127,7 +127,7 @@ def write_orca_input(
     charge: int,
     mult: int,
     task: str = TASK_SP,
-    nprocs: int = 4,
+    nprocs: int = 1,
 ) -> Path:
     calc = _build_calculator(
         xyz_path=structure_path,
