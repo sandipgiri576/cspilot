@@ -72,7 +72,7 @@ venv.bak/
 .codegrah/
 .pytest_cache/
 .ruff_cache/
-
+opi-example/
 
 # Files
 
