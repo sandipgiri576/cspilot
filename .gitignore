@@ -62,6 +62,7 @@ dmypy.json
 # Environments
 .env
 .venv
+.env.cspilot
 venv/
 env/
 ENV/
@@ -74,6 +75,7 @@ venv.bak/
 .ruff_cache/
 opi-example/
 runs/
+agent-example/
 
 # Files
 

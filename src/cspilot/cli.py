@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import asyncio
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Literal
 
 import typer
 from rich.console import Console
@@ -50,6 +51,40 @@ def _finish_workflow(result: dict[str, object]) -> None:
         console.print(f"Final energy: {final_energy} Eh")
     if result.get("message"):
         console.print(str(result["message"]))
+
+
+@app.command("agent")
+def run_agent(
+    request: Annotated[str, typer.Argument(help="Natural language computational chemistry request.")],
+    workdir: Annotated[
+        Path,
+        typer.Option(help="Directory for agent results and tool subruns.", resolve_path=True),
+    ] = Path("runs/agent_test"),
+    model: Annotated[str | None, typer.Option(help="AGAPI model identifier.")] = None,
+    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible AGAPI base URL.")] = None,
+    agent_profile: Annotated[
+        Literal["chem", "materials", "general"],
+        typer.Option(help="Agent instruction and tool profile."),
+    ] = "chem",
+) -> None:
+    """Run a tool-using computational chemistry agent through AGAPI."""
+    from cspilot.agents.openai_agent import run_agent_request
+
+    try:
+        result = asyncio.run(
+            run_agent_request(
+                request,
+                workdir,
+                model=model,
+                base_url=base_url,
+                profile=agent_profile,
+            )
+        )
+    except ValueError as exc:
+        console.print(f"[red]Configuration error:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+    console.print(result["final_output"])
+    console.print(f"Result: {result['result_path']}")
 
 
 @app.command()
