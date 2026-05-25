@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 from pathlib import Path
 from typing import Annotated, Literal
 
@@ -85,6 +86,112 @@ def run_agent(
         raise typer.Exit(code=1) from exc
     console.print(result["final_output"])
     console.print(f"Result: {result['result_path']}")
+
+
+@app.command("plan")
+def plan_command(
+    request: Annotated[str, typer.Argument(help="Natural language workflow request.")],
+    workdir: Annotated[
+        Path,
+        typer.Option(help="Directory in which to save plan.json.", resolve_path=True),
+    ] = Path("runs/test"),
+) -> None:
+    """Create a JSON execution plan using the configured AGAPI planner."""
+    from cspilot.agents.planner import create_plan
+
+    workdir.mkdir(parents=True, exist_ok=True)
+    try:
+        plan = asyncio.run(create_plan(request))
+    except ValueError as exc:
+        console.print(f"[red]Planning error:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+    plan_path = workdir / "plan.json"
+    _write_cli_json(plan_path, plan)
+    console.print_json(json=json.dumps(plan))
+    console.print(f"Plan: {plan_path}")
+
+
+@app.command("execute")
+def execute_command(
+    plan_path: Annotated[
+        Path,
+        typer.Argument(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True),
+    ],
+    workdir: Annotated[
+        Path,
+        typer.Option(help="Directory in which to save execution outputs.", resolve_path=True),
+    ] = Path("runs/test"),
+) -> None:
+    """Execute an existing JSON plan through allowlisted local tools."""
+    from cspilot.agents.executor import execute_plan
+
+    workdir.mkdir(parents=True, exist_ok=True)
+    try:
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        execution_result = execute_plan(plan, str(workdir))
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        console.print(f"[red]Execution error:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+    result_path = workdir / "execution_result.json"
+    _write_cli_json(result_path, execution_result)
+    _print_execution_summary(execution_result, result_path)
+
+
+@app.command("run")
+def run_command(
+    request: Annotated[str, typer.Argument(help="Natural language workflow request.")],
+    workdir: Annotated[
+        Path,
+        typer.Option(help="Directory in which to save plan and execution outputs.", resolve_path=True),
+    ] = Path("runs/test"),
+    html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
+) -> None:
+    """Plan, execute, verify, and report an allowlisted workflow."""
+    from cspilot.agents.executor import execute_plan
+    from cspilot.agents.planner import create_plan
+    from cspilot.agents.reporter import generate_report
+    from cspilot.agents.verifier import verify_execution
+
+    workdir.mkdir(parents=True, exist_ok=True)
+    try:
+        plan = asyncio.run(create_plan(request))
+        _write_cli_json(workdir / "plan.json", plan)
+        execution_result = execute_plan(plan, str(workdir))
+        _write_cli_json(workdir / "execution_result.json", execution_result)
+        verification_result = verify_execution(execution_result, str(workdir))
+        _write_cli_json(workdir / "verification_result.json", verification_result)
+        report = generate_report(
+            request,
+            plan,
+            execution_result,
+            verification_result,
+            html=html,
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"[red]Run error:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    report_path = workdir / ("final_report.html" if html else "final_report.md")
+    report_path.write_text(report, encoding="utf-8")
+    _print_execution_summary(execution_result, workdir / "execution_result.json")
+    status = "PASSED" if verification_result["verified"] else "FAILED"
+    style = "green" if verification_result["verified"] else "red"
+    console.print(f"Verification: [{style}]{status}[/]")
+    console.print(f"Report: {report_path}")
+
+
+def _write_cli_json(path: Path, payload: dict[str, object]) -> None:
+    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def _print_execution_summary(execution_result: dict[str, object], result_path: Path) -> None:
+    success = execution_result.get("success") is True
+    status = "COMPLETED" if success else "FAILED OR UNVERIFIED"
+    style = "green" if success else "red"
+    steps = execution_result.get("steps", [])
+    count = len(steps) if isinstance(steps, list) else 0
+    console.print(f"[{style}]{status}[/] execution with {count} step(s)")
+    console.print(f"Result: {result_path}")
 
 
 @app.command()

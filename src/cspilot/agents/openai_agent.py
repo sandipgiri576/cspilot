@@ -4,8 +4,10 @@ import json
 from pathlib import Path
 from typing import Any
 
-from agents import Agent, Runner
+from agents import Agent, Runner, ToolCallOutputItem
 
+from cspilot.agents.reporter import make_report
+from cspilot.agents.verifier import verify_tool_result
 from cspilot.llm import create_agapi_model
 from cspilot.tools.agent_tools import (
     canonicalize_smiles_tool,
@@ -92,13 +94,19 @@ async def run_agent_request(
             ),
             request,
         )
+        tool_results = _collect_tool_results(result.new_items)
+        verification = _verify_results(tool_results, str(workdir))
+        report = make_report(request, tool_results, verification)
         payload = {
             "request": request,
             "workdir": str(workdir),
             "agent_profile": profile,
             "model": model,
             "base_url": base_url,
-            "final_output": str(result.final_output),
+            "model_output": str(result.final_output),
+            "tool_results": tool_results,
+            "verification": verification,
+            "final_output": report,
         }
         result_path = workdir / "agent_result.json"
         payload["result_path"] = str(result_path)
@@ -106,6 +114,43 @@ async def run_agent_request(
         return payload
     finally:
         reset_agent_workdir(token)
+
+
+def _collect_tool_results(items: list[Any]) -> list[dict[str, Any]]:
+    tool_results: list[dict[str, Any]] = []
+    for item in items:
+        if not isinstance(item, ToolCallOutputItem):
+            continue
+        output = item.output
+        if isinstance(output, str):
+            try:
+                output = json.loads(output)
+            except json.JSONDecodeError:
+                output = {"output": output}
+        if not isinstance(output, dict):
+            output = {"output": str(output)}
+        tool_results.append({"tool_name": _tool_name(item), **output})
+    return tool_results
+
+
+def _tool_name(item: ToolCallOutputItem) -> str:
+    origin = item.tool_origin
+    if origin is not None:
+        name = getattr(origin, "tool_name", None) or getattr(origin, "name", None)
+        if name:
+            return str(name)
+    raw_item = item.raw_item
+    if isinstance(raw_item, dict) and raw_item.get("name"):
+        return str(raw_item["name"])
+    return "tool"
+
+
+def _verify_results(tool_results: list[dict[str, Any]], workdir: str) -> dict[str, Any]:
+    issues: list[str] = []
+    for index, tool_result in enumerate(tool_results, start=1):
+        verification = verify_tool_result(tool_result, workdir)
+        issues.extend(f"Step {index}: {issue}" for issue in verification["issues"])
+    return {"verified": not issues, "issues": issues, "workdir": workdir}
 
 
 def _profile_instructions(profile: str) -> str:
