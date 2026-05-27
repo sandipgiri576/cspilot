@@ -1,34 +1,25 @@
 site_name: cspilot
-site_author: YourName
+site_author: cspilot contributors
 site_description: >-
-  This is the cspilot package!
+  Computational chemistry structure workflows and AGAPI-backed tool execution.
 nav:
   - Home: index.md
-  - Overview:
-      - example_docs/intro/why.md
-      - example_docs/intro/resources.md
-  - Setup:
-      - example_docs/setup/prep.md
-      - example_docs/setup/name.md
-      - example_docs/setup/basics.md
-  - Installation:
-      - example_docs/installation/pyproject.md
-      - example_docs/installation/install.md
-  - Code:
-      - example_docs/code/source.md
-      - example_docs/code/hints.md
-      - example_docs/code/tests.md
-  - Documentation:
-      - example_docs/mkdocs/docs.md
-      - example_docs/mkdocs/build.md
-  - GitHub and CI:
-      - example_docs/github/commits.md
-      - example_docs/github/workflows.md
+  - Getting Started:
+      - Installation: installation.md
+      - Configuration: configuration.md
+      - CLI Usage: cli_usage.md
+      - Examples: examples.md
+  - Capabilities:
+      - Agent Usage: agent_usage.md
+      - Workflows: workflows.md
+      - Tools: tools.md
+      - AGAPI Integration: agapi.md
+      - Safety: safety.md
+  - Project:
+      - Development: development.md
+      - Roadmap: roadmap.md
+      - Updating Documentation: updating_docs.md
   - Code Documentation: reference/ # keep me!
-  - About:
-      - example_docs/about/changelog.md
-      - example_docs/about/conduct.md
-      - example_docs/about/license.md
 
 repo_url: https://github.com/Quantum-Accelerators/cspilot/
 edit_uri: blob/main/docs/

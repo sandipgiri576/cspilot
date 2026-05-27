@@ -21,6 +21,7 @@ from cspilot.tools.opi_orca_tools import orca_single_point
 from cspilot.tools.result_tools import find_result_json, get_property_from_result
 from cspilot.tools.xtb_tools import optimize_with_xtb
 from cspilot.utils.runner import copy_input, make_run_dir
+from cspilot.workflows.xtb_to_orca_freq import run_xtb_to_orca_freq
 from cspilot.workflows.xtb_to_orca_sp import run_xtb_to_orca_sp
 
 _agent_workdir: ContextVar[Path] = ContextVar("agent_workdir", default=Path("runs/agent_test"))
@@ -190,6 +191,43 @@ def run_xtb_orca_workflow(
 
 
 @function_tool
+def run_xtb_orca_frequency_workflow(
+    xyz_path: str,
+    method: str = "r2scan-3c",
+    basis: str = "def2-SVP",
+    charge: int = 0,
+    mult: int = 1,
+    uhf: int = 0,
+    nprocs: int = 1,
+) -> dict[str, Any]:
+    """Run xTB optimization followed by an ORCA frequency calculation using OPI.
+
+    Args:
+        xyz_path: Path to an XYZ structure file.
+        method: ORCA method keyword.
+        basis: ORCA basis keyword.
+        charge: Molecular charge.
+        mult: Spin multiplicity.
+        uhf: Number of unpaired electrons for xTB.
+        nprocs: Number of ORCA processes.
+    """
+    try:
+        settings = load_settings().model_copy(update={"runs_dir": _agent_workdir.get()})
+        return run_xtb_to_orca_freq(
+            input_xyz=Path(xyz_path).expanduser(),
+            charge=charge,
+            mult=mult,
+            method=method,
+            basis=basis,
+            uhf=uhf,
+            nprocs=nprocs,
+            settings=settings,
+        )
+    except Exception as exc:
+        return _failure(exc)
+
+
+@function_tool
 def molecule_name_to_smiles_tool(name: str) -> dict[str, Any]:
     """Look up the SMILES representation of a molecule name from PubChem.
 
@@ -267,6 +305,28 @@ def find_result_json_tool(workdir: str, latest: bool = True) -> dict[str, Any]:
 @function_tool
 def get_property_from_result_tool(path: str, property_name: str) -> dict[str, Any]:
     """Extract a stored property from a result JSON file using supported aliases.
+
+    Args:
+        path: Path to a result JSON file.
+        property_name: Requested property name, for example Gibbs free energy.
+    """
+    return get_property_from_result(path, property_name)
+
+
+@function_tool(name_override="find_result_json")
+def find_result_json_agent_tool(workdir: str, latest: bool = True) -> dict[str, Any]:
+    """Find calculation result JSON files from a previous run directory.
+
+    Args:
+        workdir: Directory to search recursively.
+        latest: If true, identify the newest matched result file.
+    """
+    return find_result_json(workdir, latest=latest)
+
+
+@function_tool(name_override="get_property_from_result")
+def get_property_from_result_agent_tool(path: str, property_name: str) -> dict[str, Any]:
+    """Extract a requested property from a previous calculation result JSON file.
 
     Args:
         path: Path to a result JSON file.

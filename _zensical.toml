@@ -1,6 +1,6 @@
 [project]
 site_name = "cspilot"
-site_description = "This is the cspilot package!"
+site_description = "Computational chemistry structure workflows and AGAPI-backed tool execution."
 site_author = "Sandip Giri"
 repo_url = "https://github.com/sandipgiri576/cspilot/"
 edit_uri = "blob/main/docs/"
@@ -8,39 +8,26 @@ use_directory_urls = false
 
 nav = [
     { "Home" = "index.md" },
-    { "Overview" = [
-        "example_docs/intro/why.md",
-        "example_docs/intro/resources.md"
+    { "Getting Started" = [
+        { "Installation" = "installation.md" },
+        { "Configuration" = "configuration.md" },
+        { "CLI Usage" = "cli_usage.md" },
+        { "Examples" = "examples.md" }
     ] },
-    { "Setup" = [
-        "example_docs/setup/prep.md",
-        "example_docs/setup/name.md",
-        "example_docs/setup/basics.md"
+    { "Capabilities" = [
+        { "Agent Usage" = "agent_usage.md" },
+        { "Workflows" = "workflows.md" },
+        { "Tools" = "tools.md" },
+        { "AGAPI Integration" = "agapi.md" },
+        { "Safety" = "safety.md" }
     ] },
-    { "Installation" = [
-        "example_docs/installation/pyproject.md",
-        "example_docs/installation/install.md"
-    ] },
-    { "Code" = [
-        "example_docs/code/source.md",
-        "example_docs/code/hints.md",
-        "example_docs/code/tests.md"
-    ] },
-    { "Documentation" = [
-        "example_docs/zensical/docs.md",
-        "example_docs/zensical/build.md"
-    ] },
-    { "GitHub and CI" = [
-        "example_docs/github/commits.md",
-        "example_docs/github/workflows.md"
+    { "Project" = [
+        { "Development" = "development.md" },
+        { "Roadmap" = "roadmap.md" },
+        { "Updating Documentation" = "updating_docs.md" }
     ] },
     { "Code Documentation" = [
         "reference/"
-    ] },
-    { "About" = [
-        "example_docs/about/changelog.md",
-        "example_docs/about/conduct.md",
-        "example_docs/about/license.md"
     ] }
 ]
 
