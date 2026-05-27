@@ -2,12 +2,17 @@ from __future__ import annotations
 
 import asyncio
 import json
+from contextvars import ContextVar, Token
 from pathlib import Path
 from typing import Any
 
 from agents.tool_context import ToolContext
 
+from cspilot.prompts.system_prompts import allowed_group_names
 from cspilot.tools.agent_tools import (
+    agapi_materials_query_tool,
+    find_result_json_tool,
+    get_property_from_result_tool,
     inspect_structure,
     reset_agent_workdir,
     run_mace_optimize,
@@ -17,26 +22,45 @@ from cspilot.tools.agent_tools import (
     set_agent_workdir,
 )
 
-_TOOLS = {
-    tool.name: tool
-    for tool in [
+_TOOL_GROUPS = {
+    "chemistry": [
         inspect_structure,
         run_xtb_optimize,
         run_orca_single_point,
         run_mace_optimize,
         run_xtb_orca_workflow,
-    ]
+    ],
+    "materials": [agapi_materials_query_tool],
+    "analysis": [find_result_json_tool, get_property_from_result_tool],
+    "thermo": [find_result_json_tool, get_property_from_result_tool],
 }
+_TOOLS = {tool.name: tool for tools in _TOOL_GROUPS.values() for tool in tools}
+_active_allowed_tools: ContextVar[set[str] | None] = ContextVar("active_allowed_tools", default=None)
 
 
-def get_allowed_tools() -> list[str]:
-    """Return the exact tool names accepted by the explicit executor."""
-    return list(_TOOLS)
+def get_allowed_tools(profile: str | None = None, user_request: str = "") -> list[str]:
+    """Return tool names permitted for the current or requested profile."""
+    if profile is None:
+        active = _active_allowed_tools.get()
+        if active is not None:
+            return [name for name in _TOOLS if name in active]
+        profile = "chem"
+    groups = allowed_group_names(profile, user_request)
+    allowed = {tool.name for group in groups for tool in _TOOL_GROUPS.get(group, [])}
+    return [name for name in _TOOLS if name in allowed]
+
+
+def set_allowed_profile(profile: str, user_request: str = "") -> Token[set[str] | None]:
+    return _active_allowed_tools.set(set(get_allowed_tools(profile, user_request)))
+
+
+def reset_allowed_profile(token: Token[set[str] | None]) -> None:
+    _active_allowed_tools.reset(token)
 
 
 def call_tool(tool_name: str, args: dict[str, Any], workdir: str) -> dict[str, Any]:
     """Call one allowlisted function tool; reject arbitrary tool or shell execution."""
-    if tool_name not in _TOOLS:
+    if tool_name not in get_allowed_tools():
         raise ValueError(f"Unknown or disallowed tool: {tool_name}")
     if not isinstance(args, dict):
         raise ValueError("Tool args must be a JSON object.")

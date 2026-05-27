@@ -1,0 +1,10 @@
+{
+  "steps": [
+    {
+      "tool": "agapi_materials_query_tool",
+      "args": {
+        "query": "silicon bandgap"
+      }
+    }
+  ]
+}

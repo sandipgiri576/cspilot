@@ -30,6 +30,7 @@ InputPath = Annotated[
     Path,
     typer.Argument(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True),
 ]
+Profile = Literal["chem", "materials", "analysis", "thermo", "general"]
 
 
 def _finish(result: CommandResult) -> None:
@@ -95,13 +96,14 @@ def plan_command(
         Path,
         typer.Option(help="Directory in which to save plan.json.", resolve_path=True),
     ] = Path("runs/test"),
+    profile: Annotated[Profile, typer.Option(help="Planning tool and prompt profile.")] = "chem",
 ) -> None:
     """Create a JSON execution plan using the configured AGAPI planner."""
     from cspilot.agents.planner import create_plan
 
     workdir.mkdir(parents=True, exist_ok=True)
     try:
-        plan = asyncio.run(create_plan(request))
+        plan = asyncio.run(create_plan(request, profile=profile))
     except ValueError as exc:
         console.print(f"[red]Planning error:[/] {exc}")
         raise typer.Exit(code=1) from exc
@@ -121,17 +123,22 @@ def execute_command(
         Path,
         typer.Option(help="Directory in which to save execution outputs.", resolve_path=True),
     ] = Path("runs/test"),
+    profile: Annotated[Profile, typer.Option(help="Tool allowlist profile.")] = "chem",
 ) -> None:
     """Execute an existing JSON plan through allowlisted local tools."""
     from cspilot.agents.executor import execute_plan
+    from cspilot.tools.registry import reset_allowed_profile, set_allowed_profile
 
     workdir.mkdir(parents=True, exist_ok=True)
+    profile_token = set_allowed_profile(profile)
     try:
         plan = json.loads(plan_path.read_text(encoding="utf-8"))
         execution_result = execute_plan(plan, str(workdir))
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         console.print(f"[red]Execution error:[/] {exc}")
         raise typer.Exit(code=1) from exc
+    finally:
+        reset_allowed_profile(profile_token)
     result_path = workdir / "execution_result.json"
     _write_cli_json(result_path, execution_result)
     _print_execution_summary(execution_result, result_path)
@@ -144,6 +151,7 @@ def run_command(
         Path,
         typer.Option(help="Directory in which to save plan and execution outputs.", resolve_path=True),
     ] = Path("runs/test"),
+    profile: Annotated[Profile, typer.Option(help="Planning tool and report profile.")] = "chem",
     html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
 ) -> None:
     """Plan, execute, verify, and report an allowlisted workflow."""
@@ -151,10 +159,12 @@ def run_command(
     from cspilot.agents.planner import create_plan
     from cspilot.agents.reporter import generate_report
     from cspilot.agents.verifier import verify_execution
+    from cspilot.tools.registry import reset_allowed_profile, set_allowed_profile
 
     workdir.mkdir(parents=True, exist_ok=True)
+    profile_token = set_allowed_profile(profile, request)
     try:
-        plan = asyncio.run(create_plan(request))
+        plan = asyncio.run(create_plan(request, profile=profile))
         _write_cli_json(workdir / "plan.json", plan)
         execution_result = execute_plan(plan, str(workdir))
         _write_cli_json(workdir / "execution_result.json", execution_result)
@@ -166,10 +176,13 @@ def run_command(
             execution_result,
             verification_result,
             html=html,
+            profile=profile,
         )
     except (OSError, ValueError) as exc:
         console.print(f"[red]Run error:[/] {exc}")
         raise typer.Exit(code=1) from exc
+    finally:
+        reset_allowed_profile(profile_token)
 
     report_path = workdir / ("final_report.html" if html else "final_report.md")
     report_path.write_text(report, encoding="utf-8")

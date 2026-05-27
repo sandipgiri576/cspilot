@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from cspilot.prompts.system_prompts import get_profile
+
 
 def make_report(
     user_request: str,
@@ -45,9 +47,18 @@ def generate_report(
     execution_result: dict[str, Any],
     verification_result: dict[str, Any],
     html: bool = False,
+    profile: str = "chem",
 ) -> str:
     """Create a deterministic Markdown or HTML execution report."""
-    sections = _report_sections(user_request, plan, execution_result, verification_result)
+    selected_profile = get_profile(profile)
+    sections = _report_sections(
+        user_request,
+        plan,
+        execution_result,
+        verification_result,
+        profile,
+        selected_profile.default_output_style,
+    )
     if html:
         return _as_html(sections)
     return _as_markdown(sections)
@@ -58,6 +69,8 @@ def _report_sections(
     plan: dict[str, Any],
     execution_result: dict[str, Any],
     verification_result: dict[str, Any],
+    profile: str,
+    output_style: str,
 ) -> list[tuple[str, list[str]]]:
     workdir = str(execution_result.get("workdir", "not returned"))
     steps = plan.get("steps", []) if isinstance(plan.get("steps", []), list) else []
@@ -91,7 +104,7 @@ def _report_sections(
 
     warnings = _warnings(execution_result, verification_result)
     return [
-        ("Task", [user_request, f"Workdir: {workdir}"]),
+        ("Task", [user_request, f"Profile: {profile}", f"Output style: {output_style}", f"Workdir: {workdir}"]),
         ("Plan Summary", plan_lines),
         ("Completed Steps", completed_lines),
         ("Key Results", key_lines),

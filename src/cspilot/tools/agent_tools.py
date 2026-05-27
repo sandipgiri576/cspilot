@@ -7,6 +7,7 @@ from typing import Any
 from agents import function_tool
 
 from cspilot.config import load_settings
+from cspilot.tools.agapi_materials_tools import agapi_materials_query
 from cspilot.tools.ase_tools import summarize_structure
 from cspilot.tools.mace_tools import optimize_with_mace
 from cspilot.tools.mol_tools import (
@@ -272,6 +273,17 @@ def get_property_from_result_tool(path: str, property_name: str) -> dict[str, An
         property_name: Requested property name, for example Gibbs free energy.
     """
     return get_property_from_result(path, property_name)
+
+
+@function_tool
+def agapi_materials_query_tool(query: str, render_html: bool = False) -> dict[str, Any]:
+    """Query optional AGAPI materials search capabilities.
+
+    Args:
+        query: Natural-language materials query.
+        render_html: Whether AGAPI should return an HTML representation.
+    """
+    return agapi_materials_query(query, render_html=render_html)
 
 
 def _failure(exc: Exception) -> dict[str, str]:

@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "workdir": "/home/anoop/postdoc-proj/cspilot/tests/run/test-1",
+  "plan_path": "/home/anoop/postdoc-proj/cspilot/tests/run/test-1/plan.json",
+  "steps": [
+    {
+      "tool_name": "agapi_materials_query_tool",
+      "success": true,
+      "query": "silicon bandgap",
+      "html": null,
+      "text": "**Silicon Bandgap (JARVIS\u2011DFT)**  \n\n| Property | Value | Method |\n|----------|-------|--------|\n| Bandgap (MBJ) | **1.12\u202feV** | MBJ (modified Becke\u2013Johnson) \u2013 most accurate for indirect semiconductors |\n| Bandgap (OptB88vdW) | 1.10\u202feV | OptB88vdW functional |\n| Bandgap (SlakoNet) | 1.48\u202feV | Tight\u2011binding estimate (tends to overestimate) |\n\n*Key points*\n\n- Silicon is an **indirect** semiconductor; the MBJ value (1.12\u202feV) matches the experimental indirect gap (~1.12\u202feV at 300\u202fK).  \n- The OptB88vdW functional gives a slightly lower value (1.10\u202feV), but MBJ is preferred for band\u2011gap predictions.  \n- SlakoNet\u2019s tight\u2011binding calculation overestimates the gap by ~0.3\u202feV, a common trend for TB methods.  \n\nIf you need the band structure, density of states, or other properties, let me know and I can run a SlakoNet band\u2011structure calculation or provide additional JARVIS\u2011DFT data.",
+      "source": "AGAPI"
+    }
+  ],
+  "verification": {
+    "verified": true,
+    "issues": []
+  }
+}
