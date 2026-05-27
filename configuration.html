@@ -6,40 +6,40 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="This is the cspilot package!">
+        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
       
       
         <meta name="author" content="Sandip Giri">
       
       
       
-        <link rel="prev" href="../code/tests.html">
+        <link rel="prev" href="./installation.html">
       
       
-        <link rel="next" href="./build.html">
+        <link rel="next" href="./cli_usage.html">
       
       
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="./assets/images/favicon.png">
       <meta name="generator" content="zensical-0.0.43">
     
     
       
-        <title>Writing the Docs - cspilot</title>
+        <title>Configuration - cspilot</title>
       
     
     
       
         
       
-      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.fba56155.min.css">
+      <link rel="stylesheet" href="./assets/stylesheets/modern/main.fba56155.min.css">
       
         
           
         
-        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+        <link rel="stylesheet" href="./assets/stylesheets/modern/palette.dfe2e883.min.css">
       
       
 
@@ -60,7 +60,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    <script>__md_scope=new URL(".",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
     
       
 
@@ -85,7 +85,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#writing-the-docs" class="md-skip">
+        <a href="#configuration" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +101,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="cspilot" class="md-header__button md-logo" aria-label="cspilot" data-md-component="logo">
+    <a href="./index.html" title="cspilot" class="md-header__button md-logo" aria-label="cspilot" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
@@ -121,7 +121,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Writing the Docs
+              Configuration
             
           </span>
         </div>
@@ -196,7 +196,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="cspilot" class="md-nav__button md-logo" aria-label="cspilot" data-md-component="logo">
+    <a href="./index.html" title="cspilot" class="md-nav__button md-logo" aria-label="cspilot" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
@@ -226,7 +226,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../index.html" class="md-nav__link">
+      <a href="./index.html" class="md-nav__link">
         
   
   
@@ -249,8 +249,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -261,11 +263,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
@@ -275,7 +277,7 @@
   <span class="md-ellipsis">
     
   
-  Overview
+  Getting Started
 
     
   </span>
@@ -285,12 +287,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
   
-  Overview
+  Getting Started
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -302,14 +304,148 @@
   
   
     <li class="md-nav__item">
-      <a href="../intro/why.html" class="md-nav__link">
+      <a href="./installation.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Why?
+  Installation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Configuration
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="configuration.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Configuration
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Implemented Variables
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#names-not-currently-implemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Names Not Currently Implemented
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#work-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Work Directories
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./cli_usage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  CLI Usage
 
     
   </span>
@@ -329,14 +465,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../intro/resources.html" class="md-nav__link">
+      <a href="./examples.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Resources
+  Examples
 
     
   </span>
@@ -386,7 +522,7 @@
   <span class="md-ellipsis">
     
   
-  Setup
+  Capabilities
 
     
   </span>
@@ -401,7 +537,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-  Setup
+  Capabilities
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -413,14 +549,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/prep.html" class="md-nav__link">
+      <a href="./agent_usage.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Preparatory Steps
+  Agent Usage
 
     
   </span>
@@ -440,14 +576,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/name.html" class="md-nav__link">
+      <a href="./workflows.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Updating the Name
+  Workflows
 
     
   </span>
@@ -467,14 +603,68 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/basics.html" class="md-nav__link">
+      <a href="./tools.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Initial Changes
+  Tools
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./agapi.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  AGAPI Integration
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./safety.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Safety
 
     
   </span>
@@ -524,7 +714,7 @@
   <span class="md-ellipsis">
     
   
-  Installation
+  Project
 
     
   </span>
@@ -539,7 +729,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-  Installation
+  Project
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -551,14 +741,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/pyproject.html" class="md-nav__link">
+      <a href="./development.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  pyproject.toml
+  Development
 
     
   </span>
@@ -578,14 +768,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/install.html" class="md-nav__link">
+      <a href="./roadmap.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Pip Installing
+  Roadmap
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./updating_docs.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Updating Documentation
 
     
   </span>
@@ -635,7 +852,7 @@
   <span class="md-ellipsis">
     
   
-  Code
+  Code Documentation
 
     
   </span>
@@ -650,437 +867,6 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-  Code
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../code/source.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Source Code
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../code/hints.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Type Hinting
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../code/tests.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Testing
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Documentation
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-  Documentation
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Writing the Docs
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="docs.html" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Writing the Docs
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#zensical" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Zensical
-      </span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#adding-markdown-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Adding Markdown Files
-      </span>
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="./build.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Building the Docs
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
-        
-          
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  GitHub and CI
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-  GitHub and CI
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../github/commits.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Saving Your Work
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../github/workflows.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  GitHub Actions
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Code Documentation
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
   Code Documentation
 
           </label>
@@ -1103,10 +889,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
         
           
-          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
             
   
   
@@ -1123,8 +909,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1150,10 +936,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_1" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_1" id="__nav_8_1_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_1_1" id="__nav_5_1_1_label" tabindex="0">
             
   
   
@@ -1170,8 +956,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_1">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1187,7 +973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/agents/executor.html" class="md-nav__link">
+      <a href="./reference/cspilot/agents/executor.html" class="md-nav__link">
         
   
   
@@ -1214,7 +1000,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/agents/openai_agent.html" class="md-nav__link">
+      <a href="./reference/cspilot/agents/openai_agent.html" class="md-nav__link">
         
   
   
@@ -1241,7 +1027,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/agents/planner.html" class="md-nav__link">
+      <a href="./reference/cspilot/agents/planner.html" class="md-nav__link">
         
   
   
@@ -1268,7 +1054,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/agents/reporter.html" class="md-nav__link">
+      <a href="./reference/cspilot/agents/reporter.html" class="md-nav__link">
         
   
   
@@ -1295,7 +1081,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/agents/verifier.html" class="md-nav__link">
+      <a href="./reference/cspilot/agents/verifier.html" class="md-nav__link">
         
   
   
@@ -1330,7 +1116,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/cli.html" class="md-nav__link">
+      <a href="./reference/cspilot/cli.html" class="md-nav__link">
         
   
   
@@ -1357,7 +1143,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/config.html" class="md-nav__link">
+      <a href="./reference/cspilot/config.html" class="md-nav__link">
         
   
   
@@ -1384,7 +1170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/llm.html" class="md-nav__link">
+      <a href="./reference/cspilot/llm.html" class="md-nav__link">
         
   
   
@@ -1410,8 +1196,90 @@
   
   
   
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_5" id="__nav_5_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  prompts
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  prompts
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/schemas.html" class="md-nav__link">
+      <a href="./reference/cspilot/prompts/system_prompts.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  system_prompts
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./reference/cspilot/schemas.html" class="md-nav__link">
         
   
   
@@ -1448,10 +1316,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_7" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_6" id="__nav_8_1_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_1_7" id="__nav_5_1_7_label" tabindex="0">
             
   
   
@@ -1468,8 +1336,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1485,7 +1353,34 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/agent_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/agapi_materials_tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  agapi_materials_tools
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./reference/cspilot/tools/agent_tools.html" class="md-nav__link">
         
   
   
@@ -1512,7 +1407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/ase_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/ase_tools.html" class="md-nav__link">
         
   
   
@@ -1539,7 +1434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/mace_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/mace_tools.html" class="md-nav__link">
         
   
   
@@ -1566,7 +1461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/mol_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/mol_tools.html" class="md-nav__link">
         
   
   
@@ -1593,7 +1488,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/opi_orca_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/opi_orca_tools.html" class="md-nav__link">
         
   
   
@@ -1620,7 +1515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/registry.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/registry.html" class="md-nav__link">
         
   
   
@@ -1647,7 +1542,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/result_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/result_tools.html" class="md-nav__link">
         
   
   
@@ -1674,7 +1569,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/xtb_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/xtb_tools.html" class="md-nav__link">
         
   
   
@@ -1719,10 +1614,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_8" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_7" id="__nav_8_1_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_1_8" id="__nav_5_1_8_label" tabindex="0">
             
   
   
@@ -1739,8 +1634,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_7">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_8">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1756,7 +1651,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/utils/runner.html" class="md-nav__link">
+      <a href="./reference/cspilot/utils/runner.html" class="md-nav__link">
         
   
   
@@ -1801,10 +1696,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_9" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_8" id="__nav_8_1_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_1_9" id="__nav_5_1_9_label" tabindex="0">
             
   
   
@@ -1821,8 +1716,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_8">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1838,7 +1733,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/workflows/_common.html" class="md-nav__link">
+      <a href="./reference/cspilot/workflows/_common.html" class="md-nav__link">
         
   
   
@@ -1865,7 +1760,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/workflows/mace_to_orca.html" class="md-nav__link">
+      <a href="./reference/cspilot/workflows/mace_to_orca.html" class="md-nav__link">
         
   
   
@@ -1892,7 +1787,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/workflows/xtb_to_orca_freq.html" class="md-nav__link">
+      <a href="./reference/cspilot/workflows/xtb_to_orca_freq.html" class="md-nav__link">
         
   
   
@@ -1919,7 +1814,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/workflows/xtb_to_orca_sp.html" class="md-nav__link">
+      <a href="./reference/cspilot/workflows/xtb_to_orca_sp.html" class="md-nav__link">
         
   
   
@@ -1950,144 +1845,6 @@
           </ul>
         </nav>
       
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
-        
-          
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  About
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-  About
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../about/changelog.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Changelog
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../about/conduct.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Code of Conduct
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../about/license.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  License
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -2141,10 +1898,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#zensical" class="md-nav__link">
+  <a href="#implemented-variables" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Zensical
+        Implemented Variables
       </span>
     </span>
   </a>
@@ -2152,10 +1909,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-markdown-files" class="md-nav__link">
+  <a href="#names-not-currently-implemented" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Adding Markdown Files
+        Names Not Currently Implemented
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#work-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Work Directories
       </span>
     </span>
   </a>
@@ -2187,7 +1955,7 @@
   
   
     <li class="md-path__item">
-      <a href="../../index.html" class="md-path__link">
+      <a href="./index.html" class="md-path__link">
         
   
   <span class="md-ellipsis">
@@ -2209,11 +1977,11 @@
     
     
       <li class="md-path__item">
-        <a href="docs.html" class="md-path__link">
+        <a href="./installation.html" class="md-path__link">
           
   
   <span class="md-ellipsis">
-    Documentation
+    Getting Started
   </span>
 
         </a>
@@ -2230,7 +1998,7 @@
                 
                   
   
-    <a href="https://github.com/sandipgiri576/cspilot//blob/main/docs/example_docs/zensical/docs.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/sandipgiri576/cspilot//blob/main/docs/configuration.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
     </a>
@@ -2238,20 +2006,110 @@
   
 
 
-<h1 id="writing-the-docs">Writing the Docs<a class="headerlink" href="#writing-the-docs" title="Permanent link">&para;</a></h1>
-<h2 id="zensical">Zensical<a class="headerlink" href="#zensical" title="Permanent link">&para;</a></h2>
-<p>Now it's time to write some documentation! This isn't very difficult, and of course you're reading some documentation right now. The documentation is written using markdown, which is the same way GitHub comments are formatted.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Check out the <a href="https://www.markdownguide.org/basic-syntax/">Markdown Guide</a> for an overview of the basic syntax.</p>
-</div>
-<p>This cspilot repository uses a documentation format called <a href="https://zensical.org/docs/get-started/">Zensical</a>. This enables many wonderful goodies like the "tip" callout you see above and much more.</p>
-<h2 id="adding-markdown-files">Adding Markdown Files<a class="headerlink" href="#adding-markdown-files" title="Permanent link">&para;</a></h2>
-<p>Your documentation will live in the <code>/docs</code> folder. You can think of each markdown (<code>.md</code>) file as being a specific page in the documentation, and each folder as being a related collection of pages. The markdown page you are reading right now is found at <code>/docs/example_docs/zensical/docs.md</code>, for instance. Of course, you will want to replce the <code>/docs/example_docs</code> folder with your own documentation.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You typically do not need to touch the <code>/.github/workflows/gen_ref_pages.py</code> script (or any other scripts in that folder). It is used to automatically build the documentation for your code from its docstrings.</p>
-</div>
+<h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h1>
+<p><code>cspilot</code> loads <code>.env.cspilot</code> from the current working directory. Do not
+commit API keys or licensed-software configuration containing secrets.</p>
+<h2 id="implemented-variables">Implemented Variables<a class="headerlink" href="#implemented-variables" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>CSPILOT_RUNS_DIR=runs
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>XTB_COMMAND=xtb
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ORCA_COMMAND=/path/to/orca
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>MACE_MODEL=/path/to/mace_model.model
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>AGAPI_API_KEY=your_api_key
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>AGAPI_BASE_URL=https://atomgpt.org/api
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>cspilot_MODEL=openai/gpt-oss-20b
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Used by</th>
+<th>Default or requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CSPILOT_RUNS_DIR</code></td>
+<td>Deterministic commands and workflows</td>
+<td><code>runs</code></td>
+</tr>
+<tr>
+<td><code>XTB_COMMAND</code></td>
+<td>xTB optimization</td>
+<td><code>xtb</code></td>
+</tr>
+<tr>
+<td><code>ORCA_COMMAND</code></td>
+<td>ORCA CLI and workflows</td>
+<td><code>orca</code></td>
+</tr>
+<tr>
+<td><code>MACE_MODEL</code></td>
+<td><code>workflow mace-orca</code> when <code>--model</code> is omitted</td>
+<td><code>model_path</code> placeholder</td>
+</tr>
+<tr>
+<td><code>AGAPI_API_KEY</code></td>
+<td><code>agent</code>, <code>plan</code>, <code>run</code>, AGAPI materials wrapper</td>
+<td>Required for AGAPI calls</td>
+</tr>
+<tr>
+<td><code>AGAPI_BASE_URL</code></td>
+<td>OpenAI-compatible agent/planner client</td>
+<td>Required unless <code>--base-url</code> is supplied where supported</td>
+</tr>
+<tr>
+<td><code>cspilot_MODEL</code></td>
+<td>OpenAI-compatible agent/planner model</td>
+<td>Required unless <code>--model</code> is supplied for <code>agent</code></td>
+</tr>
+</tbody>
+</table>
+<p>The OPI integration also recognizes <code>OPI_ORCA</code> and <code>ORCA_PATH</code> when its Python
+API is invoked without an explicitly supplied ORCA command. The CLI uses
+<code>ORCA_COMMAND</code> through application settings.</p>
+<h2 id="names-not-currently-implemented">Names Not Currently Implemented<a class="headerlink" href="#names-not-currently-implemented" title="Permanent link">&para;</a></h2>
+<p>The following proposed variable names are not read by current source code:</p>
+<table>
+<thead>
+<tr>
+<th>Requested name</th>
+<th>Current status</th>
+<th>Use now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>XTB_BIN</code></td>
+<td>Not implemented</td>
+<td><code>XTB_COMMAND</code></td>
+</tr>
+<tr>
+<td><code>ORCA_BIN</code></td>
+<td>Not implemented</td>
+<td><code>ORCA_COMMAND</code></td>
+</tr>
+<tr>
+<td><code>MULTIWFN_BIN</code></td>
+<td>Planned with Multiwfn support</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>MACE_MODEL_PATH</code></td>
+<td>Not implemented</td>
+<td><code>MACE_MODEL</code> or <code>--model</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="work-directories">Work Directories<a class="headerlink" href="#work-directories" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>inspect</code>, <code>xtb-opt</code>, <code>orca-sp</code>, <code>mace-opt</code>, and <code>workflow ...</code> use
+  <code>CSPILOT_RUNS_DIR</code> and create timestamped directories such as
+  <code>runs/20260527-170000-000000-orca-sp/</code>.</li>
+<li><code>agent</code>, <code>plan</code>, <code>execute</code>, and <code>run</code> accept an explicit <code>--workdir</code>.</li>
+<li>Default agent workdir: <code>runs/agent_test</code>.</li>
+<li>Default planner/executor/run workdir: <code>runs/test</code>.</li>
+</ul>
 
 
 
@@ -2291,7 +2149,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../code/tests.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Testing">
+          <a href="./installation.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Installation">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
@@ -2301,20 +2159,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Testing
+                Installation
               </div>
             </div>
           </a>
         
         
           
-          <a href="./build.html" class="md-footer__link md-footer__link--next" aria-label="Next: Building the Docs">
+          <a href="./cli_usage.html" class="md-footer__link md-footer__link--next" aria-label="Next: CLI Usage">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Building the Docs
+                CLI Usage
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2351,10 +2209,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["content.action.edit","content.code.copy","content.code.select","content.code.annotate","content.tabs.link","content.tooltips","navigation.footer","navigation.path","navigation.tracking","navigation.sections","navigation.top","search.highlight","search.suggest","search.share","header.autohide","toc.follow"],"search":"../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":".","features":["content.action.edit","content.code.copy","content.code.select","content.code.annotate","content.tabs.link","content.tooltips","navigation.footer","navigation.path","navigation.tracking","navigation.sections","navigation.top","search.highlight","search.suggest","search.share","header.autohide","toc.follow"],"search":"./assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.6e5f0216.min.js"></script>
+      <script src="./assets/javascripts/bundle.6e5f0216.min.js"></script>
       
     
   </body>

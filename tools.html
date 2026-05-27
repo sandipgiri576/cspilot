@@ -6,40 +6,40 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="This is the cspilot package!">
+        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
       
       
         <meta name="author" content="Sandip Giri">
       
       
       
-        <link rel="prev" href="./commits.html">
+        <link rel="prev" href="./workflows.html">
       
       
-        <link rel="next" href="../../reference/cspilot/agents/executor.html">
+        <link rel="next" href="./agapi.html">
       
       
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="./assets/images/favicon.png">
       <meta name="generator" content="zensical-0.0.43">
     
     
       
-        <title>GitHub Actions - cspilot</title>
+        <title>Tools - cspilot</title>
       
     
     
       
         
       
-      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.fba56155.min.css">
+      <link rel="stylesheet" href="./assets/stylesheets/modern/main.fba56155.min.css">
       
         
           
         
-        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+        <link rel="stylesheet" href="./assets/stylesheets/modern/palette.dfe2e883.min.css">
       
       
 
@@ -60,7 +60,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    <script>__md_scope=new URL(".",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
     
       
 
@@ -85,7 +85,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#github-actions" class="md-skip">
+        <a href="#tools" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +101,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="cspilot" class="md-header__button md-logo" aria-label="cspilot" data-md-component="logo">
+    <a href="./index.html" title="cspilot" class="md-header__button md-logo" aria-label="cspilot" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
@@ -121,7 +121,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GitHub Actions
+              Tools
             
           </span>
         </div>
@@ -196,7 +196,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="cspilot" class="md-nav__button md-logo" aria-label="cspilot" data-md-component="logo">
+    <a href="./index.html" title="cspilot" class="md-nav__button md-logo" aria-label="cspilot" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
@@ -226,7 +226,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../index.html" class="md-nav__link">
+      <a href="./index.html" class="md-nav__link">
         
   
   
@@ -275,7 +275,7 @@
   <span class="md-ellipsis">
     
   
-  Overview
+  Getting Started
 
     
   </span>
@@ -290,7 +290,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-  Overview
+  Getting Started
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -302,14 +302,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../intro/why.html" class="md-nav__link">
+      <a href="./installation.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Why?
+  Installation
 
     
   </span>
@@ -329,14 +329,68 @@
   
   
     <li class="md-nav__item">
-      <a href="../intro/resources.html" class="md-nav__link">
+      <a href="./configuration.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Resources
+  Configuration
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./cli_usage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  CLI Usage
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./examples.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Examples
 
     
   </span>
@@ -360,8 +414,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -372,11 +428,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -386,7 +442,7 @@
   <span class="md-ellipsis">
     
   
-  Setup
+  Capabilities
 
     
   </span>
@@ -396,12 +452,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
-  Setup
+  Capabilities
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -413,14 +469,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/prep.html" class="md-nav__link">
+      <a href="./agent_usage.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Preparatory Steps
+  Agent Usage
 
     
   </span>
@@ -440,14 +496,192 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/name.html" class="md-nav__link">
+      <a href="./workflows.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Updating the Name
+  Workflows
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Tools
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="tools.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Tools
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#structure-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Structure Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#molecule-conversion-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Molecule Conversion Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xtb-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        xTB Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#orca-and-opi-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        ORCA And OPI Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mace-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        MACE Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agapi-materials-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        AGAPI Materials Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#result-json-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Result JSON Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./agapi.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  AGAPI Integration
 
     
   </span>
@@ -467,14 +701,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/basics.html" class="md-nav__link">
+      <a href="./safety.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Initial Changes
+  Safety
 
     
   </span>
@@ -524,7 +758,7 @@
   <span class="md-ellipsis">
     
   
-  Installation
+  Project
 
     
   </span>
@@ -539,7 +773,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-  Installation
+  Project
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -551,14 +785,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/pyproject.html" class="md-nav__link">
+      <a href="./development.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  pyproject.toml
+  Development
 
     
   </span>
@@ -578,14 +812,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/install.html" class="md-nav__link">
+      <a href="./roadmap.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-  Pip Installing
+  Roadmap
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./updating_docs.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Updating Documentation
 
     
   </span>
@@ -635,7 +896,7 @@
   <span class="md-ellipsis">
     
   
-  Code
+  Code Documentation
 
     
   </span>
@@ -650,459 +911,6 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-  Code
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../code/source.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Source Code
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../code/hints.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Type Hinting
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../code/tests.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Testing
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Documentation
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-  Documentation
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../zensical/docs.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Writing the Docs
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../zensical/build.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Building the Docs
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  GitHub and CI
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-  GitHub and CI
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="./commits.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Saving Your Work
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  GitHub Actions
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="workflows.html" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  GitHub Actions
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#workflows" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Workflows
-      </span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Tests
-      </span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Documentation
-      </span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#release" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Release
-      </span>
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Code Documentation
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
   Code Documentation
 
           </label>
@@ -1125,10 +933,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
         
           
-          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
             
   
   
@@ -1145,8 +953,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1172,10 +980,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_1" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_1" id="__nav_8_1_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_1_1" id="__nav_5_1_1_label" tabindex="0">
             
   
   
@@ -1192,8 +1000,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_1">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1209,7 +1017,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/agents/executor.html" class="md-nav__link">
+      <a href="./reference/cspilot/agents/executor.html" class="md-nav__link">
         
   
   
@@ -1236,7 +1044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/agents/openai_agent.html" class="md-nav__link">
+      <a href="./reference/cspilot/agents/openai_agent.html" class="md-nav__link">
         
   
   
@@ -1263,7 +1071,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/agents/planner.html" class="md-nav__link">
+      <a href="./reference/cspilot/agents/planner.html" class="md-nav__link">
         
   
   
@@ -1290,7 +1098,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/agents/reporter.html" class="md-nav__link">
+      <a href="./reference/cspilot/agents/reporter.html" class="md-nav__link">
         
   
   
@@ -1317,7 +1125,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/agents/verifier.html" class="md-nav__link">
+      <a href="./reference/cspilot/agents/verifier.html" class="md-nav__link">
         
   
   
@@ -1352,7 +1160,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/cli.html" class="md-nav__link">
+      <a href="./reference/cspilot/cli.html" class="md-nav__link">
         
   
   
@@ -1379,7 +1187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/config.html" class="md-nav__link">
+      <a href="./reference/cspilot/config.html" class="md-nav__link">
         
   
   
@@ -1406,7 +1214,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/llm.html" class="md-nav__link">
+      <a href="./reference/cspilot/llm.html" class="md-nav__link">
         
   
   
@@ -1432,8 +1240,90 @@
   
   
   
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_5" id="__nav_5_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  prompts
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  prompts
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/schemas.html" class="md-nav__link">
+      <a href="./reference/cspilot/prompts/system_prompts.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  system_prompts
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./reference/cspilot/schemas.html" class="md-nav__link">
         
   
   
@@ -1470,10 +1360,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_7" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_6" id="__nav_8_1_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_1_7" id="__nav_5_1_7_label" tabindex="0">
             
   
   
@@ -1490,8 +1380,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1507,7 +1397,34 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/agent_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/agapi_materials_tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  agapi_materials_tools
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./reference/cspilot/tools/agent_tools.html" class="md-nav__link">
         
   
   
@@ -1534,7 +1451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/ase_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/ase_tools.html" class="md-nav__link">
         
   
   
@@ -1561,7 +1478,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/mace_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/mace_tools.html" class="md-nav__link">
         
   
   
@@ -1588,7 +1505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/mol_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/mol_tools.html" class="md-nav__link">
         
   
   
@@ -1615,7 +1532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/opi_orca_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/opi_orca_tools.html" class="md-nav__link">
         
   
   
@@ -1642,7 +1559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/registry.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/registry.html" class="md-nav__link">
         
   
   
@@ -1669,7 +1586,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/result_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/result_tools.html" class="md-nav__link">
         
   
   
@@ -1696,7 +1613,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/tools/xtb_tools.html" class="md-nav__link">
+      <a href="./reference/cspilot/tools/xtb_tools.html" class="md-nav__link">
         
   
   
@@ -1741,10 +1658,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_8" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_7" id="__nav_8_1_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_1_8" id="__nav_5_1_8_label" tabindex="0">
             
   
   
@@ -1761,8 +1678,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_7">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_8">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1778,7 +1695,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/utils/runner.html" class="md-nav__link">
+      <a href="./reference/cspilot/utils/runner.html" class="md-nav__link">
         
   
   
@@ -1823,10 +1740,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_9" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_8" id="__nav_8_1_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_1_9" id="__nav_5_1_9_label" tabindex="0">
             
   
   
@@ -1843,8 +1760,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_8">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1860,7 +1777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/workflows/_common.html" class="md-nav__link">
+      <a href="./reference/cspilot/workflows/_common.html" class="md-nav__link">
         
   
   
@@ -1887,7 +1804,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/workflows/mace_to_orca.html" class="md-nav__link">
+      <a href="./reference/cspilot/workflows/mace_to_orca.html" class="md-nav__link">
         
   
   
@@ -1914,7 +1831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/workflows/xtb_to_orca_freq.html" class="md-nav__link">
+      <a href="./reference/cspilot/workflows/xtb_to_orca_freq.html" class="md-nav__link">
         
   
   
@@ -1941,7 +1858,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/cspilot/workflows/xtb_to_orca_sp.html" class="md-nav__link">
+      <a href="./reference/cspilot/workflows/xtb_to_orca_sp.html" class="md-nav__link">
         
   
   
@@ -1972,144 +1889,6 @@
           </ul>
         </nav>
       
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
-        
-          
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  About
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-  About
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../about/changelog.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Changelog
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../about/conduct.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  Code of Conduct
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../about/license.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-  License
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -2163,10 +1942,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#workflows" class="md-nav__link">
+  <a href="#structure-tools" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Workflows
+        Structure Tools
       </span>
     </span>
   </a>
@@ -2174,10 +1953,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
+  <a href="#molecule-conversion-tools" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Tests
+        Molecule Conversion Tools
       </span>
     </span>
   </a>
@@ -2185,10 +1964,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
+  <a href="#xtb-tools" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Documentation
+        xTB Tools
       </span>
     </span>
   </a>
@@ -2196,10 +1975,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#release" class="md-nav__link">
+  <a href="#orca-and-opi-tools" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Release
+        ORCA And OPI Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mace-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        MACE Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agapi-materials-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        AGAPI Materials Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#result-json-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Result JSON Tools
       </span>
     </span>
   </a>
@@ -2231,7 +2043,7 @@
   
   
     <li class="md-path__item">
-      <a href="../../index.html" class="md-path__link">
+      <a href="./index.html" class="md-path__link">
         
   
   <span class="md-ellipsis">
@@ -2253,11 +2065,11 @@
     
     
       <li class="md-path__item">
-        <a href="./commits.html" class="md-path__link">
+        <a href="./agent_usage.html" class="md-path__link">
           
   
   <span class="md-ellipsis">
-    GitHub and CI
+    Capabilities
   </span>
 
         </a>
@@ -2274,7 +2086,7 @@
                 
                   
   
-    <a href="https://github.com/sandipgiri576/cspilot//blob/main/docs/example_docs/github/workflows.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/sandipgiri576/cspilot//blob/main/docs/tools.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
     </a>
@@ -2282,31 +2094,160 @@
   
 
 
-<h1 id="github-actions">GitHub Actions<a class="headerlink" href="#github-actions" title="Permanent link">&para;</a></h1>
-<h2 id="workflows">Workflows<a class="headerlink" href="#workflows" title="Permanent link">&para;</a></h2>
-<p>The last major piece of the puzzle is GitHub Actions, which is an automated suite of workflows that run every time a commit or pull request is made. The GitHub workflows can be found in the <code>.github/workflows</code> folder.</p>
-<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
-<p>The <code>/.github/workflows/tests.yaml</code> file contains the workflow to have GitHub automatically run the full suite of tests on every commit and pull request. For the most basic case outlined here, you do not need to make any modifications (other than, perhaps, the desired Python versions you wish to test on).</p>
-<p>By default, the test suite is set up to install the following packages:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>tests/requirements.txt
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pip<span class="w"> </span>install<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
-</span></code></pre></div>
-<p>As you can see above, it will install specific versions of the dependencies outlined in <code>/tests/requirements.txt</code>. Unlike <code>pyproject.toml</code>, you want to include specific versions here so that your test suite is reproducible.</p>
-<p>The <code>/.github/dependabot.yml</code> file is set up such that <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide">Dependabot</a> will automatically open pull requests to update any versions in your <code>/tests/requirements.txt</code> file as they come out so that your code will always be tested on the newest releases of the various dependencies. This will ensure that your code doesn't break as dependencies update, but if it does, you will know what needs fixing.</p>
-<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
-<p>The <code>/.github/workflows/docs.yaml</code> file contains the workflow to have GitHub test the build process for the documentation and deploy it (if enabled).</p>
-<p>To have your documentation automatically deployed on a GitHub webpage:</p>
-<ol>
-<li>Go to the settings page of your repository.</li>
-<li>Click the "Pages" section under "Code and automation."</li>
-<li>Select "Deploy from a branch" under "Source"</li>
-<li>Set the branch to be "gh-pages" with "/ (root)" as the folder.</li>
-<li>Wait a minute and refresh the page. You'll see a message that your site is live with a URL to the documentation.</li>
-</ol>
-<p><img alt="" src="../media/deploy_docs.png" /></p>
-<p>Once this process is done, the documentation will be live and will update with each commit.</p>
-<h2 id="release">Release<a class="headerlink" href="#release" title="Permanent link">&para;</a></h2>
-<p>The <code>/.github/workflows/release.yaml</code> file contains the workflow to have GitHub upload your package to PyPI every time you mint a new release on GitHub. This is a slightly more advanced topic that you can read more about at a later time, but it's there for when you need it.</p>
+<h1 id="tools">Tools<a class="headerlink" href="#tools" title="Permanent link">&para;</a></h1>
+<p>This page describes implemented Python and agent tools. Not every Python
+function is a standalone CLI command.</p>
+<h2 id="structure-tools">Structure Tools<a class="headerlink" href="#structure-tools" title="Permanent link">&para;</a></h2>
+<p>Module: <code>cspilot.tools.ase_tools</code></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>load_structure</code></td>
+<td>Read a structure with ASE.</td>
+</tr>
+<tr>
+<td><code>save_structure</code></td>
+<td>Write a structure with ASE.</td>
+</tr>
+<tr>
+<td><code>summarize_structure</code></td>
+<td>Return formula, atom count, cell, PBC, and center of mass.</td>
+</tr>
+</tbody>
+</table>
+<p>Agent wrapper: <code>inspect_structure</code>.</p>
+<h2 id="molecule-conversion-tools">Molecule Conversion Tools<a class="headerlink" href="#molecule-conversion-tools" title="Permanent link">&para;</a></h2>
+<p>Module: <code>cspilot.tools.mol_tools</code></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>molecule_name_to_smiles</code></td>
+<td>Resolve a name using PubChem.</td>
+</tr>
+<tr>
+<td><code>validate_smiles</code></td>
+<td>Validate and canonicalize a SMILES string with RDKit.</td>
+</tr>
+<tr>
+<td><code>canonicalize_smiles</code></td>
+<td>Return canonical RDKit SMILES.</td>
+</tr>
+<tr>
+<td><code>smiles_to_xyz</code></td>
+<td>Embed conformers with ETKDGv3, minimize with MMFF or UFF, and write the lowest-energy XYZ conformer.</td>
+</tr>
+<tr>
+<td><code>molecule_name_to_xyz</code></td>
+<td>Combine PubChem lookup and RDKit XYZ generation.</td>
+</tr>
+</tbody>
+</table>
+<p>These are exposed to the direct agent as tools; there are currently no
+standalone molecule-conversion CLI subcommands.</p>
+<h2 id="xtb-tools">xTB Tools<a class="headerlink" href="#xtb-tools" title="Permanent link">&para;</a></h2>
+<p>Module: <code>cspilot.tools.xtb_tools</code></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>optimize_with_xtb</code></td>
+<td>Execute <code>XTB_COMMAND &lt;input&gt; --opt --chrg ... --uhf ...</code> and return expected optimization paths.</td>
+</tr>
+</tbody>
+</table>
+<p>CLI: <code>xtb-opt</code>. Agent wrapper: <code>run_xtb_optimize</code>.</p>
+<p>xTB single-point calculation is not currently implemented.</p>
+<h2 id="orca-and-opi-tools">ORCA And OPI Tools<a class="headerlink" href="#orca-and-opi-tools" title="Permanent link">&para;</a></h2>
+<p>Module: <code>cspilot.tools.opi_orca_tools</code></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>orca_single_point</code></td>
+<td>Create and execute an OPI ORCA SP job.</td>
+</tr>
+<tr>
+<td><code>orca_optimize</code></td>
+<td>Create and execute an OPI ORCA optimization job.</td>
+</tr>
+<tr>
+<td><code>orca_frequency</code></td>
+<td>Create and execute an OPI ORCA frequency job.</td>
+</tr>
+<tr>
+<td><code>parse_orca_result</code></td>
+<td>Parse with OPI where possible and fill missing supported values from ORCA text.</td>
+</tr>
+<tr>
+<td><code>single_point_with_orca</code></td>
+<td>Adapter used by <code>orca-sp</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>The parser can report returned final energy, orbital-gap data, dipole,
+zero-point energy, Gibbs free energy, enthalpy, entropy, and IR data when
+available in successful output. It does not synthesize missing properties.</p>
+<h2 id="mace-tools">MACE Tools<a class="headerlink" href="#mace-tools" title="Permanent link">&para;</a></h2>
+<p>Module: <code>cspilot.tools.mace_tools</code></p>
+<p><code>optimize_with_mace</code> runs ASE BFGS with <code>MACECalculator</code>, writes an optimized
+XYZ, trajectory, and log, and returns the MACE energy when successful. It
+requires <code>mace-torch</code> and a model file.</p>
+<p>CLI: <code>mace-opt</code>. Agent wrapper: <code>run_mace_optimize</code>.</p>
+<h2 id="agapi-materials-tools">AGAPI Materials Tools<a class="headerlink" href="#agapi-materials-tools" title="Permanent link">&para;</a></h2>
+<p>Module: <code>cspilot.tools.agapi_materials_tools</code></p>
+<p><code>agapi_materials_query</code> optionally imports <code>AGAPIAgent</code> and delegates a
+natural-language materials query through its prebuilt <code>query_sync</code> function.
+It is available to planner/executor workflows in the <code>materials</code> profile and
+for explicit materials requests in the <code>general</code> run profile.</p>
+<h2 id="result-json-tools">Result JSON Tools<a class="headerlink" href="#result-json-tools" title="Permanent link">&para;</a></h2>
+<p>Module: <code>cspilot.tools.result_tools</code></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>find_result_json</code></td>
+<td>Recursively find supported run JSON records.</td>
+</tr>
+<tr>
+<td><code>load_result_json</code></td>
+<td>Load JSON from a supplied path.</td>
+</tr>
+<tr>
+<td><code>get_property_from_result</code></td>
+<td>Search nested results using supported aliases.</td>
+</tr>
+</tbody>
+</table>
+<p>Supported query aliases include Gibbs free energy, enthalpy, electronic/final
+energy, HOMO-LUMO gap, and frequencies. Failure to find a property returns an
+explicit error rather than a guessed value.</p>
 
 
 
@@ -2346,7 +2287,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="./commits.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Saving Your Work">
+          <a href="./workflows.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Workflows">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
@@ -2356,20 +2297,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Saving Your Work
+                Workflows
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../reference/cspilot/agents/executor.html" class="md-footer__link md-footer__link--next" aria-label="Next: executor">
+          <a href="./agapi.html" class="md-footer__link md-footer__link--next" aria-label="Next: AGAPI Integration">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                executor
+                AGAPI Integration
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2406,10 +2347,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["content.action.edit","content.code.copy","content.code.select","content.code.annotate","content.tabs.link","content.tooltips","navigation.footer","navigation.path","navigation.tracking","navigation.sections","navigation.top","search.highlight","search.suggest","search.share","header.autohide","toc.follow"],"search":"../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":".","features":["content.action.edit","content.code.copy","content.code.select","content.code.annotate","content.tabs.link","content.tooltips","navigation.footer","navigation.path","navigation.tracking","navigation.sections","navigation.top","search.highlight","search.suggest","search.share","header.autohide","toc.follow"],"search":"./assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.6e5f0216.min.js"></script>
+      <script src="./assets/javascripts/bundle.6e5f0216.min.js"></script>
       
     
   </body>
