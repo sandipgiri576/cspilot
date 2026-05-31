@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from cspilot.tools.opi_orca_tools import orca_single_point, parse_orca_result
 
 
@@ -32,6 +34,8 @@ def test_orca_single_point_writes_opi_input_when_orca_is_missing(tmp_path):
 
 def test_parse_orca_result_uses_opi_and_text_fallbacks():
     output_path = Path("opi-example/exmp045_existing_calc/RUN/job.out")
+    if not output_path.exists():
+        pytest.skip(f"ORCA example output fixture not found: {output_path}")
 
     result = parse_orca_result(output_path)
 

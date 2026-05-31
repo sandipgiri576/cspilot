@@ -50,6 +50,7 @@ Optional groups in `pyproject.toml`:
 | `dev` | pytest, coverage, and Ruff |
 | `docs` | documentation tooling |
 | `mace` | `mace-torch` calculator support |
+| `stk` | Optional stk molecule construction support |
 
 ## External Programs
 
@@ -70,3 +71,14 @@ uv run cspilot inspect tests/examples/input.xyz
 
 This command only needs Python dependencies and should produce a timestamped
 `runs/*-inspect/result.json` record.
+
+## GreenCatAI Development Install
+
+GreenCatAI is not declared as a PyPI dependency in this package. For local development, install GreenCatAI in editable mode in the same environment, then confirm:
+
+```bash
+greencatai --help
+cspilot greencatai --help
+```
+
+The cspilot wrapper calls `greencatai.api.design_mbh_catalysts`; the native GreenCatAI CLI remains available for direct use.

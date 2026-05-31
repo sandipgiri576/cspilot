@@ -68,6 +68,33 @@ requires `mace-torch` and a model file.
 
 CLI: `mace-opt`. Agent wrapper: `run_mace_optimize`.
 
+## stk Molecule Construction Tools
+
+Module: `cspilot.tools.stk_tools`
+
+| Function | Behavior |
+| --- | --- |
+| `stk_building_block_from_smiles` | Create an `stk.BuildingBlock` from SMILES and export `.mol`, `.sdf`, or `.xyz`. |
+| `stk_building_block_from_file` | Load a building block with `stk.BuildingBlock.init_from_file`. |
+| `stk_construct_linear_polymer` | Build a linear polymer with `stk.polymer.Linear` when `stk` is installed. |
+| `stk_construct_simple_cage` | Build only whitelisted cage topologies; currently `four_plus_six`. |
+| `stk_edit_replace_smiles` | Replace a substructure with RDKit and export the edited molecule. |
+| `stk_export_to_xyz` | Export a molecule file to XYZ with stk/RDKit fallback. |
+
+The stk dependency is optional. Missing `stk` or unsupported topology names return JSON errors; arbitrary Python and arbitrary topology lookup are not exposed. These functions are available through `cspilot stk ...` CLI commands and agent tools.
+
+## GreenCatAI Catalyst Tools
+
+Module: `cspilot.tools.greencatai_tools`
+
+`greencatai_design_mbh_catalysts` calls the public GreenCatAI API:
+
+```python
+from greencatai.api import design_mbh_catalysts
+```
+
+It supports MBH catalyst-design parameters from the GreenCatAI cspilot interface, including `search_space`, `scoring`, `library`, `max_candidates`, `generations`, `population_size`, `top_n_xtb`, and `top_n_orca`. It is available as `cspilot greencatai design-mbh ...` and as an agent tool. GreenCatAI remains responsible for catalyst libraries, scaffold rules, filters, scoring, and future design logic.
+
 ## AGAPI Materials Tools
 
 Module: `cspilot.tools.agapi_materials_tools`

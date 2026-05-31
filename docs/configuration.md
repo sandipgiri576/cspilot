@@ -49,3 +49,7 @@ The following proposed variable names are not read by current source code:
 - `agent`, `plan`, `execute`, and `run` accept an explicit `--workdir`.
 - Default agent workdir: `runs/agent_test`.
 - Default planner/executor/run workdir: `runs/test`.
+
+## Optional Package Notes
+
+The stk integration is enabled by installing the optional `stk` extra. It does not add new environment variables. GreenCatAI is imported lazily from the active Python environment if installed; no cspilot-specific GreenCatAI environment variable is currently read.

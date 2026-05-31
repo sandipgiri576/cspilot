@@ -60,16 +60,16 @@ cspilot agent "inspect input.xyz" --workdir runs/check \
 
 | Profile | Purpose |
 | --- | --- |
-| `chem` | Chemistry calculation and molecular input tools |
-| `materials` | Materials-oriented direct-agent instructions; currently exposes the same local calculation tools as `chem` |
+| `chem` | Chemistry calculation, molecular input, stk, and GreenCatAI catalyst tools |
+| `materials` | Materials-oriented direct-agent instructions with local chemistry, stk, and GreenCatAI tools |
 | `general` | No registered direct-agent calculation tools |
 
 `plan`, `execute`, and `run --profile` accept:
 
 | Profile | Executor allowlist |
 | --- | --- |
-| `chem` | ASE/xTB/ORCA/MACE chemistry tools |
-| `materials` | AGAPI materials-query wrapper |
+| `chem` | ASE/xTB/ORCA/MACE chemistry tools plus stk and GreenCatAI wrappers |
+| `materials` | AGAPI materials-query wrapper and GreenCatAI catalyst wrapper |
 | `analysis` | Result JSON search/property tools |
 | `thermo` | Result JSON search/property tools |
 | `general` | No calculation tools; materials query is permitted only when explicitly requested during `run` planning |
@@ -88,3 +88,13 @@ The implemented prompts and executor are designed to enforce these rules:
 
 Agent results remain dependent on external executables, external API responses,
 and the quality of the chosen computational method.
+
+## General Search Shortcut
+
+A quoted root-level question is routed to the same general agent used by `search`:
+
+```bash
+cspilot "what is the chemical space?"
+```
+
+This requires the AGAPI environment variables and does not register calculation tools.

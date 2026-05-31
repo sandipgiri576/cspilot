@@ -5,9 +5,11 @@ import json
 from pathlib import Path
 from typing import Annotated, Literal
 
+import click
 import typer
 from rich.console import Console
 from rich.table import Table
+from typer.core import TyperGroup
 
 from cspilot.config import load_settings
 from cspilot.schemas import CommandResult
@@ -20,9 +22,26 @@ from cspilot.workflows.mace_to_orca import run_mace_to_orca
 from cspilot.workflows.xtb_to_orca_freq import run_xtb_to_orca_freq
 from cspilot.workflows.xtb_to_orca_sp import run_xtb_to_orca_sp
 
-app = typer.Typer(help="Computational chemistry workflow CLI.")
+
+class SearchFallbackGroup(TyperGroup):
+    def resolve_command(self, ctx: click.Context, args: list[str]):
+        try:
+            return super().resolve_command(ctx, args)
+        except click.UsageError:
+            if args and (" " in args[0] or "?" in args[0]):
+                command = self.commands.get("search")
+                if command is not None:
+                    return "search", command, args
+            raise
+
+
+app = typer.Typer(cls=SearchFallbackGroup, help="Computational chemistry workflow CLI.")
 workflow_app = typer.Typer(help="Multi-step computational chemistry workflows.")
+stk_app = typer.Typer(help="stk molecule construction and editing tools.")
+greencatai_app = typer.Typer(help="GreenCatAI catalyst-design wrappers.")
 app.add_typer(workflow_app, name="workflow")
+app.add_typer(stk_app, name="stk")
+app.add_typer(greencatai_app, name="greencatai")
 console = Console()
 
 
@@ -53,6 +72,53 @@ def _finish_workflow(result: dict[str, object]) -> None:
         console.print(f"Final energy: {final_energy} Eh")
     if result.get("message"):
         console.print(str(result["message"]))
+
+
+@app.command("search")
+def search_command(
+    request: Annotated[str, typer.Argument(help="General natural-language question.")],
+    workdir: Annotated[
+        Path,
+        typer.Option(help="Directory for search result JSON.", resolve_path=True),
+    ] = Path("runs/search"),
+    model: Annotated[str | None, typer.Option(help="AGAPI model identifier.")] = None,
+    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible AGAPI base URL.")] = None,
+) -> None:
+    """Answer a general question through the AGAPI-backed general agent."""
+    from cspilot.agents.openai_agent import run_agent_request
+
+    try:
+        result = asyncio.run(
+            run_agent_request(
+                request,
+                workdir,
+                model=model,
+                base_url=base_url,
+                profile="general",
+            )
+        )
+    except ValueError as exc:
+        console.print(f"[red]Configuration error:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+    console.print(result["model_output"] or result["final_output"])
+    console.print(f"Result: {result['result_path']}")
+
+
+@app.command("docs-check")
+def docs_check_command(
+    root: Annotated[Path, typer.Option(help="Project root to check.", resolve_path=True)] = Path(),
+) -> None:
+    """Run lightweight documentation consistency checks."""
+    from cspilot.docs_checker import check_documentation_consistency
+
+    result = check_documentation_consistency(root)
+    if result["success"]:
+        console.print("[green]Documentation consistency check passed.[/]")
+    else:
+        console.print("[red]Documentation consistency check failed.[/]")
+        for issue in result["issues"]:
+            console.print(f"- {issue}")
+        raise typer.Exit(code=1)
 
 
 @app.command("agent")
@@ -191,6 +257,12 @@ def run_command(
     style = "green" if verification_result["verified"] else "red"
     console.print(f"Verification: [{style}]{status}[/]")
     console.print(f"Report: {report_path}")
+
+
+def _print_tool_json(result: dict[str, object]) -> None:
+    console.print_json(json.dumps(result))
+    if result.get("success") is False:
+        raise typer.Exit(code=1)
 
 
 def _write_cli_json(path: Path, payload: dict[str, object]) -> None:
@@ -332,6 +404,146 @@ def mace_opt(
             parameters={"model": str(model), "fmax": fmax, "steps": steps},
             outputs=outputs,
             message=message,
+        )
+    )
+
+
+@stk_app.command("building-block-smiles")
+def stk_building_block_smiles_command(
+    smiles: Annotated[str, typer.Argument(help="Input SMILES string.")],
+    output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
+    functional_groups: Annotated[
+        list[str] | None,
+        typer.Option("--functional-group", "-f", help="Safe functional group name to detect."),
+    ] = None,
+) -> None:
+    """Create an stk building block from SMILES."""
+    from cspilot.tools.stk_tools import stk_building_block_from_smiles
+
+    _print_tool_json(
+        stk_building_block_from_smiles(
+            smiles=smiles,
+            output_path=str(output_path),
+            functional_groups=functional_groups,
+        )
+    )
+
+
+@stk_app.command("building-block-file")
+def stk_building_block_file_command(
+    input_path: Annotated[
+        Path,
+        typer.Argument(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True),
+    ],
+    output_path: Annotated[Path | None, typer.Option(help="Optional output copy/export path.")] = None,
+) -> None:
+    """Load an stk building block from a molecule file."""
+    from cspilot.tools.stk_tools import stk_building_block_from_file
+
+    _print_tool_json(stk_building_block_from_file(str(input_path), str(output_path) if output_path else None))
+
+
+@stk_app.command("linear-polymer")
+def stk_linear_polymer_command(
+    monomer_smiles: Annotated[str, typer.Argument(help="Monomer building-block SMILES.")],
+    repeating_unit: Annotated[str, typer.Argument(help="stk repeating unit string.")],
+    num_repeating_units: Annotated[int, typer.Argument(help="Number of repeating units.")],
+    output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
+) -> None:
+    """Construct a linear polymer with stk.polymer.Linear."""
+    from cspilot.tools.stk_tools import stk_construct_linear_polymer
+
+    _print_tool_json(
+        stk_construct_linear_polymer(
+            monomer_smiles=monomer_smiles,
+            repeating_unit=repeating_unit,
+            num_repeating_units=num_repeating_units,
+            output_path=str(output_path),
+        )
+    )
+
+
+@stk_app.command("simple-cage")
+def stk_simple_cage_command(
+    output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
+    building_block_smiles: Annotated[
+        list[str],
+        typer.Option("--building-block", "-b", help="Building-block SMILES. Repeat option."),
+    ],
+    topology: Annotated[str, typer.Option(help="Whitelisted topology name.")] = "four_plus_six",
+) -> None:
+    """Construct a simple cage from a small topology whitelist."""
+    from cspilot.tools.stk_tools import stk_construct_simple_cage
+
+    _print_tool_json(
+        stk_construct_simple_cage(
+            building_block_smiles=building_block_smiles,
+            topology=topology,
+            output_path=str(output_path),
+        )
+    )
+
+
+@stk_app.command("replace-smiles")
+def stk_replace_smiles_command(
+    parent_smiles: Annotated[str, typer.Argument(help="Parent molecule SMILES.")],
+    old_substructure: Annotated[str, typer.Argument(help="Substructure SMILES/SMARTS to replace.")],
+    new_substructure: Annotated[str, typer.Argument(help="Replacement SMILES.")],
+    output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
+) -> None:
+    """Replace a SMILES substructure and export the edited molecule."""
+    from cspilot.tools.stk_tools import stk_edit_replace_smiles
+
+    _print_tool_json(
+        stk_edit_replace_smiles(
+            parent_smiles=parent_smiles,
+            old_substructure=old_substructure,
+            new_substructure=new_substructure,
+            output_path=str(output_path),
+        )
+    )
+
+
+@stk_app.command("export-xyz")
+def stk_export_xyz_command(
+    input_path: Annotated[
+        Path,
+        typer.Argument(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True),
+    ],
+    output_path: Annotated[Path, typer.Argument(help="Output XYZ path.")],
+) -> None:
+    """Export a molecule file to XYZ using stk/RDKit fallback."""
+    from cspilot.tools.stk_tools import stk_export_to_xyz
+
+    _print_tool_json(stk_export_to_xyz(str(input_path), str(output_path)))
+
+
+@greencatai_app.command("design-mbh")
+def greencatai_design_mbh_command(
+    output_dir: Annotated[Path, typer.Option(help="Output directory for GreenCatAI artifacts.")] = Path("runs/mbh_api"),
+    search_space: Annotated[Path, typer.Option(help="GreenCatAI search-space JSON.")] = Path("configs/search_space.json"),
+    scoring: Annotated[Path, typer.Option(help="GreenCatAI scoring JSON.")] = Path("configs/scoring.json"),
+    library: Annotated[Path | None, typer.Option(help="Optional validated amine library JSON.")] = None,
+    max_candidates: Annotated[int, typer.Option(help="Maximum seed candidates to generate.")] = 100,
+    generations: Annotated[int, typer.Option(help="Number of GA generations.")] = 3,
+    population_size: Annotated[int, typer.Option(help="Candidate population size.")] = 30,
+    top_n_xtb: Annotated[int, typer.Option(help="Number of top candidates for xTB screening.")] = 0,
+    top_n_orca: Annotated[int, typer.Option(help="Number of top candidates for ORCA screening.")] = 0,
+) -> None:
+    """Run the stable GreenCatAI MBH design API."""
+    from cspilot.tools.greencatai_tools import greencatai_design_mbh_catalysts
+
+    _print_tool_json(
+        greencatai_design_mbh_catalysts(
+            output_dir=str(output_dir),
+            search_space=str(search_space),
+            scoring=str(scoring),
+            library=str(library) if library else None,
+            max_candidates=max_candidates,
+            generations=generations,
+            population_size=population_size,
+            top_n_xtb=top_n_xtb,
+            top_n_orca=top_n_orca,
         )
     )
 

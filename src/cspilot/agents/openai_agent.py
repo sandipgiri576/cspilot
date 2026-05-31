@@ -11,6 +11,7 @@ from cspilot.agents.verifier import verify_tool_result
 from cspilot.llm import create_agapi_model
 from cspilot.tools.agent_tools import (
     canonicalize_smiles_tool,
+    design_mbh_catalysts_tool,
     find_result_json_agent_tool,
     get_property_from_result_agent_tool,
     inspect_structure,
@@ -24,16 +25,23 @@ from cspilot.tools.agent_tools import (
     run_xtb_orca_workflow,
     set_agent_workdir,
     smiles_to_xyz_tool,
+    stk_building_block_from_file_tool,
+    stk_building_block_from_smiles_tool,
+    stk_construct_linear_polymer_tool,
+    stk_construct_simple_cage_tool,
+    stk_edit_replace_smiles_tool,
+    stk_export_to_xyz_tool,
     validate_smiles_tool,
 )
 
 CHEM_INSTRUCTIONS = """You are a computational chemistry workflow agent.
 Use only provided tools.
-Do not invent energies, structures, files, or calculation results.
+Do not invent energies, structures, files, catalyst candidates, or calculation results.
 Prefer run_xtb_orca_workflow for xTB optimization followed by ORCA SP.
 For a new Gibbs free energy or thermochemistry calculation, use run_xtb_orca_frequency_workflow.
 If the user provides a molecule name and no XYZ file, use molecule_name_to_xyz_tool.
 If the user provides SMILES and no XYZ file, use smiles_to_xyz_tool.
+Use stk tools only for molecule construction or editing requests. Use design_mbh_catalysts_tool only for MBH catalyst design requests.
 If the user asks for a property from previous results, use find_result_json and get_property_from_result.
 Do not guess property values. If a property name is ambiguous, use aliases first.
 If no matching property is found, say it was not found and mention the searched file.
@@ -47,15 +55,16 @@ Prefer run_xtb_orca_workflow for xTB optimization followed by ORCA SP.
 For a new Gibbs free energy or thermochemistry calculation, use run_xtb_orca_frequency_workflow.
 If the user provides a molecule name and no XYZ file, use molecule_name_to_xyz_tool.
 If the user provides SMILES and no XYZ file, use smiles_to_xyz_tool.
+Use stk tools only for molecule construction or editing requests. Use design_mbh_catalysts_tool only for MBH catalyst design requests.
 If the user asks for a property from previous results, use find_result_json and get_property_from_result.
 Do not guess property values. If a property name is ambiguous, use aliases first.
 If no matching property is found, say it was not found and mention the searched file.
 If a requested materials capability is not available as a tool, clearly say unsupported."""
 
-GENERAL_INSTRUCTIONS = """You are a planning and reporting agent.
-Provide only generic planning and reporting using available information.
-Do not claim to run or interpret calculations, and do not invent energies, structures, files, or results.
-If a computational or materials action is requested, clearly say unsupported."""
+GENERAL_INSTRUCTIONS = """You are a general scientific search and explanation agent.
+Answer general chemistry and materials questions directly using the model's background knowledge.
+Do not claim to run calculations, query databases, or create files unless a provided tool actually did so.
+If a computational, catalyst-design, or materials database action is requested and no tool is available, clearly say unsupported."""
 
 PROFILE_INSTRUCTIONS = {
     "chem": CHEM_INSTRUCTIONS,
@@ -174,11 +183,18 @@ def _profile_tools(profile: str) -> list[Any]:
         run_mace_optimize,
         run_xtb_orca_workflow,
         run_xtb_orca_frequency_workflow,
+        design_mbh_catalysts_tool,
         molecule_name_to_smiles_tool,
         smiles_to_xyz_tool,
         molecule_name_to_xyz_tool,
         validate_smiles_tool,
         canonicalize_smiles_tool,
+        stk_building_block_from_smiles_tool,
+        stk_building_block_from_file_tool,
+        stk_construct_linear_polymer_tool,
+        stk_construct_simple_cage_tool,
+        stk_edit_replace_smiles_tool,
+        stk_export_to_xyz_tool,
         find_result_json_agent_tool,
         get_property_from_result_agent_tool,
     ]

@@ -23,6 +23,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8.4.2", "pytest-cov>=5.0.0", "ruff>=0.5.0"]
 mace = ["mace-torch>=0.3.0"]
+stk = ["stk"]
 docs = [
     "mkdocstrings-python>=2.0.0",
     "zensical>=0.0.24",

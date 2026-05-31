@@ -10,7 +10,7 @@ Implemented stages and planned work are separated explicitly below.
 | v0.4 | In progress | Documentation and test coverage |
 | v0.5 | Planned | Multiwfn post-processing tools |
 | v0.6 | Planned | LangGraph retry/repair orchestration |
-| v0.7 | Planned | stk structure generation |
+| v0.7 | Planned | Expanded stk structure generation beyond the current lightweight tools |
 | v0.8 | Planned | torch-sim MLIP molecular dynamics |
 | v0.9 | Planned | MongoDB job database |
 | v1.0 | Planned | MCP server |

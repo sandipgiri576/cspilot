@@ -63,6 +63,79 @@ cspilot workflow xtb-orca-freq tests/examples/input.xyz --charge 0 --mult 1 \
 Result: `workflow_result.json`, with parsed properties only when present in
 successful ORCA output.
 
+## General Search
+
+A quoted question at the root CLI is routed to the general AGAPI-backed search agent:
+
+```bash
+cspilot "what is the chemical space?"
+```
+
+Explicit equivalent:
+
+```bash
+cspilot search "what is the chemical space?" --workdir runs/search-space
+```
+
+## Build Or Edit Molecules With stk Tools
+
+The stk functions are available as deterministic cspilot CLI commands, Python functions, and agent tools:
+
+```bash
+cspilot stk building-block-smiles BrCCBr runs/stk/bb.mol -f bromo
+cspilot stk replace-smiles CCO O N runs/stk/ethylamine.xyz
+```
+
+Agent equivalent:
+
+```bash
+cspilot agent "Build an stk building block from BrCCBr and write runs/stk/bb.mol" \
+  --workdir runs/stk --agent-profile chem
+```
+
+Direct Python call:
+
+```bash
+python -c "from cspilot.tools.stk_tools import stk_building_block_from_smiles; print(stk_building_block_from_smiles('BrCCBr', 'runs/stk/bb.mol', ['bromo']))"
+```
+
+## Design MBH Catalysts With GreenCatAI
+
+```bash
+cspilot greencatai design-mbh \
+  --search-space /path/to/search_space.json \
+  --scoring /path/to/scoring.json \
+  --output-dir runs/mbh_api \
+  --generations 3 \
+  --population-size 30 \
+  --top-n-xtb 0 \
+  --top-n-orca 0
+```
+
+Native GreenCatAI equivalent:
+
+```bash
+greencatai design-mbh \
+  --search-space /path/to/search_space.json \
+  --scoring /path/to/scoring.json \
+  --output-dir runs/mbh_api \
+  --generations 3 \
+  --population-size 30
+```
+
+Agent equivalent:
+
+```bash
+cspilot agent "Design MBH catalysts with GreenCatAI for 3 generations, population size 30, no xTB or ORCA screening, output in runs/mbh_api" \
+  --workdir runs/mbh-agent --agent-profile chem
+```
+
+Direct Python call:
+
+```bash
+python -c "from cspilot.tools.greencatai_tools import greencatai_design_mbh_catalysts; print(greencatai_design_mbh_catalysts('runs/mbh_api', search_space='/path/to/search_space.json', scoring='/path/to/scoring.json', generations=3, population_size=30, top_n_xtb=0, top_n_orca=0))"
+```
+
 ## Query AGAPI Materials
 
 ```bash
@@ -90,3 +163,11 @@ python -c "from cspilot.tools.result_tools import get_property_from_result; prin
 
 If Gibbs free energy was not present in the selected JSON, the result reports
 that it was not found.
+
+## Check Documentation Consistency
+
+```bash
+cspilot docs-check
+```
+
+The checker validates required documentation pages, common template leftovers, and CLI usage coverage.

@@ -82,7 +82,109 @@ cspilot workflow mace-orca input.xyz --model /path/to/model.model \
 Output: `runs/<timestamp>-mace-orca/workflow_result.json`, plus MACE and ORCA
 subdirectories when executed successfully.
 
+## stk Commands
+
+### `stk building-block-smiles`
+
+Purpose: create an stk building block from SMILES and export `.mol`, `.sdf`, or `.xyz`.
+
+```bash
+cspilot stk building-block-smiles BrCCBr runs/stk/bb.mol -f bromo
+```
+
+Output: JSON on stdout and the requested molecule file when successful.
+
+### `stk building-block-file`
+
+Purpose: load an stk building block from an existing molecule file and optionally export it.
+
+```bash
+cspilot stk building-block-file molecule.mol --output-path runs/stk/copy.mol
+```
+
+Output: JSON on stdout and optional copied/exported file.
+
+### `stk linear-polymer`
+
+Purpose: construct a linear polymer with `stk.polymer.Linear`.
+
+```bash
+cspilot stk linear-polymer BrCCBr A 3 runs/stk/polymer.mol
+```
+
+Output: JSON on stdout and the requested molecule file when stk construction succeeds.
+
+### `stk simple-cage`
+
+Purpose: construct a cage from a small topology whitelist. Currently the documented topology is `four_plus_six`.
+
+```bash
+cspilot stk simple-cage runs/stk/cage.mol \
+  --building-block 'NCCN' --topology four_plus_six
+```
+
+Output: JSON on stdout and the requested molecule file when stk construction succeeds. Unsupported topologies return a JSON error.
+
+### `stk replace-smiles`
+
+Purpose: replace a substructure using RDKit and export the edited molecule.
+
+```bash
+cspilot stk replace-smiles CCO O N runs/stk/ethylamine.xyz
+```
+
+Output: JSON on stdout and the requested molecule file.
+
+### `stk export-xyz`
+
+Purpose: export a molecule file to XYZ with stk/RDKit fallback.
+
+```bash
+cspilot stk export-xyz molecule.mol runs/stk/molecule.xyz
+```
+
+Output: JSON on stdout and the requested XYZ file.
+
+## GreenCatAI Commands
+
+### `greencatai design-mbh`
+
+Purpose: call the stable GreenCatAI MBH catalyst-design API from cspilot. GreenCatAI must be installed in the active environment.
+
+```bash
+cspilot greencatai design-mbh \
+  --search-space /path/to/search_space.json \
+  --scoring /path/to/scoring.json \
+  --output-dir runs/mbh_api \
+  --generations 3 \
+  --population-size 30 \
+  --top-n-xtb 0 \
+  --top-n-orca 0
+```
+
+Output: JSON on stdout and GreenCatAI artifacts such as `mbh_seeds.json`, `mbh_scored.json`, `mbh_ga.json`, and `summary.json` in the output directory. The native GreenCatAI equivalent is `greencatai design-mbh ...`.
+
 ## AGAPI And Agent Commands
+
+### `search`
+
+Purpose: answer a general natural-language chemistry/materials question through the AGAPI-backed general agent. A quoted unknown root command such as `cspilot "what is the chemical space?"` is routed here.
+
+```bash
+cspilot search "what is the chemical space?" --workdir runs/search-space
+```
+
+Output: `<workdir>/agent_result.json`.
+
+### `docs-check`
+
+Purpose: run lightweight documentation consistency checks.
+
+```bash
+cspilot docs-check
+```
+
+Output: terminal pass/fail report.
 
 ### `agent`
 

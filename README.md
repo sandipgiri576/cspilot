@@ -19,6 +19,8 @@ and records results as JSON.
   RDKit, exposed through agent tools and Python functions.
 - AGAPI/OpenAI-compatible tool-using agent plus JSON planner/executor commands.
 - Optional AGAPI prebuilt materials-query wrapper for `run --profile materials`.
+- Optional stk molecule construction/editing tools and GreenCatAI MBH catalyst-design wrapper.
+- General AGAPI search via `cspilot search "..."` or quoted root questions.
 - Result JSON discovery and property lookup, including Gibbs free energy
   aliases, when those values exist in prior output.
 
@@ -77,6 +79,10 @@ cspilot xtb-opt input.xyz --charge 0 --uhf 0
 cspilot orca-sp input.xyz --method r2scan-3c --basis def2-SVP --charge 0 --mult 1
 cspilot workflow xtb-orca-sp input.xyz --charge 0 --mult 1
 cspilot workflow xtb-orca-freq input.xyz --charge 0 --mult 1
+cspilot search "what is the chemical space?"
+cspilot stk building-block-smiles BrCCBr runs/stk/bb.mol -f bromo
+cspilot stk replace-smiles CCO O N runs/stk/ethylamine.xyz
+cspilot greencatai design-mbh --search-space /path/to/search_space.json --scoring /path/to/scoring.json --output-dir runs/mbh_api
 ```
 
 Deterministic commands create a timestamped subdirectory of `runs/` (or
@@ -111,7 +117,9 @@ structures, and properties from tool output or state that they were not found.
 | ORCA | OPI-driven single point, optimization, frequency, and output parsing |
 | MACE | Optional geometry optimization from a local model |
 | Results | Recursive JSON property retrieval with scientific aliases |
-| AGAPI | OpenAI-compatible agent backend and optional materials-query wrapper |
+| AGAPI | OpenAI-compatible agent backend, general search, and optional materials-query wrapper |
+| stk | Optional building-block, polymer, cage, edit, and XYZ export commands |
+| GreenCatAI | MBH catalyst-design wrapper around the public GreenCatAI API |
 
 ## Current Limitations
 
@@ -121,13 +129,13 @@ structures, and properties from tool output or state that they were not found.
 - Thermochemical values such as Gibbs free energy are reported only when an
   ORCA frequency result contains them.
 - The AGAPI agent requires network access and configured credentials.
-- Multiwfn, LangGraph, stk, torch-sim, MongoDB, MCP, and Streamlit are not
-  implemented.
+- Multiwfn, LangGraph, torch-sim, MongoDB, MCP, and Streamlit are not
+  implemented. stk support is optional and limited to whitelisted construction/editing tools.
 
 ## Roadmap
 
 Planned stages include Multiwfn post-processing, LangGraph retry/repair
-orchestration, stk structure generation, torch-sim MLIP molecular dynamics, a
+orchestration, expanded stk structure generation, torch-sim MLIP molecular dynamics, a
 MongoDB job database, an MCP server, and a Streamlit interface. See
 [Roadmap](docs/roadmap.md).
 
@@ -147,5 +155,5 @@ A project citation will be added when a release archive or associated
 publication is available.
 
 Acknowledgement placeholders: ASE, xTB, ORCA/OPI, MACE, RDKit, PubChem,
-OpenAI Agents SDK, and AGAPI. Users should cite the scientific software used in
+stk, GreenCatAI, OpenAI Agents SDK, and AGAPI. Users should cite the scientific software used in
 their calculations according to the corresponding project guidance.

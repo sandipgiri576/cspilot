@@ -9,6 +9,7 @@ from agents import function_tool
 from cspilot.config import load_settings
 from cspilot.tools.agapi_materials_tools import agapi_materials_query
 from cspilot.tools.ase_tools import summarize_structure
+from cspilot.tools.greencatai_tools import greencatai_design_mbh_catalysts
 from cspilot.tools.mace_tools import optimize_with_mace
 from cspilot.tools.mol_tools import (
     canonicalize_smiles,
@@ -19,6 +20,14 @@ from cspilot.tools.mol_tools import (
 )
 from cspilot.tools.opi_orca_tools import orca_single_point
 from cspilot.tools.result_tools import find_result_json, get_property_from_result
+from cspilot.tools.stk_tools import (
+    stk_building_block_from_file,
+    stk_building_block_from_smiles,
+    stk_construct_linear_polymer,
+    stk_construct_simple_cage,
+    stk_edit_replace_smiles,
+    stk_export_to_xyz,
+)
 from cspilot.tools.xtb_tools import optimize_with_xtb
 from cspilot.utils.runner import copy_input, make_run_dir
 from cspilot.workflows.xtb_to_orca_freq import run_xtb_to_orca_freq
@@ -344,6 +353,142 @@ def agapi_materials_query_tool(query: str, render_html: bool = False) -> dict[st
         render_html: Whether AGAPI should return an HTML representation.
     """
     return agapi_materials_query(query, render_html=render_html)
+
+
+@function_tool
+def design_mbh_catalysts_tool(
+    output_dir: str,
+    search_space: str = "configs/search_space.json",
+    scoring: str = "configs/scoring.json",
+    library: str | None = None,
+    max_candidates: int = 100,
+    generations: int = 3,
+    population_size: int = 30,
+    top_n_xtb: int = 0,
+    top_n_orca: int = 0,
+) -> dict[str, Any]:
+    """Run GreenCatAI MBH catalyst design through its public API.
+
+    Args:
+        output_dir: Directory where GreenCatAI should write design artifacts.
+        search_space: GreenCatAI search-space JSON path.
+        scoring: GreenCatAI scoring JSON path.
+        library: Optional validated external amine library JSON path.
+        max_candidates: Maximum seed candidates to generate.
+        generations: Number of GA generations.
+        population_size: Candidate population size.
+        top_n_xtb: Number of top candidates to pass to xTB in GreenCatAI.
+        top_n_orca: Number of top candidates to pass to ORCA in GreenCatAI.
+    """
+    return greencatai_design_mbh_catalysts(
+        output_dir=output_dir,
+        search_space=search_space,
+        scoring=scoring,
+        library=library,
+        max_candidates=max_candidates,
+        generations=generations,
+        population_size=population_size,
+        top_n_xtb=top_n_xtb,
+        top_n_orca=top_n_orca,
+    )
+
+
+@function_tool
+def stk_building_block_from_smiles_tool(
+    smiles: str,
+    output_path: str,
+    functional_groups: list[str] | None = None,
+) -> dict[str, Any]:
+    """Create an stk building block from SMILES and export it.
+
+    Args:
+        smiles: Input SMILES string.
+        output_path: Output molecule path ending in .mol, .sdf, or .xyz.
+        functional_groups: Optional safe predefined functional group names.
+    """
+    return stk_building_block_from_smiles(smiles, output_path, functional_groups)
+
+
+@function_tool
+def stk_building_block_from_file_tool(
+    input_path: str,
+    output_path: str | None = None,
+) -> dict[str, Any]:
+    """Load an stk building block from a molecule file and optionally export it.
+
+    Args:
+        input_path: Input molecule file path.
+        output_path: Optional output molecule path ending in .mol, .sdf, or .xyz.
+    """
+    return stk_building_block_from_file(input_path, output_path)
+
+
+@function_tool
+def stk_construct_linear_polymer_tool(
+    monomer_smiles: str,
+    repeating_unit: str,
+    num_repeating_units: int,
+    output_path: str,
+) -> dict[str, Any]:
+    """Construct a linear polymer using stk.polymer.Linear.
+
+    Args:
+        monomer_smiles: Monomer building-block SMILES.
+        repeating_unit: stk repeating unit string.
+        num_repeating_units: Number of repeat units.
+        output_path: Output molecule path ending in .mol, .sdf, or .xyz.
+    """
+    return stk_construct_linear_polymer(
+        monomer_smiles,
+        repeating_unit,
+        num_repeating_units,
+        output_path,
+    )
+
+
+@function_tool
+def stk_construct_simple_cage_tool(
+    building_block_smiles: list[str],
+    topology: str,
+    output_path: str,
+) -> dict[str, Any]:
+    """Construct a cage from a small whitelist of stk topologies.
+
+    Args:
+        building_block_smiles: Building-block SMILES strings.
+        topology: Whitelisted topology name, currently four_plus_six.
+        output_path: Output molecule path ending in .mol, .sdf, or .xyz.
+    """
+    return stk_construct_simple_cage(building_block_smiles, topology, output_path)
+
+
+@function_tool
+def stk_edit_replace_smiles_tool(
+    parent_smiles: str,
+    old_substructure: str,
+    new_substructure: str,
+    output_path: str,
+) -> dict[str, Any]:
+    """Replace a SMILES substructure with RDKit and export the edited molecule.
+
+    Args:
+        parent_smiles: Parent molecule SMILES.
+        old_substructure: SMARTS/SMILES pattern to replace.
+        new_substructure: Replacement SMILES.
+        output_path: Output molecule path ending in .mol, .sdf, or .xyz.
+    """
+    return stk_edit_replace_smiles(parent_smiles, old_substructure, new_substructure, output_path)
+
+
+@function_tool
+def stk_export_to_xyz_tool(input_path: str, output_path: str) -> dict[str, Any]:
+    """Export a molecule file to XYZ using stk with RDKit fallback.
+
+    Args:
+        input_path: Input molecule file.
+        output_path: Output XYZ path.
+    """
+    return stk_export_to_xyz(input_path, output_path)
 
 
 def _failure(exc: Exception) -> dict[str, str]:

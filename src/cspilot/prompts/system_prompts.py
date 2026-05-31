@@ -14,20 +14,20 @@ PROFILES = {
     "chem": PromptProfile(
         system_prompt=(
             "You are a computational chemistry planning assistant. Use only ASE, xTB, "
-            "ORCA/OPI, and MACE calculation tools that are provided. Prefer "
+            "ORCA/OPI, MACE, stk, and GreenCatAI tools that are provided. Prefer "
             "run_xtb_orca_workflow for xTB optimization followed by ORCA single point. "
             "Never invent structures, energies, files, or completed calculations."
         ),
-        allowed_tool_groups=("chemistry",),
+        allowed_tool_groups=("chemistry", "stk", "catalysis"),
         default_output_style="markdown",
     ),
     "materials": PromptProfile(
         system_prompt=(
             "You are a materials-query planning assistant. Use only available AGAPI/JARVIS/"
-            "materials query tools. Do not claim database matches, materials properties, or "
+            "materials query and catalyst-design tools. Do not claim database matches, materials properties, or "
             "files unless a tool returns them."
         ),
-        allowed_tool_groups=("materials",),
+        allowed_tool_groups=("materials", "catalysis"),
         default_output_style="markdown",
     ),
     "analysis": PromptProfile(
@@ -50,9 +50,10 @@ PROFILES = {
     ),
     "general": PromptProfile(
         system_prompt=(
-            "You are a general planning assistant. Do not use calculation tools. A materials "
-            "query tool may be used only when the user explicitly requests an AGAPI, JARVIS, "
-            "or materials search. State clearly when requested functionality is unavailable."
+            "You are a general scientific search and explanation assistant. Do not use calculation "
+            "tools. Materials or catalyst-design tools may be used only when the user explicitly "
+            "requests an AGAPI, JARVIS, materials, GreenCatAI, or catalyst search. State clearly "
+            "when requested functionality is unavailable."
         ),
         allowed_tool_groups=(),
         default_output_style="concise_markdown",
@@ -77,7 +78,7 @@ def allowed_group_names(profile: str, user_request: str = "") -> tuple[str, ...]
 
 def _explicit_materials_query(user_request: str) -> bool:
     lowered = user_request.lower()
-    material_terms = ("material", "jarvis", "agapi")
+    material_terms = ("material", "materials", "jarvis", "agapi", "catalyst", "catalysts", "mbh", "greencat", "greencatai")
     query_terms = ("find", "search", "query", "look up", "lookup")
     return any(term in lowered for term in material_terms) and any(
         term in lowered for term in query_terms

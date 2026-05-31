@@ -11,6 +11,7 @@ from agents.tool_context import ToolContext
 from cspilot.prompts.system_prompts import allowed_group_names
 from cspilot.tools.agent_tools import (
     agapi_materials_query_tool,
+    design_mbh_catalysts_tool,
     find_result_json_tool,
     get_property_from_result_tool,
     inspect_structure,
@@ -20,6 +21,12 @@ from cspilot.tools.agent_tools import (
     run_xtb_optimize,
     run_xtb_orca_workflow,
     set_agent_workdir,
+    stk_building_block_from_file_tool,
+    stk_building_block_from_smiles_tool,
+    stk_construct_linear_polymer_tool,
+    stk_construct_simple_cage_tool,
+    stk_edit_replace_smiles_tool,
+    stk_export_to_xyz_tool,
 )
 
 _TOOL_GROUPS = {
@@ -29,8 +36,24 @@ _TOOL_GROUPS = {
         run_orca_single_point,
         run_mace_optimize,
         run_xtb_orca_workflow,
+        stk_building_block_from_smiles_tool,
+        stk_building_block_from_file_tool,
+        stk_construct_linear_polymer_tool,
+        stk_construct_simple_cage_tool,
+        stk_edit_replace_smiles_tool,
+        stk_export_to_xyz_tool,
+        design_mbh_catalysts_tool,
     ],
-    "materials": [agapi_materials_query_tool],
+    "materials": [agapi_materials_query_tool, design_mbh_catalysts_tool],
+    "stk": [
+        stk_building_block_from_smiles_tool,
+        stk_building_block_from_file_tool,
+        stk_construct_linear_polymer_tool,
+        stk_construct_simple_cage_tool,
+        stk_edit_replace_smiles_tool,
+        stk_export_to_xyz_tool,
+    ],
+    "catalysis": [design_mbh_catalysts_tool],
     "analysis": [find_result_json_tool, get_property_from_result_tool],
     "thermo": [find_result_json_tool, get_property_from_result_tool],
 }

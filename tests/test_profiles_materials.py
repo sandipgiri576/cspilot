@@ -19,18 +19,25 @@ from cspilot.tools.registry import (
 def test_profile_tools_are_scoped_by_domain():
     assert "run_orca_single_point" in get_allowed_tools("chem")
     assert "agapi_materials_query_tool" not in get_allowed_tools("chem")
-    assert get_allowed_tools("materials") == ["agapi_materials_query_tool"]
+    assert get_allowed_tools("materials") == [
+        "design_mbh_catalysts_tool",
+        "agapi_materials_query_tool",
+    ]
     assert "get_property_from_result_tool" in get_allowed_tools("analysis")
     assert get_allowed_tools("general") == []
     assert get_allowed_tools("general", "Find materials using JARVIS") == [
-        "agapi_materials_query_tool"
+        "design_mbh_catalysts_tool",
+        "agapi_materials_query_tool",
     ]
 
 
 def test_active_profile_constrains_executor_registry():
     token = set_allowed_profile("materials")
     try:
-        assert get_allowed_tools() == ["agapi_materials_query_tool"]
+        assert get_allowed_tools() == [
+            "design_mbh_catalysts_tool",
+            "agapi_materials_query_tool",
+        ]
     finally:
         reset_allowed_profile(token)
 
