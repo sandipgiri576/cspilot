@@ -74,14 +74,14 @@ Module: `cspilot.tools.stk_tools`
 
 | Function | Behavior |
 | --- | --- |
-| `stk_building_block_from_smiles` | Create an `stk.BuildingBlock` from SMILES and export `.mol`, `.sdf`, or `.xyz`. |
+| `stk_build_from_smiles` | Create an `stk.BuildingBlock` from SMILES and export `.mol`, `.sdf`, or `.xyz`; falls back to RDKit export if the local stk import is unavailable. |
 | `stk_building_block_from_file` | Load a building block with `stk.BuildingBlock.init_from_file`. |
-| `stk_construct_linear_polymer` | Build a linear polymer with `stk.polymer.Linear` when `stk` is installed. |
-| `stk_construct_simple_cage` | Build only whitelisted cage topologies; currently `four_plus_six`. |
-| `stk_edit_replace_smiles` | Replace a substructure with RDKit and export the edited molecule. |
+| `stk_linear_polymer_from_smiles` | Build a brominated linear polymer with `stk.polymer.Linear` when stk imports safely. |
+| `stk_construct_cage_from_smiles` | Returns a clear unsupported JSON result until safe cage topology presets are added. |
+| `rdkit_replace_substructure` | Replace a substructure with RDKit and export the edited molecule. |
 | `stk_export_to_xyz` | Export a molecule file to XYZ with stk/RDKit fallback. |
 
-The stk dependency is optional. Missing `stk` or unsupported topology names return JSON errors; arbitrary Python and arbitrary topology lookup are not exposed. These functions are available through `cspilot stk ...` CLI commands and agent tools.
+The stk dependency is optional. Missing or CPU-incompatible `stk` imports return JSON errors instead of crashing where possible. Cage construction is intentionally not enabled yet because the notebook examples require topology-specific functional-group presets. Arbitrary Python and arbitrary topology lookup are not exposed. Stable commands are available as root CLI commands such as `cspilot stk-build-smiles`, `cspilot stk-polymer`, and `cspilot stk-xtb`, with lower-level `cspilot stk ...` commands for file/export/edit helpers.
 
 ## GreenCatAI Catalyst Tools
 

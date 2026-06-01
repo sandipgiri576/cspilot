@@ -82,7 +82,10 @@ cspilot search "what is the chemical space?" --workdir runs/search-space
 The stk functions are available as deterministic cspilot CLI commands, Python functions, and agent tools:
 
 ```bash
-cspilot stk building-block-smiles BrCCBr runs/stk/bb.mol -f bromo
+cspilot stk-build-smiles "C1=CC=CC=C1" --workdir runs/stk_benzene
+cspilot stk-polymer "BrCCBr" --repeating-unit A \
+  --num-repeating-units 4 --workdir runs/stk_polymer
+cspilot stk-xtb "C1=CC=CC=C1" --workdir runs/stk_xtb
 cspilot stk replace-smiles CCO O N runs/stk/ethylamine.xyz
 ```
 
@@ -96,8 +99,11 @@ cspilot agent "Build an stk building block from BrCCBr and write runs/stk/bb.mol
 Direct Python call:
 
 ```bash
-python -c "from cspilot.tools.stk_tools import stk_building_block_from_smiles; print(stk_building_block_from_smiles('BrCCBr', 'runs/stk/bb.mol', ['bromo']))"
+python -c "from cspilot.tools.stk_tools import stk_build_from_smiles; print(stk_build_from_smiles('C1=CC=CC=C1', 'runs/stk/benzene.mol'))"
 ```
+
+Cage construction is currently planned but not enabled; the cage function
+returns a JSON error instead of attempting an unsafe arbitrary topology.
 
 ## Design MBH Catalysts With GreenCatAI
 

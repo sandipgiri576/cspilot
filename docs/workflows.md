@@ -47,6 +47,22 @@ Steps:
 MACE requires the `mace` optional dependency and a valid local model. If
 `--model` is absent, this workflow reads `MACE_MODEL`.
 
+## stk SMILES To xTB Optimization
+
+```bash
+cspilot stk-xtb "C1=CC=CC=C1" --workdir runs/stk_xtb
+```
+
+Steps:
+
+1. Build a molecule from SMILES with `stk_build_from_smiles`.
+2. Export `stk_build.xyz` with `stk_export_to_xyz`.
+3. Run the existing xTB optimizer in `xtb_opt/`.
+4. Save `workflow_result.json`.
+
+This workflow does not use `stko`. If xTB is not available, the build/export
+steps can still be recorded and the xTB step is reported as skipped or failed.
+
 ## Result JSON Shape
 
 The workflow result is a JSON object of the following form; property keys are

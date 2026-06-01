@@ -84,12 +84,49 @@ subdirectories when executed successfully.
 
 ## stk Commands
 
+### `stk-build-smiles`
+
+Purpose: build a simple molecule from SMILES, write `molecule.mol`, and export
+`molecule.xyz` in the selected work directory.
+
+```bash
+cspilot stk-build-smiles "C1=CC=CC=C1" --workdir runs/stk_benzene
+```
+
+Output: `molecule.mol`, `molecule.xyz`, and stk result JSON files in
+`runs/stk_benzene`.
+
+### `stk-polymer`
+
+Purpose: construct a brominated linear polymer through `stk.polymer.Linear`.
+
+```bash
+cspilot stk-polymer "BrCCBr" --repeating-unit A \
+  --num-repeating-units 4 --workdir runs/stk_polymer
+```
+
+Output: `polymer.mol`, `polymer.xyz`, and stk result JSON files when stk
+imports successfully.
+
+### `stk-xtb`
+
+Purpose: build a molecule from SMILES, export XYZ, and pass it to the existing
+xTB optimizer.
+
+```bash
+cspilot stk-xtb "C1=CC=CC=C1" --workdir runs/stk_xtb
+```
+
+Output: `stk_build.mol`, `stk_build.xyz`, `xtb_opt/`, and
+`workflow_result.json`. If xTB is not available, the workflow records the
+skipped/failed xTB step without inventing energies.
+
 ### `stk building-block-smiles`
 
 Purpose: create an stk building block from SMILES and export `.mol`, `.sdf`, or `.xyz`.
 
 ```bash
-cspilot stk building-block-smiles BrCCBr runs/stk/bb.mol -f bromo
+cspilot stk building-block-smiles BrCCBr runs/stk/bb.mol
 ```
 
 Output: JSON on stdout and the requested molecule file when successful.
@@ -113,17 +150,6 @@ cspilot stk linear-polymer BrCCBr A 3 runs/stk/polymer.mol
 ```
 
 Output: JSON on stdout and the requested molecule file when stk construction succeeds.
-
-### `stk simple-cage`
-
-Purpose: construct a cage from a small topology whitelist. Currently the documented topology is `four_plus_six`.
-
-```bash
-cspilot stk simple-cage runs/stk/cage.mol \
-  --building-block 'NCCN' --topology four_plus_six
-```
-
-Output: JSON on stdout and the requested molecule file when stk construction succeeds. Unsupported topologies return a JSON error.
 
 ### `stk replace-smiles`
 

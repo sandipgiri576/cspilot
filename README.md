@@ -80,7 +80,9 @@ cspilot orca-sp input.xyz --method r2scan-3c --basis def2-SVP --charge 0 --mult 
 cspilot workflow xtb-orca-sp input.xyz --charge 0 --mult 1
 cspilot workflow xtb-orca-freq input.xyz --charge 0 --mult 1
 cspilot search "what is the chemical space?"
-cspilot stk building-block-smiles BrCCBr runs/stk/bb.mol -f bromo
+cspilot stk-build-smiles "C1=CC=CC=C1" --workdir runs/stk_benzene
+cspilot stk-polymer "BrCCBr" --repeating-unit A --num-repeating-units 4 --workdir runs/stk_polymer
+cspilot stk-xtb "C1=CC=CC=C1" --workdir runs/stk_xtb
 cspilot stk replace-smiles CCO O N runs/stk/ethylamine.xyz
 cspilot greencatai design-mbh --search-space /path/to/search_space.json --scoring /path/to/scoring.json --output-dir runs/mbh_api
 ```
@@ -118,7 +120,7 @@ structures, and properties from tool output or state that they were not found.
 | MACE | Optional geometry optimization from a local model |
 | Results | Recursive JSON property retrieval with scientific aliases |
 | AGAPI | OpenAI-compatible agent backend, general search, and optional materials-query wrapper |
-| stk | Optional building-block, polymer, cage, edit, and XYZ export commands |
+| stk | Optional SMILES/file building, linear polymer construction, RDKit editing, XYZ export, and stk-to-xTB workflow |
 | GreenCatAI | MBH catalyst-design wrapper around the public GreenCatAI API |
 
 ## Current Limitations
@@ -129,6 +131,8 @@ structures, and properties from tool output or state that they were not found.
 - Thermochemical values such as Gibbs free energy are reported only when an
   ORCA frequency result contains them.
 - The AGAPI agent requires network access and configured credentials.
+- stk cage construction is planned but not enabled yet; it requires safe
+  topology-specific functional-group presets.
 - Multiwfn, LangGraph, torch-sim, MongoDB, MCP, and Streamlit are not
   implemented. stk support is optional and limited to whitelisted construction/editing tools.
 

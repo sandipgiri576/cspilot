@@ -408,25 +408,73 @@ def mace_opt(
     )
 
 
+@app.command("stk-build-smiles")
+def stk_build_smiles_command(
+    smiles: Annotated[str, typer.Argument(help="Input SMILES string.")],
+    workdir: Annotated[Path, typer.Option(help="Directory for stk build outputs.")] = Path(
+        "runs/stk_benzene"
+    ),
+) -> None:
+    """Build a simple stk molecule from SMILES."""
+    from cspilot.tools.stk_tools import stk_build_from_smiles, stk_export_to_xyz
+
+    workdir.mkdir(parents=True, exist_ok=True)
+    mol_result = stk_build_from_smiles(smiles, str(workdir / "molecule.mol"))
+    if mol_result.get("success"):
+        xyz_result = stk_export_to_xyz(str(workdir / "molecule.mol"), str(workdir / "molecule.xyz"))
+        mol_result["xyz_result"] = xyz_result
+    _print_tool_json(mol_result)
+
+
+@app.command("stk-polymer")
+def stk_polymer_command(
+    monomer_smiles: Annotated[str, typer.Argument(help="Brominated monomer SMILES.")],
+    repeating_unit: Annotated[str, typer.Option(help="stk repeating unit string.")] = "A",
+    num_repeating_units: Annotated[int, typer.Option(help="Number of repeat units.")] = 4,
+    workdir: Annotated[Path, typer.Option(help="Directory for polymer outputs.")] = Path(
+        "runs/stk_polymer"
+    ),
+) -> None:
+    """Construct a linear polymer using stk.polymer.Linear."""
+    from cspilot.tools.stk_tools import stk_export_to_xyz, stk_linear_polymer_from_smiles
+
+    workdir.mkdir(parents=True, exist_ok=True)
+    result = stk_linear_polymer_from_smiles(
+        monomer_smiles=monomer_smiles,
+        repeating_unit=repeating_unit,
+        num_repeating_units=num_repeating_units,
+        output_path=str(workdir / "polymer.mol"),
+    )
+    if result.get("success"):
+        result["xyz_result"] = stk_export_to_xyz(str(workdir / "polymer.mol"), str(workdir / "polymer.xyz"))
+    _print_tool_json(result)
+
+
+@app.command("stk-xtb")
+def stk_xtb_command(
+    smiles: Annotated[str, typer.Argument(help="Input SMILES string.")],
+    workdir: Annotated[Path, typer.Option(help="Directory for stk/xTB workflow outputs.")] = Path(
+        "runs/stk_xtb"
+    ),
+    charge: Annotated[int, typer.Option(help="Molecular charge for xTB.")] = 0,
+    uhf: Annotated[int, typer.Option(help="Number of unpaired electrons for xTB.")] = 0,
+) -> None:
+    """Build a molecule from SMILES, export XYZ, and run xTB optimization."""
+    from cspilot.workflows.stk_workflows import stk_smiles_to_xtb_opt
+
+    result = stk_smiles_to_xtb_opt(smiles=smiles, workdir=workdir, charge=charge, uhf=uhf)
+    _print_tool_json(result)
+
+
 @stk_app.command("building-block-smiles")
 def stk_building_block_smiles_command(
     smiles: Annotated[str, typer.Argument(help="Input SMILES string.")],
     output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
-    functional_groups: Annotated[
-        list[str] | None,
-        typer.Option("--functional-group", "-f", help="Safe functional group name to detect."),
-    ] = None,
 ) -> None:
     """Create an stk building block from SMILES."""
-    from cspilot.tools.stk_tools import stk_building_block_from_smiles
+    from cspilot.tools.stk_tools import stk_build_from_smiles
 
-    _print_tool_json(
-        stk_building_block_from_smiles(
-            smiles=smiles,
-            output_path=str(output_path),
-            functional_groups=functional_groups,
-        )
-    )
+    _print_tool_json(stk_build_from_smiles(smiles=smiles, output_path=str(output_path)))
 
 
 @stk_app.command("building-block-file")
@@ -451,10 +499,10 @@ def stk_linear_polymer_command(
     output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
 ) -> None:
     """Construct a linear polymer with stk.polymer.Linear."""
-    from cspilot.tools.stk_tools import stk_construct_linear_polymer
+    from cspilot.tools.stk_tools import stk_linear_polymer_from_smiles
 
     _print_tool_json(
-        stk_construct_linear_polymer(
+        stk_linear_polymer_from_smiles(
             monomer_smiles=monomer_smiles,
             repeating_unit=repeating_unit,
             num_repeating_units=num_repeating_units,
@@ -463,42 +511,21 @@ def stk_linear_polymer_command(
     )
 
 
-@stk_app.command("simple-cage")
-def stk_simple_cage_command(
-    output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
-    building_block_smiles: Annotated[
-        list[str],
-        typer.Option("--building-block", "-b", help="Building-block SMILES. Repeat option."),
-    ],
-    topology: Annotated[str, typer.Option(help="Whitelisted topology name.")] = "four_plus_six",
-) -> None:
-    """Construct a simple cage from a small topology whitelist."""
-    from cspilot.tools.stk_tools import stk_construct_simple_cage
-
-    _print_tool_json(
-        stk_construct_simple_cage(
-            building_block_smiles=building_block_smiles,
-            topology=topology,
-            output_path=str(output_path),
-        )
-    )
-
-
 @stk_app.command("replace-smiles")
 def stk_replace_smiles_command(
     parent_smiles: Annotated[str, typer.Argument(help="Parent molecule SMILES.")],
-    old_substructure: Annotated[str, typer.Argument(help="Substructure SMILES/SMARTS to replace.")],
-    new_substructure: Annotated[str, typer.Argument(help="Replacement SMILES.")],
+    old_smarts: Annotated[str, typer.Argument(help="SMARTS pattern to replace.")],
+    new_smiles: Annotated[str, typer.Argument(help="Replacement SMILES.")],
     output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
 ) -> None:
     """Replace a SMILES substructure and export the edited molecule."""
-    from cspilot.tools.stk_tools import stk_edit_replace_smiles
+    from cspilot.tools.stk_tools import rdkit_replace_substructure
 
     _print_tool_json(
-        stk_edit_replace_smiles(
+        rdkit_replace_substructure(
             parent_smiles=parent_smiles,
-            old_substructure=old_substructure,
-            new_substructure=new_substructure,
+            old_smarts=old_smarts,
+            new_smiles=new_smiles,
             output_path=str(output_path),
         )
     )

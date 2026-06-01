@@ -50,7 +50,7 @@ Optional groups in `pyproject.toml`:
 | `dev` | pytest, coverage, and Ruff |
 | `docs` | documentation tooling |
 | `mace` | `mace-torch` calculator support |
-| `stk` | Optional stk molecule construction support |
+| `stk` | Optional stk molecule construction support plus `polars[rtcompat]` for broader CPU compatibility |
 
 ## External Programs
 

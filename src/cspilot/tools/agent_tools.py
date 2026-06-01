@@ -21,12 +21,12 @@ from cspilot.tools.mol_tools import (
 from cspilot.tools.opi_orca_tools import orca_single_point
 from cspilot.tools.result_tools import find_result_json, get_property_from_result
 from cspilot.tools.stk_tools import (
+    rdkit_replace_substructure,
+    stk_build_from_smiles,
     stk_building_block_from_file,
-    stk_building_block_from_smiles,
-    stk_construct_linear_polymer,
-    stk_construct_simple_cage,
-    stk_edit_replace_smiles,
+    stk_construct_cage_from_smiles,
     stk_export_to_xyz,
+    stk_linear_polymer_from_smiles,
 )
 from cspilot.tools.xtb_tools import optimize_with_xtb
 from cspilot.utils.runner import copy_input, make_run_dir
@@ -394,19 +394,17 @@ def design_mbh_catalysts_tool(
 
 
 @function_tool
-def stk_building_block_from_smiles_tool(
+def stk_build_from_smiles_tool(
     smiles: str,
     output_path: str,
-    functional_groups: list[str] | None = None,
 ) -> dict[str, Any]:
     """Create an stk building block from SMILES and export it.
 
     Args:
         smiles: Input SMILES string.
         output_path: Output molecule path ending in .mol, .sdf, or .xyz.
-        functional_groups: Optional safe predefined functional group names.
     """
-    return stk_building_block_from_smiles(smiles, output_path, functional_groups)
+    return stk_build_from_smiles(smiles, output_path)
 
 
 @function_tool
@@ -424,7 +422,7 @@ def stk_building_block_from_file_tool(
 
 
 @function_tool
-def stk_construct_linear_polymer_tool(
+def stk_linear_polymer_from_smiles_tool(
     monomer_smiles: str,
     repeating_unit: str,
     num_repeating_units: int,
@@ -438,7 +436,7 @@ def stk_construct_linear_polymer_tool(
         num_repeating_units: Number of repeat units.
         output_path: Output molecule path ending in .mol, .sdf, or .xyz.
     """
-    return stk_construct_linear_polymer(
+    return stk_linear_polymer_from_smiles(
         monomer_smiles,
         repeating_unit,
         num_repeating_units,
@@ -447,37 +445,37 @@ def stk_construct_linear_polymer_tool(
 
 
 @function_tool
-def stk_construct_simple_cage_tool(
+def stk_construct_cage_from_smiles_tool(
     building_block_smiles: list[str],
     topology: str,
     output_path: str,
 ) -> dict[str, Any]:
-    """Construct a cage from a small whitelist of stk topologies.
+    """Return unsupported until safe cage presets are implemented.
 
     Args:
         building_block_smiles: Building-block SMILES strings.
-        topology: Whitelisted topology name, currently four_plus_six.
+        topology: Requested topology name.
         output_path: Output molecule path ending in .mol, .sdf, or .xyz.
     """
-    return stk_construct_simple_cage(building_block_smiles, topology, output_path)
+    return stk_construct_cage_from_smiles(building_block_smiles, topology, output_path)
 
 
 @function_tool
-def stk_edit_replace_smiles_tool(
+def rdkit_replace_substructure_tool(
     parent_smiles: str,
-    old_substructure: str,
-    new_substructure: str,
+    old_smarts: str,
+    new_smiles: str,
     output_path: str,
 ) -> dict[str, Any]:
     """Replace a SMILES substructure with RDKit and export the edited molecule.
 
     Args:
         parent_smiles: Parent molecule SMILES.
-        old_substructure: SMARTS/SMILES pattern to replace.
-        new_substructure: Replacement SMILES.
+        old_smarts: SMARTS pattern to replace.
+        new_smiles: Replacement SMILES.
         output_path: Output molecule path ending in .mol, .sdf, or .xyz.
     """
-    return stk_edit_replace_smiles(parent_smiles, old_substructure, new_substructure, output_path)
+    return rdkit_replace_substructure(parent_smiles, old_smarts, new_smiles, output_path)
 
 
 @function_tool
