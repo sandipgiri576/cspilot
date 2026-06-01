@@ -1956,6 +1956,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./reference/cspilot/workflows/stk_workflows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  stk_workflows
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./reference/cspilot/workflows/xtb_to_orca_freq.html" class="md-nav__link">
         
   
@@ -2309,16 +2336,21 @@ successful ORCA output.</p>
 </span></code></pre></div>
 <h2 id="build-or-edit-molecules-with-stk-tools">Build Or Edit Molecules With stk Tools<a class="headerlink" href="#build-or-edit-molecules-with-stk-tools" title="Permanent link">&para;</a></h2>
 <p>The stk functions are available as deterministic cspilot CLI commands, Python functions, and agent tools:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-smiles<span class="w"> </span>BrCCBr<span class="w"> </span>runs/stk/bb.mol<span class="w"> </span>-f<span class="w"> </span>bromo
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>replace-smiles<span class="w"> </span>CCO<span class="w"> </span>O<span class="w"> </span>N<span class="w"> </span>runs/stk/ethylamine.xyz
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">&quot;C1=CC=CC=C1&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_benzene
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>cspilot<span class="w"> </span>stk-polymer<span class="w"> </span><span class="s2">&quot;BrCCBr&quot;</span><span class="w"> </span>--repeating-unit<span class="w"> </span>A<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span>--num-repeating-units<span class="w"> </span><span class="m">4</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_polymer
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">&quot;C1=CC=CC=C1&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>replace-smiles<span class="w"> </span>CCO<span class="w"> </span>O<span class="w"> </span>N<span class="w"> </span>runs/stk/ethylamine.xyz
 </span></code></pre></div>
 <p>Agent equivalent:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;Build an stk building block from BrCCBr and write runs/stk/bb.mol&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk<span class="w"> </span>--agent-profile<span class="w"> </span>chem
 </span></code></pre></div>
 <p>Direct Python call:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from cspilot.tools.stk_tools import stk_building_block_from_smiles; print(stk_building_block_from_smiles(&#39;BrCCBr&#39;, &#39;runs/stk/bb.mol&#39;, [&#39;bromo&#39;]))&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from cspilot.tools.stk_tools import stk_build_from_smiles; print(stk_build_from_smiles(&#39;C1=CC=CC=C1&#39;, &#39;runs/stk/benzene.mol&#39;))&quot;</span>
 </span></code></pre></div>
+<p>Cage construction is currently planned but not enabled; the cage function
+returns a JSON error instead of attempting an unsafe arbitrary topology.</p>
 <h2 id="design-mbh-catalysts-with-greencatai">Design MBH Catalysts With GreenCatAI<a class="headerlink" href="#design-mbh-catalysts-with-greencatai" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cspilot<span class="w"> </span>greencatai<span class="w"> </span>design-mbh<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>--search-space<span class="w"> </span>/path/to/search_space.json<span class="w"> </span><span class="se">\</span>

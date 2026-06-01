@@ -540,6 +540,39 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#stk-build-smiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>stk-build-smiles</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stk-polymer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>stk-polymer</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stk-xtb" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>stk-xtb</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#stk-building-block-smiles" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -566,17 +599,6 @@
     <span class="md-ellipsis">
       <span class="md-typeset">
         <code>stk linear-polymer</code>
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#stk-simple-cage" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        <code>stk simple-cage</code>
       </span>
     </span>
   </a>
@@ -2140,6 +2162,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./reference/cspilot/workflows/stk_workflows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  stk_workflows
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./reference/cspilot/workflows/xtb_to_orca_freq.html" class="md-nav__link">
         
   
@@ -2374,6 +2423,39 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#stk-build-smiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>stk-build-smiles</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stk-polymer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>stk-polymer</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stk-xtb" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>stk-xtb</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#stk-building-block-smiles" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -2400,17 +2482,6 @@
     <span class="md-ellipsis">
       <span class="md-typeset">
         <code>stk linear-polymer</code>
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#stk-simple-cage" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        <code>stk simple-cage</code>
       </span>
     </span>
   </a>
@@ -2680,66 +2751,82 @@ only when parsed from the ORCA result.</p>
 <p>Output: <code>runs/&lt;timestamp&gt;-mace-orca/workflow_result.json</code>, plus MACE and ORCA
 subdirectories when executed successfully.</p>
 <h2 id="stk-commands">stk Commands<a class="headerlink" href="#stk-commands" title="Permanent link">&para;</a></h2>
+<h3 id="stk-build-smiles"><code>stk-build-smiles</code><a class="headerlink" href="#stk-build-smiles" title="Permanent link">&para;</a></h3>
+<p>Purpose: build a simple molecule from SMILES, write <code>molecule.mol</code>, and export
+<code>molecule.xyz</code> in the selected work directory.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">&quot;C1=CC=CC=C1&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_benzene
+</span></code></pre></div>
+<p>Output: <code>molecule.mol</code>, <code>molecule.xyz</code>, and stk result JSON files in
+<code>runs/stk_benzene</code>.</p>
+<h3 id="stk-polymer"><code>stk-polymer</code><a class="headerlink" href="#stk-polymer" title="Permanent link">&para;</a></h3>
+<p>Purpose: construct a brominated linear polymer through <code>stk.polymer.Linear</code>.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cspilot<span class="w"> </span>stk-polymer<span class="w"> </span><span class="s2">&quot;BrCCBr&quot;</span><span class="w"> </span>--repeating-unit<span class="w"> </span>A<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--num-repeating-units<span class="w"> </span><span class="m">4</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_polymer
+</span></code></pre></div>
+<p>Output: <code>polymer.mol</code>, <code>polymer.xyz</code>, and stk result JSON files when stk
+imports successfully.</p>
+<h3 id="stk-xtb"><code>stk-xtb</code><a class="headerlink" href="#stk-xtb" title="Permanent link">&para;</a></h3>
+<p>Purpose: build a molecule from SMILES, export XYZ, and pass it to the existing
+xTB optimizer.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">&quot;C1=CC=CC=C1&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb
+</span></code></pre></div>
+<p>Output: <code>stk_build.mol</code>, <code>stk_build.xyz</code>, <code>xtb_opt/</code>, and
+<code>workflow_result.json</code>. If xTB is not available, the workflow records the
+skipped/failed xTB step without inventing energies.</p>
 <h3 id="stk-building-block-smiles"><code>stk building-block-smiles</code><a class="headerlink" href="#stk-building-block-smiles" title="Permanent link">&para;</a></h3>
 <p>Purpose: create an stk building block from SMILES and export <code>.mol</code>, <code>.sdf</code>, or <code>.xyz</code>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-smiles<span class="w"> </span>BrCCBr<span class="w"> </span>runs/stk/bb.mol<span class="w"> </span>-f<span class="w"> </span>bromo
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-smiles<span class="w"> </span>BrCCBr<span class="w"> </span>runs/stk/bb.mol
 </span></code></pre></div>
 <p>Output: JSON on stdout and the requested molecule file when successful.</p>
 <h3 id="stk-building-block-file"><code>stk building-block-file</code><a class="headerlink" href="#stk-building-block-file" title="Permanent link">&para;</a></h3>
 <p>Purpose: load an stk building block from an existing molecule file and optionally export it.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-file<span class="w"> </span>molecule.mol<span class="w"> </span>--output-path<span class="w"> </span>runs/stk/copy.mol
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-file<span class="w"> </span>molecule.mol<span class="w"> </span>--output-path<span class="w"> </span>runs/stk/copy.mol
 </span></code></pre></div>
 <p>Output: JSON on stdout and optional copied/exported file.</p>
 <h3 id="stk-linear-polymer"><code>stk linear-polymer</code><a class="headerlink" href="#stk-linear-polymer" title="Permanent link">&para;</a></h3>
 <p>Purpose: construct a linear polymer with <code>stk.polymer.Linear</code>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>linear-polymer<span class="w"> </span>BrCCBr<span class="w"> </span>A<span class="w"> </span><span class="m">3</span><span class="w"> </span>runs/stk/polymer.mol
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>linear-polymer<span class="w"> </span>BrCCBr<span class="w"> </span>A<span class="w"> </span><span class="m">3</span><span class="w"> </span>runs/stk/polymer.mol
 </span></code></pre></div>
 <p>Output: JSON on stdout and the requested molecule file when stk construction succeeds.</p>
-<h3 id="stk-simple-cage"><code>stk simple-cage</code><a class="headerlink" href="#stk-simple-cage" title="Permanent link">&para;</a></h3>
-<p>Purpose: construct a cage from a small topology whitelist. Currently the documented topology is <code>four_plus_six</code>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>simple-cage<span class="w"> </span>runs/stk/cage.mol<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--building-block<span class="w"> </span><span class="s1">&#39;NCCN&#39;</span><span class="w"> </span>--topology<span class="w"> </span>four_plus_six
-</span></code></pre></div>
-<p>Output: JSON on stdout and the requested molecule file when stk construction succeeds. Unsupported topologies return a JSON error.</p>
 <h3 id="stk-replace-smiles"><code>stk replace-smiles</code><a class="headerlink" href="#stk-replace-smiles" title="Permanent link">&para;</a></h3>
 <p>Purpose: replace a substructure using RDKit and export the edited molecule.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>replace-smiles<span class="w"> </span>CCO<span class="w"> </span>O<span class="w"> </span>N<span class="w"> </span>runs/stk/ethylamine.xyz
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>replace-smiles<span class="w"> </span>CCO<span class="w"> </span>O<span class="w"> </span>N<span class="w"> </span>runs/stk/ethylamine.xyz
 </span></code></pre></div>
 <p>Output: JSON on stdout and the requested molecule file.</p>
 <h3 id="stk-export-xyz"><code>stk export-xyz</code><a class="headerlink" href="#stk-export-xyz" title="Permanent link">&para;</a></h3>
 <p>Purpose: export a molecule file to XYZ with stk/RDKit fallback.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>export-xyz<span class="w"> </span>molecule.mol<span class="w"> </span>runs/stk/molecule.xyz
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>export-xyz<span class="w"> </span>molecule.mol<span class="w"> </span>runs/stk/molecule.xyz
 </span></code></pre></div>
 <p>Output: JSON on stdout and the requested XYZ file.</p>
 <h2 id="greencatai-commands">GreenCatAI Commands<a class="headerlink" href="#greencatai-commands" title="Permanent link">&para;</a></h2>
 <h3 id="greencatai-design-mbh"><code>greencatai design-mbh</code><a class="headerlink" href="#greencatai-design-mbh" title="Permanent link">&para;</a></h3>
 <p>Purpose: call the stable GreenCatAI MBH catalyst-design API from cspilot. GreenCatAI must be installed in the active environment.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cspilot<span class="w"> </span>greencatai<span class="w"> </span>design-mbh<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span>--search-space<span class="w"> </span>/path/to/search_space.json<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span>--scoring<span class="w"> </span>/path/to/scoring.json<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span>--output-dir<span class="w"> </span>runs/mbh_api<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span>--generations<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span>--population-size<span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span>--top-n-xtb<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">  </span>--top-n-orca<span class="w"> </span><span class="m">0</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cspilot<span class="w"> </span>greencatai<span class="w"> </span>design-mbh<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span>--search-space<span class="w"> </span>/path/to/search_space.json<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span>--scoring<span class="w"> </span>/path/to/scoring.json<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span>--output-dir<span class="w"> </span>runs/mbh_api<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span>--generations<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span>--population-size<span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">  </span>--top-n-xtb<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">  </span>--top-n-orca<span class="w"> </span><span class="m">0</span>
 </span></code></pre></div>
 <p>Output: JSON on stdout and GreenCatAI artifacts such as <code>mbh_seeds.json</code>, <code>mbh_scored.json</code>, <code>mbh_ga.json</code>, and <code>summary.json</code> in the output directory. The native GreenCatAI equivalent is <code>greencatai design-mbh ...</code>.</p>
 <h2 id="agapi-and-agent-commands">AGAPI And Agent Commands<a class="headerlink" href="#agapi-and-agent-commands" title="Permanent link">&para;</a></h2>
 <h3 id="search"><code>search</code><a class="headerlink" href="#search" title="Permanent link">&para;</a></h3>
 <p>Purpose: answer a general natural-language chemistry/materials question through the AGAPI-backed general agent. A quoted unknown root command such as <code>cspilot "what is the chemical space?"</code> is routed here.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cspilot<span class="w"> </span>search<span class="w"> </span><span class="s2">&quot;what is the chemical space?&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/search-space
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cspilot<span class="w"> </span>search<span class="w"> </span><span class="s2">&quot;what is the chemical space?&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/search-space
 </span></code></pre></div>
 <p>Output: <code>&lt;workdir&gt;/agent_result.json</code>.</p>
 <h3 id="docs-check"><code>docs-check</code><a class="headerlink" href="#docs-check" title="Permanent link">&para;</a></h3>
 <p>Purpose: run lightweight documentation consistency checks.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cspilot<span class="w"> </span>docs-check
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cspilot<span class="w"> </span>docs-check
 </span></code></pre></div>
 <p>Output: terminal pass/fail report.</p>
 <h3 id="agent"><code>agent</code><a class="headerlink" href="#agent" title="Permanent link">&para;</a></h3>
 <p>Purpose: let an AGAPI-backed Agents SDK agent select exposed tools directly.
 Supported direct-agent profiles are <code>chem</code>, <code>materials</code>, and <code>general</code>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;gibbs free energy of water in ORCA r2scan-3c&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water-agent<span class="w"> </span>--agent-profile<span class="w"> </span>chem
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;gibbs free energy of water in ORCA r2scan-3c&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water-agent<span class="w"> </span>--agent-profile<span class="w"> </span>chem
 </span></code></pre></div>
 <p>Options include <code>--model</code> and <code>--base-url</code>.</p>
 <p>Output: <code>&lt;workdir&gt;/agent_result.json</code> plus calculation subruns selected by the
@@ -2747,19 +2834,19 @@ agent.</p>
 <h3 id="plan"><code>plan</code><a class="headerlink" href="#plan" title="Permanent link">&para;</a></h3>
 <p>Purpose: produce a JSON plan without executing it. Planner profiles are
 <code>chem</code>, <code>materials</code>, <code>analysis</code>, <code>thermo</code>, and <code>general</code>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cspilot<span class="w"> </span>plan<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span>--profile<span class="w"> </span>materials
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cspilot<span class="w"> </span>plan<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span>--profile<span class="w"> </span>materials
 </span></code></pre></div>
 <p>Output: <code>&lt;workdir&gt;/plan.json</code>.</p>
 <h3 id="execute"><code>execute</code><a class="headerlink" href="#execute" title="Permanent link">&para;</a></h3>
 <p>Purpose: execute an existing JSON plan through the profile allowlist only.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cspilot<span class="w"> </span>execute<span class="w"> </span>runs/al2o3/plan.json<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span>--profile<span class="w"> </span>materials
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cspilot<span class="w"> </span>execute<span class="w"> </span>runs/al2o3/plan.json<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span>--profile<span class="w"> </span>materials
 </span></code></pre></div>
 <p>Output: <code>&lt;workdir&gt;/plan.json</code>, <code>step_001_result.json</code> for each executed step,
 and <code>execution_result.json</code>.</p>
 <h3 id="run"><code>run</code><a class="headerlink" href="#run" title="Permanent link">&para;</a></h3>
 <p>Purpose: plan, execute, verify, and create a final deterministic report.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span>--profile<span class="w"> </span>materials<span class="w"> </span>--html
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span>--profile<span class="w"> </span>materials<span class="w"> </span>--html
 </span></code></pre></div>
 <p>Output: <code>&lt;workdir&gt;/plan.json</code>, step result JSON files,
 <code>execution_result.json</code>, <code>verification_result.json</code>, and either

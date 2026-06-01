@@ -1934,6 +1934,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./reference/cspilot/workflows/stk_workflows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  stk_workflows
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./reference/cspilot/workflows/xtb_to_orca_freq.html" class="md-nav__link">
         
   
@@ -2351,23 +2378,23 @@ requires <code>mace-torch</code> and a model file.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>stk_building_block_from_smiles</code></td>
-<td>Create an <code>stk.BuildingBlock</code> from SMILES and export <code>.mol</code>, <code>.sdf</code>, or <code>.xyz</code>.</td>
+<td><code>stk_build_from_smiles</code></td>
+<td>Create an <code>stk.BuildingBlock</code> from SMILES and export <code>.mol</code>, <code>.sdf</code>, or <code>.xyz</code>; falls back to RDKit export if the local stk import is unavailable.</td>
 </tr>
 <tr>
 <td><code>stk_building_block_from_file</code></td>
 <td>Load a building block with <code>stk.BuildingBlock.init_from_file</code>.</td>
 </tr>
 <tr>
-<td><code>stk_construct_linear_polymer</code></td>
-<td>Build a linear polymer with <code>stk.polymer.Linear</code> when <code>stk</code> is installed.</td>
+<td><code>stk_linear_polymer_from_smiles</code></td>
+<td>Build a brominated linear polymer with <code>stk.polymer.Linear</code> when stk imports safely.</td>
 </tr>
 <tr>
-<td><code>stk_construct_simple_cage</code></td>
-<td>Build only whitelisted cage topologies; currently <code>four_plus_six</code>.</td>
+<td><code>stk_construct_cage_from_smiles</code></td>
+<td>Returns a clear unsupported JSON result until safe cage topology presets are added.</td>
 </tr>
 <tr>
-<td><code>stk_edit_replace_smiles</code></td>
+<td><code>rdkit_replace_substructure</code></td>
 <td>Replace a substructure with RDKit and export the edited molecule.</td>
 </tr>
 <tr>
@@ -2376,7 +2403,7 @@ requires <code>mace-torch</code> and a model file.</p>
 </tr>
 </tbody>
 </table>
-<p>The stk dependency is optional. Missing <code>stk</code> or unsupported topology names return JSON errors; arbitrary Python and arbitrary topology lookup are not exposed. These functions are available through <code>cspilot stk ...</code> CLI commands and agent tools.</p>
+<p>The stk dependency is optional. Missing or CPU-incompatible <code>stk</code> imports return JSON errors instead of crashing where possible. Cage construction is intentionally not enabled yet because the notebook examples require topology-specific functional-group presets. Arbitrary Python and arbitrary topology lookup are not exposed. Stable commands are available as root CLI commands such as <code>cspilot stk-build-smiles</code>, <code>cspilot stk-polymer</code>, and <code>cspilot stk-xtb</code>, with lower-level <code>cspilot stk ...</code> commands for file/export/edit helpers.</p>
 <h2 id="greencatai-catalyst-tools">GreenCatAI Catalyst Tools<a class="headerlink" href="#greencatai-catalyst-tools" title="Permanent link">&para;</a></h2>
 <p>Module: <code>cspilot.tools.greencatai_tools</code></p>
 <p><code>greencatai_design_mbh_catalysts</code> calls the public GreenCatAI API:</p>
