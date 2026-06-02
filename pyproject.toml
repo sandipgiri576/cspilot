@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "ase>=3.23.0",
+    "langgraph>=0.3.0",
     "openai-agents>=0.17.3",
     "orca-pi>=0.1.0",
     "pydantic>=2.8.0",

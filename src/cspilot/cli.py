@@ -259,6 +259,43 @@ def run_command(
     console.print(f"Report: {report_path}")
 
 
+@app.command("graph-run")
+def graph_run_command(
+    request: Annotated[str, typer.Argument(help="Natural language workflow request.")],
+    workdir: Annotated[
+        Path,
+        typer.Option(help="Directory in which to save graph outputs.", resolve_path=True),
+    ] = Path("runs/graph_test"),
+    profile: Annotated[Profile, typer.Option(help="Planning tool and report profile.")] = "chem",
+    html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
+    max_retries: Annotated[int, typer.Option(help="Maximum graph retry attempts.")] = 2,
+) -> None:
+    """Run the LangGraph single-agent planner/executor/verifier/reporter loop."""
+    from cspilot.graph import run_graph_agent
+
+    workdir.mkdir(parents=True, exist_ok=True)
+    try:
+        final_state = run_graph_agent(
+            user_request=request,
+            workdir=workdir,
+            profile=profile,
+            html=html,
+            max_retries=max_retries,
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"[red]Graph run error:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    state_path = workdir / "final_state.json"
+    _write_cli_json(state_path, final_state)
+    report = final_state.get("final_report") or ""
+    report_path = workdir / ("final_report.html" if html else "final_report.md")
+    report_path.write_text(report, encoding="utf-8")
+    console.print(report)
+    console.print(f"Final state: {state_path}")
+    console.print(f"Report: {report_path}")
+
+
 def _print_tool_json(result: dict[str, object]) -> None:
     console.print_json(json.dumps(result))
     if result.get("success") is False:
