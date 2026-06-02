@@ -466,6 +466,64 @@ def stk_xtb_command(
     _print_tool_json(result)
 
 
+@app.command("nwpesse-search")
+def nwpesse_search_command(
+    formula: Annotated[
+        str | None,
+        typer.Argument(help="Cluster formula such as '(h2o)4Mg'."),
+    ] = None,
+    fragment: Annotated[
+        list[str] | None,
+        typer.Option("--fragment", help="Explicit fragment count, for example h2o:4. Repeatable."),
+    ] = None,
+    workdir: Annotated[Path, typer.Option(help="Directory for NWPESSe inputs and outputs.")] = Path(
+        "runs/nwpesse"
+    ),
+    result_name: Annotated[str, typer.Option(help="NWPESSe result base name.")] = "nwpesse_result",
+    max_calculations: Annotated[int, typer.Option(help="Maximum number of NWPESSe calculations.")] = 10,
+    box_size: Annotated[float, typer.Option(help="Default cubic inbox size.")] = 3.0,
+    box_mode: Annotated[
+        Literal["per_fragment_type", "single", "custom"],
+        typer.Option(help="Placement box mode."),
+    ] = "per_fragment_type",
+    optimizer: Annotated[str, typer.Option(help="Whitelisted optimizer block.")] = "xtb_gxtb",
+    fragment_dir: Annotated[
+        Path | None,
+        typer.Option(help="Optional directory containing fragment XYZ files.", resolve_path=True),
+    ] = None,
+    timeout: Annotated[int, typer.Option(help="NWPESSe timeout in seconds.")] = 86400,
+) -> None:
+    """Run an NWPESSe global-minimum search for a fragment cluster."""
+    from cspilot.workflows.nwpesse_workflows import nwpesse_global_minimum_search
+
+    explicit_fragments = _parse_cli_fragments(fragment or [])
+    result = nwpesse_global_minimum_search(
+        formula=formula,
+        fragments=explicit_fragments or None,
+        workdir=str(workdir),
+        result_name=result_name,
+        max_calculations=max_calculations,
+        box_size=box_size,
+        box_mode=box_mode,
+        optimizer=optimizer,
+        fragment_dir=str(fragment_dir) if fragment_dir else None,
+        timeout=timeout,
+    )
+    _print_tool_json(result)
+
+
+def _parse_cli_fragments(values: list[str]) -> list[dict[str, object]]:
+    fragments = []
+    for value in values:
+        if ":" not in value:
+            raise typer.BadParameter(f"Fragment must be name:count, got {value!r}.")
+        name, count_text = value.split(":", 1)
+        if not name.strip() or not count_text.strip().isdigit():
+            raise typer.BadParameter(f"Fragment must be name:count, got {value!r}.")
+        fragments.append({"name": name.strip().lower(), "count": int(count_text)})
+    return fragments
+
+
 @stk_app.command("building-block-smiles")
 def stk_building_block_smiles_command(
     smiles: Annotated[str, typer.Argument(help="Input SMILES string.")],

@@ -15,6 +15,9 @@ and records results as JSON.
 - Optional MACE geometry optimization with `mace-torch` and a supplied model.
 - Fixed workflows: xTB to ORCA single point, xTB to ORCA frequency, and MACE
   to ORCA single point.
+- NWPESSe global-minimum search setup for fragment clusters, including
+  `mol.cluster`, `mol.inp`, fragment XYZ generation, external execution, and
+  lowest-energy XYZ discovery.
 - Molecule name to SMILES lookup with PubChem and SMILES to XYZ generation with
   RDKit, exposed through agent tools and Python functions.
 - AGAPI/OpenAI-compatible tool-using agent plus JSON planner/executor commands.
@@ -58,6 +61,7 @@ Create `.env.cspilot` in the project working directory:
 CSPILOT_RUNS_DIR=runs
 XTB_COMMAND=xtb
 ORCA_COMMAND=/path/to/orca
+NWPESSE_BIN=/home/anoop/apps/nwpesse/nwpesse
 
 AGAPI_API_KEY=your_api_key
 AGAPI_BASE_URL=https://atomgpt.org/api
@@ -83,6 +87,7 @@ cspilot search "what is the chemical space?"
 cspilot stk-build-smiles "C1=CC=CC=C1" --workdir runs/stk_benzene
 cspilot stk-polymer "BrCCBr" --repeating-unit A --num-repeating-units 4 --workdir runs/stk_polymer
 cspilot stk-xtb "C1=CC=CC=C1" --workdir runs/stk_xtb
+cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg --max-calculations 10 --box-size 3.0
 cspilot stk replace-smiles CCO O N runs/stk/ethylamine.xyz
 cspilot greencatai design-mbh --search-space /path/to/search_space.json --scoring /path/to/scoring.json --output-dir runs/mbh_api
 ```
@@ -118,6 +123,7 @@ structures, and properties from tool output or state that they were not found.
 | xTB | Geometry optimization |
 | ORCA | OPI-driven single point, optimization, frequency, and output parsing |
 | MACE | Optional geometry optimization from a local model |
+| NWPESSe | Fragment-cluster global-minimum search input generation, execution, and lowest-energy candidate discovery |
 | Results | Recursive JSON property retrieval with scientific aliases |
 | AGAPI | OpenAI-compatible agent backend, general search, and optional materials-query wrapper |
 | stk | Optional SMILES/file building, linear polymer construction, RDKit editing, XYZ export, and stk-to-xTB workflow |
@@ -131,6 +137,8 @@ structures, and properties from tool output or state that they were not found.
 - Thermochemical values such as Gibbs free energy are reported only when an
   ORCA frequency result contains them.
 - The AGAPI agent requires network access and configured credentials.
+- NWPESSe is an external binary configured with `NWPESSE_BIN`; cspilot does
+  not install NWPESSe.
 - stk cage construction is planned but not enabled yet; it requires safe
   topology-specific functional-group presets.
 - Multiwfn, LangGraph, torch-sim, MongoDB, MCP, and Streamlit are not
@@ -159,5 +167,5 @@ A project citation will be added when a release archive or associated
 publication is available.
 
 Acknowledgement placeholders: ASE, xTB, ORCA/OPI, MACE, RDKit, PubChem,
-stk, GreenCatAI, OpenAI Agents SDK, and AGAPI. Users should cite the scientific software used in
+stk, NWPESSe, GreenCatAI, OpenAI Agents SDK, and AGAPI. Users should cite the scientific software used in
 their calculations according to the corresponding project guidance.

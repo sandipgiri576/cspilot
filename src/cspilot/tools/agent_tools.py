@@ -18,6 +18,7 @@ from cspilot.tools.mol_tools import (
     smiles_to_xyz,
     validate_smiles,
 )
+from cspilot.tools.nwpesse_tools import parse_cluster_formula
 from cspilot.tools.opi_orca_tools import orca_single_point
 from cspilot.tools.result_tools import find_result_json, get_property_from_result
 from cspilot.tools.stk_tools import (
@@ -30,6 +31,7 @@ from cspilot.tools.stk_tools import (
 )
 from cspilot.tools.xtb_tools import optimize_with_xtb
 from cspilot.utils.runner import copy_input, make_run_dir
+from cspilot.workflows.nwpesse_workflows import nwpesse_global_minimum_search
 from cspilot.workflows.xtb_to_orca_freq import run_xtb_to_orca_freq
 from cspilot.workflows.xtb_to_orca_sp import run_xtb_to_orca_sp
 
@@ -489,5 +491,68 @@ def stk_export_to_xyz_tool(input_path: str, output_path: str) -> dict[str, Any]:
     return stk_export_to_xyz(input_path, output_path)
 
 
+@function_tool
+def parse_cluster_formula_tool(formula: str) -> dict[str, Any]:
+    """Parse a NWPESSe cluster formula into fragment/count records.
+
+    Args:
+        formula: Fragment formula such as (h2o)4Mg or h2o:4,mg:1.
+    """
+    return parse_cluster_formula(formula)
+
+
+@function_tool
+def nwpesse_global_minimum_search_tool(
+    formula: str | None = None,
+    fragments: list[str] | None = None,
+    workdir: str = "runs/nwpesse",
+    result_name: str = "nwpesse_result",
+    max_calculations: int = 10,
+    box_size: float = 3.0,
+    box_mode: str = "per_fragment_type",
+    optimizer: str = "xtb_gxtb",
+    fragment_dir: str | None = None,
+    timeout: int = 86400,
+) -> dict[str, Any]:
+    """Run an NWPESSe global-minimum search from fragment definitions.
+
+    Args:
+        formula: Fragment formula such as (h2o)4Mg. Do not use PubChem for this.
+        fragments: Optional explicit fragment counts as name:count strings.
+        workdir: Directory for NWPESSe input, output, and workflow JSON.
+        result_name: NWPESSe result base name.
+        max_calculations: Maximum number of candidate calculations.
+        box_size: Cubic inbox size.
+        box_mode: Placement mode: per_fragment_type or single. Custom boxes are not accepted from the agent tool.
+        optimizer: Whitelisted optimizer block name.
+        fragment_dir: Optional directory containing fragment xyz files.
+        timeout: External NWPESSe timeout in seconds.
+    """
+    root = _agent_workdir.get() / Path(workdir).name if not Path(workdir).is_absolute() else Path(workdir)
+    fragment_records = _parse_fragment_strings(fragments or [])
+    return nwpesse_global_minimum_search(
+        formula=formula,
+        fragments=fragment_records or None,
+        workdir=str(root),
+        result_name=result_name,
+        max_calculations=max_calculations,
+        box_size=box_size,
+        box_mode=box_mode,
+        optimizer=optimizer,
+        fragment_dir=fragment_dir,
+        timeout=timeout,
+    )
+
+
 def _failure(exc: Exception) -> dict[str, str]:
     return {"status": "failed", "message": f"{type(exc).__name__}: {exc}"}
+
+
+def _parse_fragment_strings(values: list[str]) -> list[dict[str, object]]:
+    fragments = []
+    for value in values:
+        name, separator, count = value.partition(":")
+        if separator != ":" or not name.strip() or not count.strip().isdigit():
+            raise ValueError(f"Fragment must be name:count, got {value!r}.")
+        fragments.append({"name": name.strip().lower(), "count": int(count)})
+    return fragments

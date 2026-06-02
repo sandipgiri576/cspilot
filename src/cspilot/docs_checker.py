@@ -39,6 +39,7 @@ CLI_COMMAND_MARKERS = {
     "stk linear-polymer",
     "stk replace-smiles",
     "stk export-xyz",
+    "nwpesse-search",
     "greencatai",
     "greencatai design-mbh",
     "search",

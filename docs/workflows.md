@@ -63,6 +63,64 @@ Steps:
 This workflow does not use `stko`. If xTB is not available, the build/export
 steps can still be recorded and the xTB step is reported as skipped or failed.
 
+## NWPESSe Fragment-Cluster Global-Minimum Search
+
+```bash
+cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg \
+  --max-calculations 10 --box-size 3.0
+```
+
+Steps:
+
+1. Parse the fragment formula or use explicit `--fragment name:count` options.
+2. Copy fragment XYZ files from `--fragment-dir`, or generate known simple
+   fragments from the internal library.
+3. Write `mol.cluster`.
+4. Generate validated placement boxes. The default `per_fragment_type` mode
+   creates one `inbox` line per unique fragment type; `single` creates one box
+   for the whole system.
+5. Write `mol.inp` using the whitelisted `xtb_gxtb` optimizer block.
+6. Run the external NWPESSe binary configured by `NWPESSE_BIN`.
+7. Scan generated XYZ candidates in `<result-name>-LM/`, any `*-LM/` folder,
+   and recursively under the workdir. Energies are parsed from line 2 formats
+   such as `Energy = -505.86549251 au`, `E = -505.86549251 au`, or a bare
+   number.
+8. Copy the best candidate to `lowest_energy.xyz` and save
+   `workflow_result.json`.
+
+`mol.cluster` format:
+
+```text
+2
+h2o.xyz 4
+mg.xyz 1
+```
+
+`mol.inp` format:
+
+```text
+nwpesse_result
+mol.cluster
+10
+>>>>
+inbox 0. 0. 0. 3.0 3.0 3.0
+inbox 0. 0. 0. 3.0 3.0 3.0
+>>>>
+cp $inp$ $xxx$.xyz
+xtb $xxx$.xyz --gxtb --opt  > $xxx$.out
+energy=`awk 'NR==2{print $2}' xtbopt.xyz` ; sed -i "2c ${energy}" xtbopt.xyz
+mv xtbopt.xyz $out$
+rm $xxx$.xyz $xxx$.out  charges wbo xtbopt.log xtbrestart *.mol
+>>>>
+```
+
+Supported formula forms include `(h2o)4Mg`, `(h2o)4(Mg)`,
+`[h2o]4[mg]1`, `h2o:4,mg:1`, and `h2o 4 mg 1`.
+
+For `(h2o)4`, default `per_fragment_type` writes one box line. For
+`(h2o)4Mg`, it writes two box lines. Use `--box-mode single --box-size 5.0`
+to place the whole system in one larger box.
+
 ## Result JSON Shape
 
 The workflow result is a JSON object of the following form; property keys are

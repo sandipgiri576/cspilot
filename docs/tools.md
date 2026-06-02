@@ -95,6 +95,24 @@ from greencatai.api import design_mbh_catalysts
 
 It supports MBH catalyst-design parameters from the GreenCatAI cspilot interface, including `search_space`, `scoring`, `library`, `max_candidates`, `generations`, `population_size`, `top_n_xtb`, and `top_n_orca`. It is available as `cspilot greencatai design-mbh ...` and as an agent tool. GreenCatAI remains responsible for catalyst libraries, scaffold rules, filters, scoring, and future design logic.
 
+## NWPESSe Global-Minimum Tools
+
+Module: `cspilot.tools.nwpesse_tools`
+
+| Function | Behavior |
+| --- | --- |
+| `write_fragment_xyz` | Write predefined fragment XYZ files for `h2o`/`water`, `mg`, `na`, `k`, `ca`, `li`, `cl`, `o2`, `co2`, `nh3`, `ch4`, or any valid single element symbol. |
+| `parse_cluster_formula` | Parse fragment formulas such as `(h2o)4Mg`, `[h2o]4[mg]1`, `h2o:4,mg:1`, or `h2o 4 mg 1`. |
+| `write_mol_cluster` | Write `mol.cluster` as unique fragment count plus `<fragment>.xyz <count>` lines. |
+| `write_nwpesse_input` | Write `mol.inp` using only whitelisted optimizer blocks. Currently `xtb_gxtb` is implemented. |
+| `run_nwpesse` | Run `[NWPESSE_BIN, mol.inp]`, saving stdout/stderr and `nwpesse_run.json`. |
+| `find_lowest_energy_geometry` | Scan generated XYZ files whose second line is numeric and select the lowest energy. |
+
+NWPESSe tools do not call PubChem and do not atomize arbitrary molecular
+formula strings. Unknown fragments must be supplied manually through
+`--fragment-dir`. The optimizer block is selected from a code whitelist; custom
+shell blocks from users or LLMs are not accepted.
+
 ## AGAPI Materials Tools
 
 Module: `cspilot.tools.agapi_materials_tools`

@@ -38,6 +38,17 @@ Default output style: {selected_profile.default_output_style}.
 Preserve user-provided filenames exactly.
 Use defaults when needed: charge=0, mult=1, method="r2scan-3c", basis="def2-SVP".
 Prefer run_xtb_orca_workflow for xTB optimization followed by ORCA SP.
+Use nwpesse_global_minimum_search for requests containing "global minimum",
+"global minima", "NWPESSe", "cluster search", or "find minimum structure".
+Treat formulas such as "(h2o)4Mg" as fragment clusters, not PubChem molecule names.
+For NWPESSe, do not use name-to-SMILES or name-to-XYZ tools; use formula/fragments
+and ask for fragment_dir when a fragment is unavailable.
+Map requested trial/count language to max_calculations and box-size language to box_size.
+For NWPESSe per_fragment_type boxes, one unique fragment type gives one inbox line;
+multiple unique fragment types give one inbox line per type. If the user asks for
+"single box", set box_mode="single". If the user asks for a larger box or gives a
+box size, set box_size. Do not write raw mol.inp, box blocks, or optimizer bash.
+Only produce structured arguments.
 Do not add shell commands or unsupported tools.
 If the allowed tools list is empty, return {{"steps": []}}."""
     agent = Agent(

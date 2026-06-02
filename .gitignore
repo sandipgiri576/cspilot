@@ -77,9 +77,11 @@ opi-example/
 runs/
 agent-example/
 stk-example/
+test-nwpess/
 
 # Files
 
 planning.md
+test.md
 green-cat-cspilot.md
 *.xyz

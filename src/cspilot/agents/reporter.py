@@ -79,6 +79,9 @@ def _report_sections(
         if isinstance(execution_result.get("steps", []), list)
         else []
     )
+    is_nwpesse = _is_nwpesse_result(execution_result) or any(
+        isinstance(step, dict) and _is_nwpesse_result(step) for step in results
+    )
 
     plan_lines = [
         f"{index}. {step.get('tool', 'unknown tool')} with args {json.dumps(step.get('args', {}), sort_keys=True)}"
@@ -91,13 +94,16 @@ def _report_sections(
         if isinstance(step, dict)
     ] or ["No executed steps returned."]
 
-    key_values = _reported_values(execution_result)
-    key_lines = [f"{key}: {_format_value(value)}" for key, value in key_values]
-    keys_found = {key for key, _value in key_values}
-    if not keys_found.intersection({"gibbs_free_energy", "gibbs_energy", "final_gibbs_energy"}):
-        key_lines.append("Gibbs free energy: not found.")
-    if not keys_found.intersection({"homo_lumo_gap", "homo_lumo_gap_ev"}):
-        key_lines.append("HOMO-LUMO gap: not found.")
+    if is_nwpesse:
+        key_lines = _nwpesse_key_lines(execution_result)
+    else:
+        key_values = _reported_values(execution_result)
+        key_lines = [f"{key}: {_format_value(value)}" for key, value in key_values]
+        keys_found = {key for key, _value in key_values}
+        if not keys_found.intersection({"gibbs_free_energy", "gibbs_energy", "final_gibbs_energy"}):
+            key_lines.append("Gibbs free energy: not found.")
+        if not keys_found.intersection({"homo_lumo_gap", "homo_lumo_gap_ev"}):
+            key_lines.append("HOMO-LUMO gap: not found.")
 
     generated_files = _report_files(execution_result, workdir)
     file_lines = generated_files or ["No generated files returned."]
@@ -185,6 +191,13 @@ def _reported_values(result: dict[str, Any]) -> list[tuple[str, Any]]:
         "enthalpy",
         "homo_lumo_gap",
         "homo_lumo_gap_ev",
+        "lowest_energy",
+        "energy_unit",
+        "candidate_count",
+        "lowest_geometry",
+        "lowest_geometry_copy",
+        "box_mode",
+        "box_size",
         "frequencies",
         "vibrational_frequencies",
         "formula",
@@ -196,6 +209,74 @@ def _reported_values(result: dict[str, Any]) -> list[tuple[str, Any]]:
         if key in keys and value is not None:
             reported.append((key, value))
     return reported
+
+
+def _is_nwpesse_result(result: dict[str, Any]) -> bool:
+    identifiers = " ".join(
+        str(result.get(key, ""))
+        for key in ("tool", "tool_name", "workflow", "workflow_type")
+    ).lower()
+    return "nwpesse" in identifiers or "global_minimum" in identifiers or "lowest_energy" in result
+
+
+def _nwpesse_key_lines(result: dict[str, Any]) -> list[str]:
+    source = _find_nwpesse_payload(result) or result
+    lines = ["NWPESSe global-minimum search."]
+    fragments = source.get("fragments")
+    if isinstance(fragments, list):
+        fragment_text = ", ".join(
+            f"{item.get('name')}:{item.get('count')}" for item in fragments if isinstance(item, dict)
+        )
+        if fragment_text:
+            lines.append(f"Fragments: {fragment_text}")
+    max_calculations = _find_key(source, "max_calculations")
+    if max_calculations is not None:
+        lines.append(f"max_calculations: {max_calculations}")
+    for key in ("box_mode", "box_size", "candidate_count"):
+        value = source.get(key)
+        if value is not None:
+            lines.append(f"{key}: {value}")
+    lowest_energy = source.get("lowest_energy")
+    if lowest_energy is not None:
+        unit = source.get("energy_unit")
+        suffix = f" {unit}" if unit else ""
+        lines.append(f"lowest_energy: {lowest_energy}{suffix}")
+    geometry = source.get("lowest_geometry_copy") or source.get("lowest_geometry")
+    if geometry:
+        lines.append(f"lowest_geometry: {geometry}")
+    return lines
+
+
+def _find_nwpesse_payload(value: Any) -> dict[str, Any] | None:
+    if isinstance(value, dict):
+        if _is_nwpesse_result(value):
+            return value
+        for item in value.values():
+            found = _find_nwpesse_payload(item)
+            if found is not None:
+                return found
+    elif isinstance(value, list):
+        for item in value:
+            found = _find_nwpesse_payload(item)
+            if found is not None:
+                return found
+    return None
+
+
+def _find_key(value: Any, target_key: str) -> Any:
+    if isinstance(value, dict):
+        if target_key in value:
+            return value[target_key]
+        for item in value.values():
+            found = _find_key(item, target_key)
+            if found is not None:
+                return found
+    elif isinstance(value, list):
+        for item in value:
+            found = _find_key(item, target_key)
+            if found is not None:
+                return found
+    return None
 
 
 def _generated_files(result: dict[str, Any]) -> list[str]:

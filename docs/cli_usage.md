@@ -190,6 +190,43 @@ cspilot greencatai design-mbh \
 
 Output: JSON on stdout and GreenCatAI artifacts such as `mbh_seeds.json`, `mbh_scored.json`, `mbh_ga.json`, and `summary.json` in the output directory. The native GreenCatAI equivalent is `greencatai design-mbh ...`.
 
+## NWPESSe Commands
+
+### `nwpesse-search`
+
+Purpose: prepare and run a fragment-cluster global-minimum search with the
+external NWPESSe binary.
+
+```bash
+cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg \
+  --max-calculations 10 --box-size 3.0
+```
+
+Single-box form:
+
+```bash
+cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg_single \
+  --box-mode single --box-size 5.0
+```
+
+Explicit fragment form:
+
+```bash
+cspilot nwpesse-search --fragment h2o:4 --fragment mg:1 \
+  --workdir runs/h2o4mg
+```
+
+Options include `--result-name`, `--max-calculations`, `--box-size`,
+`--box-mode per_fragment_type|single|custom`, `--optimizer xtb_gxtb`,
+`--fragment-dir`, and `--timeout`.
+
+Output: generated fragment XYZ files, `mol.cluster`, `mol.inp`,
+`nwpesse.stdout`, `nwpesse.stderr`, `nwpesse_run.json`, and
+`workflow_result.json`. Candidate XYZ files under `<result-name>-LM/`, any
+`*-LM/` folder, and recursively under the workdir are scanned for second-line
+energies such as `Energy = -505.86549251 au`; the lowest candidate is copied
+to `lowest_energy.xyz`.
+
 ## AGAPI And Agent Commands
 
 ### `search`

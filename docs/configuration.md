@@ -9,6 +9,7 @@ commit API keys or licensed-software configuration containing secrets.
 CSPILOT_RUNS_DIR=runs
 XTB_COMMAND=xtb
 ORCA_COMMAND=/path/to/orca
+NWPESSE_BIN=/home/anoop/apps/nwpesse/nwpesse
 MACE_MODEL=/path/to/mace_model.model
 
 AGAPI_API_KEY=your_api_key
@@ -21,6 +22,7 @@ cspilot_MODEL=openai/gpt-oss-20b
 | `CSPILOT_RUNS_DIR` | Deterministic commands and workflows | `runs` |
 | `XTB_COMMAND` | xTB optimization | `xtb` |
 | `ORCA_COMMAND` | ORCA CLI and workflows | `orca` |
+| `NWPESSE_BIN` | NWPESSe global-minimum search | `nwpesse` |
 | `MACE_MODEL` | `workflow mace-orca` when `--model` is omitted | `model_path` placeholder |
 | `AGAPI_API_KEY` | `agent`, `plan`, `run`, AGAPI materials wrapper | Required for AGAPI calls |
 | `AGAPI_BASE_URL` | OpenAI-compatible agent/planner client | Required unless `--base-url` is supplied where supported |

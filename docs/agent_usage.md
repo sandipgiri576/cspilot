@@ -27,8 +27,8 @@ replace calculation programs or validate a scientific method choice.
    AGAPI model.
 2. The executor rejects names outside the selected profile allowlist.
 3. Each tool result is written as JSON.
-4. `run` verifies returned paths and numeric property fields and writes a
-   report.
+4. `run` verifies returned paths and workflow-relevant numeric property fields
+   and writes a report.
 
 ```bash
 cspilot run "Find all Al2O3 materials" --workdir runs/al2o3 \
@@ -83,6 +83,10 @@ The implemented prompts and executor are designed to enforce these rules:
 - Prefer the fixed xTB to ORCA single-point workflow where applicable.
 - Use the xTB to ORCA frequency workflow for a new Gibbs free-energy request
   in direct chem agent mode.
+- Use NWPESSe tools for global-minimum or cluster-search requests. NWPESSe
+  reports lowest energy, candidate count, and copied geometry; Gibbs free
+  energy, enthalpy, frequencies, HOMO/LUMO, and ORCA thermochemistry are not
+  required unless those values are explicitly present in returned JSON.
 - Search previous JSON output for requested existing properties.
 - Report unsupported behavior or absent properties clearly.
 

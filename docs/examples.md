@@ -142,6 +142,47 @@ Direct Python call:
 python -c "from cspilot.tools.greencatai_tools import greencatai_design_mbh_catalysts; print(greencatai_design_mbh_catalysts('runs/mbh_api', search_space='/path/to/search_space.json', scoring='/path/to/scoring.json', generations=3, population_size=30, top_n_xtb=0, top_n_orca=0))"
 ```
 
+## Find A Fragment-Cluster Global Minimum With NWPESSe
+
+Configure the external binary first:
+
+```dotenv
+NWPESSE_BIN=/home/anoop/apps/nwpesse/nwpesse
+```
+
+Formula form:
+
+```bash
+cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg \
+  --max-calculations 10 --box-size 3.0
+```
+
+Single-box placement:
+
+```bash
+cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg_single \
+  --box-mode single --box-size 5.0
+```
+
+Explicit fragment form:
+
+```bash
+cspilot nwpesse-search --fragment h2o:4 --fragment mg:1 \
+  --workdir runs/h2o4mg
+```
+
+Agent/planner form:
+
+```bash
+cspilot run "Find the global minimum for (H2O)4Mg with NWPESSe, 10 calculations and box size 3.0" \
+  --workdir runs/h2o4mg-agent --profile chem
+```
+
+Result: `mol.cluster`, `mol.inp`, run stdout/stderr, `nwpesse_run.json`,
+`lowest_energy.xyz`, and `workflow_result.json`. NWPESSe candidate files under
+`nwpesse_result-LM/` are parsed from line 2 energy strings such as
+`Energy = -505.86549251 au`.
+
 ## Query AGAPI Materials
 
 ```bash

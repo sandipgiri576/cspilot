@@ -4,11 +4,44 @@ from numbers import Real
 from pathlib import Path
 from typing import Any
 
+NUMERIC_ENERGY_KEYS = {
+    "energy",
+    "energy_hartree",
+    "final_energy",
+    "final_energy_hartree",
+    "electronic_energy",
+    "electronic_energy_hartree",
+    "total_energy",
+    "total_energy_hartree",
+    "lowest_energy",
+    "gibbs_free_energy",
+    "gibbs_free_energy_hartree",
+    "enthalpy",
+    "enthalpy_hartree",
+    "delta_e",
+    "delta_e_hartree",
+}
+NON_NUMERIC_VALUE_KEYS = {
+    "energy_unit",
+    "unit",
+    "units",
+    "output_path",
+    "lowest_geometry",
+    "lowest_geometry_copy",
+    "workflow_result_path",
+    "stdout_file",
+    "stderr_file",
+}
+
 
 def verify_tool_result(result: dict[str, Any], workdir: str) -> dict[str, Any]:
     """Verify recorded tool output without inferring any scientific values."""
     issues: list[str] = []
     root = Path(workdir)
+
+    if _is_nwpesse_result(result):
+        _verify_nwpesse_result(result, root, issues)
+        return {"verified": not issues, "issues": _deduplicate(issues)}
 
     for key, value in _walk(result):
         normalized_key = key.lower()
@@ -32,13 +65,17 @@ def verify_tool_result(result: dict[str, Any], workdir: str) -> dict[str, Any]:
 def verify_execution(execution_result: dict[str, Any], workdir: str) -> dict[str, Any]:
     """Verify an executor result and all of its returned step data."""
     issues: list[str] = []
-    if execution_result.get("success") is not True:
-        issues.append("Execution result did not report success=true.")
 
-    steps = execution_result.get("steps", [])
+    steps = _execution_steps(execution_result)
     if not isinstance(steps, list):
         issues.append("Execution result steps are missing or invalid.")
         steps = []
+
+    top_success = execution_result.get("success")
+    if top_success is False and not _all_steps_successful(steps):
+        issues.append("Execution result did not report success=true.")
+    elif top_success is None and steps and not _all_steps_successful(steps):
+        issues.append("Execution result success flag is missing and at least one step failed.")
 
     for index, step in enumerate(steps, start=1):
         if not isinstance(step, dict):
@@ -66,13 +103,7 @@ def _walk(value: Any) -> list[tuple[str, Any]]:
 
 
 def _is_energy_key(key: str) -> bool:
-    return (
-        "energy" in key
-        or "enthalpy" in key
-        or "gap" in key
-        or "frequenc" in key
-        or key in {"g", "h", "zpe"}
-    )
+    return key in NUMERIC_ENERGY_KEYS or key in {"homo_lumo_gap", "homo_lumo_gap_ev", "zpe"}
 
 
 def _numeric_value(value: Any) -> bool:
@@ -95,12 +126,83 @@ def _is_file_key(key: str) -> bool:
         "orca_input",
         "orca_output",
         "workflow_result_path",
+        "lowest_geometry",
+        "lowest_geometry_copy",
+        "mol_cluster_path",
+        "mol_input_path",
         "result_path",
         "trajectory",
         "log",
         "input",
         "output",
     } or key.endswith("_file")
+
+
+def _is_nwpesse_result(result: dict[str, Any]) -> bool:
+    tokens = {
+        str(result.get("tool", "")),
+        str(result.get("tool_name", "")),
+        str(result.get("workflow", "")),
+        str(result.get("workflow_type", "")),
+    }
+    lowered = " ".join(tokens).lower()
+    if "nwpesse" in lowered or "global_minimum" in lowered:
+        return True
+    return any(
+        key in result
+        for key in {
+            "lowest_energy",
+            "lowest_geometry",
+            "lowest_geometry_copy",
+            "candidate_count",
+            "mol_cluster_path",
+            "mol_input_path",
+        }
+    )
+
+
+def _verify_nwpesse_result(result: dict[str, Any], root: Path, issues: list[str]) -> None:
+    if result.get("success") is False and not _has_valid_nwpesse_outputs(result, root):
+        issues.append("NWPESSe result did not report success=true.")
+    error = result.get("error")
+    if error not in (None, "") and not _has_valid_nwpesse_outputs(result, root):
+        issues.append(f"NWPESSe returned error: {error}")
+
+    lowest_energy = result.get("lowest_energy")
+    if lowest_energy is None:
+        issues.append("NWPESSe lowest_energy is missing.")
+    elif not _numeric_value(lowest_energy):
+        issues.append("Energy value for 'lowest_energy' is not numeric.")
+
+    energy_unit = result.get("energy_unit")
+    if energy_unit is not None and not isinstance(energy_unit, str):
+        issues.append("NWPESSe energy_unit is not a string.")
+
+    candidate_count = result.get("candidate_count")
+    if candidate_count is not None and (
+        not isinstance(candidate_count, int) or isinstance(candidate_count, bool) or candidate_count < 1
+    ):
+        issues.append("NWPESSe candidate_count must be an integer >= 1.")
+
+    geometry = result.get("lowest_geometry_copy") or result.get("lowest_geometry")
+    if not isinstance(geometry, str) or _existing_path(geometry, root) is None:
+        issues.append("NWPESSe lowest geometry file is missing.")
+
+    for key in ("mol_cluster_path", "mol_input_path"):
+        value = result.get(key)
+        if isinstance(value, str) and _existing_path(value, root) is None:
+            issues.append(f"NWPESSe file does not exist: {value}")
+
+
+def _has_valid_nwpesse_outputs(result: dict[str, Any], root: Path) -> bool:
+    return (
+        _numeric_value(result.get("lowest_energy"))
+        and isinstance(result.get("candidate_count"), int)
+        and result.get("candidate_count", 0) >= 1
+        and isinstance(result.get("lowest_geometry_copy") or result.get("lowest_geometry"), str)
+        and _existing_path(str(result.get("lowest_geometry_copy") or result.get("lowest_geometry")), root)
+        is not None
+    )
 
 
 def _existing_path(value: str, root: Path) -> Path | None:
@@ -164,3 +266,18 @@ def _dicts(value: Any) -> list[dict[str, Any]]:
 
 def _deduplicate(issues: list[str]) -> list[str]:
     return list(dict.fromkeys(issues))
+
+
+def _execution_steps(execution_result: dict[str, Any]) -> list[Any]:
+    steps = execution_result.get("steps")
+    if isinstance(steps, list):
+        return steps
+    results = execution_result.get("results")
+    if isinstance(results, list):
+        return results
+    return []
+
+
+def _all_steps_successful(steps: list[Any]) -> bool:
+    dict_steps = [step for step in steps if isinstance(step, dict)]
+    return bool(dict_steps) and all(_successful_step(step) for step in dict_steps)

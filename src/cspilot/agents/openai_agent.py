@@ -17,6 +17,8 @@ from cspilot.tools.agent_tools import (
     inspect_structure,
     molecule_name_to_smiles_tool,
     molecule_name_to_xyz_tool,
+    nwpesse_global_minimum_search_tool,
+    parse_cluster_formula_tool,
     rdkit_replace_substructure_tool,
     reset_agent_workdir,
     run_mace_optimize,
@@ -42,6 +44,7 @@ For a new Gibbs free energy or thermochemistry calculation, use run_xtb_orca_fre
 If the user provides a molecule name and no XYZ file, use molecule_name_to_xyz_tool.
 If the user provides SMILES and no XYZ file, use smiles_to_xyz_tool.
 Use stk tools only for molecule construction or editing requests. Use design_mbh_catalysts_tool only for MBH catalyst design requests.
+Use nwpesse_global_minimum_search_tool for NWPESSe global-minimum or cluster-search requests, and treat formulas like (h2o)4Mg as fragment clusters, not PubChem molecule names. Use structured box_mode and box_size arguments only; do not write raw mol.inp or optimizer shell.
 If the user asks for a property from previous results, use find_result_json and get_property_from_result.
 Do not guess property values. If a property name is ambiguous, use aliases first.
 If no matching property is found, say it was not found and mention the searched file.
@@ -56,6 +59,7 @@ For a new Gibbs free energy or thermochemistry calculation, use run_xtb_orca_fre
 If the user provides a molecule name and no XYZ file, use molecule_name_to_xyz_tool.
 If the user provides SMILES and no XYZ file, use smiles_to_xyz_tool.
 Use stk tools only for molecule construction or editing requests. Use design_mbh_catalysts_tool only for MBH catalyst design requests.
+Use nwpesse_global_minimum_search_tool for NWPESSe global-minimum or cluster-search requests, and do not use PubChem for fragment generation. Use structured box_mode and box_size arguments only; do not write raw mol.inp or optimizer shell.
 If the user asks for a property from previous results, use find_result_json and get_property_from_result.
 Do not guess property values. If a property name is ambiguous, use aliases first.
 If no matching property is found, say it was not found and mention the searched file.
@@ -189,6 +193,8 @@ def _profile_tools(profile: str) -> list[Any]:
         molecule_name_to_xyz_tool,
         validate_smiles_tool,
         canonicalize_smiles_tool,
+        parse_cluster_formula_tool,
+        nwpesse_global_minimum_search_tool,
         stk_build_from_smiles_tool,
         stk_building_block_from_file_tool,
         stk_linear_polymer_from_smiles_tool,
