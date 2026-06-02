@@ -661,6 +661,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#nwpesse-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        NWPESSe Commands
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NWPESSe Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nwpesse-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>nwpesse-search</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#agapi-and-agent-commands" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1836,6 +1864,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./reference/cspilot/tools/nwpesse_tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  nwpesse_tools
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./reference/cspilot/tools/opi_orca_tools.html" class="md-nav__link">
         
   
@@ -2143,6 +2198,33 @@
     
   
   mace_to_orca
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./reference/cspilot/workflows/nwpesse_workflows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  nwpesse_workflows
 
     
   </span>
@@ -2544,6 +2626,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#nwpesse-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        NWPESSe Commands
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NWPESSe Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nwpesse-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>nwpesse-search</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#agapi-and-agent-commands" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -2811,22 +2921,46 @@ skipped/failed xTB step without inventing energies.</p>
 </span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">  </span>--top-n-orca<span class="w"> </span><span class="m">0</span>
 </span></code></pre></div>
 <p>Output: JSON on stdout and GreenCatAI artifacts such as <code>mbh_seeds.json</code>, <code>mbh_scored.json</code>, <code>mbh_ga.json</code>, and <code>summary.json</code> in the output directory. The native GreenCatAI equivalent is <code>greencatai design-mbh ...</code>.</p>
+<h2 id="nwpesse-commands">NWPESSe Commands<a class="headerlink" href="#nwpesse-commands" title="Permanent link">&para;</a></h2>
+<h3 id="nwpesse-search"><code>nwpesse-search</code><a class="headerlink" href="#nwpesse-search" title="Permanent link">&para;</a></h3>
+<p>Purpose: prepare and run a fragment-cluster global-minimum search with the
+external NWPESSe binary.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span><span class="s2">&quot;(h2o)4Mg&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/h2o4mg<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span>--max-calculations<span class="w"> </span><span class="m">10</span><span class="w"> </span>--box-size<span class="w"> </span><span class="m">3</span>.0
+</span></code></pre></div>
+<p>Single-box form:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span><span class="s2">&quot;(h2o)4Mg&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/h2o4mg_single<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span>--box-mode<span class="w"> </span>single<span class="w"> </span>--box-size<span class="w"> </span><span class="m">5</span>.0
+</span></code></pre></div>
+<p>Explicit fragment form:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span>--fragment<span class="w"> </span>h2o:4<span class="w"> </span>--fragment<span class="w"> </span>mg:1<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/h2o4mg
+</span></code></pre></div>
+<p>Options include <code>--result-name</code>, <code>--max-calculations</code>, <code>--box-size</code>,
+<code>--box-mode per_fragment_type|single|custom</code>, <code>--optimizer xtb_gxtb</code>,
+<code>--fragment-dir</code>, and <code>--timeout</code>.</p>
+<p>Output: generated fragment XYZ files, <code>mol.cluster</code>, <code>mol.inp</code>,
+<code>nwpesse.stdout</code>, <code>nwpesse.stderr</code>, <code>nwpesse_run.json</code>, and
+<code>workflow_result.json</code>. Candidate XYZ files under <code>&lt;result-name&gt;-LM/</code>, any
+<code>*-LM/</code> folder, and recursively under the workdir are scanned for second-line
+energies such as <code>Energy = -505.86549251 au</code>; the lowest candidate is copied
+to <code>lowest_energy.xyz</code>.</p>
 <h2 id="agapi-and-agent-commands">AGAPI And Agent Commands<a class="headerlink" href="#agapi-and-agent-commands" title="Permanent link">&para;</a></h2>
 <h3 id="search"><code>search</code><a class="headerlink" href="#search" title="Permanent link">&para;</a></h3>
 <p>Purpose: answer a general natural-language chemistry/materials question through the AGAPI-backed general agent. A quoted unknown root command such as <code>cspilot "what is the chemical space?"</code> is routed here.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cspilot<span class="w"> </span>search<span class="w"> </span><span class="s2">&quot;what is the chemical space?&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/search-space
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cspilot<span class="w"> </span>search<span class="w"> </span><span class="s2">&quot;what is the chemical space?&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/search-space
 </span></code></pre></div>
 <p>Output: <code>&lt;workdir&gt;/agent_result.json</code>.</p>
 <h3 id="docs-check"><code>docs-check</code><a class="headerlink" href="#docs-check" title="Permanent link">&para;</a></h3>
 <p>Purpose: run lightweight documentation consistency checks.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cspilot<span class="w"> </span>docs-check
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cspilot<span class="w"> </span>docs-check
 </span></code></pre></div>
 <p>Output: terminal pass/fail report.</p>
 <h3 id="agent"><code>agent</code><a class="headerlink" href="#agent" title="Permanent link">&para;</a></h3>
 <p>Purpose: let an AGAPI-backed Agents SDK agent select exposed tools directly.
 Supported direct-agent profiles are <code>chem</code>, <code>materials</code>, and <code>general</code>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;gibbs free energy of water in ORCA r2scan-3c&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water-agent<span class="w"> </span>--agent-profile<span class="w"> </span>chem
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;gibbs free energy of water in ORCA r2scan-3c&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water-agent<span class="w"> </span>--agent-profile<span class="w"> </span>chem
 </span></code></pre></div>
 <p>Options include <code>--model</code> and <code>--base-url</code>.</p>
 <p>Output: <code>&lt;workdir&gt;/agent_result.json</code> plus calculation subruns selected by the
@@ -2834,19 +2968,19 @@ agent.</p>
 <h3 id="plan"><code>plan</code><a class="headerlink" href="#plan" title="Permanent link">&para;</a></h3>
 <p>Purpose: produce a JSON plan without executing it. Planner profiles are
 <code>chem</code>, <code>materials</code>, <code>analysis</code>, <code>thermo</code>, and <code>general</code>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cspilot<span class="w"> </span>plan<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span>--profile<span class="w"> </span>materials
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>cspilot<span class="w"> </span>plan<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span>--profile<span class="w"> </span>materials
 </span></code></pre></div>
 <p>Output: <code>&lt;workdir&gt;/plan.json</code>.</p>
 <h3 id="execute"><code>execute</code><a class="headerlink" href="#execute" title="Permanent link">&para;</a></h3>
 <p>Purpose: execute an existing JSON plan through the profile allowlist only.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cspilot<span class="w"> </span>execute<span class="w"> </span>runs/al2o3/plan.json<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span>--profile<span class="w"> </span>materials
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>cspilot<span class="w"> </span>execute<span class="w"> </span>runs/al2o3/plan.json<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span>--profile<span class="w"> </span>materials
 </span></code></pre></div>
 <p>Output: <code>&lt;workdir&gt;/plan.json</code>, <code>step_001_result.json</code> for each executed step,
 and <code>execution_result.json</code>.</p>
 <h3 id="run"><code>run</code><a class="headerlink" href="#run" title="Permanent link">&para;</a></h3>
 <p>Purpose: plan, execute, verify, and create a final deterministic report.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span>--profile<span class="w"> </span>materials<span class="w"> </span>--html
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span>--profile<span class="w"> </span>materials<span class="w"> </span>--html
 </span></code></pre></div>
 <p>Output: <code>&lt;workdir&gt;/plan.json</code>, step result JSON files,
 <code>execution_result.json</code>, <code>verification_result.json</code>, and either

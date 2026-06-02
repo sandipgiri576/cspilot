@@ -659,6 +659,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#nwpesse-global-minimum-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        NWPESSe Global-Minimum Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#agapi-materials-tools" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1608,6 +1619,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./reference/cspilot/tools/nwpesse_tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  nwpesse_tools
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./reference/cspilot/tools/opi_orca_tools.html" class="md-nav__link">
         
   
@@ -1934,6 +1972,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./reference/cspilot/workflows/nwpesse_workflows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  nwpesse_workflows
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./reference/cspilot/workflows/stk_workflows.html" class="md-nav__link">
         
   
@@ -2142,6 +2207,17 @@
     <span class="md-ellipsis">
       <span class="md-typeset">
         GreenCatAI Catalyst Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nwpesse-global-minimum-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        NWPESSe Global-Minimum Tools
       </span>
     </span>
   </a>
@@ -2410,6 +2486,46 @@ requires <code>mace-torch</code> and a model file.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">greencatai.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_mbh_catalysts</span>
 </span></code></pre></div>
 <p>It supports MBH catalyst-design parameters from the GreenCatAI cspilot interface, including <code>search_space</code>, <code>scoring</code>, <code>library</code>, <code>max_candidates</code>, <code>generations</code>, <code>population_size</code>, <code>top_n_xtb</code>, and <code>top_n_orca</code>. It is available as <code>cspilot greencatai design-mbh ...</code> and as an agent tool. GreenCatAI remains responsible for catalyst libraries, scaffold rules, filters, scoring, and future design logic.</p>
+<h2 id="nwpesse-global-minimum-tools">NWPESSe Global-Minimum Tools<a class="headerlink" href="#nwpesse-global-minimum-tools" title="Permanent link">&para;</a></h2>
+<p>Module: <code>cspilot.tools.nwpesse_tools</code></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>write_fragment_xyz</code></td>
+<td>Write predefined fragment XYZ files for <code>h2o</code>/<code>water</code>, <code>mg</code>, <code>na</code>, <code>k</code>, <code>ca</code>, <code>li</code>, <code>cl</code>, <code>o2</code>, <code>co2</code>, <code>nh3</code>, <code>ch4</code>, or any valid single element symbol.</td>
+</tr>
+<tr>
+<td><code>parse_cluster_formula</code></td>
+<td>Parse fragment formulas such as <code>(h2o)4Mg</code>, <code>[h2o]4[mg]1</code>, <code>h2o:4,mg:1</code>, or <code>h2o 4 mg 1</code>.</td>
+</tr>
+<tr>
+<td><code>write_mol_cluster</code></td>
+<td>Write <code>mol.cluster</code> as unique fragment count plus <code>&lt;fragment&gt;.xyz &lt;count&gt;</code> lines.</td>
+</tr>
+<tr>
+<td><code>write_nwpesse_input</code></td>
+<td>Write <code>mol.inp</code> using only whitelisted optimizer blocks. Currently <code>xtb_gxtb</code> is implemented.</td>
+</tr>
+<tr>
+<td><code>run_nwpesse</code></td>
+<td>Run <code>[NWPESSE_BIN, mol.inp]</code>, saving stdout/stderr and <code>nwpesse_run.json</code>.</td>
+</tr>
+<tr>
+<td><code>find_lowest_energy_geometry</code></td>
+<td>Scan generated XYZ files whose second line is numeric and select the lowest energy.</td>
+</tr>
+</tbody>
+</table>
+<p>NWPESSe tools do not call PubChem and do not atomize arbitrary molecular
+formula strings. Unknown fragments must be supplied manually through
+<code>--fragment-dir</code>. The optimizer block is selected from a code whitelist; custom
+shell blocks from users or LLMs are not accepted.</p>
 <h2 id="agapi-materials-tools">AGAPI Materials Tools<a class="headerlink" href="#agapi-materials-tools" title="Permanent link">&para;</a></h2>
 <p>Module: <code>cspilot.tools.agapi_materials_tools</code></p>
 <p><code>agapi_materials_query</code> optionally imports <code>AGAPIAgent</code> and delegates a

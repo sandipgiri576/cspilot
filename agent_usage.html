@@ -1575,6 +1575,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./reference/cspilot/tools/nwpesse_tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  nwpesse_tools
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./reference/cspilot/tools/opi_orca_tools.html" class="md-nav__link">
         
   
@@ -1901,6 +1928,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./reference/cspilot/workflows/nwpesse_workflows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  nwpesse_workflows
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./reference/cspilot/workflows/stk_workflows.html" class="md-nav__link">
         
   
@@ -2199,8 +2253,8 @@ replace calculation programs or validate a scientific method choice.</p>
    AGAPI model.</li>
 <li>The executor rejects names outside the selected profile allowlist.</li>
 <li>Each tool result is written as JSON.</li>
-<li><code>run</code> verifies returned paths and numeric property fields and writes a
-   report.</li>
+<li><code>run</code> verifies returned paths and workflow-relevant numeric property fields
+   and writes a report.</li>
 </ol>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--profile<span class="w"> </span>materials<span class="w"> </span>--html
@@ -2279,6 +2333,10 @@ replace calculation programs or validate a scientific method choice.</p>
 <li>Prefer the fixed xTB to ORCA single-point workflow where applicable.</li>
 <li>Use the xTB to ORCA frequency workflow for a new Gibbs free-energy request
   in direct chem agent mode.</li>
+<li>Use NWPESSe tools for global-minimum or cluster-search requests. NWPESSe
+  reports lowest energy, candidate count, and copied geometry; Gibbs free
+  energy, enthalpy, frequencies, HOMO/LUMO, and ORCA thermochemistry are not
+  required unless those values are explicitly present in returned JSON.</li>
 <li>Search previous JSON output for requested existing properties.</li>
 <li>Report unsupported behavior or absent properties clearly.</li>
 </ul>

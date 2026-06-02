@@ -532,6 +532,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#find-a-fragment-cluster-global-minimum-with-nwpesse" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Find A Fragment-Cluster Global Minimum With NWPESSe
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#query-agapi-materials" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1630,6 +1641,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./reference/cspilot/tools/nwpesse_tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  nwpesse_tools
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./reference/cspilot/tools/opi_orca_tools.html" class="md-nav__link">
         
   
@@ -1956,6 +1994,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./reference/cspilot/workflows/nwpesse_workflows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  nwpesse_workflows
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./reference/cspilot/workflows/stk_workflows.html" class="md-nav__link">
         
   
@@ -2182,6 +2247,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#find-a-fragment-cluster-global-minimum-with-nwpesse" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Find A Fragment-Cluster Global Minimum With NWPESSe
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#query-agapi-materials" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -2376,24 +2452,48 @@ returns a JSON error instead of attempting an unsafe arbitrary topology.</p>
 <p>Direct Python call:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from cspilot.tools.greencatai_tools import greencatai_design_mbh_catalysts; print(greencatai_design_mbh_catalysts(&#39;runs/mbh_api&#39;, search_space=&#39;/path/to/search_space.json&#39;, scoring=&#39;/path/to/scoring.json&#39;, generations=3, population_size=30, top_n_xtb=0, top_n_orca=0))&quot;</span>
 </span></code></pre></div>
+<h2 id="find-a-fragment-cluster-global-minimum-with-nwpesse">Find A Fragment-Cluster Global Minimum With NWPESSe<a class="headerlink" href="#find-a-fragment-cluster-global-minimum-with-nwpesse" title="Permanent link">&para;</a></h2>
+<p>Configure the external binary first:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>NWPESSE_BIN=/home/anoop/apps/nwpesse/nwpesse
+</span></code></pre></div>
+<p>Formula form:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span><span class="s2">&quot;(h2o)4Mg&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/h2o4mg<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span>--max-calculations<span class="w"> </span><span class="m">10</span><span class="w"> </span>--box-size<span class="w"> </span><span class="m">3</span>.0
+</span></code></pre></div>
+<p>Single-box placement:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span><span class="s2">&quot;(h2o)4Mg&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/h2o4mg_single<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--box-mode<span class="w"> </span>single<span class="w"> </span>--box-size<span class="w"> </span><span class="m">5</span>.0
+</span></code></pre></div>
+<p>Explicit fragment form:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span>--fragment<span class="w"> </span>h2o:4<span class="w"> </span>--fragment<span class="w"> </span>mg:1<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/h2o4mg
+</span></code></pre></div>
+<p>Agent/planner form:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find the global minimum for (H2O)4Mg with NWPESSe, 10 calculations and box size 3.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/h2o4mg-agent<span class="w"> </span>--profile<span class="w"> </span>chem
+</span></code></pre></div>
+<p>Result: <code>mol.cluster</code>, <code>mol.inp</code>, run stdout/stderr, <code>nwpesse_run.json</code>,
+<code>lowest_energy.xyz</code>, and <code>workflow_result.json</code>. NWPESSe candidate files under
+<code>nwpesse_result-LM/</code> are parsed from line 2 energy strings such as
+<code>Energy = -505.86549251 au</code>.</p>
 <h2 id="query-agapi-materials">Query AGAPI Materials<a class="headerlink" href="#query-agapi-materials" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span>--profile<span class="w"> </span>materials<span class="w"> </span>--html
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span>--profile<span class="w"> </span>materials<span class="w"> </span>--html
 </span></code></pre></div>
 <p>Result: plan, step and execution JSON files, verification JSON, and
 <code>runs/al2o3/final_report.html</code>.</p>
 <h2 id="extract-a-property-from-existing-json-results">Extract A Property From Existing JSON Results<a class="headerlink" href="#extract-a-property-from-existing-json-results" title="Permanent link">&para;</a></h2>
 <p>Using the analysis planner/executor profile:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find the Gibbs free energy in runs/water-freq/workflow_result.json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water-analysis<span class="w"> </span>--profile<span class="w"> </span>analysis
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find the Gibbs free energy in runs/water-freq/workflow_result.json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water-analysis<span class="w"> </span>--profile<span class="w"> </span>analysis
 </span></code></pre></div>
 <p>Or call the deterministic Python function directly:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from cspilot.tools.result_tools import get_property_from_result; print(get_property_from_result(&#39;runs/water-freq/workflow_result.json&#39;, &#39;gibbs free energy&#39;))&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from cspilot.tools.result_tools import get_property_from_result; print(get_property_from_result(&#39;runs/water-freq/workflow_result.json&#39;, &#39;gibbs free energy&#39;))&quot;</span>
 </span></code></pre></div>
 <p>If Gibbs free energy was not present in the selected JSON, the result reports
 that it was not found.</p>
 <h2 id="check-documentation-consistency">Check Documentation Consistency<a class="headerlink" href="#check-documentation-consistency" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cspilot<span class="w"> </span>docs-check
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>cspilot<span class="w"> </span>docs-check
 </span></code></pre></div>
 <p>The checker validates required documentation pages, common template leftovers, and CLI usage coverage.</p>
 
