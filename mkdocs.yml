@@ -1,5 +1,5 @@
 site_name: cspilot
-site_author: cspilot contributors
+site_author: Sandip Giri
 site_description: >-
   Computational chemistry structure workflows and AGAPI-backed tool execution.
 nav:
@@ -19,9 +19,9 @@ nav:
       - Development: development.md
       - Roadmap: roadmap.md
       - Updating Documentation: updating_docs.md
-  - Code Documentation: reference/ # keep me!
+  - Code Documentation: reference/SUMMARY.md
 
-repo_url: https://github.com/Quantum-Accelerators/cspilot/
+repo_url: https://github.com/sandipgiri576/cspilot/
 edit_uri: blob/main/docs/
 
 theme:
@@ -84,30 +84,12 @@ markdown_extensions:
   - pymdownx.tilde
 
 plugins:
-  - search:
-      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
-  - autorefs
-  - social
-  - offline
+  - search
+  - section-index
   - mkdocstrings:
-      default_handler: python
       handlers:
         python:
-          inventories:
-            - https://docs.python.org/3/objects.inv
-            - https://numpy.org/doc/stable/objects.inv
+          paths: ["src"]
           options:
-            docstring_style: numpy
-            docstring_section_style: list
-            separate_signature: true
-            merge_init_into_class: true
-            show_signature_annotations: true
-            signature_crossrefs: true
-            show_if_no_docstring: true
-            docstring_options:
-              ignore_init_summary: true
-  - gen-files:
-      scripts:
-        - docs/gen_ref_pages.py
-  - literate-nav:
-      nav_file: SUMMARY.md
+            show_source: true
+            docstring_style: google

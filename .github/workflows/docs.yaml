@@ -28,17 +28,14 @@ jobs:
 
       - name: Install pip packages
         run: |
-          pip install uv
-          uv pip install --system .[docs]
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[docs]"
 
       - name: Generate reference pages
         run: python .github/scripts/gen_ref_pages.py
 
-      - name: Generate zensical.toml
-        run: python .github/scripts/gen_zensical_toml.py
-
       - name: Build docs
-        run: zensical build --clean
+        run: mkdocs build --strict
         id: build_docs
 
       - name: Deploy to GitHub Pages
