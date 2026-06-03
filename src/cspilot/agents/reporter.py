@@ -101,30 +101,36 @@ def _report_sections(
         key_lines = [f"{key}: {_format_value(value)}" for key, value in key_values]
         keys_found = {key for key, _value in key_values}
         if not keys_found.intersection({"gibbs_free_energy", "gibbs_energy", "final_gibbs_energy"}):
-            key_lines.append("Gibbs free energy: not found.")
+            key_lines.append("Gibbs free energy: not found in parsed results.")
         if not keys_found.intersection({"homo_lumo_gap", "homo_lumo_gap_ev"}):
-            key_lines.append("HOMO-LUMO gap: not found.")
+            key_lines.append("HOMO-LUMO gap: not found in parsed results.")
 
     generated_files = _report_files(execution_result, workdir)
     file_lines = generated_files or ["No generated files returned."]
 
     warnings = _warnings(execution_result, verification_result)
     return [
+        (
+            "Welcome",
+            [
+                "CSPilot computational chemistry workflow report.",
+                "Only values returned by tools or parsed result files are reported.",
+            ],
+        ),
         ("Task", [user_request, f"Profile: {profile}", f"Output style: {output_style}", f"Workdir: {workdir}"]),
-        ("Plan Summary", plan_lines),
-        ("Completed Steps", completed_lines),
-        ("Key Results", key_lines),
+        ("Workflow", [*plan_lines, *completed_lines]),
+        ("Results", key_lines),
         ("Generated Files", file_lines),
         (
-            "Verification Status",
+            "Verification",
             ["Passed." if verification_result.get("verified") else "Failed or incomplete."],
         ),
-        ("Errors or Warnings", warnings or ["None reported."]),
+        ("Notes", warnings or ["None reported."]),
     ]
 
 
 def _as_markdown(sections: list[tuple[str, list[str]]]) -> str:
-    lines: list[str] = ["# cspilot Execution Report"]
+    lines: list[str] = ["# CSPilot Execution Report"]
     for title, entries in sections:
         lines.extend(["", f"## {title}"])
         lines.extend(f"- {entry}" for entry in entries)
@@ -132,22 +138,40 @@ def _as_markdown(sections: list[tuple[str, list[str]]]) -> str:
 
 
 def _as_html(sections: list[tuple[str, list[str]]]) -> str:
-    body = ["<!doctype html>", '<html lang="en">', "<head>", '<meta charset="utf-8">']
-    body.extend(["<title>cspilot Execution Report</title>", "</head>", "<body>"])
-    body.append("<h1>cspilot Execution Report</h1>")
+    body = ['<section class="cspilot-report">', "<h2>CSPilot Execution Report</h2>"]
     for title, entries in sections:
-        body.append(f"<h2>{html_lib.escape(title)}</h2>")
-        body.append("<ul>")
-        body.extend(f"<li>{html_lib.escape(str(entry))}</li>" for entry in entries)
-        body.append("</ul>")
-    body.extend(["</body>", "</html>", ""])
+        escaped_title = html_lib.escape(title)
+        if title in {"Workflow", "Generated Files", "Results"}:
+            body.append(f"<details open><summary><h3>{escaped_title}</h3></summary>")
+            body.append("<table>")
+            body.append("<tbody>")
+            for entry in entries:
+                body.append("<tr>")
+                body.append(f"<td><pre>{html_lib.escape(str(entry))}</pre></td>")
+                body.append("</tr>")
+            body.append("</tbody>")
+            body.append("</table>")
+            body.append("</details>")
+        else:
+            body.append(f"<h3>{escaped_title}</h3>")
+            body.append("<ul>")
+            body.extend(f"<li>{html_lib.escape(str(entry))}</li>" for entry in entries)
+            body.append("</ul>")
+    body.extend(["</section>", ""])
     return "\n".join(body)
 
 
 def _report_files(execution_result: dict[str, Any], workdir: str) -> list[str]:
     files = _generated_files(execution_result)
     root = Path(workdir)
-    for name in ("plan.json", "execution_result.json", "verification_result.json"):
+    for name in (
+        "plan.json",
+        "execution_result.json",
+        "verification_result.json",
+        "final_state.json",
+        "final_report.md",
+        "final_report.html",
+    ):
         candidate = root / name
         if candidate.exists():
             files.append(str(candidate))

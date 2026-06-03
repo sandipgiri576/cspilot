@@ -17,6 +17,16 @@ from cspilot.tools.ase_tools import summarize_structure
 from cspilot.tools.mace_tools import optimize_with_mace
 from cspilot.tools.opi_orca_tools import single_point_with_orca
 from cspilot.tools.xtb_tools import optimize_with_xtb
+from cspilot.ui.console import (
+    print_banner,
+    print_final_message,
+    print_generated_files,
+    print_plan_summary,
+    print_verification_summary,
+)
+from cspilot.ui.console import (
+    print_execution_summary as print_pretty_execution_summary,
+)
 from cspilot.utils.runner import copy_input, make_run_dir, write_json
 from cspilot.workflows.mace_to_orca import run_mace_to_orca
 from cspilot.workflows.xtb_to_orca_freq import run_xtb_to_orca_freq
@@ -221,6 +231,8 @@ def run_command(
     ] = Path("runs/test"),
     profile: Annotated[Profile, typer.Option(help="Planning tool and report profile.")] = "chem",
     html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
+    pretty: Annotated[bool, typer.Option("--pretty/--no-pretty", help="Print Rich panels and tables.")] = True,
+    quiet: Annotated[bool, typer.Option(help="Print only final status and report path.")] = False,
 ) -> None:
     """Plan, execute, verify, and report an allowlisted workflow."""
     from cspilot.agents.executor import execute_plan
@@ -254,11 +266,23 @@ def run_command(
 
     report_path = workdir / ("final_report.html" if html else "final_report.md")
     report_path.write_text(report, encoding="utf-8")
-    _print_execution_summary(execution_result, workdir / "execution_result.json")
     status = "PASSED" if verification_result["verified"] else "FAILED"
     style = "green" if verification_result["verified"] else "red"
-    console.print(f"Verification: [{style}]{status}[/]")
-    console.print(f"Report: {report_path}")
+    if quiet:
+        console.print(f"Verification: [{style}]{status}[/]")
+        console.print(f"Report: {report_path}")
+    elif pretty:
+        print_banner(console)
+        print_plan_summary(console, plan)
+        print_pretty_execution_summary(console, execution_result)
+        print_verification_summary(console, verification_result)
+        print_generated_files(console, workdir, execution_result)
+        print_final_message(console, report, html=html)
+        console.print(f"Report: {report_path}")
+    else:
+        _print_execution_summary(execution_result, workdir / "execution_result.json")
+        console.print(f"Verification: [{style}]{status}[/]")
+        console.print(f"Report: {report_path}")
 
 
 @app.command("graph-run")
@@ -277,6 +301,8 @@ def graph_run_command(
         typer.Option(help="Graph agent mode: single or multi."),
     ] = "single",
     html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
+    pretty: Annotated[bool, typer.Option("--pretty/--no-pretty", help="Print Rich panels and tables.")] = True,
+    quiet: Annotated[bool, typer.Option(help="Print only final status and report path.")] = False,
     max_retries: Annotated[int, typer.Option(help="Maximum graph retry attempts.")] = 1,
 ) -> None:
     """Run the LangGraph planner/executor/verifier/reporter loop."""
@@ -301,9 +327,26 @@ def graph_run_command(
     report = final_state.get("final_report") or ""
     report_path = workdir / ("final_report.html" if html else "final_report.md")
     report_path.write_text(report, encoding="utf-8")
-    console.print(report)
-    console.print(f"Final state: {state_path}")
-    console.print(f"Report: {report_path}")
+    verification_result = final_state.get("verification_result") or {}
+    verified = verification_result.get("verified") is True
+    status = "PASSED" if verified else "FAILED"
+    style = "green" if verified else "red"
+    if quiet:
+        console.print(f"Verification: [{style}]{status}[/]")
+        console.print(f"Report: {report_path}")
+    elif pretty:
+        print_banner(console)
+        print_plan_summary(console, final_state.get("plan") or {"steps": []})
+        print_pretty_execution_summary(console, final_state.get("execution_result") or {})
+        print_verification_summary(console, verification_result)
+        print_generated_files(console, workdir, final_state.get("execution_result") or {})
+        print_final_message(console, report, html=html)
+        console.print(f"Final state: {state_path}")
+        console.print(f"Report: {report_path}")
+    else:
+        console.print(report)
+        console.print(f"Final state: {state_path}")
+        console.print(f"Report: {report_path}")
 
 
 def _print_tool_json(result: dict[str, object]) -> None:
