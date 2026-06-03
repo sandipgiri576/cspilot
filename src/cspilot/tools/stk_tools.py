@@ -36,7 +36,11 @@ def stk_build_from_smiles(smiles: str, output_path: str) -> dict[str, Any]:
             metadata["stk_error"] = str(stk_exc)
             metadata["num_atoms"] = int(molecule.GetNumAtoms())
             _write_rdkit_structure(molecule, output)
-        return _finalize(_result(tool, True, output, None, metadata))
+        result = _result(tool, True, output, None, metadata)
+        result["smiles"] = smiles
+        result["output_file"] = str(output)
+        result["generated_files"] = [str(output)]
+        return _finalize(result)
     except Exception as exc:
         return _finalize(_result(tool, False, output, _format_error(exc), metadata))
 

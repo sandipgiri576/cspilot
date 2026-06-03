@@ -22,11 +22,27 @@ def execute_plan(plan: dict[str, Any], workdir: str) -> dict[str, Any]:
     for index, step in enumerate(steps, start=1):
         if not isinstance(step, dict) or step.get("tool") not in get_allowed_tools():
             raise ValueError(f"Unknown or disallowed tool in step {index}.")
-        result = call_tool(str(step["tool"]), step.get("args", {}), str(root))
+        tool_name = str(step["tool"])
+        result = call_tool(tool_name, step.get("args", {}), str(root))
         results.append(result)
         _write_json(root / f"step_{index:03d}_result.json", result)
         verification = verify_tool_result(result, str(root))
         issues.extend(f"Step {index}: {issue}" for issue in verification["issues"])
+        if result.get("success") is False:
+            error = str(result.get("error") or "Tool returned success=false.")
+            issues.append(f"Step {index}: {error}")
+            execution_result = {
+                "success": False,
+                "workdir": str(root),
+                "plan_path": str(root / "plan.json"),
+                "steps": results,
+                "failed_step_index": index,
+                "failed_tool": tool_name,
+                "error": error,
+                "verification": {"verified": False, "issues": _deduplicate(issues)},
+            }
+            _write_json(root / "execution_result.json", execution_result)
+            return execution_result
 
     execution_result = {
         "success": not issues,
@@ -41,3 +57,7 @@ def execute_plan(plan: dict[str, Any], workdir: str) -> dict[str, Any]:
 
 def _write_json(path: Path, value: dict[str, Any]) -> None:
     path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+
+
+def _deduplicate(issues: list[str]) -> list[str]:
+    return list(dict.fromkeys(issues))

@@ -406,7 +406,14 @@ def stk_build_from_smiles_tool(
         smiles: Input SMILES string.
         output_path: Output molecule path ending in .mol, .sdf, or .xyz.
     """
-    return stk_build_from_smiles(smiles, output_path)
+    result = stk_build_from_smiles(smiles, output_path)
+    result["tool"] = "stk_build_from_smiles_tool"
+    result["smiles"] = smiles
+    result["output_file"] = str(result.get("output_file") or result.get("output_path") or output_path)
+    result["generated_files"] = list(
+        dict.fromkeys([*result.get("generated_files", []), result["output_file"]])
+    )
+    return result
 
 
 @function_tool

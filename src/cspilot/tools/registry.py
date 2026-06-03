@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 from contextvars import ContextVar, Token
+from numbers import Real
 from pathlib import Path
 from typing import Any
 
@@ -97,7 +98,8 @@ def call_tool(tool_name: str, args: dict[str, Any], workdir: str) -> dict[str, A
     root.mkdir(parents=True, exist_ok=True)
     token = set_agent_workdir(root)
     try:
-        arguments = json.dumps(args)
+        normalized_args = normalize_tool_args(tool_name, args)
+        arguments = json.dumps(normalized_args)
         context = ToolContext(
             context=None,
             tool_name=tool_name,
@@ -105,9 +107,78 @@ def call_tool(tool_name: str, args: dict[str, Any], workdir: str) -> dict[str, A
             tool_arguments=arguments,
         )
         output = asyncio.run(_TOOLS[tool_name].on_invoke_tool(context, arguments))
+    except Exception as exc:
+        output = {
+            "success": False,
+            "tool": tool_name,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
     finally:
         reset_agent_workdir(token)
 
-    if not isinstance(output, dict):
-        raise ValueError(f"Tool '{tool_name}' returned an unsupported result type.")
-    return {"tool_name": tool_name, **output}
+    normalized = normalize_tool_result(tool_name, output)
+    return {"tool_name": tool_name, **normalized}
+
+
+def normalize_tool_result(tool_name: str, result: Any) -> dict[str, Any]:
+    """Normalize arbitrary tool output into a JSON-serializable dictionary."""
+    if isinstance(result, dict):
+        return _json_safe(result)
+    if isinstance(result, str):
+        try:
+            parsed = json.loads(result)
+        except json.JSONDecodeError:
+            return {"success": True, "tool": tool_name, "message": result}
+        if isinstance(parsed, dict):
+            return _json_safe(parsed)
+        return {"success": True, "tool": tool_name, "value": _json_safe(parsed)}
+    if isinstance(result, Path):
+        return {"success": True, "tool": tool_name, "path": str(result)}
+    if isinstance(result, bool):
+        return {"success": True, "tool": tool_name, "value": result}
+    if isinstance(result, Real):
+        return {"success": True, "tool": tool_name, "value": result}
+    if result is None:
+        return {"success": False, "tool": tool_name, "error": "Tool returned None"}
+    return {
+        "success": False,
+        "tool": tool_name,
+        "error": f"Unsupported result type: {type(result).__name__}",
+        "repr": repr(result),
+    }
+
+
+def normalize_tool_args(tool_name: str, args: dict[str, Any]) -> dict[str, Any]:
+    """Normalize common planner aliases to registered function-tool argument names."""
+    normalized = dict(args)
+    if "output_file" in normalized and "output_path" not in normalized:
+        normalized["output_path"] = normalized.pop("output_file")
+
+    input_alias = next(
+        (key for key in ("input_xyz", "input_file", "xyz_file", "file") if key in normalized),
+        None,
+    )
+    if input_alias is None:
+        return _json_safe(normalized)
+
+    target = "input_path" if _prefers_input_path(tool_name) else "xyz_path"
+    if target not in normalized:
+        normalized[target] = normalized.pop(input_alias)
+    return _json_safe(normalized)
+
+
+def _prefers_input_path(tool_name: str) -> bool:
+    lowered = tool_name.lower()
+    return "building_block_from_file" in lowered or "export_to_xyz" in lowered
+
+
+def _json_safe(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {str(key): _json_safe(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_json_safe(item) for item in value]
+    if isinstance(value, tuple):
+        return [_json_safe(item) for item in value]
+    if isinstance(value, Path):
+        return str(value)
+    return value

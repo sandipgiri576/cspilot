@@ -38,6 +38,18 @@ Default output style: {selected_profile.default_output_style}.
 Preserve user-provided filenames exactly.
 Use defaults when needed: charge=0, mult=1, method="r2scan-3c", basis="def2-SVP".
 Prefer run_xtb_orca_workflow for xTB optimization followed by ORCA SP.
+For molecule generation followed by xTB/ORCA, prefer stk_to_xtb_orca if that
+exact tool is present in the allowed tools list. If it is not present and you
+use stk_build_from_smiles_tool followed by run_xtb_orca_workflow, always give
+stk_build_from_smiles_tool an output_path ending in .xyz, then pass the exact
+same filename to run_xtb_orca_workflow as input_xyz in the next step.
+Use canonical argument names: input_xyz for input structures and output_path
+for generated files. Do not use input_file, xyz_file, file, or output_file.
+Do not include workdir in step args unless a listed tool explicitly requires it;
+the executor supplies the workdir. Do not invent filenames unless needed. If a
+filename is required and the user did not provide one, use a safe simple name
+from the molecule when obvious, such as benzene.xyz or caffeine.xyz; otherwise
+use stk_molecule.xyz.
 Use nwpesse_global_minimum_search for requests containing "global minimum",
 "global minima", "NWPESSe", "cluster search", or "find minimum structure".
 Treat formulas such as "(h2o)4Mg" as fragment clusters, not PubChem molecule names.
