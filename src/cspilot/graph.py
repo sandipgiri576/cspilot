@@ -4,14 +4,14 @@ import asyncio
 import inspect
 import json
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
 from langgraph.graph import END, START, StateGraph
 
 from cspilot.agents.executor import execute_plan
 from cspilot.agents.planner import create_plan
-from cspilot.agents.repair import repair_plan
 from cspilot.agents.reporter import generate_report
+from cspilot.agents.router import route_request
 from cspilot.agents.verifier import verify_execution
 from cspilot.state import CspilotState
 from cspilot.tools.registry import reset_allowed_profile, set_allowed_profile
@@ -34,6 +34,31 @@ def planner_node(state: CspilotState) -> dict[str, Any]:
             "execution_result": None,
             "verification_result": None,
             "errors": [*state.get("errors", []), f"planner: {type(exc).__name__}: {exc}"],
+        }
+
+
+def router_node(state: CspilotState) -> dict[str, Any]:
+    """Route a request to one specialist profile before planning."""
+    try:
+        route = route_request(
+            state["user_request"],
+            profile=state.get("profile", "auto"),
+        )
+        specialist = str(route["specialist"])
+        _write_json(Path(state["workdir"]) / "route.json", route)
+        return {"profile": specialist, "route": route}
+    except Exception as exc:
+        route = {
+            "success": False,
+            "specialist": "general",
+            "reason": f"Router failed: {type(exc).__name__}: {exc}",
+            "allowed_tool_groups": [],
+        }
+        _write_json(Path(state["workdir"]) / "route.json", route)
+        return {
+            "profile": "general",
+            "route": route,
+            "errors": [*state.get("errors", []), route["reason"]],
         }
 
 
@@ -86,39 +111,6 @@ def verifier_node(state: CspilotState) -> dict[str, Any]:
         )
 
 
-def repair_node(state: CspilotState) -> dict[str, Any]:
-    """Repair a failed plan before another executor attempt."""
-    plan = state.get("plan")
-    execution_result = state.get("execution_result")
-    if not plan or not execution_result:
-        return {
-            "errors": [*state.get("errors", []), "repair: missing plan or execution result"],
-        }
-    token = set_allowed_profile(state["profile"], state["user_request"])
-    try:
-        repair_result = repair_plan(
-            state["user_request"],
-            plan,
-            execution_result,
-            state["workdir"],
-        )
-        update: dict[str, Any] = {"repair_result": repair_result}
-        if repair_result.get("success") is True and repair_result.get("repaired_plan"):
-            update["plan"] = repair_result["repaired_plan"]
-            _write_json(Path(state["workdir"]) / "plan.json", repair_result["repaired_plan"])
-            return update
-        return {
-            **update,
-            "errors": [*state.get("errors", []), f"repair: {repair_result.get('error', 'repair failed')}"],
-        }
-    except Exception as exc:
-        return {
-            "errors": [*state.get("errors", []), f"repair: {type(exc).__name__}: {exc}"],
-        }
-    finally:
-        reset_allowed_profile(token)
-
-
 def reporter_node(state: CspilotState) -> dict[str, Any]:
     """Create the final deterministic report."""
     plan = state.get("plan") or {"steps": []}
@@ -146,71 +138,77 @@ def run_graph_agent(
     user_request: str,
     workdir: str | Path,
     profile: str = "chem",
+    agent_mode: str = "single",
     html: bool = False,
-    max_retries: int = 2,
+    max_retries: int = 1,
 ) -> CspilotState:
-    """Run the single-agent LangGraph orchestration."""
+    """Run the LangGraph planner/executor/verifier/reporter orchestration."""
     root = Path(workdir)
     root.mkdir(parents=True, exist_ok=True)
+    if agent_mode not in {"single", "multi"}:
+        return _failed_initial_state(
+            user_request=user_request,
+            workdir=root,
+            profile=profile,
+            agent_mode=agent_mode,
+            html=html,
+            max_retries=max_retries,
+            error="Unknown agent_mode. Expected 'single' or 'multi'.",
+        )
+    selected_profile = profile
     initial_state: CspilotState = {
         "user_request": user_request,
         "workdir": str(root),
-        "profile": profile,
+        "profile": selected_profile,
+        "agent_mode": agent_mode,
+        "route": None,
         "html": html,
         "max_retries": max_retries,
         "retry_count": 0,
         "plan": None,
         "execution_result": None,
-        "repair_result": None,
         "verification_result": None,
         "final_report": None,
         "errors": [],
     }
-    app = build_graph()
-    final_state = app.invoke(initial_state)
+    try:
+        app = build_graph(agent_mode=agent_mode)
+        final_state = app.invoke(initial_state)
+    except Exception as exc:
+        final_state = {
+            **initial_state,
+            "errors": [f"graph: {type(exc).__name__}: {exc}"],
+            "execution_result": {
+                "success": False,
+                "workdir": str(root),
+                "steps": [],
+                "error": f"{type(exc).__name__}: {exc}",
+            },
+        }
+        final_state["final_report"] = _failure_report(final_state)
     return final_state
 
 
-def build_graph():
+def build_graph(agent_mode: str = "single"):
+    if agent_mode not in {"single", "multi"}:
+        raise ValueError("agent_mode must be 'single' or 'multi'.")
     graph = StateGraph(CspilotState)
+    if agent_mode == "multi":
+        graph.add_node("router", router_node)
     graph.add_node("planner", planner_node)
     graph.add_node("executor", executor_node)
-    graph.add_node("repair", repair_node)
     graph.add_node("verifier", verifier_node)
     graph.add_node("reporter", reporter_node)
-    graph.add_edge(START, "planner")
+    if agent_mode == "multi":
+        graph.add_edge(START, "router")
+        graph.add_edge("router", "planner")
+    else:
+        graph.add_edge(START, "planner")
     graph.add_edge("planner", "executor")
-    graph.add_conditional_edges(
-        "executor",
-        _route_after_executor,
-        {"repair": "repair", "verify": "verifier"},
-    )
-    graph.add_edge("repair", "executor")
-    graph.add_conditional_edges(
-        "verifier",
-        _route_after_verifier,
-        {"repair": "repair", "report": "reporter"},
-    )
+    graph.add_edge("executor", "verifier")
+    graph.add_edge("verifier", "reporter")
     graph.add_edge("reporter", END)
     return graph.compile()
-
-
-def _route_after_executor(state: CspilotState) -> Literal["repair", "verify"]:
-    execution_result = state.get("execution_result")
-    if execution_result and execution_result.get("success") is True:
-        return "verify"
-    if state.get("retry_count", 0) < state.get("max_retries", 0):
-        return "repair"
-    return "verify"
-
-
-def _route_after_verifier(state: CspilotState) -> Literal["repair", "report"]:
-    verification_result = state.get("verification_result")
-    if verification_result and verification_result.get("verified") is True:
-        return "report"
-    if state.get("retry_count", 0) < state.get("max_retries", 0):
-        return "repair"
-    return "report"
 
 
 def _retry_update(
@@ -233,3 +231,41 @@ def _run_maybe_async(value: Any) -> Any:
 
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def _failed_initial_state(
+    user_request: str,
+    workdir: Path,
+    profile: str,
+    agent_mode: str,
+    html: bool,
+    max_retries: int,
+    error: str,
+) -> CspilotState:
+    state: CspilotState = {
+        "user_request": user_request,
+        "workdir": str(workdir),
+        "profile": profile,
+        "agent_mode": agent_mode,
+        "route": None,
+        "html": html,
+        "max_retries": max_retries,
+        "retry_count": 0,
+        "plan": None,
+        "execution_result": {
+            "success": False,
+            "workdir": str(workdir),
+            "steps": [],
+            "error": error,
+        },
+        "verification_result": None,
+        "final_report": None,
+        "errors": [error],
+    }
+    state["final_report"] = _failure_report(state)
+    return state
+
+
+def _failure_report(state: CspilotState) -> str:
+    errors = "\n".join(f"- {error}" for error in state.get("errors", []))
+    return f"**Task**\n{state['user_request']}\n\n**Errors**\n{errors or '- Graph failed.'}\n"

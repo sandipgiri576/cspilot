@@ -50,6 +50,8 @@ InputPath = Annotated[
     typer.Argument(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True),
 ]
 Profile = Literal["chem", "materials", "analysis", "thermo", "general"]
+GraphProfile = Literal["auto", "chem", "stk", "materials", "analysis", "thermo", "general"]
+AgentMode = Literal["single", "multi"]
 
 
 def _finish(result: CommandResult) -> None:
@@ -266,11 +268,18 @@ def graph_run_command(
         Path,
         typer.Option(help="Directory in which to save graph outputs.", resolve_path=True),
     ] = Path("runs/graph_test"),
-    profile: Annotated[Profile, typer.Option(help="Planning tool and report profile.")] = "chem",
+    profile: Annotated[
+        GraphProfile,
+        typer.Option(help="Planning profile. Use auto with --agent-mode multi for routing."),
+    ] = "chem",
+    agent_mode: Annotated[
+        AgentMode,
+        typer.Option(help="Graph agent mode: single or multi."),
+    ] = "single",
     html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
-    max_retries: Annotated[int, typer.Option(help="Maximum graph retry attempts.")] = 2,
+    max_retries: Annotated[int, typer.Option(help="Maximum graph retry attempts.")] = 1,
 ) -> None:
-    """Run the LangGraph single-agent planner/executor/verifier/reporter loop."""
+    """Run the LangGraph planner/executor/verifier/reporter loop."""
     from cspilot.graph import run_graph_agent
 
     workdir.mkdir(parents=True, exist_ok=True)
@@ -281,6 +290,7 @@ def graph_run_command(
             profile=profile,
             html=html,
             max_retries=max_retries,
+            agent_mode=agent_mode,
         )
     except (OSError, ValueError) as exc:
         console.print(f"[red]Graph run error:[/] {exc}")
