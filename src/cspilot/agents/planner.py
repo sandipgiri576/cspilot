@@ -50,6 +50,16 @@ the executor supplies the workdir. Do not invent filenames unless needed. If a
 filename is required and the user did not provide one, use a safe simple name
 from the molecule when obvious, such as benzene.xyz or caffeine.xyz; otherwise
 use stk_molecule.xyz.
+Before any step that uses input_xyz, ensure that the referenced file either
+already exists because the user provided that exact filename, or is created by
+an earlier step in the plan. Never start a plan with run_xtb_optimize,
+run_orca_single_point, run_xtb_orca_workflow, inspect_structure, or
+run_mace_optimize on a guessed filename such as benzene.xyz. If the user asks
+to optimize or calculate a molecule by name and no XYZ file is provided, first
+use molecule_name_to_xyz_tool with output_path set to the later input_xyz. If
+the user provides SMILES and no XYZ file, first use smiles_to_xyz_tool. If the
+user requested stk construction, first use an stk construction tool with an XYZ
+output_path and pass that same path to later calculation steps.
 Use nwpesse_global_minimum_search for requests containing "global minimum",
 "global minima", "NWPESSe", "cluster search", or "find minimum structure".
 Treat formulas such as "(h2o)4Mg" as fragment clusters, not PubChem molecule names.

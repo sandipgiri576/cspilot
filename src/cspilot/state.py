@@ -12,10 +12,10 @@ class CspilotState(TypedDict):
     retry_count: int
     plan: dict[str, Any] | None
     execution_result: dict[str, Any] | None
+    repair_result: dict[str, Any] | None
     verification_result: dict[str, Any] | None
     final_report: str | None
     errors: list[str]
 
 
 cspilotState = CspilotState
-

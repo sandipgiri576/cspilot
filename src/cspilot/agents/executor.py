@@ -38,6 +38,8 @@ def execute_plan(plan: dict[str, Any], workdir: str) -> dict[str, Any]:
                 "steps": results,
                 "failed_step_index": index,
                 "failed_tool": tool_name,
+                "failed_step": step,
+                "failed_args": step.get("args", {}),
                 "error": error,
                 "verification": {"verified": False, "issues": _deduplicate(issues)},
             }

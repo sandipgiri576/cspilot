@@ -18,6 +18,8 @@ PROFILES = {
             "run_xtb_orca_workflow for xTB optimization followed by ORCA single point. "
             "For stk molecule generation followed by calculation, use the same generated "
             "XYZ path as output_path in the stk step and input_xyz in the calculation step. "
+            "For molecule names or SMILES without an existing XYZ file, create the XYZ "
+            "with the provided molecule conversion tools before any calculation step. "
             "Use canonical argument names and let the executor supply the workdir. "
             "Use nwpesse_global_minimum_search for global-minimum or cluster-search requests. "
             "For NWPESSe, use structured box_mode and box_size arguments only; do not write raw mol.inp. "
