@@ -1,20 +1,20 @@
 # Roadmap
 
-Implemented stages and planned work are separated explicitly below.
-
 | Stage | Status | Scope |
 | --- | --- | --- |
-| v0.1 | Implemented | Deterministic CLI for structure inspection and local calculations |
+| v0.1 | Implemented | Deterministic CLI for ASE, xTB, ORCA SP, MACE, and JSON outputs |
 | v0.2 | Implemented | Fixed xTB/MACE to ORCA workflows |
-| v0.3 | Implemented | AGAPI agent plus planner/executor |
-| v0.4 | In progress | Documentation and test coverage |
-| v0.5 | Planned | Multiwfn post-processing tools |
-| v0.6 | Planned | LangGraph retry/repair orchestration |
-| v0.7 | Planned | Expanded stk structure generation beyond the current lightweight tools |
-| v0.8 | Planned | torch-sim MLIP molecular dynamics |
-| v0.9 | Planned | MongoDB job database |
-| v1.0 | Planned | MCP server |
-| v1.1 | Planned | Streamlit user interface |
+| v0.3 | Implemented | AGAPI direct agent, JSON planner, executor, verification, reports |
+| v0.4 | In progress | Documentation, tests, Rich terminal reporting |
+| v0.5 | Implemented baseline | stk build/edit/export and stk to xTB workflow |
+| v0.6 | Implemented baseline | LangGraph single mode and routed multi-agent mode |
+| v0.7 | Planned | LangGraph repair/retry node integration in graph execution |
+| v0.8 | Planned | Multiwfn post-processing tools |
+| v0.9 | Planned | Expanded stk topology support and stk structure generation |
+| v1.0 | Planned | torch-sim MLIP molecular dynamics |
+| v1.1 | Planned | MongoDB job database |
+| v1.2 | Planned | MCP server |
+| v1.3 | Planned | Streamlit UI |
 
-Planned entries are not current CLI commands, Python tools, or installation
-requirements.
+Planned entries are not current CLI commands unless explicitly documented in
+`docs/cli_usage.md`.

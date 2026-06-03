@@ -1,243 +1,110 @@
 # CLI Usage
 
-Commands below are defined in `src/cspilot/cli.py`. The installed script name
-is `cspilot`; a legacy `cspiolt` alias also currently exists.
+Commands below are implemented in `src/cspilot/cli.py`. The installed script is
+`cspilot`; `cspiolt` is also currently configured as a legacy alias.
 
-## Deterministic Commands
-
-### `inspect`
-
-Purpose: read an XYZ structure with ASE and print formula, atom count,
-periodicity, and center of mass.
-
-```bash
-cspilot inspect input.xyz
-```
-
-Output: `runs/<timestamp>-inspect/input.xyz` and `result.json`.
-
-### `xtb-opt`
-
-Purpose: optimize an XYZ geometry with xTB.
-
-```bash
-cspilot xtb-opt input.xyz --charge 0 --uhf 0
-```
-
-Output: `runs/<timestamp>-xtb-opt/result.json` and, after successful xTB
-execution, `xtbopt.xyz` and `xtbopt.log`.
-
-### `orca-sp`
-
-Purpose: run an ORCA single-point calculation through OPI.
-
-```bash
-cspilot orca-sp input.xyz --method r2scan-3c --basis def2-SVP --charge 0 --mult 1
-```
-
-Output: `runs/<timestamp>-orca-sp/result.json`, OPI input `job.inp`, and
-successful ORCA output `job.out`.
-
-### `mace-opt`
-
-Purpose: optimize geometry with an optional MACE calculator and model file.
-
-```bash
-cspilot mace-opt input.xyz --model /path/to/model.model
-```
-
-Output: `runs/<timestamp>-mace-opt/result.json`; on success,
-`mace_opt.xyz`, `mace_opt.traj`, and `mace_opt.log`.
-
-## Fixed Workflows
-
-### `workflow xtb-orca-sp`
-
-```bash
-cspilot workflow xtb-orca-sp input.xyz --charge 0 --mult 1 \
-  --method r2scan-3c --basis def2-SVP
-```
-
-Output: `runs/<timestamp>-xtb-orca-sp/workflow_result.json`, plus
-`01_xtb_opt/` and `02_orca_sp/` job files when the steps run.
-
-### `workflow xtb-orca-freq`
-
-```bash
-cspilot workflow xtb-orca-freq input.xyz --charge 0 --mult 1 \
-  --method r2scan-3c --basis def2-SVP
-```
-
-Output: `runs/<timestamp>-xtb-orca-freq/workflow_result.json`, plus
-`01_xtb_opt/` and `02_orca_freq/` job files. Gibbs free energy is recorded
-only when parsed from the ORCA result.
-
-### `workflow mace-orca`
-
-```bash
-cspilot workflow mace-orca input.xyz --model /path/to/model.model \
-  --charge 0 --mult 1 --method r2scan-3c --basis def2-SVP
-```
-
-Output: `runs/<timestamp>-mace-orca/workflow_result.json`, plus MACE and ORCA
-subdirectories when executed successfully.
-
-## stk Commands
-
-### `stk-build-smiles`
-
-Purpose: build a simple molecule from SMILES, write `molecule.mol`, and export
-`molecule.xyz` in the selected work directory.
-
-```bash
-cspilot stk-build-smiles "C1=CC=CC=C1" --workdir runs/stk_benzene
-```
-
-Output: `molecule.mol`, `molecule.xyz`, and stk result JSON files in
-`runs/stk_benzene`.
-
-### `stk-polymer`
-
-Purpose: construct a brominated linear polymer through `stk.polymer.Linear`.
-
-```bash
-cspilot stk-polymer "BrCCBr" --repeating-unit A \
-  --num-repeating-units 4 --workdir runs/stk_polymer
-```
-
-Output: `polymer.mol`, `polymer.xyz`, and stk result JSON files when stk
-imports successfully.
-
-### `stk-xtb`
-
-Purpose: build a molecule from SMILES, export XYZ, and pass it to the existing
-xTB optimizer.
-
-```bash
-cspilot stk-xtb "C1=CC=CC=C1" --workdir runs/stk_xtb
-```
-
-Output: `stk_build.mol`, `stk_build.xyz`, `xtb_opt/`, and
-`workflow_result.json`. If xTB is not available, the workflow records the
-skipped/failed xTB step without inventing energies.
-
-### `stk building-block-smiles`
-
-Purpose: create an stk building block from SMILES and export `.mol`, `.sdf`, or `.xyz`.
-
-```bash
-cspilot stk building-block-smiles BrCCBr runs/stk/bb.mol
-```
-
-Output: JSON on stdout and the requested molecule file when successful.
-
-### `stk building-block-file`
-
-Purpose: load an stk building block from an existing molecule file and optionally export it.
-
-```bash
-cspilot stk building-block-file molecule.mol --output-path runs/stk/copy.mol
-```
-
-Output: JSON on stdout and optional copied/exported file.
-
-### `stk linear-polymer`
-
-Purpose: construct a linear polymer with `stk.polymer.Linear`.
-
-```bash
-cspilot stk linear-polymer BrCCBr A 3 runs/stk/polymer.mol
-```
-
-Output: JSON on stdout and the requested molecule file when stk construction succeeds.
-
-### `stk replace-smiles`
-
-Purpose: replace a substructure using RDKit and export the edited molecule.
-
-```bash
-cspilot stk replace-smiles CCO O N runs/stk/ethylamine.xyz
-```
-
-Output: JSON on stdout and the requested molecule file.
-
-### `stk export-xyz`
-
-Purpose: export a molecule file to XYZ with stk/RDKit fallback.
-
-```bash
-cspilot stk export-xyz molecule.mol runs/stk/molecule.xyz
-```
-
-Output: JSON on stdout and the requested XYZ file.
-
-## GreenCatAI Commands
-
-### `greencatai design-mbh`
-
-Purpose: call the stable GreenCatAI MBH catalyst-design API from cspilot. GreenCatAI must be installed in the active environment.
-
-```bash
-cspilot greencatai design-mbh \
-  --search-space /path/to/search_space.json \
-  --scoring /path/to/scoring.json \
-  --output-dir runs/mbh_api \
-  --generations 3 \
-  --population-size 30 \
-  --top-n-xtb 0 \
-  --top-n-orca 0
-```
-
-Output: JSON on stdout and GreenCatAI artifacts such as `mbh_seeds.json`, `mbh_scored.json`, `mbh_ga.json`, and `summary.json` in the output directory. The native GreenCatAI equivalent is `greencatai design-mbh ...`.
-
-## NWPESSe Commands
-
-### `nwpesse-search`
-
-Purpose: prepare and run a fragment-cluster global-minimum search with the
-external NWPESSe binary.
-
-```bash
-cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg \
-  --max-calculations 10 --box-size 3.0
-```
-
-Single-box form:
-
-```bash
-cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg_single \
-  --box-mode single --box-size 5.0
-```
-
-Explicit fragment form:
-
-```bash
-cspilot nwpesse-search --fragment h2o:4 --fragment mg:1 \
-  --workdir runs/h2o4mg
-```
-
-Options include `--result-name`, `--max-calculations`, `--box-size`,
-`--box-mode per_fragment_type|single|custom`, `--optimizer xtb_gxtb`,
-`--fragment-dir`, and `--timeout`.
-
-Output: generated fragment XYZ files, `mol.cluster`, `mol.inp`,
-`nwpesse.stdout`, `nwpesse.stderr`, `nwpesse_run.json`, and
-`workflow_result.json`. Candidate XYZ files under `<result-name>-LM/`, any
-`*-LM/` folder, and recursively under the workdir are scanned for second-line
-energies such as `Energy = -505.86549251 au`; the lowest candidate is copied
-to `lowest_energy.xyz`.
-
-## AGAPI And Agent Commands
+## General And Agent Commands
 
 ### `search`
 
-Purpose: answer a general natural-language chemistry/materials question through the AGAPI-backed general agent. A quoted unknown root command such as `cspilot "what is the chemical space?"` is routed here.
+Purpose: answer a general natural-language question with the AGAPI-backed
+general agent.
 
 ```bash
-cspilot search "what is the chemical space?" --workdir runs/search-space
+cspilot search "what is chemical space?" --workdir runs/search
 ```
 
-Output: `<workdir>/agent_result.json`.
+Output files: `search_result.json` in the selected workdir.
+
+### Root quoted question fallback
+
+Purpose: route a quoted unknown root command to `search`.
+
+```bash
+cspilot "what is the chemical space?"
+```
+
+Output files: same as `search`.
+
+### `agent`
+
+Purpose: run the direct AGAPI tool-using agent.
+
+```bash
+cspilot agent "inspect tests/examples/input.xyz" \
+  --workdir runs/agent_test --agent-profile chem
+```
+
+Options include `--model`, `--base-url`, and `--agent-profile
+chem|materials|general`.
+
+Output files: `agent_result.json` and any files generated by called tools.
+
+### `plan`
+
+Purpose: create a strict JSON plan through AGAPI.
+
+```bash
+cspilot plan "inspect tests/examples/input.xyz" --workdir runs/test --profile chem
+```
+
+Output files: `plan.json`.
+
+### `execute`
+
+Purpose: execute an existing JSON plan through the fixed registry.
+
+```bash
+cspilot execute runs/test/plan.json --workdir runs/test --profile chem
+```
+
+Output files: `execution_result.json` and `step_###_result.json`.
+
+### `run`
+
+Purpose: plan, execute, verify, and report.
+
+```bash
+cspilot run "inspect tests/examples/input.xyz" \
+  --workdir runs/test --profile chem --pretty
+```
+
+Useful flags:
+
+```bash
+cspilot run "inspect tests/examples/input.xyz" --workdir runs/test --no-pretty
+cspilot run "inspect tests/examples/input.xyz" --workdir runs/test --quiet
+cspilot run "Find all Al2O3 materials" --workdir runs/al2o3 --profile materials --html
+```
+
+Output files: `plan.json`, `execution_result.json`,
+`verification_result.json`, `step_###_result.json`, and `final_report.md` or
+`final_report.html`.
+
+### `graph-run`
+
+Purpose: run the LangGraph planner/executor/verifier/reporter loop.
+
+Single mode:
+
+```bash
+cspilot graph-run "inspect tests/examples/input.xyz" \
+  --workdir runs/water --profile chem --agent-mode single
+```
+
+Multi mode with routing:
+
+```bash
+cspilot graph-run "Find all Al2O3 materials" \
+  --profile auto --agent-mode multi --html --workdir runs/al2o3
+```
+
+Useful flags: `--agent-mode single|multi`, `--profile`, `--html`,
+`--pretty/--no-pretty`, `--quiet`, `--max-retries`.
+
+Output files: `plan.json`, `execution_result.json`,
+`verification_result.json`, `final_state.json`, `final_report.md/html`, and
+`route.json` in multi mode.
 
 ### `docs-check`
 
@@ -247,54 +114,140 @@ Purpose: run lightweight documentation consistency checks.
 cspilot docs-check
 ```
 
-Output: terminal pass/fail report.
+Output files: none; exits nonzero when checks fail.
 
-### `agent`
+## Deterministic Calculation Commands
 
-Purpose: let an AGAPI-backed Agents SDK agent select exposed tools directly.
-Supported direct-agent profiles are `chem`, `materials`, and `general`.
-
-```bash
-cspilot agent "gibbs free energy of water in ORCA r2scan-3c" \
-  --workdir runs/water-agent --agent-profile chem
-```
-
-Options include `--model` and `--base-url`.
-
-Output: `<workdir>/agent_result.json` plus calculation subruns selected by the
-agent.
-
-### `plan`
-
-Purpose: produce a JSON plan without executing it. Planner profiles are
-`chem`, `materials`, `analysis`, `thermo`, and `general`.
+### `inspect`
 
 ```bash
-cspilot plan "Find all Al2O3 materials" --workdir runs/al2o3 --profile materials
+cspilot inspect tests/examples/input.xyz
 ```
 
-Output: `<workdir>/plan.json`.
+Purpose: inspect an XYZ with ASE.
 
-### `execute`
+Output files: timestamped run directory with copied input and `result.json`.
 
-Purpose: execute an existing JSON plan through the profile allowlist only.
+### `xtb-opt`
 
 ```bash
-cspilot execute runs/al2o3/plan.json --workdir runs/al2o3 --profile materials
+cspilot xtb-opt tests/examples/input.xyz --charge 0 --uhf 0
 ```
 
-Output: `<workdir>/plan.json`, `step_001_result.json` for each executed step,
-and `execution_result.json`.
+Purpose: run xTB geometry optimization.
 
-### `run`
+Output files: `result.json`, copied input, and xTB outputs such as
+`xtbopt.xyz` and `xtbopt.log` when xTB succeeds.
 
-Purpose: plan, execute, verify, and create a final deterministic report.
+### `orca-sp`
 
 ```bash
-cspilot run "Find all Al2O3 materials" --workdir runs/al2o3 \
-  --profile materials --html
+cspilot orca-sp tests/examples/input.xyz \
+  --method r2scan-3c --basis def2-SVP --charge 0 --mult 1
 ```
 
-Output: `<workdir>/plan.json`, step result JSON files,
-`execution_result.json`, `verification_result.json`, and either
-`final_report.md` or `final_report.html`.
+Purpose: run ORCA single point through OPI.
+
+Output files: `result.json`, ORCA input/output files such as `job.inp` and
+`job.out` when ORCA runs.
+
+### `mace-opt`
+
+```bash
+cspilot mace-opt tests/examples/input.xyz --model /path/to/model.model
+```
+
+Purpose: run MACE geometry optimization.
+
+Output files: `result.json`, and on success MACE optimized geometry,
+trajectory, and log files.
+
+## stk Commands
+
+### Top-level shortcuts
+
+```bash
+cspilot stk-build-smiles "c1ccccc1" --workdir runs/stk_benzene
+cspilot stk-polymer "BrCCBr" --repeating-unit A --num-repeating-units 4 --workdir runs/stk_polymer
+cspilot stk-xtb "c1ccccc1" --workdir runs/stk_xtb --charge 0 --uhf 0
+```
+
+Output files: JSON results, molecule files such as `.mol`/`.xyz`, and for
+`stk-xtb` a `workflow_result.json` plus xTB outputs when xTB runs.
+
+### `stk building-block-smiles`
+
+```bash
+cspilot stk building-block-smiles "c1ccccc1" runs/stk/benzene.mol
+```
+
+Purpose: build an stk building block from SMILES.
+
+### `stk building-block-file`
+
+```bash
+cspilot stk building-block-file runs/stk/benzene.mol --output-path runs/stk/copy.mol
+```
+
+Purpose: load an stk building block from a file and optionally export it.
+
+### `stk linear-polymer`
+
+```bash
+cspilot stk linear-polymer "BrCCBr" A 4 runs/stk/polymer.mol
+```
+
+Purpose: construct a linear polymer.
+
+### `stk replace-smiles`
+
+```bash
+cspilot stk replace-smiles "c1ccccc1" "[H]" "F" runs/stk/fluoro.mol
+```
+
+Purpose: edit a molecule with RDKit substructure replacement.
+
+### `stk export-xyz`
+
+```bash
+cspilot stk export-xyz runs/stk/benzene.mol runs/stk/benzene.xyz
+```
+
+Purpose: export molecule files to XYZ using stk/RDKit fallback.
+
+## NWPESSe And GreenCatAI
+
+### `nwpesse-search`
+
+```bash
+cspilot nwpesse-search "(h2o)4Mg" \
+  --workdir runs/h2o4mg --max-calculations 10 --box-size 3.0
+```
+
+Purpose: prepare and run a fragment-cluster global-minimum search.
+
+Output files: `mol.cluster`, `mol.inp`, `workflow_result.json`, NWPESSe
+stdout/stderr, candidate XYZ files, and `lowest_energy.xyz` when found.
+
+### `greencatai design-mbh`
+
+```bash
+cspilot greencatai design-mbh --output-dir runs/mbh_api \
+  --search-space configs/search_space.json --scoring configs/scoring.json
+```
+
+Purpose: call the installed GreenCatAI MBH catalyst-design API.
+
+Output files: GreenCatAI artifacts in the selected output directory and a JSON
+tool result.
+
+## Fixed Workflows
+
+```bash
+cspilot workflow xtb-orca-sp tests/examples/input.xyz --charge 0 --mult 1
+cspilot workflow xtb-orca-freq tests/examples/input.xyz --charge 0 --mult 1
+cspilot workflow mace-orca tests/examples/input.xyz --model /path/to/model.model
+```
+
+Output files: timestamped workflow directory with `workflow_result.json` and
+step subdirectories.

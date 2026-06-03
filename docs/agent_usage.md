@@ -1,104 +1,113 @@
 # Agent Usage
 
-## Deterministic Commands Versus Agent Mode
+## Deterministic Tools
 
-Use deterministic CLI commands when you know the operation and input file:
-
-```bash
-cspilot workflow xtb-orca-freq input.xyz --method r2scan-3c --basis def2-SVP
-```
-
-Use an agent command when the request needs interpretation, molecule input
-conversion, materials querying, or property retrieval:
+Deterministic commands call local Python functions and external binaries
+directly:
 
 ```bash
-cspilot agent "gibbs free energy of water in ORCA r2scan-3c" \
-  --workdir runs/water-agent --agent-profile chem
+cspilot inspect tests/examples/input.xyz
+cspilot xtb-opt tests/examples/input.xyz
+cspilot workflow xtb-orca-sp tests/examples/input.xyz
 ```
 
-The direct agent can select tools and write `agent_result.json`. It does not
-replace calculation programs or validate a scientific method choice.
+Use these when you already know the exact calculation.
 
-## Planner And Executor
+## Direct AGAPI Agent
 
-`plan`, `execute`, and `run` use a stricter JSON workflow:
-
-1. The planner requests a JSON list of registered tools and arguments from the
-   AGAPI model.
-2. The executor rejects names outside the selected profile allowlist.
-3. Each tool result is written as JSON.
-4. `run` verifies returned paths and workflow-relevant numeric property fields
-   and writes a report.
+`cspilot agent` runs an AGAPI/OpenAI-compatible tool-using agent:
 
 ```bash
-cspilot run "Find all Al2O3 materials" --workdir runs/al2o3 \
-  --profile materials --html
+cspilot agent "inspect tests/examples/input.xyz" \
+  --workdir runs/agent_test --agent-profile chem
 ```
 
-`--html` belongs to `run`; it writes `final_report.html`.
+It supports `--model`, `--base-url`, and `--agent-profile
+chem|materials|general`. Tool calls are still restricted to provided tools.
 
-## AGAPI Backend Selection
+## Planner and Executor
 
-Agent and planning calls need:
+`plan`, `execute`, and `run` provide a stricter JSON workflow:
 
-```dotenv
-AGAPI_API_KEY=your_api_key
-AGAPI_BASE_URL=https://atomgpt.org/api
-cspilot_MODEL=openai/gpt-oss-20b
-```
-
-The direct `agent` command can override model and base URL:
+1. AGAPI creates a JSON plan.
+2. The executor accepts only registered tools for the selected profile.
+3. Step results are written as JSON.
+4. Verification checks paths, success flags, and numeric values.
+5. A Markdown or HTML report is generated.
 
 ```bash
-cspilot agent "inspect input.xyz" --workdir runs/check \
-  --model openai/gpt-oss-20b --base-url https://atomgpt.org/api
+cspilot run "inspect tests/examples/input.xyz" --workdir runs/run_test --profile chem
 ```
+
+## LangGraph
+
+`graph-run` wraps the same planner, executor, verifier, and reporter in a
+LangGraph graph.
+
+Single mode:
+
+```text
+planner -> executor -> verifier -> reporter
+```
+
+```bash
+cspilot graph-run "inspect tests/examples/input.xyz" \
+  --workdir runs/water --profile chem --agent-mode single
+```
+
+Multi mode:
+
+```text
+router -> planner -> executor -> verifier -> reporter
+```
+
+```bash
+cspilot graph-run "Find all Al2O3 materials" \
+  --profile auto --agent-mode multi --html --workdir runs/al2o3
+```
+
+Multi-agent mode means deterministic specialist routing. It does not spawn
+parallel autonomous agents.
 
 ## Profiles
 
-`agent --agent-profile` currently accepts:
+Planner/graph profiles include:
 
-| Profile | Purpose |
+| Profile | Role |
 | --- | --- |
-| `chem` | Chemistry calculation, molecular input, stk, and GreenCatAI catalyst tools |
-| `materials` | Materials-oriented direct-agent instructions with local chemistry, stk, and GreenCatAI tools |
-| `general` | No registered direct-agent calculation tools |
+| `chem` | ASE, molecule conversion, xTB, ORCA, MACE, stk, NWPESSe, GreenCatAI |
+| `stk` | stk-focused planning with chemistry tools available for follow-up calculations |
+| `materials` | AGAPI materials query and GreenCatAI catalyst tools |
+| `analysis` | result JSON search and property extraction |
+| `thermo` | result JSON thermochemistry extraction |
+| `general` | no calculation tools unless explicit materials query rules apply |
+| `auto` | graph multi-mode router selects a specialist |
 
-`plan`, `execute`, and `run --profile` accept:
+## Repair Mode
 
-| Profile | Executor allowlist |
-| --- | --- |
-| `chem` | ASE/xTB/ORCA/MACE chemistry tools plus stk and GreenCatAI wrappers |
-| `materials` | AGAPI materials-query wrapper and GreenCatAI catalyst wrapper |
-| `analysis` | Result JSON search/property tools |
-| `thermo` | Result JSON search/property tools |
-| `general` | No calculation tools; materials query is permitted only when explicitly requested during `run` planning |
+`src/cspilot/agents/repair.py` implements a repair helper for missing-file
+handoffs and AGAPI repair fallback. The current `graph-run` integration uses
+the clean single or routed multi graph without a repair node. Treat repair as
+available implementation groundwork, not a current CLI mode.
 
-## Agent Rules
+## Pretty, HTML, and Quiet Output
 
-The implemented prompts and executor are designed to enforce these rules:
-
-- Use only provided or allowlisted tools.
-- Never invent structures, energies, files, or property values.
-- Prefer the fixed xTB to ORCA single-point workflow where applicable.
-- Use the xTB to ORCA frequency workflow for a new Gibbs free-energy request
-  in direct chem agent mode.
-- Use NWPESSe tools for global-minimum or cluster-search requests. NWPESSe
-  reports lowest energy, candidate count, and copied geometry; Gibbs free
-  energy, enthalpy, frequencies, HOMO/LUMO, and ORCA thermochemistry are not
-  required unless those values are explicitly present in returned JSON.
-- Search previous JSON output for requested existing properties.
-- Report unsupported behavior or absent properties clearly.
-
-Agent results remain dependent on external executables, external API responses,
-and the quality of the chosen computational method.
-
-## General Search Shortcut
-
-A quoted root-level question is routed to the same general agent used by `search`:
+`run` and `graph-run` support:
 
 ```bash
-cspilot "what is the chemical space?"
+--pretty / --no-pretty
+--quiet
+--html
 ```
 
-This requires the AGAPI environment variables and does not register calculation tools.
+- `--pretty` prints Rich panels and tables. It is the default.
+- `--no-pretty` prints the older simple terminal output.
+- `--quiet` prints only verification status and report path.
+- `--html` writes `final_report.html`; otherwise `final_report.md` is written.
+
+JSON files are always written regardless of terminal style.
+
+## Interactive Mode
+
+No interactive REPL mode is currently implemented. The CLI accepts explicit
+commands and natural-language request strings.

@@ -1,220 +1,115 @@
 # Examples
 
-The examples assume installation is complete and `.env.cspilot` contains paths
-for any external programs being used.
+Examples assume CSPilot is installed and `.env.cspilot` is configured for any
+external programs being used.
 
-## Inspect An XYZ File
+## Inspect XYZ
 
 ```bash
 cspilot inspect tests/examples/input.xyz
 ```
 
-Result: a structure table in the terminal and
-`runs/<timestamp>-inspect/result.json`.
-
-## Generate XYZ From A Molecule Name
-
-Molecule conversion is currently an agent tool rather than a standalone CLI
-subcommand:
+LangGraph equivalent:
 
 ```bash
-cspilot agent "Create an XYZ file for water at runs/water-agent/water.xyz" \
-  --workdir runs/water-agent --agent-profile chem
+cspilot graph-run "inspect examples/water.xyz" --workdir runs/water
 ```
 
-This requires AGAPI and PubChem access. For a deterministic Python call:
+If `examples/water.xyz` is not present, use `tests/examples/input.xyz`.
+
+## Molecule Name to XYZ
+
+Direct agent:
+
+```bash
+cspilot agent "Create an XYZ file for water at runs/water_agent/water.xyz" \
+  --workdir runs/water_agent --agent-profile chem
+```
+
+Python deterministic call:
 
 ```bash
 python -c "from cspilot.tools.mol_tools import molecule_name_to_xyz; print(molecule_name_to_xyz('water', 'runs/water.xyz'))"
 ```
 
-## Optimize With xTB
+## xTB Optimization
 
 ```bash
 cspilot xtb-opt tests/examples/input.xyz --charge 0 --uhf 0
 ```
 
-Result: `result.json` and, when xTB succeeds, `xtbopt.xyz`.
-
-## Run An ORCA Single Point
+## ORCA Single Point
 
 ```bash
-cspilot orca-sp tests/examples/input.xyz --method r2scan-3c \
-  --basis def2-SVP --charge 0 --mult 1
+cspilot orca-sp tests/examples/input.xyz \
+  --method r2scan-3c --basis def2-SVP --charge 0 --mult 1
 ```
 
-Result: `result.json`, `job.inp`, and `job.out` after successful ORCA
-execution.
-
-## xTB To ORCA Workflow
+## xTB to ORCA
 
 ```bash
-cspilot workflow xtb-orca-sp tests/examples/input.xyz --charge 0 --mult 1 \
-  --method r2scan-3c --basis def2-SVP
+cspilot workflow xtb-orca-sp tests/examples/input.xyz \
+  --charge 0 --mult 1 --method r2scan-3c --basis def2-SVP
 ```
 
-For a thermochemistry-capable frequency calculation:
+Frequency workflow:
 
 ```bash
-cspilot workflow xtb-orca-freq tests/examples/input.xyz --charge 0 --mult 1 \
-  --method r2scan-3c --basis def2-SVP
+cspilot workflow xtb-orca-freq tests/examples/input.xyz \
+  --charge 0 --mult 1 --method r2scan-3c --basis def2-SVP
 ```
 
-Result: `workflow_result.json`, with parsed properties only when present in
-successful ORCA output.
-
-## General Search
-
-A quoted question at the root CLI is routed to the general AGAPI-backed search agent:
+## stk Build and xTB
 
 ```bash
-cspilot "what is the chemical space?"
+cspilot stk-build-smiles "c1ccccc1" --workdir runs/stk_benzene
 ```
-
-Explicit equivalent:
 
 ```bash
-cspilot search "what is the chemical space?" --workdir runs/search-space
+cspilot stk-xtb "c1ccccc1" --workdir runs/stk_xtb
 ```
 
-## Build Or Edit Molecules With stk Tools
-
-The stk functions are available as deterministic cspilot CLI commands, Python functions, and agent tools:
+Graph request:
 
 ```bash
-cspilot stk-build-smiles "C1=CC=CC=C1" --workdir runs/stk_benzene
-cspilot stk-polymer "BrCCBr" --repeating-unit A \
-  --num-repeating-units 4 --workdir runs/stk_polymer
-cspilot stk-xtb "C1=CC=CC=C1" --workdir runs/stk_xtb
-cspilot stk replace-smiles CCO O N runs/stk/ethylamine.xyz
+cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 and optimize with xTB" \
+  --workdir runs/stk_benzene
 ```
 
-Agent equivalent:
+## stk to xTB to ORCA
 
 ```bash
-cspilot agent "Build an stk building block from BrCCBr and write runs/stk/bb.mol" \
-  --workdir runs/stk --agent-profile chem
+cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point" \
+  --workdir runs/stk_orca
 ```
 
-Direct Python call:
+This is a planned/executed agent workflow path, not a fixed deterministic
+`workflow` subcommand.
+
+## AGAPI Materials Query
 
 ```bash
-python -c "from cspilot.tools.stk_tools import stk_build_from_smiles; print(stk_build_from_smiles('C1=CC=CC=C1', 'runs/stk/benzene.mol'))"
+cspilot graph-run "Find all Al2O3 materials" \
+  --profile auto --agent-mode multi --html --workdir runs/al2o3
 ```
 
-Cage construction is currently planned but not enabled; the cage function
-returns a JSON error instead of attempting an unsafe arbitrary topology.
-
-## Design MBH Catalysts With GreenCatAI
+## Result JSON Property Extraction
 
 ```bash
-cspilot greencatai design-mbh \
-  --search-space /path/to/search_space.json \
-  --scoring /path/to/scoring.json \
-  --output-dir runs/mbh_api \
-  --generations 3 \
-  --population-size 30 \
-  --top-n-xtb 0 \
-  --top-n-orca 0
+cspilot run "extract Gibbs free energy from the latest result JSON in runs/water" \
+  --workdir runs/query --profile analysis
 ```
 
-Native GreenCatAI equivalent:
+## NWPESSe
 
 ```bash
-greencatai design-mbh \
-  --search-space /path/to/search_space.json \
-  --scoring /path/to/scoring.json \
-  --output-dir runs/mbh_api \
-  --generations 3 \
-  --population-size 30
+cspilot nwpesse-search "(h2o)4Mg" \
+  --workdir runs/h2o4mg --max-calculations 10 --box-size 3.0
 ```
 
-Agent equivalent:
+## Quiet and HTML Reports
 
 ```bash
-cspilot agent "Design MBH catalysts with GreenCatAI for 3 generations, population size 30, no xTB or ORCA screening, output in runs/mbh_api" \
-  --workdir runs/mbh-agent --agent-profile chem
+cspilot graph-run "inspect tests/examples/input.xyz" --workdir runs/water --quiet
+cspilot graph-run "Find all Al2O3 materials" --workdir runs/al2o3 --profile auto --agent-mode multi --html
 ```
-
-Direct Python call:
-
-```bash
-python -c "from cspilot.tools.greencatai_tools import greencatai_design_mbh_catalysts; print(greencatai_design_mbh_catalysts('runs/mbh_api', search_space='/path/to/search_space.json', scoring='/path/to/scoring.json', generations=3, population_size=30, top_n_xtb=0, top_n_orca=0))"
-```
-
-## Find A Fragment-Cluster Global Minimum With NWPESSe
-
-Configure the external binary first:
-
-```dotenv
-NWPESSE_BIN=/home/anoop/apps/nwpesse/nwpesse
-```
-
-Formula form:
-
-```bash
-cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg \
-  --max-calculations 10 --box-size 3.0
-```
-
-Single-box placement:
-
-```bash
-cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg_single \
-  --box-mode single --box-size 5.0
-```
-
-Explicit fragment form:
-
-```bash
-cspilot nwpesse-search --fragment h2o:4 --fragment mg:1 \
-  --workdir runs/h2o4mg
-```
-
-Agent/planner form:
-
-```bash
-cspilot run "Find the global minimum for (H2O)4Mg with NWPESSe, 10 calculations and box size 3.0" \
-  --workdir runs/h2o4mg-agent --profile chem
-```
-
-Result: `mol.cluster`, `mol.inp`, run stdout/stderr, `nwpesse_run.json`,
-`lowest_energy.xyz`, and `workflow_result.json`. NWPESSe candidate files under
-`nwpesse_result-LM/` are parsed from line 2 energy strings such as
-`Energy = -505.86549251 au`.
-
-## Query AGAPI Materials
-
-```bash
-cspilot run "Find all Al2O3 materials" --workdir runs/al2o3 \
-  --profile materials --html
-```
-
-Result: plan, step and execution JSON files, verification JSON, and
-`runs/al2o3/final_report.html`.
-
-## Extract A Property From Existing JSON Results
-
-Using the analysis planner/executor profile:
-
-```bash
-cspilot run "Find the Gibbs free energy in runs/water-freq/workflow_result.json" \
-  --workdir runs/water-analysis --profile analysis
-```
-
-Or call the deterministic Python function directly:
-
-```bash
-python -c "from cspilot.tools.result_tools import get_property_from_result; print(get_property_from_result('runs/water-freq/workflow_result.json', 'gibbs free energy'))"
-```
-
-If Gibbs free energy was not present in the selected JSON, the result reports
-that it was not found.
-
-## Check Documentation Consistency
-
-```bash
-cspilot docs-check
-```
-
-The checker validates required documentation pages, common template leftovers, and CLI usage coverage.

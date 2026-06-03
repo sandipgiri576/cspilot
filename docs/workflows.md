@@ -1,158 +1,115 @@
 # Workflows
 
-All fixed workflows accept an XYZ input, copy it into a new timestamped run
-directory under `CSPILOT_RUNS_DIR`, execute sequential steps, and write
-`workflow_result.json`.
-
-## xTB Optimization To ORCA Single Point
+## xTB Optimization
 
 ```bash
-cspilot workflow xtb-orca-sp input.xyz --charge 0 --mult 1 \
-  --method r2scan-3c --basis def2-SVP --uhf 0 --nprocs 1
+cspilot xtb-opt tests/examples/input.xyz --charge 0 --uhf 0
 ```
 
-Steps:
+Inputs: XYZ file, charge, UHF count.
 
-1. Copy `input.xyz`.
-2. Optimize geometry using xTB in `01_xtb_opt/`.
-3. If `xtbopt.xyz` exists after a successful optimization, run ORCA SP with
-   OPI in `02_orca_sp/`.
-4. Store parsed final energy when available.
+Outputs: timestamped run directory, copied input, `result.json`, and xTB output
+files such as `xtbopt.xyz` when xTB succeeds.
 
-## xTB Optimization To ORCA Frequency
+## ORCA Single Point Through OPI
 
 ```bash
-cspilot workflow xtb-orca-freq input.xyz --charge 0 --mult 1 \
-  --method r2scan-3c --basis def2-SVP --uhf 0 --nprocs 1
+cspilot orca-sp tests/examples/input.xyz \
+  --method r2scan-3c --basis def2-SVP --charge 0 --mult 1
 ```
 
-Steps are the same as above, except step 3 invokes an ORCA frequency job in
-`02_orca_freq/`. OPI or the fallback text parser may store
-`gibbs_free_energy`, `enthalpy`, or zero-point energy if those values occur in
-the completed ORCA output.
+Inputs: XYZ file, method, basis, charge, multiplicity.
 
-## MACE Optimization To ORCA Single Point
+Outputs: timestamped run directory, `result.json`, ORCA input/output files, and
+parsed properties when present in ORCA output.
+
+## xTB to ORCA Single Point
 
 ```bash
-cspilot workflow mace-orca input.xyz --model /path/to/model.model \
+cspilot workflow xtb-orca-sp tests/examples/input.xyz \
   --charge 0 --mult 1 --method r2scan-3c --basis def2-SVP
 ```
 
 Steps:
 
-1. Copy `input.xyz`.
-2. Optimize geometry with MACE in `01_mace_opt/`.
-3. If MACE succeeds and creates `mace_opt.xyz`, run ORCA SP in `02_orca_sp/`.
+1. Copy input XYZ.
+2. Run xTB optimization in `01_xtb_opt/`.
+3. Use optimized XYZ for ORCA SP in `02_orca_sp/`.
+4. Write `workflow_result.json`.
 
-MACE requires the `mace` optional dependency and a valid local model. If
-`--model` is absent, this workflow reads `MACE_MODEL`.
-
-## stk SMILES To xTB Optimization
+## xTB to ORCA Frequency
 
 ```bash
-cspilot stk-xtb "C1=CC=CC=C1" --workdir runs/stk_xtb
+cspilot workflow xtb-orca-freq tests/examples/input.xyz \
+  --charge 0 --mult 1 --method r2scan-3c --basis def2-SVP
+```
+
+The second ORCA step is a frequency job. Gibbs free energy, enthalpy,
+frequencies, and related values are reported only when parsed from output.
+
+## MACE to ORCA
+
+```bash
+cspilot workflow mace-orca tests/examples/input.xyz \
+  --model /path/to/model.model --charge 0 --mult 1
+```
+
+Requires `mace-torch` and a valid MACE model. If `--model` is omitted, the
+workflow uses `MACE_MODEL`.
+
+## stk to xTB
+
+```bash
+cspilot stk-xtb "c1ccccc1" --workdir runs/stk_xtb --charge 0 --uhf 0
 ```
 
 Steps:
 
-1. Build a molecule from SMILES with `stk_build_from_smiles`.
-2. Export `stk_build.xyz` with `stk_export_to_xyz`.
-3. Run the existing xTB optimizer in `xtb_opt/`.
+1. Build a molecule from SMILES.
+2. Export XYZ.
+3. Run xTB optimization.
 4. Save `workflow_result.json`.
 
-This workflow does not use `stko`. If xTB is not available, the build/export
-steps can still be recorded and the xTB step is reported as skipped or failed.
+## stk to xTB to ORCA
 
-## NWPESSe Fragment-Cluster Global-Minimum Search
+There is no fixed deterministic `stk-to-xtb-orca` CLI command yet. Use the
+planner/graph path:
 
 ```bash
-cspilot nwpesse-search "(h2o)4Mg" --workdir runs/h2o4mg \
-  --max-calculations 10 --box-size 3.0
+cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point" \
+  --workdir runs/stk_orca --profile chem --agent-mode single
 ```
 
-Steps:
+The planner should create an stk build step producing an XYZ, then pass that
+same XYZ into the xTB to ORCA workflow tool.
 
-1. Parse the fragment formula or use explicit `--fragment name:count` options.
-2. Copy fragment XYZ files from `--fragment-dir`, or generate known simple
-   fragments from the internal library.
-3. Write `mol.cluster`.
-4. Generate validated placement boxes. The default `per_fragment_type` mode
-   creates one `inbox` line per unique fragment type; `single` creates one box
-   for the whole system.
-5. Write `mol.inp` using the whitelisted `xtb_gxtb` optimizer block.
-6. Run the external NWPESSe binary configured by `NWPESSE_BIN`.
-7. Scan generated XYZ candidates in `<result-name>-LM/`, any `*-LM/` folder,
-   and recursively under the workdir. Energies are parsed from line 2 formats
-   such as `Energy = -505.86549251 au`, `E = -505.86549251 au`, or a bare
-   number.
-8. Copy the best candidate to `lowest_energy.xyz` and save
-   `workflow_result.json`.
+## AGAPI Materials Query
 
-`mol.cluster` format:
-
-```text
-2
-h2o.xyz 4
-mg.xyz 1
+```bash
+cspilot graph-run "Find all Al2O3 materials" \
+  --profile auto --agent-mode multi --html --workdir runs/al2o3
 ```
 
-`mol.inp` format:
+This uses the materials profile when routed successfully and records AGAPI
+response content in JSON. It does not run local DFT.
 
-```text
-nwpesse_result
-mol.cluster
-10
->>>>
-inbox 0. 0. 0. 3.0 3.0 3.0
-inbox 0. 0. 0. 3.0 3.0 3.0
->>>>
-cp $inp$ $xxx$.xyz
-xtb $xxx$.xyz --gxtb --opt  > $xxx$.out
-energy=`awk 'NR==2{print $2}' xtbopt.xyz` ; sed -i "2c ${energy}" xtbopt.xyz
-mv xtbopt.xyz $out$
-rm $xxx$.xyz $xxx$.out  charges wbo xtbopt.log xtbrestart *.mol
->>>>
+## Result JSON Extraction
+
+```bash
+cspilot run "extract Gibbs free energy from the latest result JSON in runs/water" \
+  --workdir runs/query --profile analysis
 ```
 
-Supported formula forms include `(h2o)4Mg`, `(h2o)4(Mg)`,
-`[h2o]4[mg]1`, `h2o:4,mg:1`, and `h2o 4 mg 1`.
+The result tools search stored JSON and return matching properties by alias.
+If a property is absent, reports say it was not found in parsed results.
 
-For `(h2o)4`, default `per_fragment_type` writes one box line. For
-`(h2o)4Mg`, it writes two box lines. Use `--box-mode single --box-size 5.0`
-to place the whole system in one larger box.
+## NWPESSe Global-Minimum Search
 
-## Result JSON Shape
-
-The workflow result is a JSON object of the following form; property keys are
-present only when returned by tools:
-
-```json
-{
-  "workflow": "xtb-orca-freq",
-  "status": "ok",
-  "input_xyz": "/absolute/path/input.xyz",
-  "workdir": "runs/<timestamp>-xtb-orca-freq",
-  "steps": {
-    "xtb_opt": {
-      "status": "ok",
-      "outputs": {
-        "optimized_xyz": "runs/.../01_xtb_opt/xtbopt.xyz"
-      }
-    },
-    "orca_freq": {
-      "status": "ok",
-      "task": "freq",
-      "result": {
-        "properties": {
-          "final_energy_hartree": -1.0,
-          "gibbs_free_energy": -1.0
-        }
-      }
-    }
-  },
-  "final_energy_hartree": -1.0,
-  "workflow_result_path": "runs/.../workflow_result.json"
-}
+```bash
+cspilot nwpesse-search "(h2o)4Mg" \
+  --workdir runs/h2o4mg --max-calculations 10 --box-size 3.0
 ```
 
-The numbers above show structure only and are not expected calculation values.
+Outputs include `mol.cluster`, `mol.inp`, external run logs,
+`workflow_result.json`, candidate XYZ files, and `lowest_energy.xyz` when a
+valid lowest-energy structure is parsed.

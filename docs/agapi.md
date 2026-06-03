@@ -1,10 +1,9 @@
 # AGAPI Integration
 
-`cspilot` contains two related AGAPI integration paths.
+CSPilot uses AGAPI through OpenAI-compatible clients and optional prebuilt
+AGAPI tools.
 
-## OpenAI-Compatible Agent Backend
-
-The Agents SDK path constructs an asynchronous OpenAI-compatible client using:
+## Configuration
 
 ```dotenv
 AGAPI_API_KEY=your_api_key
@@ -12,45 +11,57 @@ AGAPI_BASE_URL=https://atomgpt.org/api
 cspilot_MODEL=openai/gpt-oss-20b
 ```
 
-It is used by `cspilot agent`, `cspilot plan`, and `cspilot run`. The model
-selects only the tools made available by the relevant agent or profile
-registry.
-
-The direct agent supports model/backend overrides:
+## Direct Agent
 
 ```bash
-cspilot agent "inspect input.xyz" --workdir runs/agent-check \
-  --model openai/gpt-oss-20b --base-url https://atomgpt.org/api
+cspilot agent "inspect tests/examples/input.xyz" \
+  --workdir runs/agent_test --agent-profile chem
 ```
 
-## AGAPI Prebuilt Materials Query
+`agent` supports:
 
-The optional `agapi_materials_query` wrapper imports the AGAPI prebuilt
-`AGAPIAgent` and delegates to:
+```bash
+--model openai/gpt-oss-20b
+--base-url https://atomgpt.org/api
+--agent-profile chem|materials|general
+```
+
+## Planner, Run, and LangGraph
+
+AGAPI planning is used by:
+
+```bash
+cspilot plan "inspect tests/examples/input.xyz" --workdir runs/plan
+cspilot run "inspect tests/examples/input.xyz" --workdir runs/run
+cspilot graph-run "inspect tests/examples/input.xyz" --workdir runs/graph
+```
+
+The model returns JSON plans. The executor calls only registered tools from the
+selected profile allowlist.
+
+## AGAPI Materials Query Wrapper
+
+When the AGAPI prebuilt `AGAPIAgent` is available, CSPilot can delegate
+materials queries:
+
+```bash
+cspilot graph-run "Find all Al2O3 materials" \
+  --profile auto --agent-mode multi --html --workdir runs/al2o3
+```
+
+The wrapper calls the equivalent of:
 
 ```python
 agent.query_sync(query, render_html=render_html)
 ```
 
-It is exposed through the planner/executor registry for the `materials`
-profile:
+## Local Tools vs AGAPI Tools
 
-```bash
-cspilot run "Find all Al2O3 materials" --workdir runs/al2o3 \
-  --profile materials --html
-```
-
-The `--html` switch above controls cspilot's final execution report.
-`AGAPIAgent` may display its own rendered output in notebook environments; the
-cspilot result records the returned response content.
-
-## Local Tools Versus AGAPI Prebuilt Tools
-
-| Kind | Examples | Authority for returned data |
+| Path | Examples | Data source |
 | --- | --- | --- |
-| Local cspilot tool | ASE inspection, xTB, ORCA/OPI, MACE, JSON parsing | Local inputs and local executable output |
-| AGAPI prebuilt tool | Materials/JARVIS-style natural-language query | AGAPI service response |
+| Local CSPilot tools | ASE, xTB, ORCA/OPI, MACE, stk, NWPESSe | local files and local executables |
+| AGAPI planner | `plan`, `run`, `graph-run` | JSON tool selection only |
+| AGAPI prebuilt tools | materials/JARVIS-style query | AGAPI response |
 
-AGAPI is not used to fabricate local ORCA or xTB results. If a local
-calculation did not run or a parsed property is absent, reports must state
-that limitation.
+AGAPI is not used to invent xTB or ORCA outputs. If a property is missing from
+parsed output, reports say it was not found in parsed results.

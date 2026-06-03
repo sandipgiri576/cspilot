@@ -1,13 +1,13 @@
 # Tools
 
-This page describes implemented Python and agent tools. Not every Python
-function is a standalone CLI command.
+This page describes implemented Python tools and agent wrappers in
+`src/cspilot/tools/`.
 
-## Structure Tools
+## ASE
 
-Module: `cspilot.tools.ase_tools`
+Module: `ase_tools.py`
 
-| Function | Behavior |
+| Function | Purpose |
 | --- | --- |
 | `load_structure` | Read a structure with ASE. |
 | `save_structure` | Write a structure with ASE. |
@@ -15,123 +15,112 @@ Module: `cspilot.tools.ase_tools`
 
 Agent wrapper: `inspect_structure`.
 
-## Molecule Conversion Tools
+## Molecule Conversion
 
-Module: `cspilot.tools.mol_tools`
+Module: `mol_tools.py`
 
-| Function | Behavior |
+| Function | Purpose |
 | --- | --- |
-| `molecule_name_to_smiles` | Resolve a name using PubChem. |
-| `validate_smiles` | Validate and canonicalize a SMILES string with RDKit. |
-| `canonicalize_smiles` | Return canonical RDKit SMILES. |
-| `smiles_to_xyz` | Embed conformers with ETKDGv3, minimize with MMFF or UFF, and write the lowest-energy XYZ conformer. |
-| `molecule_name_to_xyz` | Combine PubChem lookup and RDKit XYZ generation. |
+| `molecule_name_to_smiles` | PubChem name lookup. |
+| `validate_smiles` | RDKit SMILES validation. |
+| `canonicalize_smiles` | RDKit canonical SMILES. |
+| `smiles_to_xyz` | RDKit ETKDG conformer generation and MMFF/UFF minimization. |
+| `molecule_name_to_xyz` | PubChem name lookup followed by RDKit XYZ generation. |
 
-These are exposed to the direct agent as tools; there are currently no
-standalone molecule-conversion CLI subcommands.
+Agent wrappers include `molecule_name_to_smiles_tool`, `smiles_to_xyz_tool`,
+`molecule_name_to_xyz_tool`, `validate_smiles_tool`, and
+`canonicalize_smiles_tool`.
 
-## xTB Tools
+## stk
 
-Module: `cspilot.tools.xtb_tools`
+Module: `stk_tools.py`
 
-| Function | Behavior |
+| Function | Purpose |
 | --- | --- |
-| `optimize_with_xtb` | Execute `XTB_COMMAND <input> --opt --chrg ... --uhf ...` and return expected optimization paths. |
+| `stk_build_from_smiles` | Build an stk/RDKit molecule from SMILES and write `.mol`, `.sdf`, or `.xyz`. |
+| `stk_building_block_from_file` | Load an stk building block from a molecule file. |
+| `stk_linear_polymer_from_smiles` | Construct a linear polymer with a whitelisted stable path. |
+| `stk_construct_cage_from_smiles` | Returns a clear unsupported result for cage topologies until safe presets are implemented. |
+| `rdkit_replace_substructure` | RDKit-based molecule editing. |
+| `stk_export_to_xyz` | Export molecule files to XYZ with stk/RDKit/ASE fallback. |
+
+CLI commands: `stk-build-smiles`, `stk-polymer`, `stk-xtb`, and the `stk`
+subcommands.
+
+## xTB
+
+Module: `xtb_tools.py`
+
+| Function | Purpose |
+| --- | --- |
+| `optimize_with_xtb` | Run xTB geometry optimization through the configured command. |
 
 CLI: `xtb-opt`. Agent wrapper: `run_xtb_optimize`.
 
-xTB single-point calculation is not currently implemented.
+## ORCA / OPI
 
-## ORCA And OPI Tools
+Module: `opi_orca_tools.py`
 
-Module: `cspilot.tools.opi_orca_tools`
-
-| Function | Behavior |
+| Function | Purpose |
 | --- | --- |
-| `orca_single_point` | Create and execute an OPI ORCA SP job. |
-| `orca_optimize` | Create and execute an OPI ORCA optimization job. |
-| `orca_frequency` | Create and execute an OPI ORCA frequency job. |
-| `parse_orca_result` | Parse with OPI where possible and fill missing supported values from ORCA text. |
-| `single_point_with_orca` | Adapter used by `orca-sp`. |
+| `orca_single_point` | OPI ORCA single point. |
+| `orca_optimize` | OPI ORCA optimization. |
+| `orca_frequency` | OPI ORCA frequency. |
+| `parse_orca_result` | OPI parsing plus fallback text parsing. |
+| `single_point_with_orca` | CLI adapter for `orca-sp`. |
 
-The parser can report returned final energy, orbital-gap data, dipole,
-zero-point energy, Gibbs free energy, enthalpy, entropy, and IR data when
-available in successful output. It does not synthesize missing properties.
+Parsed values may include energies, orbital data, dipole, thermochemistry, and
+frequencies when those values exist in ORCA output. Missing values are not
+invented.
 
-## MACE Tools
+## MACE
 
-Module: `cspilot.tools.mace_tools`
+Module: `mace_tools.py`
 
-`optimize_with_mace` runs ASE BFGS with `MACECalculator`, writes an optimized
-XYZ, trajectory, and log, and returns the MACE energy when successful. It
-requires `mace-torch` and a model file.
+| Function | Purpose |
+| --- | --- |
+| `optimize_with_mace` | ASE optimization with `MACECalculator`. |
 
 CLI: `mace-opt`. Agent wrapper: `run_mace_optimize`.
 
-## stk Molecule Construction Tools
+## AGAPI Materials
 
-Module: `cspilot.tools.stk_tools`
+Module: `agapi_materials_tools.py`
 
-| Function | Behavior |
+| Function | Purpose |
 | --- | --- |
-| `stk_build_from_smiles` | Create an `stk.BuildingBlock` from SMILES and export `.mol`, `.sdf`, or `.xyz`; falls back to RDKit export if the local stk import is unavailable. |
-| `stk_building_block_from_file` | Load a building block with `stk.BuildingBlock.init_from_file`. |
-| `stk_linear_polymer_from_smiles` | Build a brominated linear polymer with `stk.polymer.Linear` when stk imports safely. |
-| `stk_construct_cage_from_smiles` | Returns a clear unsupported JSON result until safe cage topology presets are added. |
-| `rdkit_replace_substructure` | Replace a substructure with RDKit and export the edited molecule. |
-| `stk_export_to_xyz` | Export a molecule file to XYZ with stk/RDKit fallback. |
+| `agapi_materials_query` | Optional wrapper around AGAPI prebuilt materials query. |
 
-The stk dependency is optional. Missing or CPU-incompatible `stk` imports return JSON errors instead of crashing where possible. Cage construction is intentionally not enabled yet because the notebook examples require topology-specific functional-group presets. Arbitrary Python and arbitrary topology lookup are not exposed. Stable commands are available as root CLI commands such as `cspilot stk-build-smiles`, `cspilot stk-polymer`, and `cspilot stk-xtb`, with lower-level `cspilot stk ...` commands for file/export/edit helpers.
+Agent wrapper: `agapi_materials_query_tool`.
 
-## GreenCatAI Catalyst Tools
+## Result Tools
 
-Module: `cspilot.tools.greencatai_tools`
+Module: `result_tools.py`
 
-`greencatai_design_mbh_catalysts` calls the public GreenCatAI API:
-
-```python
-from greencatai.api import design_mbh_catalysts
-```
-
-It supports MBH catalyst-design parameters from the GreenCatAI cspilot interface, including `search_space`, `scoring`, `library`, `max_candidates`, `generations`, `population_size`, `top_n_xtb`, and `top_n_orca`. It is available as `cspilot greencatai design-mbh ...` and as an agent tool. GreenCatAI remains responsible for catalyst libraries, scaffold rules, filters, scoring, and future design logic.
-
-## NWPESSe Global-Minimum Tools
-
-Module: `cspilot.tools.nwpesse_tools`
-
-| Function | Behavior |
+| Function | Purpose |
 | --- | --- |
-| `write_fragment_xyz` | Write predefined fragment XYZ files for `h2o`/`water`, `mg`, `na`, `k`, `ca`, `li`, `cl`, `o2`, `co2`, `nh3`, `ch4`, or any valid single element symbol. |
-| `parse_cluster_formula` | Parse fragment formulas such as `(h2o)4Mg`, `[h2o]4[mg]1`, `h2o:4,mg:1`, or `h2o 4 mg 1`. |
-| `write_mol_cluster` | Write `mol.cluster` as unique fragment count plus `<fragment>.xyz <count>` lines. |
-| `write_nwpesse_input` | Write `mol.inp` using only whitelisted optimizer blocks. Currently `xtb_gxtb` is implemented. |
-| `run_nwpesse` | Run `[NWPESSE_BIN, mol.inp]`, saving stdout/stderr and `nwpesse_run.json`. |
-| `find_lowest_energy_geometry` | Scan generated XYZ files whose second line is numeric and select the lowest energy. |
+| `find_result_json` | Recursively find result JSON files. |
+| `load_result_json` | Load a JSON result file. |
+| `get_property_from_result` | Find a property through recursive lookup and aliases. |
 
-NWPESSe tools do not call PubChem and do not atomize arbitrary molecular
-formula strings. Unknown fragments must be supplied manually through
-`--fragment-dir`. The optimizer block is selected from a code whitelist; custom
-shell blocks from users or LLMs are not accepted.
+Agent wrappers: `find_result_json_tool`, `get_property_from_result_tool`, and
+name-overridden direct-agent variants.
 
-## AGAPI Materials Tools
+## NWPESSe
 
-Module: `cspilot.tools.agapi_materials_tools`
+Module: `nwpesse_tools.py`
 
-`agapi_materials_query` optionally imports `AGAPIAgent` and delegates a
-natural-language materials query through its prebuilt `query_sync` function.
-It is available to planner/executor workflows in the `materials` profile and
-for explicit materials requests in the `general` run profile.
+Implemented helpers parse fragment formulas, generate validated box configs,
+write `mol.cluster` and `mol.inp`, run the external NWPESSe binary, parse
+candidate XYZ second-line energies, and copy the lowest-energy structure.
 
-## Result JSON Tools
+CLI: `nwpesse-search`. Agent wrapper: `nwpesse_global_minimum_search_tool`.
 
-Module: `cspilot.tools.result_tools`
+## GreenCatAI
 
-| Function | Behavior |
-| --- | --- |
-| `find_result_json` | Recursively find supported run JSON records. |
-| `load_result_json` | Load JSON from a supplied path. |
-| `get_property_from_result` | Search nested results using supported aliases. |
+Module: `greencatai_tools.py`
 
-Supported query aliases include Gibbs free energy, enthalpy, electronic/final
-energy, HOMO-LUMO gap, and frequencies. Failure to find a property returns an
-explicit error rather than a guessed value.
+`greencatai_design_mbh_catalysts` calls the installed GreenCatAI MBH design API
+when available.
+
+CLI: `greencatai design-mbh`. Agent wrapper: `design_mbh_catalysts_tool`.

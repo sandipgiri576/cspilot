@@ -1,22 +1,31 @@
 # Updating Documentation
 
-Documentation is part of a user-facing change. Every time a function, tool,
-workflow, command, or configurable integration is added or changed:
+Documentation must be updated with each user-facing change.
 
-- Update `README.md` when the capability is user-facing.
-- Update `docs/tools.md` for each new or changed tool.
-- Update `docs/workflows.md` for each new or changed workflow.
-- Update `docs/cli_usage.md` for each new or changed CLI command or option.
-- Update `docs/configuration.md` for each new or changed environment variable.
-- Update `docs/examples.md` when a new use case becomes possible.
-- Add or update tests that establish the documented behavior.
-- Add a changelog entry when `CHANGELOG.md` exists.
+Every new tool, workflow, CLI command, or CLI flag must update:
+
+- `README.md` if the feature is user-facing.
+- `docs/tools.md` if a tool or agent wrapper changes.
+- `docs/workflows.md` if a workflow changes.
+- `docs/cli_usage.md` if a command, option, or output file changes.
+- `docs/configuration.md` if an environment variable or external binary path
+  changes.
+- `docs/examples.md` if a new use case becomes possible.
+- Tests that establish the documented behavior.
+
+Also update:
+
+- `docs/agent_usage.md` for planning, agent, profile, LangGraph, or reporting
+  behavior.
+- `docs/agapi.md` for AGAPI backend, model, or materials-query changes.
+- `docs/safety.md` when execution boundaries or verification behavior changes.
+- `docs/roadmap.md` when planned work becomes implemented or changes stage.
+- `CHANGELOG.md` when it exists and the change is release-relevant.
 
 ## Accuracy Rules
 
-- Read implementation code before documenting an interface.
-- Do not publish commands, environment variables, files, or outputs that are
-  not implemented.
-- Clearly label roadmap work as planned.
-- Never place real API keys, licensed-software data, or private paths in
-  documentation examples.
+- Inspect the source before documenting a command.
+- Do not invent commands or output files.
+- Mark planned features as planned.
+- Keep examples copy-pasteable.
+- Never include real API keys or private licensed-software paths.
