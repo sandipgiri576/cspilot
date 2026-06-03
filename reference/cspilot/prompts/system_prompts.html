@@ -1030,6 +1030,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../agents/router.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  router
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../agents/verifier.html" class="md-nav__link">
         
   
@@ -1315,10 +1342,76 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.ANALYSIS_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        ANALYSIS_PROMPT
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.CHEM_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        CHEM_PROMPT
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.GENERAL_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GENERAL_PROMPT
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.MATERIALS_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        MATERIALS_PROMPT
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cspilot.prompts.system_prompts.PROFILES" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
         PROFILES
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.STK_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        STK_PROMPT
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.THERMO_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        THERMO_PROMPT
       </span>
     </span>
   </a>
@@ -2209,10 +2302,76 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.ANALYSIS_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        ANALYSIS_PROMPT
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.CHEM_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        CHEM_PROMPT
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.GENERAL_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GENERAL_PROMPT
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.MATERIALS_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        MATERIALS_PROMPT
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cspilot.prompts.system_prompts.PROFILES" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
         PROFILES
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.STK_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        STK_PROMPT
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cspilot.prompts.system_prompts.THERMO_PROMPT" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        THERMO_PROMPT
       </span>
     </span>
   </a>
@@ -2474,6 +2633,94 @@
 
 
 
+<h2 id="cspilot.prompts.system_prompts.ANALYSIS_PROMPT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">ANALYSIS_PROMPT</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#cspilot.prompts.system_prompts.ANALYSIS_PROMPT" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">ANALYSIS_PROMPT</span> <span class="o">=</span> <span class="s1">&#39;You are a calculation-result analysis assistant. Use available ORCA result JSON query tools only. Multiwfn tools are not available unless explicitly provided in the allowed tool list. Never infer absent properties.&#39;</span>
+</span></code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="cspilot.prompts.system_prompts.CHEM_PROMPT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">CHEM_PROMPT</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#cspilot.prompts.system_prompts.CHEM_PROMPT" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">CHEM_PROMPT</span> <span class="o">=</span> <span class="s1">&#39;You are a computational chemistry planning assistant. Use only ASE, xTB, ORCA/OPI, MACE, stk, NWPESSe, and GreenCatAI tools that are provided. Prefer run_xtb_orca_workflow for xTB optimization followed by ORCA single point. For stk molecule generation followed by calculation, use the same generated XYZ path as output_path in the stk step and input_xyz in the calculation step. For molecule names or SMILES without an existing XYZ file, create the XYZ with the provided molecule conversion tools before any calculation step. Use canonical argument names and let the executor supply the workdir. Use nwpesse_global_minimum_search for global-minimum or cluster-search requests. For NWPESSe, use structured box_mode and box_size arguments only; do not write raw mol.inp. Never invent structures, energies, files, or completed calculations.&#39;</span>
+</span></code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="cspilot.prompts.system_prompts.GENERAL_PROMPT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">GENERAL_PROMPT</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#cspilot.prompts.system_prompts.GENERAL_PROMPT" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">GENERAL_PROMPT</span> <span class="o">=</span> <span class="s1">&#39;You are a general scientific search and explanation assistant. Do not use calculation tools. Materials or catalyst-design tools may be used only when the user explicitly requests an AGAPI, JARVIS, materials, GreenCatAI, or catalyst search. State clearly when requested functionality is unavailable.&#39;</span>
+</span></code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="cspilot.prompts.system_prompts.MATERIALS_PROMPT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">MATERIALS_PROMPT</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#cspilot.prompts.system_prompts.MATERIALS_PROMPT" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">MATERIALS_PROMPT</span> <span class="o">=</span> <span class="s1">&#39;You are a materials-query planning assistant. Use only available AGAPI/JARVIS/materials query and catalyst-design tools. Do not claim database matches, materials properties, or files unless a tool returns them.&#39;</span>
+</span></code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
 <h2 id="cspilot.prompts.system_prompts.PROFILES" class="doc doc-heading">
             <span class="doc doc-object-name doc-attribute-name">PROFILES</span>
 
@@ -2488,27 +2735,106 @@
 
   &lt;span class=&quot;doc doc-labels&quot;&gt;
       &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="s1">&#39;You are a computational chemistry planning assistant. Use only ASE, xTB, ORCA/OPI, MACE, stk, NWPESSe, and GreenCatAI tools that are provided. Prefer run_xtb_orca_workflow for xTB optimization followed by ORCA single point. For stk molecule generation followed by calculation, use the same generated XYZ path as output_path in the stk step and input_xyz in the calculation step. For molecule names or SMILES without an existing XYZ file, create the XYZ with the provided molecule conversion tools before any calculation step. Use canonical argument names and let the executor supply the workdir. Use nwpesse_global_minimum_search for global-minimum or cluster-search requests. For NWPESSe, use structured box_mode and box_size arguments only; do not write raw mol.inp. Never invent structures, energies, files, or completed calculations.&#39;</span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;chemistry&#39;</span><span class="p">,</span> <span class="s1">&#39;stk&#39;</span><span class="p">,</span> <span class="s1">&#39;catalysis&#39;</span><span class="p">),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;markdown&#39;</span><span class="p">),</span> <span class="s1">&#39;materials&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PromptProfile&lt;/span&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;CHEM_PROMPT&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-module-attribute&quot;&gt;&lt;code&gt;module-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.CHEM_PROMPT">CHEM_PROMPT</a></span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;chemistry&#39;</span><span class="p">,</span> <span class="s1">&#39;stk&#39;</span><span class="p">,</span> <span class="s1">&#39;catalysis&#39;</span><span class="p">),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;markdown&#39;</span><span class="p">),</span> <span class="s1">&#39;stk&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PromptProfile&lt;/span&gt;
 
 
   &lt;span class=&quot;doc doc-labels&quot;&gt;
       &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="s1">&#39;You are a materials-query planning assistant. Use only available AGAPI/JARVIS/materials query and catalyst-design tools. Do not claim database matches, materials properties, or files unless a tool returns them.&#39;</span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;materials&#39;</span><span class="p">,</span> <span class="s1">&#39;catalysis&#39;</span><span class="p">),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;markdown&#39;</span><span class="p">),</span> <span class="s1">&#39;analysis&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PromptProfile&lt;/span&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;STK_PROMPT&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-module-attribute&quot;&gt;&lt;code&gt;module-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.STK_PROMPT">STK_PROMPT</a></span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;stk&#39;</span><span class="p">,</span> <span class="s1">&#39;chemistry&#39;</span><span class="p">),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;markdown&#39;</span><span class="p">),</span> <span class="s1">&#39;materials&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PromptProfile&lt;/span&gt;
 
 
   &lt;span class=&quot;doc doc-labels&quot;&gt;
       &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="s1">&#39;You are a calculation-result analysis assistant. Use available ORCA result JSON query tools only. Multiwfn tools are not available unless explicitly provided in the allowed tool list. Never infer absent properties.&#39;</span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;analysis&#39;</span><span class="p">,),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;markdown&#39;</span><span class="p">),</span> <span class="s1">&#39;thermo&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PromptProfile&lt;/span&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;MATERIALS_PROMPT&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-module-attribute&quot;&gt;&lt;code&gt;module-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.MATERIALS_PROMPT">MATERIALS_PROMPT</a></span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;materials&#39;</span><span class="p">,</span> <span class="s1">&#39;catalysis&#39;</span><span class="p">),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;markdown&#39;</span><span class="p">),</span> <span class="s1">&#39;analysis&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PromptProfile&lt;/span&gt;
 
 
   &lt;span class=&quot;doc doc-labels&quot;&gt;
       &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="s1">&#39;You are a thermochemistry reporting assistant. Use provided stored-result query tools for thermochemistry values. Heat-of-combustion calculations are unsupported unless an allowed tool is provided. Never invent thermochemical values.&#39;</span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;thermo&#39;</span><span class="p">,),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;markdown&#39;</span><span class="p">),</span> <span class="s1">&#39;general&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PromptProfile&lt;/span&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;ANALYSIS_PROMPT&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-module-attribute&quot;&gt;&lt;code&gt;module-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.ANALYSIS_PROMPT">ANALYSIS_PROMPT</a></span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;analysis&#39;</span><span class="p">,),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;markdown&#39;</span><span class="p">),</span> <span class="s1">&#39;thermo&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PromptProfile&lt;/span&gt;
 
 
   &lt;span class=&quot;doc doc-labels&quot;&gt;
       &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="s1">&#39;You are a general scientific search and explanation assistant. Do not use calculation tools. Materials or catalyst-design tools may be used only when the user explicitly requests an AGAPI, JARVIS, materials, GreenCatAI, or catalyst search. State clearly when requested functionality is unavailable.&#39;</span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;concise_markdown&#39;</span><span class="p">)}</span>
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;THERMO_PROMPT&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-module-attribute&quot;&gt;&lt;code&gt;module-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.THERMO_PROMPT">THERMO_PROMPT</a></span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;thermo&#39;</span><span class="p">,),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;markdown&#39;</span><span class="p">),</span> <span class="s1">&#39;general&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PromptProfile&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.PromptProfile">PromptProfile</a></span><span class="p">(</span><span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(system_prompt)">system_prompt</span></span><span class="o">=</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;GENERAL_PROMPT&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-module-attribute&quot;&gt;&lt;code&gt;module-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="#cspilot.prompts.system_prompts.GENERAL_PROMPT">GENERAL_PROMPT</a></span><span class="p">,</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(allowed_tool_groups)">allowed_tool_groups</span></span><span class="o">=</span><span class="p">(),</span> <span class="n"><span title="cspilot.prompts.system_prompts.PromptProfile(default_output_style)">default_output_style</span></span><span class="o">=</span><span class="s1">&#39;concise_markdown&#39;</span><span class="p">)}</span>
+</span></code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="cspilot.prompts.system_prompts.STK_PROMPT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">STK_PROMPT</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#cspilot.prompts.system_prompts.STK_PROMPT" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">STK_PROMPT</span> <span class="o">=</span> <span class="s1">&#39;You are an stk molecule-construction planning assistant. Use only provided stk and RDKit editing tools for building blocks, polymers, cages, exports, and molecule edits. If a later calculation is requested, pass the generated XYZ file path forward exactly. Do not invent unsupported topology names.&#39;</span>
+</span></code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="cspilot.prompts.system_prompts.THERMO_PROMPT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">THERMO_PROMPT</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#cspilot.prompts.system_prompts.THERMO_PROMPT" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">THERMO_PROMPT</span> <span class="o">=</span> <span class="s1">&#39;You are a thermochemistry reporting assistant. Use provided stored-result query tools for thermochemistry values. Heat-of-combustion calculations are unsupported unless an allowed tool is provided. Never invent thermochemical values.&#39;</span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2651,15 +2977,15 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>cspilot/prompts/system_prompts.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-79">79</a></span>
-<span class="normal"><a href="#__codelineno-0-80">80</a></span>
-<span class="normal"><a href="#__codelineno-0-81">81</a></span>
-<span class="normal"><a href="#__codelineno-0-82">82</a></span>
-<span class="normal"><a href="#__codelineno-0-83">83</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79"></a><span class="k">def</span><span class="w"> </span><span class="nf">allowed_group_names</span><span class="p">(</span><span class="n">profile</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_request</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-</span><span id="__span-0-80"><a id="__codelineno-0-80" name="__codelineno-0-80"></a>    <span class="n">selected</span> <span class="o">=</span> <span class="n">get_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
-</span><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81"></a>    <span class="k">if</span> <span class="n">profile</span> <span class="o">==</span> <span class="s2">&quot;general&quot;</span> <span class="ow">and</span> <span class="n">_explicit_materials_query</span><span class="p">(</span><span class="n">user_request</span><span class="p">):</span>
-</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82"></a>        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;materials&quot;</span><span class="p">,)</span>
-</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83"></a>    <span class="k">return</span> <span class="n">selected</span><span class="o">.</span><span class="n">allowed_tool_groups</span>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-102">102</a></span>
+<span class="normal"><a href="#__codelineno-0-103">103</a></span>
+<span class="normal"><a href="#__codelineno-0-104">104</a></span>
+<span class="normal"><a href="#__codelineno-0-105">105</a></span>
+<span class="normal"><a href="#__codelineno-0-106">106</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-102"><a id="__codelineno-0-102" name="__codelineno-0-102"></a><span class="k">def</span><span class="w"> </span><span class="nf">allowed_group_names</span><span class="p">(</span><span class="n">profile</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_request</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+</span><span id="__span-0-103"><a id="__codelineno-0-103" name="__codelineno-0-103"></a>    <span class="n">selected</span> <span class="o">=</span> <span class="n">get_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+</span><span id="__span-0-104"><a id="__codelineno-0-104" name="__codelineno-0-104"></a>    <span class="k">if</span> <span class="n">profile</span> <span class="o">==</span> <span class="s2">&quot;general&quot;</span> <span class="ow">and</span> <span class="n">_explicit_materials_query</span><span class="p">(</span><span class="n">user_request</span><span class="p">):</span>
+</span><span id="__span-0-105"><a id="__codelineno-0-105" name="__codelineno-0-105"></a>        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;materials&quot;</span><span class="p">,)</span>
+</span><span id="__span-0-106"><a id="__codelineno-0-106" name="__codelineno-0-106"></a>    <span class="k">return</span> <span class="n">selected</span><span class="o">.</span><span class="n">allowed_tool_groups</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2687,17 +3013,17 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>cspilot/prompts/system_prompts.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-71">71</a></span>
-<span class="normal"><a href="#__codelineno-0-72">72</a></span>
-<span class="normal"><a href="#__codelineno-0-73">73</a></span>
-<span class="normal"><a href="#__codelineno-0-74">74</a></span>
-<span class="normal"><a href="#__codelineno-0-75">75</a></span>
-<span class="normal"><a href="#__codelineno-0-76">76</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PromptProfile</span><span class="p">:</span>
-</span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72"></a>    <span class="k">try</span><span class="p">:</span>
-</span><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73"></a>        <span class="k">return</span> <span class="n">PROFILES</span><span class="p">[</span><span class="n">profile</span><span class="p">]</span>
-</span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74"></a>    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-</span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="n">allowed</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROFILES</span><span class="p">)</span>
-</span><span id="__span-0-76"><a id="__codelineno-0-76" name="__codelineno-0-76"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown profile &#39;</span><span class="si">{</span><span class="n">profile</span><span class="si">}</span><span class="s2">&#39;. Expected one of: </span><span class="si">{</span><span class="n">allowed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-94">94</a></span>
+<span class="normal"><a href="#__codelineno-0-95">95</a></span>
+<span class="normal"><a href="#__codelineno-0-96">96</a></span>
+<span class="normal"><a href="#__codelineno-0-97">97</a></span>
+<span class="normal"><a href="#__codelineno-0-98">98</a></span>
+<span class="normal"><a href="#__codelineno-0-99">99</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-94"><a id="__codelineno-0-94" name="__codelineno-0-94"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PromptProfile</span><span class="p">:</span>
+</span><span id="__span-0-95"><a id="__codelineno-0-95" name="__codelineno-0-95"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-0-96"><a id="__codelineno-0-96" name="__codelineno-0-96"></a>        <span class="k">return</span> <span class="n">PROFILES</span><span class="p">[</span><span class="n">profile</span><span class="p">]</span>
+</span><span id="__span-0-97"><a id="__codelineno-0-97" name="__codelineno-0-97"></a>    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+</span><span id="__span-0-98"><a id="__codelineno-0-98" name="__codelineno-0-98"></a>        <span class="n">allowed</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROFILES</span><span class="p">)</span>
+</span><span id="__span-0-99"><a id="__codelineno-0-99" name="__codelineno-0-99"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown profile &#39;</span><span class="si">{</span><span class="n">profile</span><span class="si">}</span><span class="s2">&#39;. Expected one of: </span><span class="si">{</span><span class="n">allowed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
     </div>
