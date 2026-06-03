@@ -13,24 +13,28 @@
       
       
       
+        <link rel="prev" href="../tools/">
+      
+      
+        <link rel="next" href="../safety/">
       
       
         
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>cspilot</title>
+        <title>AGAPI Integration - cspilot</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,9 +53,9 @@
       
     
     
-      <link rel="stylesheet" href="/assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -73,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#agapi-integration" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -85,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="cspilot" class="md-header__button md-logo" aria-label="cspilot" data-md-component="logo">
+    <a href=".." title="cspilot" class="md-header__button md-logo" aria-label="cspilot" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -105,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              AGAPI Integration
             
           </span>
         </div>
@@ -202,7 +211,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="cspilot" class="md-nav__button md-logo" aria-label="cspilot" data-md-component="logo">
+    <a href=".." title="cspilot" class="md-nav__button md-logo" aria-label="cspilot" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -232,7 +241,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -311,7 +320,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/installation/" class="md-nav__link">
+      <a href="../installation/" class="md-nav__link">
         
   
   
@@ -339,7 +348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/configuration/" class="md-nav__link">
+      <a href="../configuration/" class="md-nav__link">
         
   
   
@@ -367,7 +376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/cli_usage/" class="md-nav__link">
+      <a href="../cli_usage/" class="md-nav__link">
         
   
   
@@ -395,7 +404,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/examples/" class="md-nav__link">
+      <a href="../examples/" class="md-nav__link">
         
   
   
@@ -427,8 +436,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -439,11 +450,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -464,7 +475,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -482,7 +493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/agent_usage/" class="md-nav__link">
+      <a href="../agent_usage/" class="md-nav__link">
         
   
   
@@ -510,7 +521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/workflows/" class="md-nav__link">
+      <a href="../workflows/" class="md-nav__link">
         
   
   
@@ -538,7 +549,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/tools/" class="md-nav__link">
+      <a href="../tools/" class="md-nav__link">
         
   
   
@@ -563,10 +574,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/agapi/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AGAPI Integration
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -582,6 +620,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#direct-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Direct Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planner-run-and-langgraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planner, Run, and LangGraph
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agapi-materials-query-wrapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGAPI Materials Query Wrapper
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-tools-vs-agapi-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Tools vs AGAPI Tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -594,7 +707,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/safety/" class="md-nav__link">
+      <a href="../safety/" class="md-nav__link">
         
   
   
@@ -681,7 +794,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/development/" class="md-nav__link">
+      <a href="../development/" class="md-nav__link">
         
   
   
@@ -709,7 +822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/roadmap/" class="md-nav__link">
+      <a href="../roadmap/" class="md-nav__link">
         
   
   
@@ -737,7 +850,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/updating_docs/" class="md-nav__link">
+      <a href="../updating_docs/" class="md-nav__link">
         
   
   
@@ -772,7 +885,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/SUMMARY/" class="md-nav__link">
+      <a href="../reference/SUMMARY/" class="md-nav__link">
         
   
   
@@ -809,6 +922,71 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#direct-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Direct Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planner-run-and-langgraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planner, Run, and LangGraph
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agapi-materials-query-wrapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGAPI Materials Query Wrapper
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-tools-vs-agapi-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Tools vs AGAPI Tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -826,11 +1004,137 @@
   
 
 
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href=".." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../agent_usage/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Capabilities
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+    <a href="https://github.com/sandipgiri576/cspilot/blob/main/docs/agapi.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="agapi-integration">AGAPI Integration<a class="headerlink" href="#agapi-integration" title="Permanent link">&para;</a></h1>
+<p>CSPilot uses AGAPI through OpenAI-compatible clients and optional prebuilt
+AGAPI tools.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>AGAPI_API_KEY=your_api_key
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>AGAPI_BASE_URL=https://atomgpt.org/api
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cspilot_MODEL=openai/gpt-oss-20b
+</span></code></pre></div>
+<h2 id="direct-agent">Direct Agent<a class="headerlink" href="#direct-agent" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/agent_test<span class="w"> </span>--agent-profile<span class="w"> </span>chem
+</span></code></pre></div>
+<p><code>agent</code> supports:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>--model<span class="w"> </span>openai/gpt-oss-20b
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>--base-url<span class="w"> </span>https://atomgpt.org/api
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>--agent-profile<span class="w"> </span>chem<span class="p">|</span>materials<span class="p">|</span>general
+</span></code></pre></div>
+<h2 id="planner-run-and-langgraph">Planner, Run, and LangGraph<a class="headerlink" href="#planner-run-and-langgraph" title="Permanent link">&para;</a></h2>
+<p>AGAPI planning is used by:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cspilot<span class="w"> </span>plan<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/plan
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/run
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/graph
+</span></code></pre></div>
+<p>The model returns JSON plans. The executor calls only registered tools from the
+selected profile allowlist.</p>
+<h2 id="agapi-materials-query-wrapper">AGAPI Materials Query Wrapper<a class="headerlink" href="#agapi-materials-query-wrapper" title="Permanent link">&para;</a></h2>
+<p>When the AGAPI prebuilt <code>AGAPIAgent</code> is available, CSPilot can delegate
+materials queries:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--html<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3
+</span></code></pre></div>
+<p>The wrapper calls the equivalent of:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">render_html</span><span class="o">=</span><span class="n">render_html</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="local-tools-vs-agapi-tools">Local Tools vs AGAPI Tools<a class="headerlink" href="#local-tools-vs-agapi-tools" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Examples</th>
+<th>Data source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local CSPilot tools</td>
+<td>ASE, xTB, ORCA/OPI, MACE, stk, NWPESSe</td>
+<td>local files and local executables</td>
+</tr>
+<tr>
+<td>AGAPI planner</td>
+<td><code>plan</code>, <code>run</code>, <code>graph-run</code></td>
+<td>JSON tool selection only</td>
+</tr>
+<tr>
+<td>AGAPI prebuilt tools</td>
+<td>materials/JARVIS-style query</td>
+<td>AGAPI response</td>
+</tr>
+</tbody>
+</table>
+<p>AGAPI is not used to invent xTB or ORCA outputs. If a property is missing from
+parsed output, reports say it was not found in parsed results.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -850,6 +1154,44 @@
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../tools/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Tools">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Tools
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../safety/" class="md-footer__link md-footer__link--next" aria-label="Next: Safety">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Safety
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
@@ -877,10 +1219,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/", "features": ["content.action.edit", "content.code.copy", "content.code.select", "content.code.annotate", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.path", "navigation.tracking", "navigation.sections", "navigation.top", "search.highlight", "search.suggest", "search.share", "header.autohide", "toc.follow"], "search": "/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.action.edit", "content.code.copy", "content.code.select", "content.code.annotate", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.path", "navigation.tracking", "navigation.sections", "navigation.top", "search.highlight", "search.suggest", "search.share", "header.autohide", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
