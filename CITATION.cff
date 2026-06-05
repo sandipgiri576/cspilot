@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Giri"
+    given-names: "Sandip"
+    orcid: "https://orcid.org/0000-0001-9015-5441"
+title: "CSPilot"
+version: v0.4
+date-released: 05/06/2026
+repository-code: "https://github.com/sandipgiri576/cspilot"
+license: "BSD-3-Clause"
+keywords:
+  - computational chemistry
+  - orca
+  - xtb
+  - ASE
+  - langgraph
+  - global minima
+  - molecule generation
+  - MLIP
+  - ai agents
+  - Catalyst design
+  - cheminformatics
+  - Chem NLP
+
+abstract: >
+  CSPilot is an agentic computational chemistry platform
+  integrating ORCA, xTB, ASE, stk, AGAPI, LangGraph, and many other
+  open source tools to enable automated molecular modeling workflows. It provides a unified interface for executing complex computational chemistry tasks, facilitating the design and discovery of new molecules and materials. CSPilot's modular architecture allows users to easily integrate additional tools and customize workflows, making it a powerful resource
+  for researchers in the field of computational chemistry and materials science.
+
+
+references:
+  - type: software
+    authors:
+      - family-names: "Giri"
+        given-names: "Sandip"
+    doi: 
+    year: 2026
