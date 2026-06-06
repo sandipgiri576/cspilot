@@ -66,6 +66,15 @@ cspilot graph-run "inspect tests/examples/input.xyz" \
 Multi graph mode routes to a specialist profile first:
 
 ```bash
+cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point" \
+  --workdir runs/stk_orca
+```
+```bash
+cspilot graph-run "Find the global minima of (h2o)4Mg cluster." \
+  --workdir runs/global_minima
+```
+
+```bash
 cspilot graph-run "Find all Al2O3 materials" \
   --profile auto --agent-mode multi --html --workdir runs/al2o3
 ```
