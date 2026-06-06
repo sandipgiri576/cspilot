@@ -14,7 +14,7 @@ and clean terminal/report output. Documentation is under developement and can be
 
 - ASE structure inspection for XYZ files.
 - xTB geometry optimization.
-- ORCA single-point jobs through OPI / `orca-pi`.
+- ORCA calcutions 
 - Fixed xTB to ORCA single-point and frequency workflows.
 - Optional MACE to ORCA workflows.
 - stk/RDKit molecule generation, editing, export, and stk to xTB optimization.
@@ -190,7 +190,7 @@ Planned:
 
 ## 🙏 Acknowledgements
 
-CSPilot uses and integrates with ASE, xTB, ORCA/OPI, RDKit, stk, MACE,
+CSPilot uses and integrates with ASE, xTB, ORCA, RDKit, stk, MACE,
 LangGraph, Rich, Typer, Pydantic, and many others open source package. It uses AGAPI-compatible model backends.
 
 

@@ -146,7 +146,7 @@ cspilot orca-sp tests/examples/input.xyz \
   --method r2scan-3c --basis def2-SVP --charge 0 --mult 1
 ```
 
-Purpose: run ORCA single point through OPI.
+Purpose: run ORCA calculations.
 
 Output files: `result.json`, ORCA input/output files such as `job.inp` and
 `job.out` when ORCA runs.

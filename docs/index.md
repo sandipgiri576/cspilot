@@ -71,7 +71,7 @@ Implemented:
 
 - ASE inspection.
 - xTB optimization.
-- ORCA single point through OPI.
+- ORCA calcultions.
 - xTB to ORCA workflows.
 - MACE to ORCA workflow.
 - stk build/edit/export and stk to xTB.

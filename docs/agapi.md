@@ -59,7 +59,7 @@ agent.query_sync(query, render_html=render_html)
 
 | Path | Examples | Data source |
 | --- | --- | --- |
-| Local CSPilot tools | ASE, xTB, ORCA/OPI, MACE, stk, NWPESSe | local files and local executables |
+| Local CSPilot tools | ASE, xTB, ORCA, MACE, stk, NWPESSe | local files and local executables |
 | AGAPI planner | `plan`, `run`, `graph-run` | JSON tool selection only |
 | AGAPI prebuilt tools | materials/JARVIS-style query | AGAPI response |
 

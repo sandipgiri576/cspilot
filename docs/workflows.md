@@ -11,7 +11,7 @@ Inputs: XYZ file, charge, UHF count.
 Outputs: timestamped run directory, copied input, `result.json`, and xTB output
 files such as `xtbopt.xyz` when xTB succeeds.
 
-## ORCA Single Point Through OPI
+## ORCA Single Point 
 
 ```bash
 cspilot orca-sp tests/examples/input.xyz \
