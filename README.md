@@ -7,7 +7,7 @@ Created by Sandip Giri.
 CSPilot helps run and document molecular structure workflows from the command
 line. It combines deterministic chemistry tools with optional
 AGAPI/OpenAI-compatible planning, LangGraph orchestration, JSON verification,
-and clean terminal/report output.
+and clean terminal/report output. Documentation is under developement and can be read [here](https://sandipgiri576.github.io/cspilot/).
 
 ## ✨ Features
 
@@ -142,13 +142,13 @@ minimal, or quiet.
 
 See:
 
-- `docs/installation.md`
-- `docs/configuration.md`
-- `docs/cli_usage.md`
-- `docs/agent_usage.md`
-- `docs/workflows.md`
-- `docs/tools.md`
-- `docs/examples.md`
+- [Installation](docs/installation.md)
+- [Configuration](docs/configuration.md)
+- [CLI Usage](docs/cli_usage.md)
+- [Agent Usage](docs/agent_usage.md)
+- [Workflows](docs/workflows.md)
+- [Tools](docs/tools.md)
+- [Examples](docs/examples.md)
 
 Build docs locally:
 
@@ -157,7 +157,7 @@ python -m pip install -e ".[docs]"
 mkdocs build --strict
 ```
 
-## 🛣️ Roadmap
+<!-- ## 🛣️ Roadmap
 
 Implemented:
 
@@ -176,9 +176,11 @@ Planned:
 - torch-sim MLIP molecular dynamics;
 - MongoDB job database;
 - MCP server;
-- Streamlit UI.
+- Streamlit UI. -->
 
 ## 🙏 Acknowledgements
 
 CSPilot uses and integrates with ASE, xTB, ORCA/OPI, RDKit, stk, MACE,
-LangGraph, Rich, Typer, Pydantic, and AGAPI-compatible model backends.
+LangGraph, Rich, Typer, Pydantic, and many others open source package. It uses AGAPI-compatible model backends.
+
+

@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "tool": "stk_build_from_smiles",
+  "output_path": "dabco.xyz",
+  "error": null,
+  "metadata": {
+    "smiles": "C1CC2CNCCN2C1",
+    "num_atoms": 23,
+    "source": "stk.BuildingBlock",
+    "writer": "stk.write"
+  },
+  "smiles": "C1CC2CNCCN2C1",
+  "output_file": "dabco.xyz",
+  "generated_files": [
+    "dabco.xyz"
+  ],
+  "result_json": "dabco_stk_build_from_smiles_result.json"
+}
