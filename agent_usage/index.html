@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -564,10 +564,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#direct-agapi-agent" class="md-nav__link">
+  <a href="#direct-agent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Direct AGAPI Agent
+        Direct Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-backend-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model Backend Selection
       
     </span>
   </a>
@@ -976,10 +987,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#direct-agapi-agent" class="md-nav__link">
+  <a href="#direct-agent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Direct AGAPI Agent
+        Direct Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-backend-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model Backend Selection
       
     </span>
   </a>
@@ -1134,38 +1156,50 @@ directly:</p>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>xtb-orca-sp<span class="w"> </span>tests/examples/input.xyz
 </span></code></pre></div>
 <p>Use these when you already know the exact calculation.</p>
-<h2 id="direct-agapi-agent">Direct AGAPI Agent<a class="headerlink" href="#direct-agapi-agent" title="Permanent link">&para;</a></h2>
-<p><code>cspilot agent</code> runs an AGAPI/OpenAI-compatible tool-using agent:</p>
+<h2 id="direct-agent">Direct Agent<a class="headerlink" href="#direct-agent" title="Permanent link">&para;</a></h2>
+<p><code>cspilot agent</code> runs an OpenAI-compatible tool-using agent. OpenRouter is the
+recommended backend while AGAPI model serving is disabled by default:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/agent_test<span class="w"> </span>--agent-profile<span class="w"> </span>chem
 </span></code></pre></div>
-<p>It supports <code>--model</code>, <code>--base-url</code>, and <code>--agent-profile
-chem|materials|general</code>. Tool calls are still restricted to provided tools.</p>
+<p>It supports <code>--model</code>, <code>--base-url</code>, <code>--llm-provider auto|openrouter|agapi</code>,
+and <code>--agent-profile chem|materials|general</code>. Tool calls are still restricted
+to provided tools.</p>
+<h2 id="model-backend-selection">Model Backend Selection<a class="headerlink" href="#model-backend-selection" title="Permanent link">&para;</a></h2>
+<p>Normal chemistry, stk, analysis, thermo, and general-search requests should use
+OpenRouter for now:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cspilot<span class="w"> </span><span class="s2">&quot;what is chemical space?&quot;</span><span class="w"> </span>--llm-provider<span class="w"> </span>openrouter
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk_orca<span class="w"> </span>--llm-provider<span class="w"> </span>openrouter
+</span></code></pre></div>
+<p><code>--llm-provider auto</code> uses OpenRouter by default.
+Use <code>--llm-provider agapi</code> only when you intentionally want to test AGAPI model
+serving. The AGAPI key is still required for AGAPI/JARVIS materials query tools.</p>
 <h2 id="planner-and-executor">Planner and Executor<a class="headerlink" href="#planner-and-executor" title="Permanent link">&para;</a></h2>
 <p><code>plan</code>, <code>execute</code>, and <code>run</code> provide a stricter JSON workflow:</p>
 <ol>
-<li>AGAPI creates a JSON plan.</li>
+<li>The configured LLM backend creates a JSON plan.</li>
 <li>The executor accepts only registered tools for the selected profile.</li>
 <li>Step results are written as JSON.</li>
 <li>Verification checks paths, success flags, and numeric values.</li>
 <li>A Markdown or HTML report is generated.</li>
 </ol>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/run_test<span class="w"> </span>--profile<span class="w"> </span>chem
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/run_test<span class="w"> </span>--profile<span class="w"> </span>chem
 </span></code></pre></div>
 <h2 id="langgraph">LangGraph<a class="headerlink" href="#langgraph" title="Permanent link">&para;</a></h2>
 <p><code>graph-run</code> wraps the same planner, executor, verifier, and reporter in a
 LangGraph graph.</p>
 <p>Single mode:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>planner -&gt; executor -&gt; verifier -&gt; reporter
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>planner -&gt; executor -&gt; verifier -&gt; reporter
 </span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water<span class="w"> </span>--profile<span class="w"> </span>chem<span class="w"> </span>--agent-mode<span class="w"> </span>single
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water<span class="w"> </span>--profile<span class="w"> </span>chem<span class="w"> </span>--agent-mode<span class="w"> </span>single
 </span></code></pre></div>
 <p>Multi mode:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>router -&gt; planner -&gt; executor -&gt; verifier -&gt; reporter
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>router -&gt; planner -&gt; executor -&gt; verifier -&gt; reporter
 </span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--html<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--html<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3
 </span></code></pre></div>
 <p>Multi-agent mode means deterministic specialist routing. It does not spawn
 parallel autonomous agents.</p>
@@ -1211,14 +1245,14 @@ parallel autonomous agents.</p>
 </table>
 <h2 id="repair-mode">Repair Mode<a class="headerlink" href="#repair-mode" title="Permanent link">&para;</a></h2>
 <p><code>src/cspilot/agents/repair.py</code> implements a repair helper for missing-file
-handoffs and AGAPI repair fallback. The current <code>graph-run</code> integration uses
+handoffs and model-backed repair fallback. The current <code>graph-run</code> integration uses
 the clean single or routed multi graph without a repair node. Treat repair as
 available implementation groundwork, not a current CLI mode.</p>
 <h2 id="pretty-html-and-quiet-output">Pretty, HTML, and Quiet Output<a class="headerlink" href="#pretty-html-and-quiet-output" title="Permanent link">&para;</a></h2>
 <p><code>run</code> and <code>graph-run</code> support:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>--pretty<span class="w"> </span>/<span class="w"> </span>--no-pretty
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>--quiet
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>--html
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>--pretty<span class="w"> </span>/<span class="w"> </span>--no-pretty
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>--quiet
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>--html
 </span></code></pre></div>
 <ul>
 <li><code>--pretty</code> prints Rich panels and tables. It is the default.</li>
@@ -1330,7 +1364,7 @@ commands and natural-language request strings.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.action.edit", "content.code.copy", "content.code.select", "content.code.annotate", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.path", "navigation.tracking", "navigation.sections", "navigation.top", "search.highlight", "search.suggest", "search.share", "header.autohide", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

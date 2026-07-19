@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1048,6 +1048,11 @@
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>AGAPI_API_KEY=your_api_key
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>AGAPI_BASE_URL=https://atomgpt.org/api
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>cspilot_MODEL=openai/gpt-oss-20b
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>OPENROUTER_API_KEY=your_openrouter_key
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>OPENROUTER_MODEL=openai/gpt-oss-20b:free
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>CSPILOT_LLM_PROVIDER=openrouter
 </span></code></pre></div>
 <h2 id="implemented-variables">Implemented Variables<a class="headerlink" href="#implemented-variables" title="Permanent link">&para;</a></h2>
 <table>
@@ -1086,18 +1091,38 @@
 </tr>
 <tr>
 <td><code>AGAPI_API_KEY</code></td>
-<td><code>agent</code>, <code>search</code>, <code>plan</code>, <code>run</code>, <code>graph-run</code> planning, AGAPI materials</td>
-<td>required for AGAPI calls</td>
+<td>AGAPI model backend and AGAPI/JARVIS materials wrapper</td>
+<td>required only for <code>--llm-provider agapi</code> or AGAPI materials queries</td>
 </tr>
 <tr>
 <td><code>AGAPI_BASE_URL</code></td>
 <td>OpenAI-compatible AGAPI client</td>
-<td>required unless command supports <code>--base-url</code></td>
+<td>required only when AGAPI model serving is selected</td>
 </tr>
 <tr>
 <td><code>cspilot_MODEL</code></td>
 <td>AGAPI model</td>
-<td>required unless command supports <code>--model</code></td>
+<td>required only when AGAPI model serving is selected</td>
+</tr>
+<tr>
+<td><code>OPENROUTER_API_KEY</code></td>
+<td>OpenRouter model backend</td>
+<td>required for default NLIP/model-backed commands</td>
+</tr>
+<tr>
+<td><code>OPENROUTER_BASE_URL</code></td>
+<td>OpenRouter-compatible client</td>
+<td><code>https://openrouter.ai/api/v1</code></td>
+</tr>
+<tr>
+<td><code>OPENROUTER_MODEL</code></td>
+<td>OpenRouter model</td>
+<td><code>openai/gpt-oss-20b:free</code></td>
+</tr>
+<tr>
+<td><code>CSPILOT_LLM_PROVIDER</code></td>
+<td><code>search</code>, <code>agent</code>, <code>plan</code>, <code>run</code>, <code>graph-run</code>, repair helper</td>
+<td><code>openrouter</code>; use <code>agapi</code> to force AGAPI model serving</td>
 </tr>
 </tbody>
 </table>
@@ -1250,7 +1275,7 @@ settings use <code>ORCA_COMMAND</code>.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.action.edit", "content.code.copy", "content.code.select", "content.code.annotate", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.path", "navigation.tracking", "navigation.sections", "navigation.top", "search.highlight", "search.suggest", "search.share", "header.autohide", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
