@@ -62,6 +62,7 @@ InputPath = Annotated[
 Profile = Literal["chem", "materials", "analysis", "thermo", "general"]
 GraphProfile = Literal["auto", "chem", "stk", "materials", "analysis", "thermo", "general"]
 AgentMode = Literal["single", "multi"]
+LLMProvider = Literal["auto", "openrouter", "agapi"]
 
 
 def _finish(result: CommandResult) -> None:
@@ -93,10 +94,14 @@ def search_command(
         Path,
         typer.Option(help="Directory for search result JSON.", resolve_path=True),
     ] = Path("runs/search"),
-    model: Annotated[str | None, typer.Option(help="AGAPI model identifier.")] = None,
-    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible AGAPI base URL.")] = None,
+    model: Annotated[str | None, typer.Option(help="Model identifier for the selected LLM provider.")] = None,
+    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
+    llm_provider: Annotated[
+        LLMProvider,
+        typer.Option(help="Model backend for agent calls."),
+    ] = "auto",
 ) -> None:
-    """Answer a general question through the AGAPI-backed general agent."""
+    """Answer a general question through the configured model backend."""
     from cspilot.agents.openai_agent import run_agent_request
 
     try:
@@ -107,6 +112,7 @@ def search_command(
                 model=model,
                 base_url=base_url,
                 profile="general",
+                llm_provider=llm_provider,
             )
         )
     except ValueError as exc:
@@ -140,14 +146,18 @@ def run_agent(
         Path,
         typer.Option(help="Directory for agent results and tool subruns.", resolve_path=True),
     ] = Path("runs/agent_test"),
-    model: Annotated[str | None, typer.Option(help="AGAPI model identifier.")] = None,
-    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible AGAPI base URL.")] = None,
+    model: Annotated[str | None, typer.Option(help="Model identifier for the selected LLM provider.")] = None,
+    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
+    llm_provider: Annotated[
+        LLMProvider,
+        typer.Option(help="Model backend for agent calls."),
+    ] = "auto",
     agent_profile: Annotated[
         Literal["chem", "materials", "general"],
         typer.Option(help="Agent instruction and tool profile."),
     ] = "chem",
 ) -> None:
-    """Run a tool-using computational chemistry agent through AGAPI."""
+    """Run a tool-using computational chemistry agent through the configured model backend."""
     from cspilot.agents.openai_agent import run_agent_request
 
     try:
@@ -158,6 +168,7 @@ def run_agent(
                 model=model,
                 base_url=base_url,
                 profile=agent_profile,
+                llm_provider=llm_provider,
             )
         )
     except ValueError as exc:
@@ -175,13 +186,27 @@ def plan_command(
         typer.Option(help="Directory in which to save plan.json.", resolve_path=True),
     ] = Path("runs/test"),
     profile: Annotated[Profile, typer.Option(help="Planning tool and prompt profile.")] = "chem",
+    llm_provider: Annotated[
+        LLMProvider,
+        typer.Option(help="Model backend for planning."),
+    ] = "auto",
+    model: Annotated[str | None, typer.Option(help="Model identifier for the selected LLM provider.")] = None,
+    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
 ) -> None:
-    """Create a JSON execution plan using the configured AGAPI planner."""
+    """Create a JSON execution plan using the configured model backend."""
     from cspilot.agents.planner import create_plan
 
     workdir.mkdir(parents=True, exist_ok=True)
     try:
-        plan = asyncio.run(create_plan(request, profile=profile))
+        plan = asyncio.run(
+            create_plan(
+                request,
+                profile=profile,
+                llm_provider=llm_provider,
+                model=model,
+                base_url=base_url,
+            )
+        )
     except ValueError as exc:
         console.print(f"[red]Planning error:[/] {exc}")
         raise typer.Exit(code=1) from exc
@@ -233,6 +258,12 @@ def run_command(
     html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
     pretty: Annotated[bool, typer.Option("--pretty/--no-pretty", help="Print Rich panels and tables.")] = True,
     quiet: Annotated[bool, typer.Option(help="Print only final status and report path.")] = False,
+    llm_provider: Annotated[
+        LLMProvider,
+        typer.Option(help="Model backend for planning."),
+    ] = "auto",
+    model: Annotated[str | None, typer.Option(help="Model identifier for the selected LLM provider.")] = None,
+    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
 ) -> None:
     """Plan, execute, verify, and report an allowlisted workflow."""
     from cspilot.agents.executor import execute_plan
@@ -244,7 +275,15 @@ def run_command(
     workdir.mkdir(parents=True, exist_ok=True)
     profile_token = set_allowed_profile(profile, request)
     try:
-        plan = asyncio.run(create_plan(request, profile=profile))
+        plan = asyncio.run(
+            create_plan(
+                request,
+                profile=profile,
+                llm_provider=llm_provider,
+                model=model,
+                base_url=base_url,
+            )
+        )
         _write_cli_json(workdir / "plan.json", plan)
         execution_result = execute_plan(plan, str(workdir))
         _write_cli_json(workdir / "execution_result.json", execution_result)
@@ -303,6 +342,12 @@ def graph_run_command(
     html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
     pretty: Annotated[bool, typer.Option("--pretty/--no-pretty", help="Print Rich panels and tables.")] = True,
     quiet: Annotated[bool, typer.Option(help="Print only final status and report path.")] = False,
+    llm_provider: Annotated[
+        LLMProvider,
+        typer.Option(help="Model backend for graph planning."),
+    ] = "auto",
+    model: Annotated[str | None, typer.Option(help="Model identifier for the selected LLM provider.")] = None,
+    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
     max_retries: Annotated[int, typer.Option(help="Maximum graph retry attempts.")] = 1,
 ) -> None:
     """Run the LangGraph planner/executor/verifier/reporter loop."""
@@ -317,6 +362,9 @@ def graph_run_command(
             html=html,
             max_retries=max_retries,
             agent_mode=agent_mode,
+            llm_provider=llm_provider,
+            model=model,
+            base_url=base_url,
         )
     except (OSError, ValueError) as exc:
         console.print(f"[red]Graph run error:[/] {exc}")

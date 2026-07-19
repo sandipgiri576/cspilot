@@ -69,6 +69,26 @@ _TOOL_GROUPS = {
 }
 _TOOLS = {tool.name: tool for tools in _TOOL_GROUPS.values() for tool in tools}
 _active_allowed_tools: ContextVar[set[str] | None] = ContextVar("active_allowed_tools", default=None)
+_TOOL_ARG_ALLOWLIST: dict[str, set[str]] = {
+    "inspect_structure": {"xyz_path"},
+    "run_xtb_optimize": {"xyz_path", "charge", "uhf"},
+    "run_orca_single_point": {"xyz_path", "method", "basis", "charge", "mult", "nprocs"},
+    "run_mace_optimize": {"xyz_path", "model_path", "fmax", "steps"},
+    "run_xtb_orca_workflow": {"xyz_path", "method", "basis", "charge", "mult", "uhf", "nprocs"},
+    "molecule_name_to_xyz_tool": {"name", "output_path", "num_confs"},
+    "smiles_to_xyz_tool": {"smiles", "output_path", "num_confs", "forcefield"},
+    "stk_build_from_smiles_tool": {"smiles", "output_path"},
+    "stk_building_block_from_file_tool": {"input_path", "output_path"},
+    "stk_linear_polymer_from_smiles_tool": {
+        "monomer_smiles",
+        "repeating_unit",
+        "num_repeating_units",
+        "output_path",
+    },
+    "stk_construct_cage_from_smiles_tool": {"building_block_smiles", "topology", "output_path"},
+    "rdkit_replace_substructure_tool": {"parent_smiles", "old_smarts", "new_smiles", "output_path"},
+    "stk_export_to_xyz_tool": {"input_path", "output_path"},
+}
 
 
 def get_allowed_tools(profile: str | None = None, user_request: str = "") -> list[str]:
@@ -103,6 +123,7 @@ def call_tool(tool_name: str, args: dict[str, Any], workdir: str) -> dict[str, A
     token = set_agent_workdir(root)
     try:
         normalized_args = normalize_tool_args(tool_name, args)
+        normalized_args = _resolve_workdir_paths(normalized_args, root)
         arguments = json.dumps(normalized_args)
         context = ToolContext(
             context=None,
@@ -132,6 +153,8 @@ def normalize_tool_result(tool_name: str, result: Any) -> dict[str, Any]:
         try:
             parsed = json.loads(result)
         except json.JSONDecodeError:
+            if result.lower().startswith("an error occurred while running the tool"):
+                return {"success": False, "tool": tool_name, "error": result}
             return {"success": True, "tool": tool_name, "message": result}
         if isinstance(parsed, dict):
             return _json_safe(parsed)
@@ -157,18 +180,47 @@ def normalize_tool_args(tool_name: str, args: dict[str, Any]) -> dict[str, Any]:
     normalized = dict(args)
     if "output_file" in normalized and "output_path" not in normalized:
         normalized["output_path"] = normalized.pop("output_file")
+    if "input_smiles" in normalized and "smiles" not in normalized:
+        normalized["smiles"] = normalized.pop("input_smiles")
+    if "smiles_string" in normalized and "smiles" not in normalized:
+        normalized["smiles"] = normalized.pop("smiles_string")
 
     input_alias = next(
         (key for key in ("input_xyz", "input_file", "xyz_file", "file") if key in normalized),
         None,
     )
-    if input_alias is None:
-        return _json_safe(normalized)
+    if input_alias is not None:
+        target = "input_path" if _prefers_input_path(tool_name) else "xyz_path"
+        if target not in normalized:
+            normalized[target] = normalized.pop(input_alias)
 
-    target = "input_path" if _prefers_input_path(tool_name) else "xyz_path"
-    if target not in normalized:
-        normalized[target] = normalized.pop(input_alias)
+    allowed = _TOOL_ARG_ALLOWLIST.get(tool_name)
+    if allowed is not None:
+        normalized = {key: value for key, value in normalized.items() if key in allowed}
     return _json_safe(normalized)
+
+
+def _resolve_workdir_paths(args: dict[str, Any], root: Path) -> dict[str, Any]:
+    resolved = dict(args)
+    for key in ("output_path", "output_file"):
+        if key in resolved:
+            resolved[key] = _path_in_workdir(resolved[key], root, must_exist=False)
+    for key in ("xyz_path", "input_path"):
+        if key in resolved:
+            resolved[key] = _path_in_workdir(resolved[key], root, must_exist=True)
+    return resolved
+
+
+def _path_in_workdir(value: Any, root: Path, must_exist: bool) -> Any:
+    if not isinstance(value, str):
+        return value
+    path = Path(value).expanduser()
+    if path.is_absolute():
+        return str(path)
+    workdir_path = root / path
+    if not must_exist or workdir_path.exists():
+        return str(workdir_path)
+    return value
 
 
 def _prefers_input_path(tool_name: str) -> bool:

@@ -8,7 +8,12 @@ from agents import Agent, Runner, ToolCallOutputItem
 
 from cspilot.agents.reporter import make_report
 from cspilot.agents.verifier import verify_tool_result
-from cspilot.llm import create_agapi_model
+from cspilot.llm import (
+    LLMProvider,
+    create_llm_model,
+    resolve_llm_provider,
+    should_fallback_to_openrouter,
+)
 from cspilot.tools.agent_tools import (
     canonicalize_smiles_tool,
     design_mbh_catalysts_tool,
@@ -81,12 +86,19 @@ def create_computational_chemistry_agent(
     profile: str = "chem",
     model: str | None = None,
     base_url: str | None = None,
+    provider: LLMProvider = "auto",
 ) -> Agent:
     instructions = _profile_instructions(profile)
+    model_obj = create_llm_model(
+        provider=provider,
+        profile=profile,
+        model=model,
+        base_url=base_url,
+    )
     return Agent(
         name="cspilot",
         instructions=instructions,
-        model=create_agapi_model(model=model, base_url=base_url),
+        model=model_obj,
         tools=_profile_tools(profile),
     )
 
@@ -97,19 +109,34 @@ async def run_agent_request(
     model: str | None = None,
     base_url: str | None = None,
     profile: str = "chem",
+    llm_provider: LLMProvider = "auto",
 ) -> dict[str, Any]:
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
     token = set_agent_workdir(workdir)
+    model_provider = resolve_llm_provider(profile=profile, requested=llm_provider)
     try:
-        result = await Runner.run(
-            create_computational_chemistry_agent(
-                profile=profile,
-                model=model,
-                base_url=base_url,
-            ),
-            request,
-        )
+        try:
+            result = await Runner.run(
+                create_computational_chemistry_agent(
+                    profile=profile,
+                    model=model,
+                    base_url=base_url,
+                    provider=model_provider,
+                ),
+                request,
+            )
+        except Exception as exc:
+            if model_provider != "agapi" or not should_fallback_to_openrouter(exc):
+                raise
+            model_provider = "openrouter"
+            result = await Runner.run(
+                create_computational_chemistry_agent(
+                    profile=profile,
+                    provider="openrouter",
+                ),
+                request,
+            )
         tool_results = _collect_tool_results(result.new_items)
         verification = _verify_results(tool_results, str(workdir))
         report = make_report(request, tool_results, verification)
@@ -119,6 +146,7 @@ async def run_agent_request(
             "agent_profile": profile,
             "model": model,
             "base_url": base_url,
+            "model_provider": model_provider,
             "model_output": str(result.final_output),
             "tool_results": tool_results,
             "verification": verification,

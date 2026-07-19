@@ -8,6 +8,9 @@ class CspilotState(TypedDict):
     workdir: str
     profile: str
     agent_mode: str
+    llm_provider: str
+    model: str | None
+    base_url: str | None
     route: dict[str, Any] | None
     html: bool
     max_retries: int

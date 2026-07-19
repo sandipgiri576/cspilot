@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -36,8 +37,10 @@ def stk_smiles_to_xtb_opt(
 
     if success:
         settings = load_settings()
+        xtb_input = xtb_dir / xyz_path.name
+        shutil.copyfile(xyz_path, xtb_input)
         ok, message, process, outputs = optimize_with_xtb(
-            xyz_path,
+            xtb_input,
             xtb_dir,
             settings,
             charge,

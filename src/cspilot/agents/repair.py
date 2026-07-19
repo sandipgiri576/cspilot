@@ -10,7 +10,12 @@ from typing import Any
 from agents import Agent, AgentOutputSchema, Runner
 from pydantic import BaseModel, Field
 
-from cspilot.llm import create_agapi_model
+from cspilot.llm import (
+    create_llm_model,
+    create_openrouter_model,
+    resolve_llm_provider,
+    should_fallback_to_openrouter,
+)
 from cspilot.tools.registry import get_allowed_tools
 
 
@@ -55,10 +60,10 @@ def repair_plan(
         return _failure("No failed step could be identified.", original_plan)
 
     if not _looks_like_missing_input_failure(execution_result, failed["step"]):
-        agapi = _agapi_repair(user_request, original_plan, execution_result, root)
+        agapi = _llm_repair(user_request, original_plan, execution_result, root)
         if agapi.get("success"):
             return agapi
-        return _failure("Execution failure was not a missing input file and AGAPI repair failed.", original_plan, agapi)
+        return _failure("Execution failure was not a missing input file and LLM repair failed.", original_plan, agapi)
 
     missing_path = _missing_input_path(failed["step"])
     existing = _find_existing_xyz(root, missing_path, execution_result, failed["index"])
@@ -84,10 +89,10 @@ def repair_plan(
             "message": "Inserted a structure-generation step before the failed calculation.",
         }
 
-    agapi = _agapi_repair(user_request, original_plan, execution_result, root)
+    agapi = _llm_repair(user_request, original_plan, execution_result, root)
     if agapi.get("success"):
         return agapi
-    return _failure("No deterministic repair was available and AGAPI repair failed.", original_plan, agapi)
+    return _failure("No deterministic repair was available and LLM repair failed.", original_plan, agapi)
 
 
 def _clean_plan(plan: dict[str, Any]) -> dict[str, Any]:
@@ -323,7 +328,7 @@ def _slug(value: str) -> str:
     return slug or "stk_molecule"
 
 
-def _agapi_repair(
+def _llm_repair(
     user_request: str,
     plan: dict[str, Any],
     execution_result: dict[str, Any],
@@ -356,36 +361,46 @@ Rules:
   before calculations when an XYZ file is missing.
 """
     try:
-        repaired = asyncio.run(_run_agapi_repair(prompt))
+        repaired = asyncio.run(_run_llm_repair(prompt))
     except Exception as exc:
-        return _failure(f"AGAPI repair failed for {failed_step}: {type(exc).__name__}: {exc}", plan)
+        return _failure(f"LLM repair failed for {failed_step}: {type(exc).__name__}: {exc}", plan)
 
     if not _uses_only_allowed_tools(repaired, allowed_tools):
-        return _failure("AGAPI repair returned a disallowed tool.", plan, {"repaired_plan": repaired})
+        return _failure("LLM repair returned a disallowed tool.", plan, {"repaired_plan": repaired})
     attempt_path = _write_repair_attempt(workdir, repaired)
     return {
         "success": True,
-        "level": "agapi_repair",
+        "level": "llm_repair",
         "repaired_plan": repaired,
         "repair_attempt_path": str(attempt_path),
     }
 
 
-async def _run_agapi_repair(prompt: str) -> dict[str, Any]:
-    agent = Agent(
-        name="cspilot_repair",
-        instructions="You repair cspilot execution plans using only allowlisted tools.",
-        model=create_agapi_model(),
-        tools=[],
-        output_type=AgentOutputSchema(RepairedPlan, strict_json_schema=False),
-    )
-    result = await Runner.run(agent, prompt)
+async def _run_llm_repair(prompt: str) -> dict[str, Any]:
+    selected_provider = resolve_llm_provider()
+    try:
+        result = await _run_repair_agent(prompt, create_llm_model(provider=selected_provider))
+    except Exception as exc:
+        if selected_provider != "agapi" or not should_fallback_to_openrouter(exc):
+            raise
+        result = await _run_repair_agent(prompt, create_openrouter_model())
     repaired = (
         result.final_output
         if isinstance(result.final_output, RepairedPlan)
         else RepairedPlan.model_validate(result.final_output)
     )
     return repaired.model_dump(mode="json")
+
+
+async def _run_repair_agent(prompt: str, model: Any) -> Any:
+    agent = Agent(
+        name="cspilot_repair",
+        instructions="You repair cspilot execution plans using only allowlisted tools.",
+        model=model,
+        tools=[],
+        output_type=AgentOutputSchema(RepairedPlan, strict_json_schema=False),
+    )
+    return await Runner.run(agent, prompt)
 
 
 def _uses_only_allowed_tools(plan: dict[str, Any], allowed_tools: list[str]) -> bool:

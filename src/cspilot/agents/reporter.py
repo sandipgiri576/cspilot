@@ -175,7 +175,12 @@ def _report_files(execution_result: dict[str, Any], workdir: str) -> list[str]:
         candidate = root / name
         if candidate.exists():
             files.append(str(candidate))
-    files.extend(str(path) for path in sorted(root.glob("step_*_result.json")) if path.exists())
+    steps = execution_result.get("steps", [])
+    step_count = len(steps) if isinstance(steps, list) else 0
+    for index in range(1, step_count + 1):
+        candidate = root / f"step_{index:03d}_result.json"
+        if candidate.exists():
+            files.append(str(candidate))
     return list(dict.fromkeys(files))
 
 

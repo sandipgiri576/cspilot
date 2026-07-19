@@ -13,23 +13,40 @@ cspilot workflow xtb-orca-sp tests/examples/input.xyz
 
 Use these when you already know the exact calculation.
 
-## Direct AGAPI Agent
+## Direct Agent
 
-`cspilot agent` runs an AGAPI/OpenAI-compatible tool-using agent:
+`cspilot agent` runs an OpenAI-compatible tool-using agent. OpenRouter is the
+recommended backend while AGAPI model serving is disabled by default:
 
 ```bash
 cspilot agent "inspect tests/examples/input.xyz" \
   --workdir runs/agent_test --agent-profile chem
 ```
 
-It supports `--model`, `--base-url`, and `--agent-profile
-chem|materials|general`. Tool calls are still restricted to provided tools.
+It supports `--model`, `--base-url`, `--llm-provider auto|openrouter|agapi`,
+and `--agent-profile chem|materials|general`. Tool calls are still restricted
+to provided tools.
+
+## Model Backend Selection
+
+Normal chemistry, stk, analysis, thermo, and general-search requests should use
+OpenRouter for now:
+
+```bash
+cspilot "what is chemical space?" --llm-provider openrouter
+cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point" \
+  --workdir runs/stk_orca --llm-provider openrouter
+```
+
+`--llm-provider auto` uses OpenRouter by default.
+Use `--llm-provider agapi` only when you intentionally want to test AGAPI model
+serving. The AGAPI key is still required for AGAPI/JARVIS materials query tools.
 
 ## Planner and Executor
 
 `plan`, `execute`, and `run` provide a stricter JSON workflow:
 
-1. AGAPI creates a JSON plan.
+1. The configured LLM backend creates a JSON plan.
 2. The executor accepts only registered tools for the selected profile.
 3. Step results are written as JSON.
 4. Verification checks paths, success flags, and numeric values.
@@ -86,7 +103,7 @@ Planner/graph profiles include:
 ## Repair Mode
 
 `src/cspilot/agents/repair.py` implements a repair helper for missing-file
-handoffs and AGAPI repair fallback. The current `graph-run` integration uses
+handoffs and model-backed repair fallback. The current `graph-run` integration uses
 the clean single or routed multi graph without a repair node. Treat repair as
 available implementation groundwork, not a current CLI mode.
 

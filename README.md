@@ -7,7 +7,7 @@ Created by Sandip Giri.
 
 CSPilot helps run and document molecular structure workflows from the command
 line. It combines deterministic chemistry tools with optional
-AGAPI/OpenAI-compatible planning, LangGraph orchestration, JSON verification,
+OpenRouter/OpenAI-compatible planning, LangGraph orchestration, JSON verification,
 and clean terminal/report output. Documentation is under developement and can be read [here](https://sandipgiri576.github.io/cspilot/).
 
 ## ✨ Features
@@ -18,7 +18,8 @@ and clean terminal/report output. Documentation is under developement and can be
 - Fixed xTB to ORCA single-point and frequency workflows.
 - Optional MACE to ORCA workflows.
 - stk/RDKit molecule generation, editing, export, and stk to xTB optimization.
-- AGAPI-backed direct agent, JSON planner/executor, and LangGraph runner.
+- OpenRouter-first direct agent, JSON planner/executor, and LangGraph runner.
+- AGAPI can be explicitly enabled again with `--llm-provider agapi`.
 - Single-agent and routed multi-agent graph modes.
 - Optional AGAPI/JARVIS-style materials query wrapper.
 - Rich terminal summaries plus Markdown or HTML reports.
@@ -102,7 +103,18 @@ MACE_MODEL=/path/to/model.model
 AGAPI_API_KEY=your_api_key
 AGAPI_BASE_URL=https://atomgpt.org/api
 cspilot_MODEL=openai/gpt-oss-20b
+
+OPENROUTER_API_KEY=your_openrouter_key
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+OPENROUTER_MODEL=openai/gpt-oss-20b:free
+CSPILOT_LLM_PROVIDER=openrouter
 ```
+
+OpenRouter is the recommended model backend for normal `search`, `agent`,
+`plan`, `run`, and `graph-run` use. `CSPILOT_LLM_PROVIDER=openrouter` is the
+current smooth-path default. AGAPI model serving can be enabled explicitly with `--llm-provider agapi` or
+`CSPILOT_LLM_PROVIDER=agapi` once the backend is healthy again. The AGAPI key is
+still needed for AGAPI/JARVIS materials query tools.
 
 ORCA, xTB, NWPESSe, and MACE model files are external requirements. Installing
 CSPilot does not install ORCA or xTB.
@@ -173,7 +185,7 @@ Implemented:
 
 - deterministic CLI;
 - fixed xTB/MACE to ORCA workflows;
-- AGAPI planner/executor;
+- OpenRouter/AGAPI-compatible planner/executor;
 - LangGraph single and routed multi mode;
 - stk baseline tools;
 - Rich terminal reports.
@@ -191,6 +203,6 @@ Planned:
 ## 🙏 Acknowledgements
 
 CSPilot uses and integrates with ASE, xTB, ORCA, RDKit, stk, MACE,
-LangGraph, Rich, Typer, Pydantic, and many others open source package. It uses AGAPI-compatible model backends.
+LangGraph, Rich, Typer, Pydantic, and many others open source package. It uses OpenAI-compatible model backends, including OpenRouter and AGAPI.
 
 

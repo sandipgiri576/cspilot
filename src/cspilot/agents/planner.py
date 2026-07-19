@@ -1,11 +1,19 @@
 from __future__ import annotations
 
+import json
+import re
 from typing import Any
 
 from agents import Agent, AgentOutputSchema, Runner
 from pydantic import BaseModel, Field
 
-from cspilot.llm import create_agapi_model
+from cspilot.llm import (
+    LLMProvider,
+    create_llm_model,
+    create_openrouter_model,
+    resolve_llm_provider,
+    should_fallback_to_openrouter,
+)
 from cspilot.prompts.system_prompts import get_profile
 from cspilot.tools.registry import get_allowed_tools
 
@@ -24,6 +32,7 @@ async def create_plan(
     model: str | None = None,
     base_url: str | None = None,
     profile: str = "chem",
+    llm_provider: LLMProvider = "auto",
 ) -> dict[str, Any]:
     """Generate and validate an explicit allowlisted JSON execution plan."""
     selected_profile = get_profile(profile)
@@ -73,20 +82,81 @@ box size, set box_size. Do not write raw mol.inp, box blocks, or optimizer bash.
 Only produce structured arguments.
 Do not add shell commands or unsupported tools.
 If the allowed tools list is empty, return {{"steps": []}}."""
-    agent = Agent(
-        name="cspilot_planner",
-        instructions=instructions,
-        model=create_agapi_model(model=model, base_url=base_url),
-        tools=[],
-        output_type=AgentOutputSchema(ExecutionPlan, strict_json_schema=False),
-    )
-    result = await Runner.run(agent, user_request)
-    plan = (
-        result.final_output
-        if isinstance(result.final_output, ExecutionPlan)
-        else ExecutionPlan.model_validate(result.final_output)
-    )
+    selected_provider = resolve_llm_provider(profile=profile, requested=llm_provider)
+    try:
+        result = await _run_planner_agent(
+            user_request,
+            instructions,
+            create_llm_model(
+                provider=selected_provider,
+                profile=profile,
+                model=model,
+                base_url=base_url,
+            ),
+        )
+    except Exception as exc:
+        if selected_provider != "agapi" or not should_fallback_to_openrouter(exc):
+            raise
+        result = await _run_planner_agent(
+            user_request,
+            instructions,
+            create_openrouter_model(),
+        )
+    plan = _coerce_execution_plan(result.final_output)
+    plan = _sanitize_plan(plan)
     for step in plan.steps:
         if step.tool not in allowed_tools:
             raise ValueError(f"Planner returned disallowed tool: {step.tool}")
     return plan.model_dump(mode="json")
+
+
+def _sanitize_plan(plan: ExecutionPlan) -> ExecutionPlan:
+    cleaned_steps: list[PlanStep] = []
+    saw_combined_xtb_orca = False
+    for step in plan.steps:
+        args = dict(step.args)
+        if "input_smiles" in args and "smiles" not in args:
+            args["smiles"] = args.pop("input_smiles")
+        if "smiles_string" in args and "smiles" not in args:
+            args["smiles"] = args.pop("smiles_string")
+        if step.tool == "run_xtb_orca_workflow":
+            saw_combined_xtb_orca = True
+        if saw_combined_xtb_orca and step.tool == "run_orca_single_point":
+            continue
+        cleaned_steps.append(PlanStep(tool=step.tool, args=args))
+    return ExecutionPlan(steps=cleaned_steps)
+
+
+def _coerce_execution_plan(output: Any) -> ExecutionPlan:
+    if isinstance(output, ExecutionPlan):
+        return output
+    if isinstance(output, str):
+        cleaned = _strip_json_fence(output)
+        try:
+            return ExecutionPlan.model_validate_json(cleaned)
+        except ValueError:
+            return ExecutionPlan.model_validate(json.loads(cleaned))
+    return ExecutionPlan.model_validate(output)
+
+
+def _strip_json_fence(text: str) -> str:
+    stripped = text.strip()
+    fence = re.fullmatch(r"```(?:json)?\s*(.*?)\s*```", stripped, flags=re.DOTALL | re.IGNORECASE)
+    if fence:
+        return fence.group(1).strip()
+    return stripped
+
+
+async def _run_planner_agent(
+    user_request: str,
+    instructions: str,
+    model: Any,
+) -> Any:
+    agent = Agent(
+        name="cspilot_planner",
+        instructions=instructions,
+        model=model,
+        tools=[],
+        output_type=AgentOutputSchema(ExecutionPlan, strict_json_schema=False),
+    )
+    return await Runner.run(agent, user_request)

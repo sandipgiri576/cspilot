@@ -18,14 +18,9 @@ from cspilot.tools.registry import reset_allowed_profile, set_allowed_profile
 
 
 def planner_node(state: CspilotState) -> dict[str, Any]:
-    """Plan with the existing AGAPI planner."""
+    """Plan with the configured LLM planner."""
     try:
-        plan = _run_maybe_async(
-            create_plan(
-                state["user_request"],
-                profile=state["profile"],
-            )
-        )
+        plan = _create_plan_for_state(state)
         _write_json(Path(state["workdir"]) / "plan.json", plan)
         return {"plan": plan, "execution_result": None, "verification_result": None}
     except Exception as exc:
@@ -141,6 +136,9 @@ def run_graph_agent(
     agent_mode: str = "single",
     html: bool = False,
     max_retries: int = 1,
+    llm_provider: str = "auto",
+    model: str | None = None,
+    base_url: str | None = None,
 ) -> CspilotState:
     """Run the LangGraph planner/executor/verifier/reporter orchestration."""
     root = Path(workdir)
@@ -153,6 +151,9 @@ def run_graph_agent(
             agent_mode=agent_mode,
             html=html,
             max_retries=max_retries,
+            llm_provider=llm_provider,
+            model=model,
+            base_url=base_url,
             error="Unknown agent_mode. Expected 'single' or 'multi'.",
         )
     selected_profile = profile
@@ -161,6 +162,9 @@ def run_graph_agent(
         "workdir": str(root),
         "profile": selected_profile,
         "agent_mode": agent_mode,
+        "llm_provider": llm_provider,
+        "model": model,
+        "base_url": base_url,
         "route": None,
         "html": html,
         "max_retries": max_retries,
@@ -223,6 +227,20 @@ def _retry_update(
     }
 
 
+def _create_plan_for_state(state: CspilotState) -> dict[str, Any]:
+    try:
+        value = create_plan(
+            state["user_request"],
+            profile=state["profile"],
+            llm_provider=state.get("llm_provider", "auto"),
+            model=state.get("model"),
+            base_url=state.get("base_url"),
+        )
+    except TypeError:
+        value = create_plan(state["user_request"], profile=state["profile"])
+    return _run_maybe_async(value)
+
+
 def _run_maybe_async(value: Any) -> Any:
     if inspect.isawaitable(value):
         return asyncio.run(value)
@@ -240,6 +258,9 @@ def _failed_initial_state(
     agent_mode: str,
     html: bool,
     max_retries: int,
+    llm_provider: str,
+    model: str | None,
+    base_url: str | None,
     error: str,
 ) -> CspilotState:
     state: CspilotState = {
@@ -247,6 +268,9 @@ def _failed_initial_state(
         "workdir": str(workdir),
         "profile": profile,
         "agent_mode": agent_mode,
+        "llm_provider": llm_provider,
+        "model": model,
+        "base_url": base_url,
         "route": None,
         "html": html,
         "max_retries": max_retries,
