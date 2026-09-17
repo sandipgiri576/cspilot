@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
+        <meta name="description" content="Computational chemistry structure workflows and OpenRouter-backed planning.">
       
       
         <meta name="author" content="Sandip Giri">
@@ -690,14 +690,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../agapi/" class="md-nav__link">
+      <a href="../agentic_audit/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AGAPI Integration
+    Agentic Audit
   
 
     
@@ -833,6 +833,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../acceptance_tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acceptance Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../roadmap/" class="md-nav__link">
         
   
@@ -896,7 +924,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/SUMMARY/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         
   
   
@@ -1111,9 +1139,9 @@ set <code>ORCA_COMMAND</code> in <code>.env.cspilot</code>.</p>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </span></code></pre></div>
 <p>Optional extras:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[stk]&quot;</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[mace]&quot;</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev,docs]&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[stk]"</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[mace]"</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[dev,docs]"</span>
 </span></code></pre></div>
 <h2 id="optional-dependency-groups">Optional Dependency Groups<a class="headerlink" href="#optional-dependency-groups" title="Permanent link">&para;</a></h2>
 <table>
@@ -1183,7 +1211,7 @@ set <code>ORCA_COMMAND</code> in <code>.env.cspilot</code>.</p>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span>--help
 </span></code></pre></div>
 <p>stk import check after installing the extra:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">&quot;c1ccccc1&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_check
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_check
 </span></code></pre></div>
 
 

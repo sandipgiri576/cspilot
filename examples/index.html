@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
+        <meta name="description" content="Computational chemistry structure workflows and OpenRouter-backed planning.">
       
       
         <meta name="author" content="Sandip Giri">
@@ -466,6 +466,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#natural-language-acceptance-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Natural-language acceptance examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-a-stored-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Display a stored property
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#inspect-xyz" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -536,17 +558,6 @@
     <span class="md-ellipsis">
       
         stk to xTB to ORCA
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#agapi-materials-query" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AGAPI Materials Query
       
     </span>
   </a>
@@ -745,14 +756,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../agapi/" class="md-nav__link">
+      <a href="../agentic_audit/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AGAPI Integration
+    Agentic Audit
   
 
     
@@ -888,6 +899,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../acceptance_tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acceptance Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../roadmap/" class="md-nav__link">
         
   
@@ -951,7 +990,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/SUMMARY/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         
   
   
@@ -996,6 +1035,28 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#natural-language-acceptance-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Natural-language acceptance examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-a-stored-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Display a stored property
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#inspect-xyz" class="md-nav__link">
@@ -1068,17 +1129,6 @@
     <span class="md-ellipsis">
       
         stk to xTB to ORCA
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#agapi-materials-query" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AGAPI Materials Query
       
     </span>
   </a>
@@ -1192,68 +1242,78 @@
 
 
 <h1 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h1>
+<h2 id="natural-language-acceptance-examples">Natural-language acceptance examples<a class="headerlink" href="#natural-language-acceptance-examples" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cspilot<span class="w"> </span><span class="s2">"what is the SMILES string of caffeine?"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/caffeine
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cspilot<span class="w"> </span><span class="s2">"what is the Gibbs free energy of benzene at ORCA with r2scan-3c"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/benzene
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cspilot<span class="w"> </span><span class="s2">"Optimize benzene geometry and compute thermochemistry with ORCA r2scan-3c"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/benzene-thermo
+</span></code></pre></div>
+<p>Use a molecule name, SMILES, or XYZ path for new calculations. Without one the
+agent requests input. New thermochemistry runs optimization and frequencies;
+it does not report a single-point electronic energy as Gibbs energy.</p>
+<h2 id="display-a-stored-property">Display a stored property<a class="headerlink" href="#display-a-stored-property" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">"print Gibbs free energy from runs/water/result.json on screen"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--profile<span class="w"> </span>analysis<span class="w"> </span>--workdir<span class="w"> </span>runs/query<span class="w"> </span>--max-steps<span class="w"> </span><span class="m">4</span>
+</span></code></pre></div>
+<p>Returned values print in full and remain saved as JSON. Add <code>--html</code> to save
+an HTML report as well; use <code>--quiet</code> only when result details are unwanted.</p>
 <p>Examples assume CSPilot is installed and <code>.env.cspilot</code> is configured for any
 external programs being used.</p>
 <h2 id="inspect-xyz">Inspect XYZ<a class="headerlink" href="#inspect-xyz" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cspilot<span class="w"> </span>inspect<span class="w"> </span>tests/examples/input.xyz
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cspilot<span class="w"> </span>inspect<span class="w"> </span>tests/examples/input.xyz
 </span></code></pre></div>
 <p>LangGraph equivalent:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;inspect examples/water.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/water
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"inspect examples/water.xyz"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/water
 </span></code></pre></div>
 <p>If <code>examples/water.xyz</code> is not present, use <code>tests/examples/input.xyz</code>.</p>
 <h2 id="molecule-name-to-xyz">Molecule Name to XYZ<a class="headerlink" href="#molecule-name-to-xyz" title="Permanent link">&para;</a></h2>
 <p>Direct agent:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;Create an XYZ file for water at runs/water_agent/water.xyz&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water_agent<span class="w"> </span>--agent-profile<span class="w"> </span>chem
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">"Create an XYZ file for water at runs/water_agent/water.xyz"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water_agent<span class="w"> </span>--agent-profile<span class="w"> </span>chem
 </span></code></pre></div>
 <p>Python deterministic call:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from cspilot.tools.mol_tools import molecule_name_to_xyz; print(molecule_name_to_xyz(&#39;water&#39;, &#39;runs/water.xyz&#39;))&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"from cspilot.tools.mol_tools import molecule_name_to_xyz; print(molecule_name_to_xyz('water', 'runs/water.xyz'))"</span>
 </span></code></pre></div>
 <h2 id="xtb-optimization">xTB Optimization<a class="headerlink" href="#xtb-optimization" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cspilot<span class="w"> </span>xtb-opt<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>xtb-opt<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
 </span></code></pre></div>
 <h2 id="orca-single-point">ORCA Single Point<a class="headerlink" href="#orca-single-point" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>orca-sp<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--method<span class="w"> </span>r2scan-3c<span class="w"> </span>--basis<span class="w"> </span>def2-SVP<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cspilot<span class="w"> </span>orca-sp<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--method<span class="w"> </span>r2scan-3c<span class="w"> </span>--basis<span class="w"> </span>def2-SVP<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span>
 </span></code></pre></div>
 <h2 id="xtb-to-orca">xTB to ORCA<a class="headerlink" href="#xtb-to-orca" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>xtb-orca-sp<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span><span class="w"> </span>--method<span class="w"> </span>r2scan-3c<span class="w"> </span>--basis<span class="w"> </span>def2-SVP
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>xtb-orca-sp<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span><span class="w"> </span>--method<span class="w"> </span>r2scan-3c<span class="w"> </span>--basis<span class="w"> </span>def2-SVP
 </span></code></pre></div>
 <p>Frequency workflow:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>xtb-orca-freq<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span><span class="w"> </span>--method<span class="w"> </span>r2scan-3c<span class="w"> </span>--basis<span class="w"> </span>def2-SVP
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>xtb-orca-freq<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span><span class="w"> </span>--method<span class="w"> </span>r2scan-3c<span class="w"> </span>--basis<span class="w"> </span>def2-SVP
 </span></code></pre></div>
 <h2 id="stk-build-and-xtb">stk Build and xTB<a class="headerlink" href="#stk-build-and-xtb" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">&quot;c1ccccc1&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_benzene
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_benzene
 </span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">&quot;c1ccccc1&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb
 </span></code></pre></div>
 <p>Graph request:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;use stk to build benzene from SMILES c1ccccc1 and optimize with xTB&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk_benzene
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"use stk to build benzene from SMILES c1ccccc1 and optimize with xTB"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk_benzene
 </span></code></pre></div>
 <h2 id="stk-to-xtb-to-orca">stk to xTB to ORCA<a class="headerlink" href="#stk-to-xtb-to-orca" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk_orca
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk_orca
 </span></code></pre></div>
 <p>This is a planned/executed agent workflow path, not a fixed deterministic
 <code>workflow</code> subcommand.</p>
-<h2 id="agapi-materials-query">AGAPI Materials Query<a class="headerlink" href="#agapi-materials-query" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--html<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3
-</span></code></pre></div>
 <h2 id="result-json-property-extraction">Result JSON Property Extraction<a class="headerlink" href="#result-json-property-extraction" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;extract Gibbs free energy from the latest result JSON in runs/water&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/query<span class="w"> </span>--profile<span class="w"> </span>analysis
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">"extract Gibbs free energy from the latest result JSON in runs/water"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/query<span class="w"> </span>--profile<span class="w"> </span>analysis
 </span></code></pre></div>
 <h2 id="nwpesse">NWPESSe<a class="headerlink" href="#nwpesse" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span><span class="s2">&quot;(h2o)4Mg&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/h2o4mg<span class="w"> </span>--max-calculations<span class="w"> </span><span class="m">10</span><span class="w"> </span>--box-size<span class="w"> </span><span class="m">3</span>.0
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span><span class="s2">"(h2o)4Mg"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/h2o4mg<span class="w"> </span>--max-calculations<span class="w"> </span><span class="m">10</span><span class="w"> </span>--box-size<span class="w"> </span><span class="m">3</span>.0
 </span></code></pre></div>
 <h2 id="quiet-and-html-reports">Quiet and HTML Reports<a class="headerlink" href="#quiet-and-html-reports" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/water<span class="w"> </span>--quiet
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--html
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/water<span class="w"> </span>--quiet
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/water-html<span class="w"> </span>--html
 </span></code></pre></div>
 
 

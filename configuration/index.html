@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
+        <meta name="description" content="Computational chemistry structure workflows and OpenRouter-backed planning.">
       
       
         <meta name="author" content="Sandip Giri">
@@ -668,14 +668,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../agapi/" class="md-nav__link">
+      <a href="../agentic_audit/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AGAPI Integration
+    Agentic Audit
   
 
     
@@ -811,6 +811,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../acceptance_tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acceptance Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../roadmap/" class="md-nav__link">
         
   
@@ -874,7 +902,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/SUMMARY/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         
   
   
@@ -1038,6 +1066,9 @@
 
 
 <h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h1>
+<p>Domain instructions are bundled in <code>src/cspilot/skills/*.md</code>; no additional
+service or credentials are needed. <code>--max-steps</code> and <code>--max-retries</code> bound
+the iterative <code>run</code> and <code>graph-run</code> commands.</p>
 <p>CSPilot loads <code>.env.cspilot</code> from the current working directory.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>CSPILOT_RUNS_DIR=runs
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>XTB_COMMAND=xtb
@@ -1045,14 +1076,9 @@
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>NWPESSE_BIN=nwpesse
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>MACE_MODEL=/path/to/model.model
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>AGAPI_API_KEY=your_api_key
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>AGAPI_BASE_URL=https://atomgpt.org/api
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>cspilot_MODEL=openai/gpt-oss-20b
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>OPENROUTER_API_KEY=your_openrouter_key
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>OPENROUTER_MODEL=openai/gpt-oss-20b:free
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>CSPILOT_LLM_PROVIDER=openrouter
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>OPENROUTER_API_KEY=your_openrouter_key
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>OPENROUTER_MODEL=openai/gpt-oss-20b:free
 </span></code></pre></div>
 <h2 id="implemented-variables">Implemented Variables<a class="headerlink" href="#implemented-variables" title="Permanent link">&para;</a></h2>
 <table>
@@ -1090,24 +1116,9 @@
 <td>fallback placeholder</td>
 </tr>
 <tr>
-<td><code>AGAPI_API_KEY</code></td>
-<td>AGAPI model backend and AGAPI/JARVIS materials wrapper</td>
-<td>required only for <code>--llm-provider agapi</code> or AGAPI materials queries</td>
-</tr>
-<tr>
-<td><code>AGAPI_BASE_URL</code></td>
-<td>OpenAI-compatible AGAPI client</td>
-<td>required only when AGAPI model serving is selected</td>
-</tr>
-<tr>
-<td><code>cspilot_MODEL</code></td>
-<td>AGAPI model</td>
-<td>required only when AGAPI model serving is selected</td>
-</tr>
-<tr>
 <td><code>OPENROUTER_API_KEY</code></td>
 <td>OpenRouter model backend</td>
-<td>required for default NLIP/model-backed commands</td>
+<td>required for model-backed commands</td>
 </tr>
 <tr>
 <td><code>OPENROUTER_BASE_URL</code></td>
@@ -1118,11 +1129,6 @@
 <td><code>OPENROUTER_MODEL</code></td>
 <td>OpenRouter model</td>
 <td><code>openai/gpt-oss-20b:free</code></td>
-</tr>
-<tr>
-<td><code>CSPILOT_LLM_PROVIDER</code></td>
-<td><code>search</code>, <code>agent</code>, <code>plan</code>, <code>run</code>, <code>graph-run</code>, repair helper</td>
-<td><code>openrouter</code>; use <code>agapi</code> to force AGAPI model serving</td>
 </tr>
 </tbody>
 </table>

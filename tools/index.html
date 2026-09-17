@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
+        <meta name="description" content="Computational chemistry structure workflows and OpenRouter-backed planning.">
       
       
         <meta name="author" content="Sandip Giri">
@@ -16,7 +16,7 @@
         <link rel="prev" href="../workflows/">
       
       
-        <link rel="next" href="../agapi/">
+        <link rel="next" href="../agentic_audit/">
       
       
         
@@ -675,17 +675,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agapi-materials" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AGAPI Materials
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#result-tools" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -701,17 +690,6 @@
     <span class="md-ellipsis">
       
         NWPESSe
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#greencatai" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        GreenCatAI
       
     </span>
   </a>
@@ -734,14 +712,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../agapi/" class="md-nav__link">
+      <a href="../agentic_audit/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AGAPI Integration
+    Agentic Audit
   
 
     
@@ -877,6 +855,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../acceptance_tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acceptance Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../roadmap/" class="md-nav__link">
         
   
@@ -940,7 +946,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/SUMMARY/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         
   
   
@@ -1053,17 +1059,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agapi-materials" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AGAPI Materials
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#result-tools" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1079,17 +1074,6 @@
     <span class="md-ellipsis">
       
         NWPESSe
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#greencatai" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        GreenCatAI
       
     </span>
   </a>
@@ -1307,7 +1291,7 @@ subcommands.</p>
 </tr>
 <tr>
 <td><code>orca_frequency</code></td>
-<td>OPI ORCA frequency.</td>
+<td>OPI ORCA frequency; optimize=True requests Opt Freq.</td>
 </tr>
 <tr>
 <td><code>parse_orca_result</code></td>
@@ -1339,23 +1323,6 @@ invented.</p>
 </tbody>
 </table>
 <p>CLI: <code>mace-opt</code>. Agent wrapper: <code>run_mace_optimize</code>.</p>
-<h2 id="agapi-materials">AGAPI Materials<a class="headerlink" href="#agapi-materials" title="Permanent link">&para;</a></h2>
-<p>Module: <code>agapi_materials_tools.py</code></p>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>agapi_materials_query</code></td>
-<td>Optional wrapper around AGAPI prebuilt materials query.</td>
-</tr>
-</tbody>
-</table>
-<p>Agent wrapper: <code>agapi_materials_query_tool</code>.</p>
 <h2 id="result-tools">Result Tools<a class="headerlink" href="#result-tools" title="Permanent link">&para;</a></h2>
 <p>Module: <code>result_tools.py</code></p>
 <table>
@@ -1388,11 +1355,6 @@ name-overridden direct-agent variants.</p>
 write <code>mol.cluster</code> and <code>mol.inp</code>, run the external NWPESSe binary, parse
 candidate XYZ second-line energies, and copy the lowest-energy structure.</p>
 <p>CLI: <code>nwpesse-search</code>. Agent wrapper: <code>nwpesse_global_minimum_search_tool</code>.</p>
-<h2 id="greencatai">GreenCatAI<a class="headerlink" href="#greencatai" title="Permanent link">&para;</a></h2>
-<p>Module: <code>greencatai_tools.py</code></p>
-<p><code>greencatai_design_mbh_catalysts</code> calls the installed GreenCatAI MBH design API
-when available.</p>
-<p>CLI: <code>greencatai design-mbh</code>. Agent wrapper: <code>design_mbh_catalysts_tool</code>.</p>
 
 
 
@@ -1447,13 +1409,13 @@ when available.</p>
         
         
           
-          <a href="../agapi/" class="md-footer__link md-footer__link--next" aria-label="Next: AGAPI Integration">
+          <a href="../agentic_audit/" class="md-footer__link md-footer__link--next" aria-label="Next: Agentic Audit">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                AGAPI Integration
+                Agentic Audit
               </div>
             </div>
             <div class="md-footer__button md-icon">

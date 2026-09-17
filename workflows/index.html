@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
+        <meta name="description" content="Computational chemistry structure workflows and OpenRouter-backed planning.">
       
       
         <meta name="author" content="Sandip Giri">
@@ -658,17 +658,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agapi-materials-query" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AGAPI Materials Query
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#result-json-extraction" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -734,14 +723,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../agapi/" class="md-nav__link">
+      <a href="../agentic_audit/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AGAPI Integration
+    Agentic Audit
   
 
     
@@ -877,6 +866,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../acceptance_tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acceptance Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../roadmap/" class="md-nav__link">
         
   
@@ -940,7 +957,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/SUMMARY/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         
   
   
@@ -1064,17 +1081,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agapi-materials-query" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AGAPI Materials Query
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#result-json-extraction" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1170,6 +1176,9 @@
 
 
 <h1 id="workflows">Workflows<a class="headerlink" href="#workflows" title="Permanent link">&para;</a></h1>
+<p><code>run</code> and <code>graph-run</code> now choose tools iteratively from observed outputs.
+The fixed workflows below remain independently callable and may be selected as
+one action by the agent. Decisions and observations are saved alongside results.</p>
 <h2 id="xtb-optimization">xTB Optimization<a class="headerlink" href="#xtb-optimization" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cspilot<span class="w"> </span>xtb-opt<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
 </span></code></pre></div>
@@ -1198,8 +1207,13 @@ parsed properties when present in ORCA output.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>xtb-orca-freq<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span><span class="w"> </span>--method<span class="w"> </span>r2scan-3c<span class="w"> </span>--basis<span class="w"> </span>def2-SVP
 </span></code></pre></div>
-<p>The second ORCA step is a frequency job. Gibbs free energy, enthalpy,
-frequencies, and related values are reported only when parsed from output.</p>
+<p>The ORCA stage runs <code>Opt Freq</code> after xTB preoptimization, so frequencies are
+computed at the geometry optimized with the requested ORCA method. For r2SCAN-3c
+the method-defined basis is used; an extra def2-SVP keyword is not added.
+Gibbs free energy, enthalpy, frequencies, temperature, and pressure are reported
+only when parsed. Verification checks optimization convergence, required
+thermochemistry, and significant imaginary modes (below -20 cm^-1).
+See the <a href="https://www.faccts.de/docs/orca/6.1/tutorials/spec/IR.html">ORCA optimization/frequency example</a>.</p>
 <h2 id="mace-to-orca">MACE to ORCA<a class="headerlink" href="#mace-to-orca" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>mace-orca<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>--model<span class="w"> </span>/path/to/model.model<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span>
@@ -1207,7 +1221,7 @@ frequencies, and related values are reported only when parsed from output.</p>
 <p>Requires <code>mace-torch</code> and a valid MACE model. If <code>--model</code> is omitted, the
 workflow uses <code>MACE_MODEL</code>.</p>
 <h2 id="stk-to-xtb">stk to xTB<a class="headerlink" href="#stk-to-xtb" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">&quot;c1ccccc1&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
 </span></code></pre></div>
 <p>Steps:</p>
 <ol>
@@ -1219,26 +1233,20 @@ workflow uses <code>MACE_MODEL</code>.</p>
 <h2 id="stk-to-xtb-to-orca">stk to xTB to ORCA<a class="headerlink" href="#stk-to-xtb-to-orca" title="Permanent link">&para;</a></h2>
 <p>There is no fixed deterministic <code>stk-to-xtb-orca</code> CLI command yet. Use the
 planner/graph path:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point&quot;</span><span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk_orca<span class="w"> </span>--profile<span class="w"> </span>chem<span class="w"> </span>--agent-mode<span class="w"> </span>single
 </span></code></pre></div>
 <p>The planner should create an stk build step producing an XYZ, then pass that
 same XYZ into the xTB to ORCA workflow tool.</p>
-<h2 id="agapi-materials-query">AGAPI Materials Query<a class="headerlink" href="#agapi-materials-query" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--html<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3
-</span></code></pre></div>
-<p>This uses the materials profile when routed successfully and records AGAPI
-response content in JSON. It does not run local DFT.</p>
 <h2 id="result-json-extraction">Result JSON Extraction<a class="headerlink" href="#result-json-extraction" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;extract Gibbs free energy from the latest result JSON in runs/water&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/query<span class="w"> </span>--profile<span class="w"> </span>analysis
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">"extract Gibbs free energy from the latest result JSON in runs/water"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/query<span class="w"> </span>--profile<span class="w"> </span>analysis
 </span></code></pre></div>
 <p>The result tools search stored JSON and return matching properties by alias.
 If a property is absent, reports say it was not found in parsed results.</p>
 <h2 id="nwpesse-global-minimum-search">NWPESSe Global-Minimum Search<a class="headerlink" href="#nwpesse-global-minimum-search" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span><span class="s2">&quot;(h2o)4Mg&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/h2o4mg<span class="w"> </span>--max-calculations<span class="w"> </span><span class="m">10</span><span class="w"> </span>--box-size<span class="w"> </span><span class="m">3</span>.0
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span><span class="s2">"(h2o)4Mg"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/h2o4mg<span class="w"> </span>--max-calculations<span class="w"> </span><span class="m">10</span><span class="w"> </span>--box-size<span class="w"> </span><span class="m">3</span>.0
 </span></code></pre></div>
 <p>Outputs include <code>mol.cluster</code>, <code>mol.inp</code>, external run logs,
 <code>workflow_result.json</code>, candidate XYZ files, and <code>lowest_energy.xyz</code> when a

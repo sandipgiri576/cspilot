@@ -6,17 +6,15 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
+        <meta name="description" content="Computational chemistry structure workflows and OpenRouter-backed planning.">
       
       
         <meta name="author" content="Sandip Giri">
       
       
       
-        <link rel="prev" href="../tools/">
+        <link rel="prev" href="../updating_docs/">
       
-      
-        <link rel="next" href="../safety/">
       
       
         
@@ -27,7 +25,7 @@
     
     
       
-        <title>AGAPI Integration - cspilot</title>
+        <title>Code Documentation - cspilot</title>
       
     
     
@@ -78,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#agapi-integration" class="md-skip">
+        <a href="#python-entry-points" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AGAPI Integration
+              Code Documentation
             
           </span>
         </div>
@@ -436,8 +434,6 @@
       
   
   
-    
-  
   
   
     
@@ -450,11 +446,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -475,7 +471,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -574,44 +570,17 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    AGAPI Integration
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../agentic_audit/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AGAPI Integration
+    Agentic Audit
   
 
     
@@ -620,92 +589,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#openrouter-first-backend" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        OpenRouter-First Backend
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#direct-agent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Direct Agent
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#planner-run-and-langgraph" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Planner, Run, and LangGraph
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#agapi-materials-query-wrapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AGAPI Materials Query Wrapper
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#local-tools-vs-agapi-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Local Tools vs AGAPI Tools
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -833,6 +716,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../acceptance_tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acceptance Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../roadmap/" class="md-nav__link">
         
   
@@ -893,10 +804,19 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../reference/SUMMARY/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -912,6 +832,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -936,80 +857,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#openrouter-first-backend" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        OpenRouter-First Backend
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#direct-agent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Direct Agent
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#planner-run-and-langgraph" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Planner, Run, and LangGraph
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#agapi-materials-query-wrapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AGAPI Materials Query Wrapper
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#local-tools-vs-agapi-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Local Tools vs AGAPI Tools
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1026,46 +873,6 @@
   
 
 
-  <nav class="md-path" aria-label="Navigation" >
-    <ol class="md-path__list">
-      
-        
-  
-  
-    <li class="md-path__item">
-      <a href=".." class="md-path__link">
-        
-  <span class="md-ellipsis">
-    Home
-  </span>
-
-      </a>
-    </li>
-  
-
-      
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
-        <a href="../agent_usage/" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    Capabilities
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-    </ol>
-  </nav>
-
               
               <article class="md-content__inner md-typeset">
                 
@@ -1073,7 +880,7 @@
 
 
   
-    <a href="https://github.com/sandipgiri576/cspilot/blob/main/docs/agapi.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/sandipgiri576/cspilot/blob/main/docs/api.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1081,88 +888,51 @@
   
 
 
-<h1 id="agapi-integration">AGAPI Integration<a class="headerlink" href="#agapi-integration" title="Permanent link">&para;</a></h1>
-<p>CSPilot can use AGAPI through OpenAI-compatible clients and optional prebuilt
-AGAPI tools. For normal planner/agent model calls, OpenRouter is currently the
-recommended default; AGAPI model serving is opt-in.</p>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>AGAPI_API_KEY=your_api_key
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>AGAPI_BASE_URL=https://atomgpt.org/api
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cspilot_MODEL=openai/gpt-oss-20b
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>OPENROUTER_API_KEY=your_openrouter_key
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>OPENROUTER_MODEL=openai/gpt-oss-20b:free
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>CSPILOT_LLM_PROVIDER=openrouter
-</span></code></pre></div>
-<h2 id="openrouter-first-backend">OpenRouter-First Backend<a class="headerlink" href="#openrouter-first-backend" title="Permanent link">&para;</a></h2>
-<p>For normal <code>search</code>, <code>agent</code>, <code>plan</code>, <code>run</code>, and <code>graph-run</code> usage, configure
-OpenRouter:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>OPENROUTER_API_KEY=your_openrouter_key
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>OPENROUTER_MODEL=openai/gpt-oss-20b:free
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>CSPILOT_LLM_PROVIDER=openrouter
-</span></code></pre></div>
-<p><code>--llm-provider auto</code> uses OpenRouter by default.
-Use <code>--llm-provider agapi</code> only when AGAPI model serving is intentionally being
-tested. If AGAPI is selected and fails with common backend/model errors, CSPilot
-can still retry through OpenRouter.</p>
-<p>Deterministic xTB, ORCA, stk, NWPESSe, MACE, and ASE tools are unchanged.</p>
-<h2 id="direct-agent">Direct Agent<a class="headerlink" href="#direct-agent" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/agent_test<span class="w"> </span>--agent-profile<span class="w"> </span>chem
-</span></code></pre></div>
-<p><code>agent</code> supports:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>--llm-provider<span class="w"> </span>auto<span class="p">|</span>openrouter<span class="p">|</span>agapi
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>--model<span class="w"> </span>openai/gpt-oss-20b:free
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>--base-url<span class="w"> </span>https://openrouter.ai/api/v1
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>--agent-profile<span class="w"> </span>chem<span class="p">|</span>materials<span class="p">|</span>general
-</span></code></pre></div>
-<h2 id="planner-run-and-langgraph">Planner, Run, and LangGraph<a class="headerlink" href="#planner-run-and-langgraph" title="Permanent link">&para;</a></h2>
-<p>The configured model backend is used by:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cspilot<span class="w"> </span>plan<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/plan
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/run
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/graph
-</span></code></pre></div>
-<p>The model returns JSON plans. The executor calls only registered tools from the
-selected profile allowlist.</p>
-<h2 id="agapi-materials-query-wrapper">AGAPI Materials Query Wrapper<a class="headerlink" href="#agapi-materials-query-wrapper" title="Permanent link">&para;</a></h2>
-<p>When the AGAPI prebuilt <code>AGAPIAgent</code> is available, CSPilot can delegate
-materials queries:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--html<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3
-</span></code></pre></div>
-<p>The wrapper calls the equivalent of:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">render_html</span><span class="o">=</span><span class="n">render_html</span><span class="p">)</span>
-</span></code></pre></div>
-<h2 id="local-tools-vs-agapi-tools">Local Tools vs AGAPI Tools<a class="headerlink" href="#local-tools-vs-agapi-tools" title="Permanent link">&para;</a></h2>
+<h1 id="python-entry-points">Python Entry Points<a class="headerlink" href="#python-entry-points" title="Permanent link">&para;</a></h1>
 <table>
 <thead>
 <tr>
-<th>Path</th>
-<th>Examples</th>
-<th>Data source</th>
+<th>Entry point</th>
+<th>Responsibility</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Local CSPilot tools</td>
-<td>ASE, xTB, ORCA, MACE, stk, NWPESSe</td>
-<td>local files and local executables</td>
+<td>cspilot.graph.run_graph_agent</td>
+<td>Run the bounded agent loop and return JSON-safe final state</td>
 </tr>
 <tr>
-<td>Model planner</td>
-<td><code>plan</code>, <code>run</code>, <code>graph-run</code></td>
-<td>JSON tool selection only through OpenRouter or AGAPI</td>
+<td>cspilot.graph.build_graph</td>
+<td>Compile the LangGraph action/observation graph</td>
 </tr>
 <tr>
-<td>AGAPI prebuilt tools</td>
-<td>materials/JARVIS-style query</td>
-<td>AGAPI response</td>
+<td>cspilot.agents.planner.decide_next_action</td>
+<td>Select one structured action from observations</td>
+</tr>
+<tr>
+<td>cspilot.agents.planner.create_plan</td>
+<td>Generate a complete saved plan for explicit execution</td>
+</tr>
+<tr>
+<td>cspilot.agents.executor.execute_plan</td>
+<td>Execute a saved allowlisted plan without a model</td>
+</tr>
+<tr>
+<td>cspilot.agents.reporter.generate_report</td>
+<td>Render execution data using domain report fields</td>
+</tr>
+<tr>
+<td>cspilot.skill_loader.SkillLoader</td>
+<td>Load common and profile Markdown by role</td>
+</tr>
+<tr>
+<td>cspilot.tools.registry.call_tool</td>
+<td>Normalize arguments and invoke an allowed tool</td>
 </tr>
 </tbody>
 </table>
-<p>AGAPI is not used to invent xTB or ORCA outputs. If a property is missing from
-parsed output, reports say it was not found in parsed results.</p>
+<p>See <a href="../tools/">Tools</a> for deterministic scientific integrations and
+<a href="../agent_usage/">Agent Usage</a> for loop limits, artifacts, and skills.</p>
 
 
 
@@ -1200,7 +970,7 @@ parsed output, reports say it was not found in parsed results.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../tools/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Tools">
+          <a href="../updating_docs/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Updating Documentation">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1210,27 +980,11 @@ parsed output, reports say it was not found in parsed results.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Tools
+                Updating Documentation
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../safety/" class="md-footer__link md-footer__link--next" aria-label="Next: Safety">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Safety
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     

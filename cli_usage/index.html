@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
+        <meta name="description" content="Computational chemistry structure workflows and OpenRouter-backed planning.">
       
       
         <meta name="author" content="Sandip Giri">
@@ -687,15 +687,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#nwpesse-and-greencatai" class="md-nav__link">
+  <a href="#nwpesse" class="md-nav__link">
     <span class="md-ellipsis">
       
-        NWPESSe And GreenCatAI
+        NWPESSe
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="NWPESSe And GreenCatAI">
+    <nav class="md-nav" aria-label="NWPESSe">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -703,17 +703,6 @@
     <span class="md-ellipsis">
       
         nwpesse-search
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#greencatai-design-mbh" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        greencatai design-mbh
       
     </span>
   </a>
@@ -923,14 +912,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../agapi/" class="md-nav__link">
+      <a href="../agentic_audit/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AGAPI Integration
+    Agentic Audit
   
 
     
@@ -1066,6 +1055,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../acceptance_tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acceptance Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../roadmap/" class="md-nav__link">
         
   
@@ -1129,7 +1146,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/SUMMARY/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         
   
   
@@ -1425,15 +1442,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#nwpesse-and-greencatai" class="md-nav__link">
+  <a href="#nwpesse" class="md-nav__link">
     <span class="md-ellipsis">
       
-        NWPESSe And GreenCatAI
+        NWPESSe
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="NWPESSe And GreenCatAI">
+    <nav class="md-nav" aria-label="NWPESSe">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1441,17 +1458,6 @@
     <span class="md-ellipsis">
       
         nwpesse-search
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#greencatai-design-mbh" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        greencatai design-mbh
       
     </span>
   </a>
@@ -1555,28 +1561,27 @@
 <p>Purpose: answer a general natural-language question with the configured
 OpenAI-compatible backend. OpenRouter is the recommended default when
 <code>OPENROUTER_API_KEY</code> is set.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cspilot<span class="w"> </span>search<span class="w"> </span><span class="s2">&quot;what is chemical space?&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/search
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cspilot<span class="w"> </span>search<span class="w"> </span><span class="s2">"what is chemical space?"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/search
 </span></code></pre></div>
 <p>Output files: <code>search_result.json</code> in the selected workdir.</p>
 <h3 id="root-quoted-question-fallback">Root quoted question fallback<a class="headerlink" href="#root-quoted-question-fallback" title="Permanent link">&para;</a></h3>
-<p>Purpose: route a quoted unknown root command to <code>search</code>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cspilot<span class="w"> </span><span class="s2">&quot;what is the chemical space?&quot;</span>
+<p>Purpose: route a quoted natural-language request to the tool-using <code>run</code> agent.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cspilot<span class="w"> </span><span class="s2">"what is the chemical space?"</span>
 </span></code></pre></div>
-<p>Output files: same as <code>search</code>.</p>
+<p>Output files: same as <code>run</code>. Use explicit <code>search</code> for general explanations
+that do not require tools.</p>
 <h3 id="agent"><code>agent</code><a class="headerlink" href="#agent" title="Permanent link">&para;</a></h3>
 <p>Purpose: run the direct tool-using agent through the configured model backend.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cspilot<span class="w"> </span>agent<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/agent_test<span class="w"> </span>--agent-profile<span class="w"> </span>chem
 </span></code></pre></div>
-<p>Options include <code>--model</code>, <code>--base-url</code>, <code>--llm-provider auto|openrouter|agapi</code>,
-and <code>--agent-profile chem|materials|general</code>.</p>
+<p>Options include <code>--model</code>, <code>--base-url</code>, and <code>--agent-profile chem|materials|general</code>.</p>
 <p>Output files: <code>agent_result.json</code> and any files generated by called tools.</p>
 <h3 id="plan"><code>plan</code><a class="headerlink" href="#plan" title="Permanent link">&para;</a></h3>
 <p>Purpose: create a strict JSON plan through the configured model backend.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cspilot<span class="w"> </span>plan<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/test<span class="w"> </span>--profile<span class="w"> </span>chem
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cspilot<span class="w"> </span>plan<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/test<span class="w"> </span>--profile<span class="w"> </span>chem
 </span></code></pre></div>
-<p>Useful flags: <code>--profile</code>, <code>--llm-provider auto|openrouter|agapi</code>, <code>--model</code>,
-and <code>--base-url</code>.</p>
+<p>Useful flags: <code>--profile</code>, <code>--model</code>, and <code>--base-url</code>.</p>
 <p>Output files: <code>plan.json</code>.</p>
 <h3 id="execute"><code>execute</code><a class="headerlink" href="#execute" title="Permanent link">&para;</a></h3>
 <p>Purpose: execute an existing JSON plan through the fixed registry.</p>
@@ -1584,35 +1589,40 @@ and <code>--base-url</code>.</p>
 </span></code></pre></div>
 <p>Output files: <code>execution_result.json</code> and <code>step_###_result.json</code>.</p>
 <h3 id="run"><code>run</code><a class="headerlink" href="#run" title="Permanent link">&para;</a></h3>
-<p>Purpose: plan, execute, verify, and report.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span><span class="se">\</span>
+<p>Purpose: iteratively choose a tool, observe its result, decide the next action,
+then verify and report.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/test<span class="w"> </span>--profile<span class="w"> </span>chem<span class="w"> </span>--pretty
 </span></code></pre></div>
-<p>Useful flags: <code>--llm-provider auto|openrouter|agapi</code>, <code>--model</code>, <code>--base-url</code>,
-<code>--html</code>, <code>--pretty/--no-pretty</code>, and <code>--quiet</code>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/test<span class="w"> </span>--no-pretty
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/test<span class="w"> </span>--quiet
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3<span class="w"> </span>--profile<span class="w"> </span>materials<span class="w"> </span>--html
+<p>Useful flags: <code>--model</code>, <code>--base-url</code>,
+<code>--html</code>, <code>--pretty/--no-pretty</code>, <code>--quiet</code>, <code>--max-steps</code>, and <code>--max-retries</code>.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/test<span class="w"> </span>--no-pretty
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/test<span class="w"> </span>--quiet
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz and print its formula"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/water-html<span class="w"> </span>--html
 </span></code></pre></div>
 <p>Output files: <code>plan.json</code>, <code>execution_result.json</code>,
 <code>verification_result.json</code>, <code>step_###_result.json</code>, and <code>final_report.md</code> or
 <code>final_report.html</code>.</p>
 <h3 id="graph-run"><code>graph-run</code><a class="headerlink" href="#graph-run" title="Permanent link">&para;</a></h3>
-<p>Purpose: run the LangGraph planner/executor/verifier/reporter loop.</p>
+<p>Purpose: run the LangGraph agent loop with optional specialist routing.</p>
 <p>Single mode:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water<span class="w"> </span>--profile<span class="w"> </span>chem<span class="w"> </span>--agent-mode<span class="w"> </span>single
 </span></code></pre></div>
 <p>Multi mode with routing:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--html<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--html<span class="w"> </span>--workdir<span class="w"> </span>runs/inspection
 </span></code></pre></div>
 <p>Useful flags: <code>--agent-mode single|multi</code>, <code>--profile</code>,
-<code>--llm-provider auto|openrouter|agapi</code>, <code>--model</code>, <code>--base-url</code>, <code>--html</code>,
-<code>--pretty/--no-pretty</code>, <code>--quiet</code>, <code>--max-retries</code>.</p>
+<code>--model</code>, <code>--base-url</code>, <code>--html</code>,
+<code>--pretty/--no-pretty</code>, <code>--quiet</code>, <code>--max-retries</code>, <code>--max-steps</code>.</p>
+<p>Both commands default to 8 tool actions and 1 recovery attempt after a failed
+or unverified action. Returned answers print unless quiet mode is selected.
+Full diagnostics remain in the saved report. HTML saving still prints the answer.</p>
 <p>Output files: <code>plan.json</code>, <code>execution_result.json</code>,
 <code>verification_result.json</code>, <code>final_state.json</code>, <code>final_report.md/html</code>, and
-<code>route.json</code> in multi mode.</p>
+<code>route.json</code> in multi mode. Each decision and tool attempt also produces
+<code>decision_NNN.json</code>, <code>step_NNN_result.json</code>, and cumulative <code>observations.json</code>.</p>
 <h3 id="docs-check"><code>docs-check</code><a class="headerlink" href="#docs-check" title="Permanent link">&para;</a></h3>
 <p>Purpose: run lightweight documentation consistency checks.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cspilot<span class="w"> </span>docs-check
@@ -1645,14 +1655,14 @@ and <code>--base-url</code>.</p>
 trajectory, and log files.</p>
 <h2 id="stk-commands">stk Commands<a class="headerlink" href="#stk-commands" title="Permanent link">&para;</a></h2>
 <h3 id="top-level-shortcuts">Top-level shortcuts<a class="headerlink" href="#top-level-shortcuts" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">&quot;c1ccccc1&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_benzene
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>cspilot<span class="w"> </span>stk-polymer<span class="w"> </span><span class="s2">&quot;BrCCBr&quot;</span><span class="w"> </span>--repeating-unit<span class="w"> </span>A<span class="w"> </span>--num-repeating-units<span class="w"> </span><span class="m">4</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_polymer
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">&quot;c1ccccc1&quot;</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_benzene
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>cspilot<span class="w"> </span>stk-polymer<span class="w"> </span><span class="s2">"BrCCBr"</span><span class="w"> </span>--repeating-unit<span class="w"> </span>A<span class="w"> </span>--num-repeating-units<span class="w"> </span><span class="m">4</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_polymer
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
 </span></code></pre></div>
 <p>Output files: JSON results, molecule files such as <code>.mol</code>/<code>.xyz</code>, and for
 <code>stk-xtb</code> a <code>workflow_result.json</code> plus xTB outputs when xTB runs.</p>
 <h3 id="stk-building-block-smiles"><code>stk building-block-smiles</code><a class="headerlink" href="#stk-building-block-smiles" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-smiles<span class="w"> </span><span class="s2">&quot;c1ccccc1&quot;</span><span class="w"> </span>runs/stk/benzene.mol
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-smiles<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>runs/stk/benzene.mol
 </span></code></pre></div>
 <p>Purpose: build an stk building block from SMILES.</p>
 <h3 id="stk-building-block-file"><code>stk building-block-file</code><a class="headerlink" href="#stk-building-block-file" title="Permanent link">&para;</a></h3>
@@ -1660,36 +1670,29 @@ trajectory, and log files.</p>
 </span></code></pre></div>
 <p>Purpose: load an stk building block from a file and optionally export it.</p>
 <h3 id="stk-linear-polymer"><code>stk linear-polymer</code><a class="headerlink" href="#stk-linear-polymer" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>linear-polymer<span class="w"> </span><span class="s2">&quot;BrCCBr&quot;</span><span class="w"> </span>A<span class="w"> </span><span class="m">4</span><span class="w"> </span>runs/stk/polymer.mol
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>linear-polymer<span class="w"> </span><span class="s2">"BrCCBr"</span><span class="w"> </span>A<span class="w"> </span><span class="m">4</span><span class="w"> </span>runs/stk/polymer.mol
 </span></code></pre></div>
 <p>Purpose: construct a linear polymer.</p>
 <h3 id="stk-replace-smiles"><code>stk replace-smiles</code><a class="headerlink" href="#stk-replace-smiles" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>replace-smiles<span class="w"> </span><span class="s2">&quot;c1ccccc1&quot;</span><span class="w"> </span><span class="s2">&quot;[H]&quot;</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="w"> </span>runs/stk/fluoro.mol
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>replace-smiles<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span><span class="s2">"[H]"</span><span class="w"> </span><span class="s2">"F"</span><span class="w"> </span>runs/stk/fluoro.mol
 </span></code></pre></div>
 <p>Purpose: edit a molecule with RDKit substructure replacement.</p>
 <h3 id="stk-export-xyz"><code>stk export-xyz</code><a class="headerlink" href="#stk-export-xyz" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>export-xyz<span class="w"> </span>runs/stk/benzene.mol<span class="w"> </span>runs/stk/benzene.xyz
 </span></code></pre></div>
 <p>Purpose: export molecule files to XYZ using stk/RDKit fallback.</p>
-<h2 id="nwpesse-and-greencatai">NWPESSe And GreenCatAI<a class="headerlink" href="#nwpesse-and-greencatai" title="Permanent link">&para;</a></h2>
+<h2 id="nwpesse">NWPESSe<a class="headerlink" href="#nwpesse" title="Permanent link">&para;</a></h2>
 <h3 id="nwpesse-search"><code>nwpesse-search</code><a class="headerlink" href="#nwpesse-search" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span><span class="s2">&quot;(h2o)4Mg&quot;</span><span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cspilot<span class="w"> </span>nwpesse-search<span class="w"> </span><span class="s2">"(h2o)4Mg"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/h2o4mg<span class="w"> </span>--max-calculations<span class="w"> </span><span class="m">10</span><span class="w"> </span>--box-size<span class="w"> </span><span class="m">3</span>.0
 </span></code></pre></div>
 <p>Purpose: prepare and run a fragment-cluster global-minimum search.</p>
 <p>Output files: <code>mol.cluster</code>, <code>mol.inp</code>, <code>workflow_result.json</code>, NWPESSe
 stdout/stderr, candidate XYZ files, and <code>lowest_energy.xyz</code> when found.</p>
-<h3 id="greencatai-design-mbh"><code>greencatai design-mbh</code><a class="headerlink" href="#greencatai-design-mbh" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cspilot<span class="w"> </span>greencatai<span class="w"> </span>design-mbh<span class="w"> </span>--output-dir<span class="w"> </span>runs/mbh_api<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span>--search-space<span class="w"> </span>configs/search_space.json<span class="w"> </span>--scoring<span class="w"> </span>configs/scoring.json
-</span></code></pre></div>
-<p>Purpose: call the installed GreenCatAI MBH catalyst-design API.</p>
-<p>Output files: GreenCatAI artifacts in the selected output directory and a JSON
-tool result.</p>
 <h2 id="fixed-workflows">Fixed Workflows<a class="headerlink" href="#fixed-workflows" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>xtb-orca-sp<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>xtb-orca-freq<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>mace-orca<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span>--model<span class="w"> </span>/path/to/model.model
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>xtb-orca-sp<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>xtb-orca-freq<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>cspilot<span class="w"> </span>workflow<span class="w"> </span>mace-orca<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span>--model<span class="w"> </span>/path/to/model.model
 </span></code></pre></div>
 <p>Output files: timestamped workflow directory with <code>workflow_result.json</code> and
 step subdirectories.</p>

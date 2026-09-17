@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
+        <meta name="description" content="Computational chemistry structure workflows and OpenRouter-backed planning.">
       
       
         <meta name="author" content="Sandip Giri">
@@ -686,14 +686,14 @@
   
   
     <li class="md-nav__item">
-      <a href="agapi/" class="md-nav__link">
+      <a href="agentic_audit/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AGAPI Integration
+    Agentic Audit
   
 
     
@@ -829,6 +829,34 @@
   
   
     <li class="md-nav__item">
+      <a href="acceptance_tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acceptance Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="roadmap/" class="md-nav__link">
         
   
@@ -892,7 +920,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/SUMMARY/" class="md-nav__link">
+      <a href="api/" class="md-nav__link">
         
   
   
@@ -1041,18 +1069,18 @@
 <p>Computational chemistry agentic workflow package.</p>
 <p>Created by Sandip Giri.</p>
 <p>CSPilot is a command-line package for reproducible molecular structure
-workflows. It combines deterministic local tools, AGAPI/OpenAI-compatible
+workflows. It combines deterministic local tools, OpenRouter-backed
 planning, LangGraph orchestration, JSON verification, and polished terminal
 reports.</p>
 <h2 id="quick-install">Quick Install<a class="headerlink" href="#quick-install" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </span></code></pre></div>
 <p>For documentation builds:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[docs]&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[docs]"</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict
 </span></code></pre></div>
 <p>For stk support:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[stk]&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[stk]"</span>
 </span></code></pre></div>
 <h2 id="first-command">First Command<a class="headerlink" href="#first-command" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cspilot<span class="w"> </span>inspect<span class="w"> </span>tests/examples/input.xyz
@@ -1060,25 +1088,25 @@ reports.</p>
 <p>This reads an XYZ file with ASE and writes a timestamped <code>result.json</code>.</p>
 <h2 id="agentic-start">Agentic Start<a class="headerlink" href="#agentic-start" title="Permanent link">&para;</a></h2>
 <p>Single-agent graph:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;inspect tests/examples/input.xyz&quot;</span><span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water<span class="w"> </span>--profile<span class="w"> </span>chem<span class="w"> </span>--agent-mode<span class="w"> </span>single
 </span></code></pre></div>
 <p>Routed multi-agent graph:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">&quot;Find all Al2O3 materials&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--html<span class="w"> </span>--workdir<span class="w"> </span>runs/al2o3
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"build benzene with stk"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--workdir<span class="w"> </span>runs/benzene
 </span></code></pre></div>
 <h2 id="documentation-map">Documentation Map<a class="headerlink" href="#documentation-map" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="installation/">Installation</a>: install with <code>uv</code> or <code>pip</code>.</li>
-<li><a href="configuration/">Configuration</a>: <code>.env.cspilot</code>, ORCA, xTB, AGAPI, MACE.</li>
+<li><a href="configuration/">Configuration</a>: <code>.env.cspilot</code>, OpenRouter, ORCA, xTB, and MACE.</li>
 <li><a href="cli_usage/">CLI Usage</a>: every implemented command and output file.</li>
 <li><a href="agent_usage/">Agent Usage</a>: direct agent, planner/executor, LangGraph.</li>
 <li><a href="workflows/">Workflows</a>: xTB, ORCA, stk, NWPESSe, and result extraction.</li>
 <li><a href="tools/">Tools</a>: Python and agent tools grouped by domain.</li>
-<li><a href="agapi/">AGAPI Integration</a>: model backend and materials wrapper.</li>
+<li><a href="agentic_audit/">Agentic Audit</a>: current autonomy and orchestration assessment.</li>
 <li><a href="examples/">Examples</a>: copy-paste workflows.</li>
 <li><a href="safety/">Safety</a>: execution boundaries and scientific integrity.</li>
-<li><a href="reference/SUMMARY/">Code Documentation</a>: mkdocstrings reference pages.</li>
+<li><a href="api/">Code Documentation</a>: public orchestration entry points.</li>
 </ul>
 <h2 id="current-status">Current Status<a class="headerlink" href="#current-status" title="Permanent link">&para;</a></h2>
 <p>Implemented:</p>
@@ -1090,13 +1118,13 @@ reports.</p>
 <li>MACE to ORCA workflow.</li>
 <li>stk build/edit/export and stk to xTB.</li>
 <li>NWPESSe fragment-cluster search.</li>
-<li>AGAPI direct agent and JSON planner/executor.</li>
+<li>OpenRouter direct agent and JSON planner/executor.</li>
 <li>LangGraph single mode and routed multi mode.</li>
 <li>Rich terminal reports and Markdown/HTML final reports.</li>
 </ul>
 <p>Planned:</p>
 <ul>
-<li>LangGraph repair/retry node integration.</li>
+<li>Checkpoint/resume and request-level completion validation.</li>
 <li>Multiwfn post-processing.</li>
 <li>Expanded stk topology presets.</li>
 <li>torch-sim MLIP molecular dynamics.</li>

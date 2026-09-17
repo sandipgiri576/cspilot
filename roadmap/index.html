@@ -6,14 +6,14 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Computational chemistry structure workflows and AGAPI-backed tool execution.">
+        <meta name="description" content="Computational chemistry structure workflows and OpenRouter-backed planning.">
       
       
         <meta name="author" content="Sandip Giri">
       
       
       
-        <link rel="prev" href="../development/">
+        <link rel="prev" href="../acceptance_tests/">
       
       
         <link rel="next" href="../updating_docs/">
@@ -575,14 +575,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../agapi/" class="md-nav__link">
+      <a href="../agentic_audit/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AGAPI Integration
+    Agentic Audit
   
 
     
@@ -717,6 +717,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../acceptance_tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acceptance Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -793,7 +821,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/SUMMARY/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         
   
   
@@ -905,6 +933,7 @@
 
 
 <h1 id="roadmap">Roadmap<a class="headerlink" href="#roadmap" title="Permanent link">&para;</a></h1>
+<p>Package metadata still reports version 0.1.0; capability stages are not release tags.</p>
 <table>
 <thead>
 <tr>
@@ -915,39 +944,38 @@
 </thead>
 <tbody>
 <tr>
-<td>v0.1</td>
+<td>Deterministic tools</td>
 <td>Implemented</td>
-<td>Deterministic CLI for ASE, xTB, ORCA SP, MACE, and JSON outputs</td>
+<td>ASE, conversion, xTB, ORCA/OPI, optional MACE/stk/NWPESSe</td>
 </tr>
 <tr>
-<td>v0.2</td>
+<td>Fixed workflows</td>
 <td>Implemented</td>
-<td>Fixed xTB/MACE to ORCA workflows</td>
+<td>xTB/MACE to ORCA and construction workflows</td>
 </tr>
 <tr>
-<td>v0.3</td>
+<td>Structured planning</td>
 <td>Implemented</td>
-<td>AGAPI direct agent, JSON planner, executor, verification, reports, stk build/edit/export and stk to xTB workflow</td>
+<td>Saved plans, allowlisted execution, verification and reports</td>
 </tr>
 <tr>
-<td>v0.4</td>
-<td>Implemented NWPESSe global minima search,  LangGraph single mode and routed multi-agent mode, LangGraph repair/retry node integration in graph execution</td>
-<td></td>
+<td>Iterative agent</td>
+<td>Implemented</td>
+<td>Domain Markdown skills, observation-driven actions, bounded recovery, terminal results</td>
 </tr>
 <tr>
-<td>v0.5</td>
-<td>ongoing</td>
-<td>Multiwfn post-processing tools, Expanded stk topology support and stk structure generation, torch-sim MLIP molecular dynamics</td>
+<td>Agent hardening</td>
+<td>Next</td>
+<td>Completion criteria, failure resolution, resume, evaluations</td>
 </tr>
 <tr>
-<td>v0.6</td>
+<td>Additional scientific capabilities</td>
 <td>Planned</td>
-<td>MongoDB job database, Streamlit UI</td>
+<td>Multiwfn, safe stk presets, MLIP molecular dynamics</td>
 </tr>
 </tbody>
 </table>
-<p>Planned entries are not current CLI commands unless explicitly documented in
-<code>docs/cli_usage.md</code>.</p>
+<p>See the repository TODO.md for the next stage. Planned features are not CLI commands.</p>
 
 
 
@@ -985,7 +1013,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../development/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Development">
+          <a href="../acceptance_tests/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Acceptance Checks">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -995,7 +1023,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Development
+                Acceptance Checks
               </div>
             </div>
           </a>
