@@ -1,5 +1,9 @@
 # Configuration
 
+Domain instructions are bundled in `src/cspilot/skills/*.md`; no additional
+service or credentials are needed. `--max-steps` and `--max-retries` bound
+the iterative `run` and `graph-run` commands.
+
 CSPilot loads `.env.cspilot` from the current working directory.
 
 ```dotenv
@@ -9,14 +13,9 @@ ORCA_COMMAND=/path/to/orca
 NWPESSE_BIN=nwpesse
 MACE_MODEL=/path/to/model.model
 
-AGAPI_API_KEY=your_api_key
-AGAPI_BASE_URL=https://atomgpt.org/api
-cspilot_MODEL=openai/gpt-oss-20b
-
 OPENROUTER_API_KEY=your_openrouter_key
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 OPENROUTER_MODEL=openai/gpt-oss-20b:free
-CSPILOT_LLM_PROVIDER=openrouter
 ```
 
 ## Implemented Variables
@@ -28,13 +27,9 @@ CSPILOT_LLM_PROVIDER=openrouter
 | `ORCA_COMMAND` | ORCA CLI and workflows | `orca` |
 | `NWPESSE_BIN` | NWPESSe workflow | `nwpesse` |
 | `MACE_MODEL` | `workflow mace-orca` when `--model` is omitted | fallback placeholder |
-| `AGAPI_API_KEY` | AGAPI model backend and AGAPI/JARVIS materials wrapper | required only for `--llm-provider agapi` or AGAPI materials queries |
-| `AGAPI_BASE_URL` | OpenAI-compatible AGAPI client | required only when AGAPI model serving is selected |
-| `cspilot_MODEL` | AGAPI model | required only when AGAPI model serving is selected |
-| `OPENROUTER_API_KEY` | OpenRouter model backend | required for default NLIP/model-backed commands |
+| `OPENROUTER_API_KEY` | OpenRouter model backend | required for model-backed commands |
 | `OPENROUTER_BASE_URL` | OpenRouter-compatible client | `https://openrouter.ai/api/v1` |
 | `OPENROUTER_MODEL` | OpenRouter model | `openai/gpt-oss-20b:free` |
-| `CSPILOT_LLM_PROVIDER` | `search`, `agent`, `plan`, `run`, `graph-run`, repair helper | `openrouter`; use `agapi` to force AGAPI model serving |
 
 OPI may also recognize `OPI_ORCA` and `ORCA_PATH` internally. CSPilot CLI
 settings use `ORCA_COMMAND`.

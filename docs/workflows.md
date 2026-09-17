@@ -1,5 +1,9 @@
 # Workflows
 
+`run` and `graph-run` now choose tools iteratively from observed outputs.
+The fixed workflows below remain independently callable and may be selected as
+one action by the agent. Decisions and observations are saved alongside results.
+
 ## xTB Optimization
 
 ```bash
@@ -44,8 +48,13 @@ cspilot workflow xtb-orca-freq tests/examples/input.xyz \
   --charge 0 --mult 1 --method r2scan-3c --basis def2-SVP
 ```
 
-The second ORCA step is a frequency job. Gibbs free energy, enthalpy,
-frequencies, and related values are reported only when parsed from output.
+The ORCA stage runs `Opt Freq` after xTB preoptimization, so frequencies are
+computed at the geometry optimized with the requested ORCA method. For r2SCAN-3c
+the method-defined basis is used; an extra def2-SVP keyword is not added.
+Gibbs free energy, enthalpy, frequencies, temperature, and pressure are reported
+only when parsed. Verification checks optimization convergence, required
+thermochemistry, and significant imaginary modes (below -20 cm^-1).
+See the [ORCA optimization/frequency example](https://www.faccts.de/docs/orca/6.1/tutorials/spec/IR.html).
 
 ## MACE to ORCA
 
@@ -82,16 +91,6 @@ cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB an
 
 The planner should create an stk build step producing an XYZ, then pass that
 same XYZ into the xTB to ORCA workflow tool.
-
-## AGAPI Materials Query
-
-```bash
-cspilot graph-run "Find all Al2O3 materials" \
-  --profile auto --agent-mode multi --html --workdir runs/al2o3
-```
-
-This uses the materials profile when routed successfully and records AGAPI
-response content in JSON. It does not run local DFT.
 
 ## Result JSON Extraction
 

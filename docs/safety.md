@@ -41,5 +41,5 @@ LLM-generated shell, Python, or Multiwfn scripts must not be executed.
 
 ## Secrets
 
-Keep `AGAPI_API_KEY` in `.env.cspilot` and out of version control. Do not paste
+Keep `OPENROUTER_API_KEY` in `.env.cspilot` and out of version control. Do not paste
 private API keys, licensed paths, or sensitive output into public reports.

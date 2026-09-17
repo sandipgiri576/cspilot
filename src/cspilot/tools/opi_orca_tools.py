@@ -16,6 +16,7 @@ from cspilot.schemas import ProcessResult
 TASK_SP = "sp"
 TASK_OPT = "opt"
 TASK_FREQ = "freq"
+TASK_OPT_FREQ = "opt_freq"
 
 
 def opi_available() -> bool:
@@ -80,6 +81,7 @@ def orca_frequency(
     nprocs: int = 1,
     *,
     orca_command: str | None = None,
+    optimize: bool = False,
 ) -> dict[str, Any]:
     return _run_orca_task(
         xyz_path=xyz_path,
@@ -89,7 +91,7 @@ def orca_frequency(
         charge=charge,
         mult=mult,
         nprocs=nprocs,
-        task=TASK_FREQ,
+        task=TASK_OPT_FREQ if optimize else TASK_FREQ,
         orca_command=orca_command,
     )
 
@@ -206,6 +208,8 @@ def _run_orca_task(
         "opi_available": opi_available(),
         "orca_command": _resolve_orca_command(orca_command),
     }
+    if method.lower() in {"r2scan-3c", "b97-3c", "pbeh-3c", "hf-3c"}:
+        result["parameters"]["basis"] = "method-defined"
 
     try:
         _configure_opi_orca(result["orca_command"])
@@ -235,6 +239,9 @@ def _run_orca_task(
         result["files"]["output"] = str(output_path)
         parsed = parse_orca_result(output_path)
         result["result"] = parsed
+        optimized_xyz = workdir / "job.xyz"
+        if task in {TASK_OPT, TASK_OPT_FREQ} and optimized_xyz.is_file():
+            result["files"]["optimized_xyz"] = str(optimized_xyz)
         result["status"] = "ok" if parsed.get("terminated_normally") else "failed"
         if not parsed.get("terminated_normally"):
             result["error_message"] = parsed.get("error_message", "ORCA did not terminate normally")
@@ -267,9 +274,14 @@ def _build_calculator(
     calc.input.add_simple_keywords(
         Scf.NOAUTOSTART,
         SimpleKeyword(method),
-        SimpleKeyword(basis),
-        _task_keyword(Task, task),
     )
+    # Composite 3c methods define their own basis; an extra basis changes the method.
+    if method.lower() not in {"r2scan-3c", "b97-3c", "pbeh-3c", "hf-3c"}:
+        calc.input.add_simple_keywords(SimpleKeyword(basis))
+    if task == TASK_OPT_FREQ:
+        calc.input.add_simple_keywords(Task.OPT, Task.FREQ)
+    else:
+        calc.input.add_simple_keywords(_task_keyword(Task, task))
     return calc
 
 
@@ -375,6 +387,23 @@ def _parse_orca_text(output_path: Path) -> dict[str, Any]:
     enthalpy = _last_float_match(r"Total enthalpy\s+\.\.\.\s+([-+]?\d+(?:\.\d+)?)", text)
     if enthalpy is not None:
         properties["enthalpy"] = enthalpy
+
+    temperature = _last_float_match(r"Temperature\s+\.\.\.\s+([-+]?\d+(?:\.\d+)?)", text)
+    pressure = _last_float_match(r"Pressure\s+\.\.\.\s+([-+]?\d+(?:\.\d+)?)", text)
+    if temperature is not None:
+        properties["temperature_kelvin"] = temperature
+        entropy_term = _last_float_match(r"Final entropy term\s+\.\.\.\s+([-+]?\d+(?:\.\d+)?)", text)
+        if entropy_term is not None and temperature > 0:
+            properties["entropy_hartree_per_kelvin"] = entropy_term / temperature
+    if pressure is not None:
+        properties["pressure_atm"] = pressure
+    frequencies = re.findall(r"^\s*\d+:\s+([-+]?\d+(?:\.\d+)?)\s+cm\*\*-1", text, re.MULTILINE)
+    if frequencies:
+        properties["frequencies"] = [float(value) for value in frequencies]
+        properties["frequency_unit"] = "cm^-1"
+        properties["imaginary_frequency_count"] = sum(float(value) < -20 for value in frequencies)
+    if any(key in properties for key in ("final_energy_hartree", "gibbs_free_energy", "enthalpy")):
+        properties["energy_unit"] = "Eh"
 
     return {
         "terminated_normally": "ORCA TERMINATED NORMALLY" in text,

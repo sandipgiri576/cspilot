@@ -8,9 +8,6 @@ from cspilot.cli import app
 
 def test_agent_command_reports_missing_openrouter_configuration(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    monkeypatch.delenv("AGAPI_API_KEY", raising=False)
-    monkeypatch.delenv("AGAPI_BASE_URL", raising=False)
-    monkeypatch.delenv("cspilot_MODEL", raising=False)
     monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
 
     result = CliRunner().invoke(

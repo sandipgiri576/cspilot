@@ -65,7 +65,7 @@ Module: `opi_orca_tools.py`
 | --- | --- |
 | `orca_single_point` | OPI ORCA single point. |
 | `orca_optimize` | OPI ORCA optimization. |
-| `orca_frequency` | OPI ORCA frequency. |
+| `orca_frequency` | OPI ORCA frequency; optimize=True requests Opt Freq. |
 | `parse_orca_result` | OPI parsing plus fallback text parsing. |
 | `single_point_with_orca` | CLI adapter for `orca-sp`. |
 
@@ -82,16 +82,6 @@ Module: `mace_tools.py`
 | `optimize_with_mace` | ASE optimization with `MACECalculator`. |
 
 CLI: `mace-opt`. Agent wrapper: `run_mace_optimize`.
-
-## AGAPI Materials
-
-Module: `agapi_materials_tools.py`
-
-| Function | Purpose |
-| --- | --- |
-| `agapi_materials_query` | Optional wrapper around AGAPI prebuilt materials query. |
-
-Agent wrapper: `agapi_materials_query_tool`.
 
 ## Result Tools
 
@@ -115,12 +105,3 @@ write `mol.cluster` and `mol.inp`, run the external NWPESSe binary, parse
 candidate XYZ second-line energies, and copy the lowest-energy structure.
 
 CLI: `nwpesse-search`. Agent wrapper: `nwpesse_global_minimum_search_tool`.
-
-## GreenCatAI
-
-Module: `greencatai_tools.py`
-
-`greencatai_design_mbh_catalysts` calls the installed GreenCatAI MBH design API
-when available.
-
-CLI: `greencatai design-mbh`. Agent wrapper: `design_mbh_catalysts_tool`.

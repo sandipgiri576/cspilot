@@ -1,5 +1,27 @@
 # Examples
 
+## Natural-language acceptance examples
+
+```bash
+cspilot "what is the SMILES string of caffeine?" --workdir runs/caffeine
+cspilot "what is the Gibbs free energy of benzene at ORCA with r2scan-3c" --workdir runs/benzene
+cspilot "Optimize benzene geometry and compute thermochemistry with ORCA r2scan-3c" --workdir runs/benzene-thermo
+```
+
+Use a molecule name, SMILES, or XYZ path for new calculations. Without one the
+agent requests input. New thermochemistry runs optimization and frequencies;
+it does not report a single-point electronic energy as Gibbs energy.
+
+## Display a stored property
+
+```bash
+cspilot run "print Gibbs free energy from runs/water/result.json on screen" \
+  --profile analysis --workdir runs/query --max-steps 4
+```
+
+Returned values print in full and remain saved as JSON. Add `--html` to save
+an HTML report as well; use `--quiet` only when result details are unwanted.
+
 Examples assume CSPilot is installed and `.env.cspilot` is configured for any
 external programs being used.
 
@@ -86,13 +108,6 @@ cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB an
 This is a planned/executed agent workflow path, not a fixed deterministic
 `workflow` subcommand.
 
-## AGAPI Materials Query
-
-```bash
-cspilot graph-run "Find all Al2O3 materials" \
-  --profile auto --agent-mode multi --html --workdir runs/al2o3
-```
-
 ## Result JSON Property Extraction
 
 ```bash
@@ -111,5 +126,5 @@ cspilot nwpesse-search "(h2o)4Mg" \
 
 ```bash
 cspilot graph-run "inspect tests/examples/input.xyz" --workdir runs/water --quiet
-cspilot graph-run "Find all Al2O3 materials" --workdir runs/al2o3 --profile auto --agent-mode multi --html
+cspilot graph-run "inspect tests/examples/input.xyz" --workdir runs/water-html --html
 ```

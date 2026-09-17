@@ -78,10 +78,13 @@ runs/
 agent-example/
 stk-example/
 test-nwpess/
-
+.codex
 # Files
 
 planning.md
+AGENTS.md
+TODO.md
+PROJECT_STRUCTURE.md
 test.md
 green-cat-cspilot.md
 *.xyz

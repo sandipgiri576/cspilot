@@ -1,7 +1,7 @@
 site_name: cspilot
 site_author: Sandip Giri
 site_description: >-
-  Computational chemistry structure workflows and AGAPI-backed tool execution.
+  Computational chemistry structure workflows and OpenRouter-backed planning.
 nav:
   - Home: index.md
   - Getting Started:
@@ -13,13 +13,14 @@ nav:
       - Agent Usage: agent_usage.md
       - Workflows: workflows.md
       - Tools: tools.md
-      - AGAPI Integration: agapi.md
+      - Agentic Audit: agentic_audit.md
       - Safety: safety.md
   - Project:
       - Development: development.md
+      - Acceptance Checks: acceptance_tests.md
       - Roadmap: roadmap.md
       - Updating Documentation: updating_docs.md
-  - Code Documentation: reference/SUMMARY.md
+  - Code Documentation: api.md
 
 repo_url: https://github.com/sandipgiri576/cspilot/
 edit_uri: blob/main/docs/

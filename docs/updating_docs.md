@@ -17,7 +17,7 @@ Also update:
 
 - `docs/agent_usage.md` for planning, agent, profile, LangGraph, or reporting
   behavior.
-- `docs/agapi.md` for AGAPI backend, model, or materials-query changes.
+- `docs/configuration.md` for OpenRouter backend or model changes.
 - `docs/safety.md` when execution boundaries or verification behavior changes.
 - `docs/roadmap.md` when planned work becomes implemented or changes stage.
 - `CHANGELOG.md` when it exists and the change is release-relevant.

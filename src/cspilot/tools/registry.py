@@ -1,21 +1,22 @@
 from __future__ import annotations
 
 import asyncio
+import inspect
 import json
 from contextvars import ContextVar, Token
 from numbers import Real
 from pathlib import Path
 from typing import Any
 
+from agents import set_tracing_disabled
 from agents.tool_context import ToolContext
 
 from cspilot.prompts.system_prompts import allowed_group_names
 from cspilot.tools.agent_tools import (
-    agapi_materials_query_tool,
-    design_mbh_catalysts_tool,
     find_result_json_tool,
     get_property_from_result_tool,
     inspect_structure,
+    molecule_name_to_smiles_tool,
     molecule_name_to_xyz_tool,
     nwpesse_global_minimum_search_tool,
     parse_cluster_formula_tool,
@@ -24,6 +25,7 @@ from cspilot.tools.agent_tools import (
     run_mace_optimize,
     run_orca_single_point,
     run_xtb_optimize,
+    run_xtb_orca_frequency_workflow,
     run_xtb_orca_workflow,
     set_agent_workdir,
     smiles_to_xyz_tool,
@@ -37,7 +39,9 @@ from cspilot.tools.agent_tools import (
 _TOOL_GROUPS = {
     "chemistry": [
         inspect_structure,
+        molecule_name_to_smiles_tool,
         run_xtb_optimize,
+        run_xtb_orca_frequency_workflow,
         run_orca_single_point,
         run_mace_optimize,
         run_xtb_orca_workflow,
@@ -51,9 +55,8 @@ _TOOL_GROUPS = {
         stk_construct_cage_from_smiles_tool,
         rdkit_replace_substructure_tool,
         stk_export_to_xyz_tool,
-        design_mbh_catalysts_tool,
     ],
-    "materials": [agapi_materials_query_tool, design_mbh_catalysts_tool],
+    "materials": [],
     "stk": [
         stk_build_from_smiles_tool,
         stk_building_block_from_file_tool,
@@ -62,10 +65,12 @@ _TOOL_GROUPS = {
         rdkit_replace_substructure_tool,
         stk_export_to_xyz_tool,
     ],
-    "catalysis": [design_mbh_catalysts_tool],
     "nwpesse": [parse_cluster_formula_tool, nwpesse_global_minimum_search_tool],
     "analysis": [find_result_json_tool, get_property_from_result_tool],
-    "thermo": [find_result_json_tool, get_property_from_result_tool],
+    "thermo": [
+        molecule_name_to_xyz_tool, smiles_to_xyz_tool,
+        run_xtb_orca_frequency_workflow, find_result_json_tool, get_property_from_result_tool,
+    ],
 }
 _TOOLS = {tool.name: tool for tools in _TOOL_GROUPS.values() for tool in tools}
 _active_allowed_tools: ContextVar[set[str] | None] = ContextVar("active_allowed_tools", default=None)
@@ -76,6 +81,8 @@ _TOOL_ARG_ALLOWLIST: dict[str, set[str]] = {
     "run_mace_optimize": {"xyz_path", "model_path", "fmax", "steps"},
     "run_xtb_orca_workflow": {"xyz_path", "method", "basis", "charge", "mult", "uhf", "nprocs"},
     "molecule_name_to_xyz_tool": {"name", "output_path", "num_confs"},
+    "molecule_name_to_smiles_tool": {"name"},
+    "run_xtb_orca_frequency_workflow": {"xyz_path", "method", "basis", "charge", "mult", "uhf", "nprocs"},
     "smiles_to_xyz_tool": {"smiles", "output_path", "num_confs", "forcefield"},
     "stk_build_from_smiles_tool": {"smiles", "output_path"},
     "stk_building_block_from_file_tool": {"input_path", "output_path"},
@@ -111,8 +118,20 @@ def reset_allowed_profile(token: Token[set[str] | None]) -> None:
     _active_allowed_tools.reset(token)
 
 
+def get_tool_catalog(profile: str, user_request: str = "") -> list[dict[str, Any]]:
+    """Expose the selected profile's registered tool contracts."""
+    return [
+        {"name": name, "description": _TOOLS[name].description,
+         "parameters": _TOOLS[name].params_json_schema}
+        for name in get_allowed_tools(profile, user_request)
+    ]
+
+
 def call_tool(tool_name: str, args: dict[str, Any], workdir: str) -> dict[str, Any]:
     """Call one allowlisted function tool; reject arbitrary tool or shell execution."""
+    # The deterministic executor does not use remote Agents SDK tracing. Disabling
+    # it here also prevents tool invocation from waiting on a trace exporter.
+    set_tracing_disabled(disabled=True)
     if tool_name not in get_allowed_tools():
         raise ValueError(f"Unknown or disallowed tool: {tool_name}")
     if not isinstance(args, dict):
@@ -131,7 +150,18 @@ def call_tool(tool_name: str, args: dict[str, Any], workdir: str) -> dict[str, A
             tool_call_id=f"executor_{tool_name}",
             tool_arguments=arguments,
         )
-        output = asyncio.run(_TOOLS[tool_name].on_invoke_tool(context, arguments))
+        registered_tool = _TOOLS[tool_name]
+        invoker = registered_tool.on_invoke_tool
+        if getattr(invoker, "__agents_sync_function_tool__", False):
+            # FunctionTool runs synchronous functions in a worker thread. Some
+            # chemistry libraries are not safe to initialize there, so the
+            # deterministic executor invokes the original function directly.
+            raw_function = inspect.getclosurevars(invoker._invoke_tool_impl).nonlocals[
+                "the_func"
+            ]
+            output = raw_function(**normalized_args)
+        else:
+            output = asyncio.run(invoker(context, arguments))
     except Exception as exc:
         output = {
             "success": False,

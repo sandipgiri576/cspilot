@@ -1,6 +1,6 @@
 [project]
 site_name = "cspilot"
-site_description = "Computational chemistry structure workflows and AGAPI-backed tool execution."
+site_description = "Computational chemistry structure workflows and OpenRouter-backed planning."
 site_author = "Sandip Giri"
 repo_url = "https://github.com/sandipgiri576/cspilot/"
 edit_uri = "blob/main/docs/"
@@ -18,7 +18,7 @@ nav = [
         { "Agent Usage" = "agent_usage.md" },
         { "Workflows" = "workflows.md" },
         { "Tools" = "tools.md" },
-        { "AGAPI Integration" = "agapi.md" },
+        { "Agentic Audit" = "agentic_audit.md" },
         { "Safety" = "safety.md" }
     ] },
     { "Project" = [

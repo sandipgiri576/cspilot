@@ -18,10 +18,9 @@ and clean terminal/report output. Documentation is under developement and can be
 - Fixed xTB to ORCA single-point and frequency workflows.
 - Optional MACE to ORCA workflows.
 - stk/RDKit molecule generation, editing, export, and stk to xTB optimization.
-- OpenRouter-first direct agent, JSON planner/executor, and LangGraph runner.
-- AGAPI can be explicitly enabled again with `--llm-provider agapi`.
+- OpenRouter agent with iterative tool decisions and verified observations.
+- Domain Markdown skills loaded automatically by the planner and reporter.
 - Single-agent and routed multi-agent graph modes.
-- Optional AGAPI/JARVIS-style materials query wrapper.
 - Rich terminal summaries plus Markdown or HTML reports.
 - Machine-readable JSON outputs for plans, steps, execution, verification, and final state.
 
@@ -77,17 +76,28 @@ cspilot graph-run "Find the global minima of (h2o)4Mg cluster." \
 ```
 
 ```bash
-cspilot graph-run "Find all Al2O3 materials" \
-  --profile auto --agent-mode multi --html --workdir runs/al2o3
+cspilot graph-run "inspect tests/examples/input.xyz" \
+  --profile auto --agent-mode multi --workdir runs/inspection
 ```
 
 Graph paths:
 
-- `single`: `planner -> executor -> verifier -> reporter`
-- `multi`: `router -> planner -> executor -> verifier -> reporter`
+- `single`: `planner -> decide -> tool -> observe -> planner; finish -> verifier -> reporter`
+- `multi`: `router -> planner -> decide -> tool -> observe -> planner; finish -> verifier -> reporter`
 
 Multi-agent mode is routing only. CSPilot does not spawn uncontrolled parallel
 agents and does not execute LLM-generated shell commands.
+
+`run` and `graph-run` choose one tool at a time, observe its real output, and
+decide what to do next. Use `--max-steps 8` and `--max-retries 1` to bound
+execution. Fixed workflows remain available as tools and deterministic commands.
+Full results print on screen, including when saving HTML; `--quiet` suppresses
+details. Domain guidance lives in `src/cspilot/skills/`.
+
+Bare prompts use the tool agent: `cspilot "what is the SMILES string of caffeine?"`.
+New Gibbs/enthalpy requests use ORCA optimization plus frequencies. The terminal
+shows returned answers and verification; full diagnostic reports remain saved.
+Use `cspilot search "..."` for general explanations without tool execution.
 
 ## ⚙️ Configuration
 
@@ -100,21 +110,13 @@ ORCA_COMMAND=/path/to/orca
 NWPESSE_BIN=nwpesse
 MACE_MODEL=/path/to/model.model
 
-AGAPI_API_KEY=your_api_key
-AGAPI_BASE_URL=https://atomgpt.org/api
-cspilot_MODEL=openai/gpt-oss-20b
-
 OPENROUTER_API_KEY=your_openrouter_key
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
-OPENROUTER_MODEL=openai/gpt-oss-20b:free
-CSPILOT_LLM_PROVIDER=openrouter
+OPENROUTER_MODEL=openai/gpt-oss-20b
 ```
 
-OpenRouter is the recommended model backend for normal `search`, `agent`,
-`plan`, `run`, and `graph-run` use. `CSPILOT_LLM_PROVIDER=openrouter` is the
-current smooth-path default. AGAPI model serving can be enabled explicitly with `--llm-provider agapi` or
-`CSPILOT_LLM_PROVIDER=agapi` once the backend is healthy again. The AGAPI key is
-still needed for AGAPI/JARVIS materials query tools.
+OpenRouter is the sole model backend for `search`, `agent`, `plan`, `run`, and
+`graph-run`.
 
 ORCA, xTB, NWPESSe, and MACE model files are external requirements. Installing
 CSPilot does not install ORCA or xTB.
@@ -171,6 +173,9 @@ See:
 - [Workflows](docs/workflows.md)
 - [Tools](docs/tools.md)
 - [Examples](docs/examples.md)
+- [Project Structure](PROJECT_STRUCTURE.md)
+- [Agentic Architecture Audit](docs/agentic_audit.md)
+- [Next-stage TODO](TODO.md)
 
 Build docs locally:
 
@@ -185,14 +190,14 @@ Implemented:
 
 - deterministic CLI;
 - fixed xTB/MACE to ORCA workflows;
-- OpenRouter/AGAPI-compatible planner/executor;
+- OpenRouter-backed planner/executor;
 - LangGraph single and routed multi mode;
 - stk baseline tools;
 - Rich terminal reports.
 
 Planned:
 
-- LangGraph repair/retry node integration;
+- checkpoint/resume and request-level completion validation;
 - Multiwfn post-processing;
 - expanded stk topology support;
 - torch-sim MLIP molecular dynamics;
@@ -203,6 +208,5 @@ Planned:
 ## 🙏 Acknowledgements
 
 CSPilot uses and integrates with ASE, xTB, ORCA, RDKit, stk, MACE,
-LangGraph, Rich, Typer, Pydantic, and many others open source package. It uses OpenAI-compatible model backends, including OpenRouter and AGAPI.
-
-
+LangGraph, Rich, Typer, Pydantic, and other open-source packages. OpenRouter is
+its model provider.

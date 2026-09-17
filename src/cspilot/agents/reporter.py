@@ -6,6 +6,48 @@ from pathlib import Path
 from typing import Any
 
 from cspilot.prompts.system_prompts import get_profile
+from cspilot.skill_loader import SkillLoader
+
+
+def terminal_report(execution: dict[str, Any], verification: dict[str, Any]) -> str:
+    """Show returned answers without plans, repeated file lists, or unrelated properties."""
+    labels = {
+        "name": "Molecule", "smiles": "SMILES", "source": "Source",
+        "canonical_smiles": "Canonical SMILES", "formula": "Formula", "natoms": "Atoms",
+        "property": "Property", "value": "Value", "source_file": "Source file",
+        "final_energy_hartree": "Electronic energy (Eh)",
+        "gibbs_free_energy": "Gibbs free energy (Eh)", "enthalpy": "Enthalpy (Eh)",
+        "zero_point_energy": "Zero-point energy (Eh)",
+        "entropy_hartree_per_kelvin": "Entropy (Eh/K)",
+        "temperature_kelvin": "Temperature (K)", "pressure_atm": "Pressure (atm)",
+        "imaginary_frequency_count": "Significant imaginary frequencies (< -20 cm^-1)",
+        "lowest_energy": "Lowest energy", "energy_unit": "Energy unit",
+    }
+    lines = []
+    for result in execution.get("steps", []):
+        parameters = [value for key, value in _walk(result)
+                      if key == "parameters" and isinstance(value, dict) and "method" in value]
+        if parameters:
+            settings = parameters[-1]
+            lines.append(f"Method: {settings['method']} (basis: {settings.get('basis', 'not returned')})")
+        geometries = [value["optimized_xyz"] for key, value in _walk(result)
+                      if key == "files" and isinstance(value, dict) and value.get("optimized_xyz")]
+        if geometries:
+            lines.append(f"Optimized geometry: {geometries[-1]}")
+        values = dict(_reported_values(result))
+        relevant = [(labels.get(key, key), value) for key, value in values.items()
+                    if key not in {"frequencies", "vibrational_frequencies", "canonical_smiles"}
+                    or (key == "canonical_smiles" and "smiles" not in values)]
+        if relevant:
+            lines.extend(f"{label}: {_format_value(value)}" for label, value in relevant)
+    if not lines:
+        lines.append("No scientific result was produced.")
+    lines.append("Verification: " + ("passed" if verification.get("verified") else "incomplete"))
+    issues = verification.get("issues", [])
+    clarification = [str(issue).removeprefix("Agent status: ") for issue in issues
+                     if str(issue).startswith("Agent status: ")]
+    lines.extend(clarification or [f"- {issue}" for issue in issues])
+    return "\n".join(lines)
 
 
 def make_report(
@@ -59,6 +101,14 @@ def generate_report(
         profile,
         selected_profile.default_output_style,
     )
+    fields = SkillLoader().report_fields(profile)
+    domain_values = [
+        f"{key}: {_format_value(value)}"
+        for key, value in _walk(execution_result)
+        if key in fields and value is not None
+    ]
+    if domain_values:
+        sections.insert(4, ("Domain Results", list(dict.fromkeys(domain_values))))
     if html:
         return _as_html(sections)
     return _as_markdown(sections)
@@ -100,9 +150,9 @@ def _report_sections(
         key_values = _reported_values(execution_result)
         key_lines = [f"{key}: {_format_value(value)}" for key, value in key_values]
         keys_found = {key for key, _value in key_values}
-        if not keys_found.intersection({"gibbs_free_energy", "gibbs_energy", "final_gibbs_energy"}):
+        if "gibbs" in user_request.lower() and not keys_found.intersection({"gibbs_free_energy", "gibbs_energy", "final_gibbs_energy", "value"}):
             key_lines.append("Gibbs free energy: not found in parsed results.")
-        if not keys_found.intersection({"homo_lumo_gap", "homo_lumo_gap_ev"}):
+        if "gap" in user_request.lower() and not keys_found.intersection({"homo_lumo_gap", "homo_lumo_gap_ev", "value"}):
             key_lines.append("HOMO-LUMO gap: not found in parsed results.")
 
     generated_files = _report_files(execution_result, workdir)
@@ -209,6 +259,18 @@ def _format_value(value: Any) -> str:
 
 def _reported_values(result: dict[str, Any]) -> list[tuple[str, Any]]:
     keys = {
+        "name",
+        "smiles",
+        "source",
+        "temperature_kelvin",
+        "pressure_atm",
+        "imaginary_frequency_count",
+        "zero_point_energy",
+        "entropy_hartree_per_kelvin",
+        "property",
+        "value",
+        "unit",
+        "source_file",
         "final_energy",
         "final_energy_hartree",
         "electronic_energy",

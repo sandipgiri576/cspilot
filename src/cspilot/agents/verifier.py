@@ -34,6 +34,32 @@ NON_NUMERIC_VALUE_KEYS = {
 }
 
 
+def verify_request_completion(user_request: str, execution_result: dict[str, Any]) -> list[str]:
+    """Check requested SMILES/thermochemistry outputs, not just successful tool status."""
+    lowered = user_request.lower()
+    required = []
+    if "gibbs" in lowered or "free energy" in lowered or "free enegy" in lowered:
+        required.append("gibbs_free_energy")
+    if "enthalpy" in lowered:
+        required.append("enthalpy")
+    if "thermochem" in lowered or "therochem" in lowered:
+        required.extend(("gibbs_free_energy", "enthalpy"))
+    returned = dict(_walk(execution_result))
+    for payload in _dicts(execution_result):
+        if payload.get("success") and payload.get("matched_key"):
+            returned[payload["matched_key"]] = payload.get("value")
+    issues = [
+        f"Requested property not found in tool results: {key}."
+        for key in dict.fromkeys(required) if not _numeric_value(returned.get(key))
+    ]
+    if "smiles" in lowered and not any(
+        isinstance(returned.get(key), str) and returned[key]
+        for key in ("smiles", "canonical_smiles")
+    ):
+        issues.append("Requested SMILES was not returned by a tool.")
+    return issues
+
+
 def verify_tool_result(result: dict[str, Any], workdir: str) -> dict[str, Any]:
     """Verify recorded tool output without inferring any scientific values."""
     issues: list[str] = []
@@ -112,7 +138,7 @@ def _numeric_value(value: Any) -> bool:
     if isinstance(value, Real):
         return True
     if isinstance(value, list):
-        return all(_numeric_value(item) for item in value)
+        return bool(value) and all(_numeric_value(item) for item in value)
     return False
 
 
@@ -213,10 +239,21 @@ def _existing_path(value: str, root: Path) -> Path | None:
 
 def _verify_expected_outputs(result: dict[str, Any], root: Path, issues: list[str]) -> None:
     for value in _dicts(result):
-        if "task" in value and value["task"] in {"sp", "opt", "freq"}:
+        if "task" in value and value["task"] in {"sp", "opt", "freq", "opt_freq"}:
             output = value.get("files", {}).get("output") if isinstance(value.get("files"), dict) else None
             if not isinstance(output, str) or _existing_path(output, root) is None:
                 issues.append("ORCA output file is missing after an ORCA job.")
+            properties = value.get("result", {}).get("properties", {})
+            if value["task"] in {"freq", "opt_freq"}:
+                for key in ("gibbs_free_energy", "enthalpy"):
+                    if not _numeric_value(properties.get(key)):
+                        issues.append(f"ORCA thermochemistry property not found: {key}.")
+                if not properties.get("frequencies"):
+                    issues.append("ORCA vibrational frequencies not found.")
+                if properties.get("imaginary_frequency_count", 0):
+                    issues.append("Significant imaginary frequencies: geometry is not a verified minimum.")
+            if value["task"] == "opt_freq" and properties.get("geometry_optimization_converged") is not True:
+                issues.append("ORCA geometry optimization convergence was not confirmed.")
 
         outputs = value.get("outputs")
         if isinstance(outputs, dict) and "optimized_xyz" in outputs:
@@ -234,7 +271,7 @@ def _verify_step_xyz(
     if not _successful_step(step):
         return
     tool_name = str(step.get("tool_name", "")).lower()
-    if not any(token in tool_name for token in ("molecule", "smiles_to_xyz", "xtb")):
+    if not any(token in tool_name for token in ("molecule_name_to_xyz", "smiles_to_xyz", "xtb")):
         return
 
     xyz_paths = [

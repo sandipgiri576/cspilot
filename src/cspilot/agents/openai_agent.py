@@ -8,15 +8,9 @@ from agents import Agent, Runner, ToolCallOutputItem
 
 from cspilot.agents.reporter import make_report
 from cspilot.agents.verifier import verify_tool_result
-from cspilot.llm import (
-    LLMProvider,
-    create_llm_model,
-    resolve_llm_provider,
-    should_fallback_to_openrouter,
-)
+from cspilot.llm import create_llm_model
 from cspilot.tools.agent_tools import (
     canonicalize_smiles_tool,
-    design_mbh_catalysts_tool,
     find_result_json_agent_tool,
     get_property_from_result_agent_tool,
     inspect_structure,
@@ -48,7 +42,7 @@ Prefer run_xtb_orca_workflow for xTB optimization followed by ORCA SP.
 For a new Gibbs free energy or thermochemistry calculation, use run_xtb_orca_frequency_workflow.
 If the user provides a molecule name and no XYZ file, use molecule_name_to_xyz_tool.
 If the user provides SMILES and no XYZ file, use smiles_to_xyz_tool.
-Use stk tools only for molecule construction or editing requests. Use design_mbh_catalysts_tool only for MBH catalyst design requests.
+Use stk tools only for molecule construction or editing requests.
 Use nwpesse_global_minimum_search_tool for NWPESSe global-minimum or cluster-search requests, and treat formulas like (h2o)4Mg as fragment clusters, not PubChem molecule names. Use structured box_mode and box_size arguments only; do not write raw mol.inp or optimizer shell.
 If the user asks for a property from previous results, use find_result_json and get_property_from_result.
 Do not guess property values. If a property name is ambiguous, use aliases first.
@@ -57,13 +51,13 @@ If unsupported, clearly say unsupported."""
 
 MATERIALS_INSTRUCTIONS = """You are a materials science workflow agent.
 Use only provided tools for structure inspection and calculations.
-You may use AGAPI/JARVIS/materials style reasoning only if supported by available tools or returned information.
+Use materials-science reasoning only when supported by available tools or returned information.
 Do not invent energies, structures, files, database results, or calculation results.
 Prefer run_xtb_orca_workflow for xTB optimization followed by ORCA SP.
 For a new Gibbs free energy or thermochemistry calculation, use run_xtb_orca_frequency_workflow.
 If the user provides a molecule name and no XYZ file, use molecule_name_to_xyz_tool.
 If the user provides SMILES and no XYZ file, use smiles_to_xyz_tool.
-Use stk tools only for molecule construction or editing requests. Use design_mbh_catalysts_tool only for MBH catalyst design requests.
+Use stk tools only for molecule construction or editing requests.
 Use nwpesse_global_minimum_search_tool for NWPESSe global-minimum or cluster-search requests, and do not use PubChem for fragment generation. Use structured box_mode and box_size arguments only; do not write raw mol.inp or optimizer shell.
 If the user asks for a property from previous results, use find_result_json and get_property_from_result.
 Do not guess property values. If a property name is ambiguous, use aliases first.
@@ -86,12 +80,9 @@ def create_computational_chemistry_agent(
     profile: str = "chem",
     model: str | None = None,
     base_url: str | None = None,
-    provider: LLMProvider = "auto",
 ) -> Agent:
     instructions = _profile_instructions(profile)
     model_obj = create_llm_model(
-        provider=provider,
-        profile=profile,
         model=model,
         base_url=base_url,
     )
@@ -109,34 +100,20 @@ async def run_agent_request(
     model: str | None = None,
     base_url: str | None = None,
     profile: str = "chem",
-    llm_provider: LLMProvider = "auto",
 ) -> dict[str, Any]:
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
     token = set_agent_workdir(workdir)
-    model_provider = resolve_llm_provider(profile=profile, requested=llm_provider)
+    model_provider = "openrouter"
     try:
-        try:
-            result = await Runner.run(
-                create_computational_chemistry_agent(
-                    profile=profile,
-                    model=model,
-                    base_url=base_url,
-                    provider=model_provider,
-                ),
-                request,
-            )
-        except Exception as exc:
-            if model_provider != "agapi" or not should_fallback_to_openrouter(exc):
-                raise
-            model_provider = "openrouter"
-            result = await Runner.run(
-                create_computational_chemistry_agent(
-                    profile=profile,
-                    provider="openrouter",
-                ),
-                request,
-            )
+        result = await Runner.run(
+            create_computational_chemistry_agent(
+                profile=profile,
+                model=model,
+                base_url=base_url,
+            ),
+            request,
+        )
         tool_results = _collect_tool_results(result.new_items)
         verification = _verify_results(tool_results, str(workdir))
         report = make_report(request, tool_results, verification)
@@ -215,7 +192,6 @@ def _profile_tools(profile: str) -> list[Any]:
         run_mace_optimize,
         run_xtb_orca_workflow,
         run_xtb_orca_frequency_workflow,
-        design_mbh_catalysts_tool,
         molecule_name_to_smiles_tool,
         smiles_to_xyz_tool,
         molecule_name_to_xyz_tool,

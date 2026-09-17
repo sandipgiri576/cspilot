@@ -63,6 +63,7 @@ def run_xtb_to_orca_freq(
         mult=mult,
         nprocs=nprocs,
         orca_command=settings.orca_command,
+        optimize=True,
     )
     result["steps"]["orca_freq"] = orca_result
     result["final_energy_hartree"] = extract_final_energy(orca_result)

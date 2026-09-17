@@ -27,7 +27,7 @@ def test_orca_single_point_writes_opi_input_when_orca_is_missing(tmp_path):
     assert (workdir / "job.inp").exists()
     input_text = (workdir / "job.inp").read_text(encoding="utf-8")
     assert "!r2scan-3c" in input_text
-    assert "!def2-svp" in input_text
+    assert "!def2-svp" not in input_text
     assert "!sp" in input_text
     assert "nprocs 4" in input_text
 

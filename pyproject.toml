@@ -46,7 +46,7 @@ changelog = "https://github.com/sandipgiri576/cspilot/blob/main/CHANGELOG.md"
 where = ["src"]
 
 [tool.setuptools.package-data]
-cspilot = ["py.typed"]
+cspilot = ["py.typed", "skills/*.md"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"

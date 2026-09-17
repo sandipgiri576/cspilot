@@ -21,6 +21,12 @@ def route_request(user_request: str, profile: str = "auto") -> dict[str, Any]:
         }
 
     lowered = user_request.lower()
+    stored = any(term in lowered for term in ("extract", "parse", "previous", "latest result", ".json", "stored"))
+    if stored:
+        selected = get_profile("analysis")
+        return {"success": True, "specialist": "analysis",
+                "reason": "Request explicitly refers to stored results.",
+                "allowed_tool_groups": list(selected.allowed_tool_groups)}
     routes = [
         (
             "stk",
@@ -29,12 +35,12 @@ def route_request(user_request: str, profile: str = "auto") -> dict[str, Any]:
         ),
         (
             "thermo",
-            ("heat of combustion", "nhoc", "combustion", "enthalpy", "thermochemistry"),
+            ("heat of combustion", "nhoc", "combustion", "enthalpy", "thermochemistry", "therochem", "gibbs", "free energy", "free enegy"),
             "Request asks for thermochemistry or reaction-energy reporting.",
         ),
         (
             "analysis",
-            ("extract", "parse", "result", "json", "gibbs", "homo", "lumo", "gap", "frequency", "multiwfn"),
+            ("multiwfn",),
             "Request asks to inspect or extract stored calculation results.",
         ),
         (

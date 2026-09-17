@@ -138,13 +138,19 @@ def test_cli_graph_run_saves_state_on_internal_failure(monkeypatch, tmp_path):
 
 
 def _mock_graph_dependencies(monkeypatch, plan: dict):
-    monkeypatch.setattr("cspilot.graph.create_plan", lambda *args, **kwargs: plan)
+    remaining = iter(plan["steps"])
+
+    async def decide(*args, **kwargs):
+        step = next(remaining, None)
+        return {"action": "tool", **step} if step else {"action": "finish"}
+
+    monkeypatch.setattr("cspilot.graph.decide_next_action", decide)
     monkeypatch.setattr(
-        "cspilot.graph.execute_plan",
-        lambda plan, workdir: {
+        "cspilot.graph.call_tool",
+        lambda tool, args, workdir: {
             "success": True,
             "workdir": str(Path(workdir)),
-            "steps": [{"success": True, "tool_name": "mock"}],
+            "tool_name": tool,
         },
     )
     monkeypatch.setattr(

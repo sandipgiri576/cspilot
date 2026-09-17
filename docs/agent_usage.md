@@ -1,130 +1,105 @@
 # Agent Usage
 
-## Deterministic Tools
+## Iterative agent
 
-Deterministic commands call local Python functions and external binaries
-directly:
-
-```bash
-cspilot inspect tests/examples/input.xyz
-cspilot xtb-opt tests/examples/input.xyz
-cspilot workflow xtb-orca-sp tests/examples/input.xyz
-```
-
-Use these when you already know the exact calculation.
-
-## Direct Agent
-
-`cspilot agent` runs an OpenAI-compatible tool-using agent. OpenRouter is the
-recommended backend while AGAPI model serving is disabled by default:
-
-```bash
-cspilot agent "inspect tests/examples/input.xyz" \
-  --workdir runs/agent_test --agent-profile chem
-```
-
-It supports `--model`, `--base-url`, `--llm-provider auto|openrouter|agapi`,
-and `--agent-profile chem|materials|general`. Tool calls are still restricted
-to provided tools.
-
-## Model Backend Selection
-
-Normal chemistry, stk, analysis, thermo, and general-search requests should use
-OpenRouter for now:
-
-```bash
-cspilot "what is chemical space?" --llm-provider openrouter
-cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point" \
-  --workdir runs/stk_orca --llm-provider openrouter
-```
-
-`--llm-provider auto` uses OpenRouter by default.
-Use `--llm-provider agapi` only when you intentionally want to test AGAPI model
-serving. The AGAPI key is still required for AGAPI/JARVIS materials query tools.
-
-## Planner and Executor
-
-`plan`, `execute`, and `run` provide a stricter JSON workflow:
-
-1. The configured LLM backend creates a JSON plan.
-2. The executor accepts only registered tools for the selected profile.
-3. Step results are written as JSON.
-4. Verification checks paths, success flags, and numeric values.
-5. A Markdown or HTML report is generated.
-
-```bash
-cspilot run "inspect tests/examples/input.xyz" --workdir runs/run_test --profile chem
-```
-
-## LangGraph
-
-`graph-run` wraps the same planner, executor, verifier, and reporter in a
-LangGraph graph.
-
-Single mode:
+Both `run` and `graph-run` use a bounded LangGraph action loop. OpenRouter
+chooses one structured action at a time using the original request, tool
+descriptions and schemas, domain skills, and all prior observations.
 
 ```text
-planner -> executor -> verifier -> reporter
+planner -> decide -> tool -> observe -> planner
+              |
+              +-> verifier -> reporter
 ```
+
+The planner can choose another tool, finish, or mark the request blocked.
+Observations contain real tool outputs and deterministic verification feedback.
+A later action can reuse a returned path or change its arguments after failure.
+No separate model-generated shell or Python is executed.
 
 ```bash
-cspilot graph-run "inspect tests/examples/input.xyz" \
-  --workdir runs/water --profile chem --agent-mode single
+cspilot run "inspect tests/examples/input.xyz and print its formula" --workdir runs/inspect
+cspilot graph-run "build benzene from SMILES c1ccccc1 with stk" \
+  --profile auto --agent-mode multi --max-steps 8 --workdir runs/benzene
 ```
 
-Multi mode:
+`--max-steps` defaults to 8 tool calls; one final decision may follow the last
+call. `--max-retries` defaults to 1: after the first failed/unverified call the
+model may recover; after the second, no more tools execute. Successful steps
+are not replayed. A limit, blocked request, missing results, or model error
+produces an incomplete/failed report. Historical failures remain visible and
+keep overall verification conservative even if a later action succeeds.
+Finish is the model's completion decision; deterministic verification checks
+returned artifacts, not full semantic fulfillment of the user's request.
 
-```text
-router -> planner -> executor -> verifier -> reporter
-```
+`multi` adds a deterministic profile router before the same agent loop.
+It does not create parallel autonomous agents.
 
-```bash
-cspilot graph-run "Find all Al2O3 materials" \
-  --profile auto --agent-mode multi --html --workdir runs/al2o3
-```
+## Domain skills
 
-Multi-agent mode means deterministic specialist routing. It does not spawn
-parallel autonomous agents.
+`src/cspilot/skills/` contains bundled Markdown files and is included in package
+distributions. `SkillLoader` automatically loads `common.md` plus
+`<profile>.md` on each request. Each file has `## Planner` and `## Reporter`
+sections. The planner section is appended to its instructions; reporter entries
+such as `- field: value` select additional returned fields for deterministic
+rendering. Markdown is guidance, never executable code or permission to add tools.
+
+Edit a profile file to refine guidance without changing orchestration. To test
+another directory in Python, use `SkillLoader(directory)`. Missing domain files
+fall back to common guidance. Adding a new profile also requires an explicit
+profile/tool allowlist; a Markdown file cannot expand execution permissions.
+
+The reporter remains deterministic and does not ask a model to invent or rewrite
+scientific results. More elaborate report templates can be added later.
 
 ## Profiles
 
-Planner/graph profiles include:
-
-| Profile | Role |
+| Profile | Available scope |
 | --- | --- |
-| `chem` | ASE, molecule conversion, xTB, ORCA, MACE, stk, NWPESSe, GreenCatAI |
-| `stk` | stk-focused planning with chemistry tools available for follow-up calculations |
-| `materials` | AGAPI materials query and GreenCatAI catalyst tools |
-| `analysis` | result JSON search and property extraction |
-| `thermo` | result JSON thermochemistry extraction |
-| `general` | no calculation tools unless explicit materials query rules apply |
-| `auto` | graph multi-mode router selects a specialist |
+| chem | ASE, conversion, xTB, ORCA, MACE, stk, NWPESSe, stored results |
+| stk | Construction/editing, chemistry calculations, stored results |
+| analysis | Result JSON search and property extraction |
+| thermo | New ORCA optimization/frequency calculations and stored thermochemistry extraction |
+| materials | No database tool currently available; queries are unsupported |
+| general | No calculation tools; use search for general explanations |
+| auto | Select a specialist with graph-run --agent-mode multi |
 
-## Repair Mode
+## Saved plans and direct tools
 
-`src/cspilot/agents/repair.py` implements a repair helper for missing-file
-handoffs and model-backed repair fallback. The current `graph-run` integration uses
-the clean single or routed multi graph without a repair node. Treat repair as
-available implementation groundwork, not a current CLI mode.
+`plan` still generates a complete saved JSON plan; `execute` runs such a plan
+deterministically. Fixed `workflow` commands remain independently usable.
+The iterative agent may select a combined workflow as one tool when suitable.
 
-## Pretty, HTML, and Quiet Output
+`agent` retains the direct Agents SDK tool-calling interface and
+`--agent-profile chem|materials|general`. For the persisted LangGraph observation
+loop and limits use `run` or `graph-run`. General explanations use `search`.
 
-`run` and `graph-run` support:
+## Reports and artifacts
 
-```bash
---pretty / --no-pretty
---quiet
---html
-```
+Each loop run saves `plan.json` (actions actually attempted),
+`decision_NNN.json`, `step_NNN_result.json`, `observations.json` after tool calls,
+`execution_result.json`, `verification_result.json`, `final_state.json`, and
+`final_report.md` or `final_report.html`.
+Decisions store short action summaries, not hidden reasoning.
 
-- `--pretty` prints Rich panels and tables. It is the default.
-- `--no-pretty` prints the older simple terminal output.
-- `--quiet` prints only verification status and report path.
-- `--html` writes `final_report.html`; otherwise `final_report.md` is written.
+An answer-focused summary of returned values and verification prints by default.
+The full plan, file inventory, and diagnostic report remain saved.
+`--no-pretty` prints plain text; `--html` saves the full HTML report and still
+prints the answer. `--quiet` suppresses result details. JSON is always saved.
+Python callers receive state and saved artifacts; only CLI presentation prints.
 
-JSON files are always written regardless of terminal style.
+The standalone `repair.py` helper remains available, but graph recovery is now
+driven by the next decision receiving failure observations.
 
-## Interactive Mode
+## Identifiers and new thermochemistry
 
-No interactive REPL mode is currently implemented. The CLI accepts explicit
-commands and natural-language request strings.
+Bare quoted prompts now use the same tool agent as `run`.
+SMILES questions use the PubChem name lookup without generating XYZ or energies.
+For a new Gibbs/enthalpy request the agent generates a structure if needed and
+selects the frequency workflow. Explicit previous-result/JSON requests use analysis.
+An optimization request without a molecule or geometry asks for that input.
+
+The decision model receives native function schemas. Selection callbacks only
+record the next action; the shared executor performs the actual calculation.
+This avoids confusing JSON-plan text with real function calls. A successful
+geometry-generation step alone cannot satisfy a thermochemistry request.

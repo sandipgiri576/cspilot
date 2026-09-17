@@ -1,13 +1,14 @@
 # Roadmap
 
+Package metadata still reports version 0.1.0; capability stages are not release tags.
+
 | Stage | Status | Scope |
 | --- | --- | --- |
-| v0.1 | Implemented | Deterministic CLI for ASE, xTB, ORCA SP, MACE, and JSON outputs |
-| v0.2 | Implemented | Fixed xTB/MACE to ORCA workflows |
-| v0.3 | Implemented | AGAPI direct agent, JSON planner, executor, verification, reports, stk build/edit/export and stk to xTB workflow  |
-| v0.4 | Implemented NWPESSe global minima search,  LangGraph single mode and routed multi-agent mode, LangGraph repair/retry node integration in graph execution | |
-| v0.5 | ongoing | Multiwfn post-processing tools, Expanded stk topology support and stk structure generation, torch-sim MLIP molecular dynamics |
-| v0.6 | Planned | MongoDB job database, Streamlit UI |
+| Deterministic tools | Implemented | ASE, conversion, xTB, ORCA/OPI, optional MACE/stk/NWPESSe |
+| Fixed workflows | Implemented | xTB/MACE to ORCA and construction workflows |
+| Structured planning | Implemented | Saved plans, allowlisted execution, verification and reports |
+| Iterative agent | Implemented | Domain Markdown skills, observation-driven actions, bounded recovery, terminal results |
+| Agent hardening | Next | Completion criteria, failure resolution, resume, evaluations |
+| Additional scientific capabilities | Planned | Multiwfn, safe stk presets, MLIP molecular dynamics |
 
-Planned entries are not current CLI commands unless explicitly documented in
-`docs/cli_usage.md`.
+See the repository TODO.md for the next stage. Planned features are not CLI commands.

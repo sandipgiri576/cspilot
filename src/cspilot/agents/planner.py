@@ -2,20 +2,121 @@ from __future__ import annotations
 
 import json
 import re
-from typing import Any
+from typing import Any, Literal
 
-from agents import Agent, AgentOutputSchema, Runner
-from pydantic import BaseModel, Field
+from agents import Agent, AgentOutputSchema, FunctionTool, ModelSettings, Runner
+from pydantic import BaseModel, Field, model_validator
 
-from cspilot.llm import (
-    LLMProvider,
-    create_llm_model,
-    create_openrouter_model,
-    resolve_llm_provider,
-    should_fallback_to_openrouter,
-)
+from cspilot.llm import create_llm_model
 from cspilot.prompts.system_prompts import get_profile
-from cspilot.tools.registry import get_allowed_tools
+from cspilot.skill_loader import SkillLoader
+from cspilot.tools.registry import get_allowed_tools, get_tool_catalog
+
+
+class AgentDecision(BaseModel):
+    action: Literal["tool", "finish", "blocked"]
+    tool: str | None = None
+    args: dict[str, Any] = Field(default_factory=dict)
+    summary: str = ""
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_tool_fields(cls, value: Any) -> Any:
+        if isinstance(value, dict):
+            value = dict(value)
+            # A clarification emitted as text must never be treated as completion.
+            if "action" not in value and "summary" in value and not any(
+                key in value for key in ("tool", "name", "arguments", "args")
+            ):
+                value["action"] = "blocked"
+            # Some OpenAI-compatible models use native function-call field names.
+            if "tool" not in value and "name" in value:
+                value["tool"] = value.pop("name")
+            if "args" not in value and "arguments" in value:
+                value["args"] = value.pop("arguments")
+            if isinstance(value.get("args"), str):
+                value["args"] = json.loads(value["args"])
+        return value
+
+    @model_validator(mode="after")
+    def validate_action(self) -> AgentDecision:
+        if self.action == "tool" and not self.tool:
+            raise ValueError("A tool action requires a tool name.")
+        if self.action != "tool" and (self.tool or self.args):
+            raise ValueError("Terminal decisions cannot contain a tool call.")
+        return self
+
+
+async def decide_next_action(
+    user_request: str, observations: list[dict[str, Any]], profile: str = "chem",
+    workdir: str = ".", model: str | None = None, base_url: str | None = None,
+) -> dict[str, Any]:
+    """Choose one action from the request and actual observed tool results."""
+    instructions = f"""Select the next action for a scientific agent.
+{get_profile(profile).system_prompt}
+{SkillLoader().load(profile)}
+Select one provided tool, finish, or blocked. Do not emit a fixed multi-step plan.
+Finish only when observations support completion of the requested work.
+Unsupported tasks are blocked. Use failures and verification feedback to recover.
+Never repeat successful calculations for values already returned.
+Your summary describes the action/status, not scientific results.
+Use the provided tool schemas. input_xyz aliases are accepted by the executor.
+"""
+    async def select_tool(context: Any, arguments: str) -> str:
+        return json.dumps({"action": "tool", "tool": context.tool_name,
+                           "args": json.loads(arguments)})
+
+    async def finish(context: Any, arguments: str) -> str:
+        return json.dumps({"action": context.tool_name, **json.loads(arguments)})
+
+    tools = [
+        FunctionTool(name=item["name"], description=item["description"],
+                     params_json_schema=item["parameters"], on_invoke_tool=select_tool)
+        for item in get_tool_catalog(profile, user_request)
+    ]
+    for name in ("finish", "blocked"):
+        # Completion without an observation cannot substantiate a scientific answer.
+        if name == "finish" and not observations:
+            continue
+        tools.append(FunctionTool(
+            name=name,
+            description=("Finish after observed results satisfy the request." if name == "finish"
+                         else "Stop and explain missing molecule/input or unsupported capability."),
+            params_json_schema={"type": "object", "properties": {"summary": {"type": "string"}},
+                                "required": ["summary"], "additionalProperties": False},
+            on_invoke_tool=finish,
+        ))
+    agent = Agent(
+        name="cspilot_decision",
+        instructions=instructions + "\nCall exactly one provided tool. Do not print JSON as text.",
+        model=create_llm_model(model=model, base_url=base_url), tools=tools,
+        model_settings=ModelSettings(tool_choice="required", parallel_tool_calls=False),
+        tool_use_behavior="stop_on_first_tool",
+    )
+    prompt = json.dumps({
+        "request": user_request, "workdir": workdir, "observations": observations,
+    })
+    result = await Runner.run(agent, prompt, max_turns=2)
+    if not result.final_output:
+        result = await Runner.run(
+            agent, prompt + "\nYour previous response selected no action. Call one tool. "
+            "If the molecule or input geometry is missing, call blocked and ask for it.",
+            max_turns=2,
+        )
+    output = result.final_output
+    if not output:
+        return AgentDecision(
+            action="blocked",
+            summary="No action was selected by the model. Please provide the molecule "
+                    "(name, SMILES, or XYZ file) and the calculation you want to run.",
+        ).model_dump(mode="json")
+    decision = output if isinstance(output, AgentDecision) else (
+        AgentDecision.model_validate_json(output) if isinstance(output, str)
+        else AgentDecision.model_validate(output)
+    )
+    if decision.action == "tool" and decision.tool not in get_allowed_tools(profile, user_request):
+        raise ValueError(f"Decision returned disallowed tool: {decision.tool}")
+    return decision.model_dump(mode="json")
 
 
 class PlanStep(BaseModel):
@@ -32,12 +133,13 @@ async def create_plan(
     model: str | None = None,
     base_url: str | None = None,
     profile: str = "chem",
-    llm_provider: LLMProvider = "auto",
 ) -> dict[str, Any]:
     """Generate and validate an explicit allowlisted JSON execution plan."""
     selected_profile = get_profile(profile)
     allowed_tools = get_allowed_tools(profile, user_request)
     instructions = f"""{selected_profile.system_prompt}
+
+{SkillLoader().load(profile)}
 
 Produce an execution plan as strict JSON only.
 The output schema is {{"steps": [{{"tool": "...", "args": {{}}}}]}}.
@@ -82,26 +184,11 @@ box size, set box_size. Do not write raw mol.inp, box blocks, or optimizer bash.
 Only produce structured arguments.
 Do not add shell commands or unsupported tools.
 If the allowed tools list is empty, return {{"steps": []}}."""
-    selected_provider = resolve_llm_provider(profile=profile, requested=llm_provider)
-    try:
-        result = await _run_planner_agent(
-            user_request,
-            instructions,
-            create_llm_model(
-                provider=selected_provider,
-                profile=profile,
-                model=model,
-                base_url=base_url,
-            ),
-        )
-    except Exception as exc:
-        if selected_provider != "agapi" or not should_fallback_to_openrouter(exc):
-            raise
-        result = await _run_planner_agent(
-            user_request,
-            instructions,
-            create_openrouter_model(),
-        )
+    result = await _run_planner_agent(
+        user_request,
+        instructions,
+        create_llm_model(model=model, base_url=base_url),
+    )
     plan = _coerce_execution_plan(result.final_output)
     plan = _sanitize_plan(plan)
     for step in plan.steps:

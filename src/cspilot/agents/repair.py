@@ -10,12 +10,7 @@ from typing import Any
 from agents import Agent, AgentOutputSchema, Runner
 from pydantic import BaseModel, Field
 
-from cspilot.llm import (
-    create_llm_model,
-    create_openrouter_model,
-    resolve_llm_provider,
-    should_fallback_to_openrouter,
-)
+from cspilot.llm import create_llm_model
 from cspilot.tools.registry import get_allowed_tools
 
 
@@ -60,10 +55,10 @@ def repair_plan(
         return _failure("No failed step could be identified.", original_plan)
 
     if not _looks_like_missing_input_failure(execution_result, failed["step"]):
-        agapi = _llm_repair(user_request, original_plan, execution_result, root)
-        if agapi.get("success"):
-            return agapi
-        return _failure("Execution failure was not a missing input file and LLM repair failed.", original_plan, agapi)
+        llm_result = _llm_repair(user_request, original_plan, execution_result, root)
+        if llm_result.get("success"):
+            return llm_result
+        return _failure("Execution failure was not a missing input file and LLM repair failed.", original_plan, llm_result)
 
     missing_path = _missing_input_path(failed["step"])
     existing = _find_existing_xyz(root, missing_path, execution_result, failed["index"])
@@ -89,10 +84,10 @@ def repair_plan(
             "message": "Inserted a structure-generation step before the failed calculation.",
         }
 
-    agapi = _llm_repair(user_request, original_plan, execution_result, root)
-    if agapi.get("success"):
-        return agapi
-    return _failure("No deterministic repair was available and LLM repair failed.", original_plan, agapi)
+    llm_result = _llm_repair(user_request, original_plan, execution_result, root)
+    if llm_result.get("success"):
+        return llm_result
+    return _failure("No deterministic repair was available and LLM repair failed.", original_plan, llm_result)
 
 
 def _clean_plan(plan: dict[str, Any]) -> dict[str, Any]:
@@ -377,13 +372,7 @@ Rules:
 
 
 async def _run_llm_repair(prompt: str) -> dict[str, Any]:
-    selected_provider = resolve_llm_provider()
-    try:
-        result = await _run_repair_agent(prompt, create_llm_model(provider=selected_provider))
-    except Exception as exc:
-        if selected_provider != "agapi" or not should_fallback_to_openrouter(exc):
-            raise
-        result = await _run_repair_agent(prompt, create_openrouter_model())
+    result = await _run_repair_agent(prompt, create_llm_model())
     repaired = (
         result.final_output
         if isinstance(result.final_output, RepairedPlan)

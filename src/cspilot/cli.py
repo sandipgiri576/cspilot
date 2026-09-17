@@ -17,16 +17,6 @@ from cspilot.tools.ase_tools import summarize_structure
 from cspilot.tools.mace_tools import optimize_with_mace
 from cspilot.tools.opi_orca_tools import single_point_with_orca
 from cspilot.tools.xtb_tools import optimize_with_xtb
-from cspilot.ui.console import (
-    print_banner,
-    print_final_message,
-    print_generated_files,
-    print_plan_summary,
-    print_verification_summary,
-)
-from cspilot.ui.console import (
-    print_execution_summary as print_pretty_execution_summary,
-)
 from cspilot.utils.runner import copy_input, make_run_dir, write_json
 from cspilot.workflows.mace_to_orca import run_mace_to_orca
 from cspilot.workflows.xtb_to_orca_freq import run_xtb_to_orca_freq
@@ -39,19 +29,17 @@ class SearchFallbackGroup(TyperGroup):
             return super().resolve_command(ctx, args)
         except click.UsageError:
             if args and (" " in args[0] or "?" in args[0]):
-                command = self.commands.get("search")
+                command = self.commands.get("run")
                 if command is not None:
-                    return "search", command, args
+                    return "run", command, args
             raise
 
 
 app = typer.Typer(cls=SearchFallbackGroup, help="Computational chemistry workflow CLI.")
 workflow_app = typer.Typer(help="Multi-step computational chemistry workflows.")
 stk_app = typer.Typer(help="stk molecule construction and editing tools.")
-greencatai_app = typer.Typer(help="GreenCatAI catalyst-design wrappers.")
 app.add_typer(workflow_app, name="workflow")
 app.add_typer(stk_app, name="stk")
-app.add_typer(greencatai_app, name="greencatai")
 console = Console()
 
 
@@ -62,7 +50,6 @@ InputPath = Annotated[
 Profile = Literal["chem", "materials", "analysis", "thermo", "general"]
 GraphProfile = Literal["auto", "chem", "stk", "materials", "analysis", "thermo", "general"]
 AgentMode = Literal["single", "multi"]
-LLMProvider = Literal["auto", "openrouter", "agapi"]
 
 
 def _finish(result: CommandResult) -> None:
@@ -94,12 +81,8 @@ def search_command(
         Path,
         typer.Option(help="Directory for search result JSON.", resolve_path=True),
     ] = Path("runs/search"),
-    model: Annotated[str | None, typer.Option(help="Model identifier for the selected LLM provider.")] = None,
+    model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
     base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
-    llm_provider: Annotated[
-        LLMProvider,
-        typer.Option(help="Model backend for agent calls."),
-    ] = "auto",
 ) -> None:
     """Answer a general question through the configured model backend."""
     from cspilot.agents.openai_agent import run_agent_request
@@ -112,7 +95,6 @@ def search_command(
                 model=model,
                 base_url=base_url,
                 profile="general",
-                llm_provider=llm_provider,
             )
         )
     except ValueError as exc:
@@ -146,12 +128,8 @@ def run_agent(
         Path,
         typer.Option(help="Directory for agent results and tool subruns.", resolve_path=True),
     ] = Path("runs/agent_test"),
-    model: Annotated[str | None, typer.Option(help="Model identifier for the selected LLM provider.")] = None,
+    model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
     base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
-    llm_provider: Annotated[
-        LLMProvider,
-        typer.Option(help="Model backend for agent calls."),
-    ] = "auto",
     agent_profile: Annotated[
         Literal["chem", "materials", "general"],
         typer.Option(help="Agent instruction and tool profile."),
@@ -168,7 +146,6 @@ def run_agent(
                 model=model,
                 base_url=base_url,
                 profile=agent_profile,
-                llm_provider=llm_provider,
             )
         )
     except ValueError as exc:
@@ -186,11 +163,7 @@ def plan_command(
         typer.Option(help="Directory in which to save plan.json.", resolve_path=True),
     ] = Path("runs/test"),
     profile: Annotated[Profile, typer.Option(help="Planning tool and prompt profile.")] = "chem",
-    llm_provider: Annotated[
-        LLMProvider,
-        typer.Option(help="Model backend for planning."),
-    ] = "auto",
-    model: Annotated[str | None, typer.Option(help="Model identifier for the selected LLM provider.")] = None,
+    model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
     base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
 ) -> None:
     """Create a JSON execution plan using the configured model backend."""
@@ -202,7 +175,6 @@ def plan_command(
             create_plan(
                 request,
                 profile=profile,
-                llm_provider=llm_provider,
                 model=model,
                 base_url=base_url,
             )
@@ -258,70 +230,17 @@ def run_command(
     html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
     pretty: Annotated[bool, typer.Option("--pretty/--no-pretty", help="Print Rich panels and tables.")] = True,
     quiet: Annotated[bool, typer.Option(help="Print only final status and report path.")] = False,
-    llm_provider: Annotated[
-        LLMProvider,
-        typer.Option(help="Model backend for planning."),
-    ] = "auto",
-    model: Annotated[str | None, typer.Option(help="Model identifier for the selected LLM provider.")] = None,
+    model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
     base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
+    max_steps: Annotated[int, typer.Option(min=1, help="Maximum tool actions.")] = 8,
+    max_retries: Annotated[int, typer.Option(min=0, help="Allowed recovery attempts after failures.")] = 1,
 ) -> None:
-    """Plan, execute, verify, and report an allowlisted workflow."""
-    from cspilot.agents.executor import execute_plan
-    from cspilot.agents.planner import create_plan
-    from cspilot.agents.reporter import generate_report
-    from cspilot.agents.verifier import verify_execution
-    from cspilot.tools.registry import reset_allowed_profile, set_allowed_profile
-
-    workdir.mkdir(parents=True, exist_ok=True)
-    profile_token = set_allowed_profile(profile, request)
-    try:
-        plan = asyncio.run(
-            create_plan(
-                request,
-                profile=profile,
-                llm_provider=llm_provider,
-                model=model,
-                base_url=base_url,
-            )
-        )
-        _write_cli_json(workdir / "plan.json", plan)
-        execution_result = execute_plan(plan, str(workdir))
-        _write_cli_json(workdir / "execution_result.json", execution_result)
-        verification_result = verify_execution(execution_result, str(workdir))
-        _write_cli_json(workdir / "verification_result.json", verification_result)
-        report = generate_report(
-            request,
-            plan,
-            execution_result,
-            verification_result,
-            html=html,
-            profile=profile,
-        )
-    except (OSError, ValueError) as exc:
-        console.print(f"[red]Run error:[/] {exc}")
-        raise typer.Exit(code=1) from exc
-    finally:
-        reset_allowed_profile(profile_token)
-
-    report_path = workdir / ("final_report.html" if html else "final_report.md")
-    report_path.write_text(report, encoding="utf-8")
-    status = "PASSED" if verification_result["verified"] else "FAILED"
-    style = "green" if verification_result["verified"] else "red"
-    if quiet:
-        console.print(f"Verification: [{style}]{status}[/]")
-        console.print(f"Report: {report_path}")
-    elif pretty:
-        print_banner(console)
-        print_plan_summary(console, plan)
-        print_pretty_execution_summary(console, execution_result)
-        print_verification_summary(console, verification_result)
-        print_generated_files(console, workdir, execution_result)
-        print_final_message(console, report, html=html)
-        console.print(f"Report: {report_path}")
-    else:
-        _print_execution_summary(execution_result, workdir / "execution_result.json")
-        console.print(f"Verification: [{style}]{status}[/]")
-        console.print(f"Report: {report_path}")
+    """Run the iterative scientific agent and display its verified results."""
+    graph_run_command(
+        request=request, workdir=workdir, profile=profile, html=html,
+        pretty=pretty, quiet=quiet, model=model, base_url=base_url,
+        max_steps=max_steps, max_retries=max_retries,
+    )
 
 
 @app.command("graph-run")
@@ -342,15 +261,12 @@ def graph_run_command(
     html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
     pretty: Annotated[bool, typer.Option("--pretty/--no-pretty", help="Print Rich panels and tables.")] = True,
     quiet: Annotated[bool, typer.Option(help="Print only final status and report path.")] = False,
-    llm_provider: Annotated[
-        LLMProvider,
-        typer.Option(help="Model backend for graph planning."),
-    ] = "auto",
-    model: Annotated[str | None, typer.Option(help="Model identifier for the selected LLM provider.")] = None,
+    model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
     base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
-    max_retries: Annotated[int, typer.Option(help="Maximum graph retry attempts.")] = 1,
+    max_retries: Annotated[int, typer.Option(min=0, help="Allowed recovery attempts after failures.")] = 1,
+    max_steps: Annotated[int, typer.Option(min=1, help="Maximum tool actions.")] = 8,
 ) -> None:
-    """Run the LangGraph planner/executor/verifier/reporter loop."""
+    """Run the iterative LangGraph tool/observation loop with verified reporting."""
     from cspilot.graph import run_graph_agent
 
     workdir.mkdir(parents=True, exist_ok=True)
@@ -361,8 +277,8 @@ def graph_run_command(
             profile=profile,
             html=html,
             max_retries=max_retries,
+            max_steps=max_steps,
             agent_mode=agent_mode,
-            llm_provider=llm_provider,
             model=model,
             base_url=base_url,
         )
@@ -375,6 +291,12 @@ def graph_run_command(
     report = final_state.get("final_report") or ""
     report_path = workdir / ("final_report.html" if html else "final_report.md")
     report_path.write_text(report, encoding="utf-8")
+    from cspilot.agents.reporter import terminal_report
+
+    screen_report = terminal_report(
+        final_state.get("execution_result") or {},
+        final_state.get("verification_result") or {},
+    )
     verification_result = final_state.get("verification_result") or {}
     verified = verification_result.get("verified") is True
     status = "PASSED" if verified else "FAILED"
@@ -382,19 +304,15 @@ def graph_run_command(
     if quiet:
         console.print(f"Verification: [{style}]{status}[/]")
         console.print(f"Report: {report_path}")
-    elif pretty:
-        print_banner(console)
-        print_plan_summary(console, final_state.get("plan") or {"steps": []})
-        print_pretty_execution_summary(console, final_state.get("execution_result") or {})
-        print_verification_summary(console, verification_result)
-        print_generated_files(console, workdir, final_state.get("execution_result") or {})
-        print_final_message(console, report, html=html)
-        console.print(f"Final state: {state_path}")
-        console.print(f"Report: {report_path}")
     else:
-        console.print(report)
-        console.print(f"Final state: {state_path}")
-        console.print(f"Report: {report_path}")
+        if pretty:
+            from rich.panel import Panel
+            from rich.text import Text
+
+            console.print(Panel(Text(screen_report), title="CSPilot results"))
+        else:
+            console.print(screen_report, markup=False)
+        console.print(f"Report: {report_path}", markup=False)
 
 
 def _print_tool_json(result: dict[str, object]) -> None:
@@ -739,36 +657,6 @@ def stk_export_xyz_command(
     from cspilot.tools.stk_tools import stk_export_to_xyz
 
     _print_tool_json(stk_export_to_xyz(str(input_path), str(output_path)))
-
-
-@greencatai_app.command("design-mbh")
-def greencatai_design_mbh_command(
-    output_dir: Annotated[Path, typer.Option(help="Output directory for GreenCatAI artifacts.")] = Path("runs/mbh_api"),
-    search_space: Annotated[Path, typer.Option(help="GreenCatAI search-space JSON.")] = Path("configs/search_space.json"),
-    scoring: Annotated[Path, typer.Option(help="GreenCatAI scoring JSON.")] = Path("configs/scoring.json"),
-    library: Annotated[Path | None, typer.Option(help="Optional validated amine library JSON.")] = None,
-    max_candidates: Annotated[int, typer.Option(help="Maximum seed candidates to generate.")] = 100,
-    generations: Annotated[int, typer.Option(help="Number of GA generations.")] = 3,
-    population_size: Annotated[int, typer.Option(help="Candidate population size.")] = 30,
-    top_n_xtb: Annotated[int, typer.Option(help="Number of top candidates for xTB screening.")] = 0,
-    top_n_orca: Annotated[int, typer.Option(help="Number of top candidates for ORCA screening.")] = 0,
-) -> None:
-    """Run the stable GreenCatAI MBH design API."""
-    from cspilot.tools.greencatai_tools import greencatai_design_mbh_catalysts
-
-    _print_tool_json(
-        greencatai_design_mbh_catalysts(
-            output_dir=str(output_dir),
-            search_space=str(search_space),
-            scoring=str(scoring),
-            library=str(library) if library else None,
-            max_candidates=max_candidates,
-            generations=generations,
-            population_size=population_size,
-            top_n_xtb=top_n_xtb,
-            top_n_orca=top_n_orca,
-        )
-    )
 
 
 @workflow_app.command("xtb-orca-sp")

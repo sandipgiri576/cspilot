@@ -81,8 +81,7 @@ def print_generated_files(console: Console, workdir: str | Path, execution_resul
 
 def print_final_message(console: Console, final_report: str, html: bool = False) -> None:
     label = "HTML report" if html else "Markdown report"
-    preview = _preview(final_report)
-    console.print(Panel(preview or "Report generated.", title=label, border_style="blue"))
+    console.print(Panel(Text(final_report or "Report generated."), title=label, border_style="blue"))
 
 
 def _discover_files(workdir: Path, execution_result: dict[str, Any]) -> list[tuple[str, Path]]:
@@ -172,9 +171,3 @@ def _status(step: dict[str, Any]) -> str:
     if step.get("success") is False:
         return "[red]failed[/]"
     return str(step.get("status", "returned"))
-
-
-def _preview(report: str) -> str:
-    lines = [line for line in report.strip().splitlines() if line.strip()]
-    preview = "\n".join(lines[:8])
-    return preview[:1200]

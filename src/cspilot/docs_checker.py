@@ -10,7 +10,7 @@ REQUIRED_DOCS = {
     "docs/agent_usage.md",
     "docs/workflows.md",
     "docs/tools.md",
-    "docs/agapi.md",
+    "docs/agentic_audit.md",
     "docs/development.md",
     "docs/roadmap.md",
     "docs/safety.md",
@@ -40,8 +40,6 @@ CLI_COMMAND_MARKERS = {
     "stk replace-smiles",
     "stk export-xyz",
     "nwpesse-search",
-    "greencatai",
-    "greencatai design-mbh",
     "search",
 }
 FORBIDDEN_TEMPLATE_MARKERS = {

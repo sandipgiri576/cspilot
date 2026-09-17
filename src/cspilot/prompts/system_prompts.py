@@ -12,7 +12,7 @@ class PromptProfile:
 
 CHEM_PROMPT = (
     "You are a computational chemistry planning assistant. Use only ASE, xTB, "
-    "ORCA/OPI, MACE, stk, NWPESSe, and GreenCatAI tools that are provided. Prefer "
+    "ORCA/OPI, MACE, stk, NWPESSe tools that are provided. Prefer "
     "run_xtb_orca_workflow for xTB optimization followed by ORCA single point. "
     "For stk molecule generation followed by calculation, use the same generated "
     "XYZ path as output_path in the stk step and input_xyz in the calculation step. "
@@ -32,9 +32,8 @@ STK_PROMPT = (
 )
 
 MATERIALS_PROMPT = (
-    "You are a materials-query planning assistant. Use only available AGAPI/JARVIS/"
-    "materials query and catalyst-design tools. Do not claim database matches, materials properties, or "
-    "files unless a tool returns them."
+    "You are a materials planning assistant. No materials database tools are currently "
+    "available. Report database searches as unsupported; never invent matches or properties."
 )
 
 ANALYSIS_PROMPT = (
@@ -44,15 +43,16 @@ ANALYSIS_PROMPT = (
 )
 
 THERMO_PROMPT = (
-    "You are a thermochemistry reporting assistant. Use provided stored-result "
-    "query tools for thermochemistry values. Heat-of-combustion calculations are "
+    "You are a thermochemistry calculation assistant. For NEW Gibbs energy or enthalpy "
+    "calculations generate a structure if needed, then call run_xtb_orca_frequency_workflow. "
+    "Query stored results only when the user explicitly requests previous results. "
+    "Heat-of-combustion calculations are "
     "unsupported unless an allowed tool is provided. Never invent thermochemical values."
 )
 
 GENERAL_PROMPT = (
     "You are a general scientific search and explanation assistant. Do not use calculation "
-    "tools. Materials or catalyst-design tools may be used only when the user explicitly "
-    "requests an AGAPI, JARVIS, materials, GreenCatAI, or catalyst search. State clearly "
+    "tools. State clearly "
     "when requested functionality is unavailable."
 )
 
@@ -60,17 +60,17 @@ GENERAL_PROMPT = (
 PROFILES = {
     "chem": PromptProfile(
         system_prompt=CHEM_PROMPT,
-        allowed_tool_groups=("chemistry", "stk", "catalysis"),
+        allowed_tool_groups=("chemistry", "stk", "analysis"),
         default_output_style="markdown",
     ),
     "stk": PromptProfile(
         system_prompt=STK_PROMPT,
-        allowed_tool_groups=("stk", "chemistry"),
+        allowed_tool_groups=("stk", "chemistry", "analysis"),
         default_output_style="markdown",
     ),
     "materials": PromptProfile(
         system_prompt=MATERIALS_PROMPT,
-        allowed_tool_groups=("materials", "catalysis"),
+        allowed_tool_groups=("materials",),
         default_output_style="markdown",
     ),
     "analysis": PromptProfile(
@@ -100,16 +100,4 @@ def get_profile(profile: str) -> PromptProfile:
 
 
 def allowed_group_names(profile: str, user_request: str = "") -> tuple[str, ...]:
-    selected = get_profile(profile)
-    if profile == "general" and _explicit_materials_query(user_request):
-        return ("materials",)
-    return selected.allowed_tool_groups
-
-
-def _explicit_materials_query(user_request: str) -> bool:
-    lowered = user_request.lower()
-    material_terms = ("material", "materials", "jarvis", "agapi", "catalyst", "catalysts", "mbh", "greencat", "greencatai")
-    query_terms = ("find", "search", "query", "look up", "lookup")
-    return any(term in lowered for term in material_terms) and any(
-        term in lowered for term in query_terms
-    )
+    return get_profile(profile).allowed_tool_groups
