@@ -36,6 +36,18 @@ from cspilot.workflows.xtb_to_orca_sp import run_xtb_to_orca_sp
 _agent_workdir: ContextVar[Path] = ContextVar("agent_workdir", default=Path("runs/agent_test"))
 
 
+@function_tool
+def multiwfn_analysis_tool(input_path: str, analysis: str = "mulliken") -> dict[str, Any]:
+    """Run Multiwfn mulliken/hirshfeld atomic charges or mayer bond orders.
+
+    Supply an observed ORCA GBW path or an existing Molden/FCH wavefunction.
+    GBW conversion uses orca_2mkl. Raw menu commands are not accepted.
+    """
+    from cspilot.tools.multiwfn_tools import analyze_wavefunction
+
+    return analyze_wavefunction(input_path, _agent_workdir.get(), analysis)
+
+
 def set_agent_workdir(workdir: Path | str) -> Token[Path]:
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)

@@ -1,10 +1,30 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Awaitable
+from contextvars import ContextVar
+from typing import TypeVar
 
 from agents import OpenAIChatCompletionsModel, set_tracing_disabled
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
+
+_clients: ContextVar[list[AsyncOpenAI] | None] = ContextVar("model_clients", default=None)
+_T = TypeVar("_T")
+
+
+async def with_model_clients(operation: Awaitable[_T]) -> _T:
+    """Close clients on the same event loop that created their connections."""
+    clients: list[AsyncOpenAI] = []
+    token = _clients.set(clients)
+    try:
+        return await operation
+    finally:
+        try:
+            for client in clients:
+                await client.close()
+        finally:
+            _clients.reset(token)
 
 
 def create_openrouter_client(base_url: str | None = None) -> AsyncOpenAI:
@@ -15,7 +35,11 @@ def create_openrouter_client(base_url: str | None = None) -> AsyncOpenAI:
         "OPENROUTER_BASE_URL",
         "https://openrouter.ai/api/v1",
     )
-    return AsyncOpenAI(api_key=api_key, base_url=resolved_base_url, timeout=60.0, max_retries=1)
+    client = AsyncOpenAI(api_key=api_key, base_url=resolved_base_url, timeout=60.0, max_retries=1)
+    active = _clients.get()
+    if active is not None:
+        active.append(client)
+    return client
 
 
 def create_openrouter_model(

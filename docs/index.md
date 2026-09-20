@@ -48,8 +48,8 @@ cspilot graph-run "inspect tests/examples/input.xyz" \
 Routed multi-agent graph:
 
 ```bash
-cspilot graph-run "build benzene with stk" \
-  --profile auto --agent-mode multi --workdir runs/benzene
+cspilot graph-run "build water from SMILES O with stk" \
+  --profile auto --agent-mode multi --workdir runs/water
 ```
 
 ## Documentation Map
@@ -78,12 +78,14 @@ Implemented:
 - NWPESSe fragment-cluster search.
 - OpenRouter direct agent and JSON planner/executor.
 - LangGraph single mode and routed multi mode.
+- Opt-in independent child loops with `--multiagent`; see [usage and limits](multiagent_multiwfn.md).
+- Local Multiwfn Mulliken/Hirshfeld charges and Mayer bond orders.
 - Rich terminal reports and Markdown/HTML final reports.
 
 Planned:
 
 - Checkpoint/resume and request-level completion validation.
-- Multiwfn post-processing.
+- Additional validated Multiwfn post-processing operations.
 - Expanded stk topology presets.
 - torch-sim MLIP molecular dynamics.
 - MongoDB job database.

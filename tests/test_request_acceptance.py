@@ -53,6 +53,47 @@ def test_plain_clarification_is_blocked_not_finished():
         "summary": "Please specify the molecule or XYZ file.",
     })
     assert decision.action == "blocked"
+    assert planner.AgentDecision.model_validate({"action": {"action": "finish"}}).action == "finish"
+
+
+def test_path_handoff_only_repairs_same_unambiguous_filename(tmp_path):
+    from cspilot.graph import _repair_observed_handoff
+
+    actual = tmp_path / "generated" / "water.xyz"
+    actual.parent.mkdir()
+    actual.write_text("3\nwater\nO 0 0 0\nH 0 0 1\nH 0 1 0\n")
+    state = {"workdir": str(tmp_path), "observations": [{"verification": {"verified": True},
+              "result": {"xyz_path": str(actual)}}]}
+    decision = {"tool": "inspect_structure", "args": {"xyz_path": "water.xyz"}}
+    assert _repair_observed_handoff(decision, state)["args"]["xyz_path"] == str(actual)
+    decision["args"]["xyz_path"] = "methane.xyz"
+    assert _repair_observed_handoff(decision, state)["args"]["xyz_path"] == "methane.xyz"
+
+
+def test_summary_only_after_observations_requires_explicit_model_decision(monkeypatch):
+    outputs = iter(['{"summary":"Water inspected"}', '{"action":"finish","summary":"All requested inspection completed"}'])
+
+    async def run(*args, **kwargs):
+        return SimpleNamespace(final_output=next(outputs))
+
+    monkeypatch.setattr(planner, "create_llm_model", lambda **kwargs: "mock")
+    monkeypatch.setattr(planner.Runner, "run", run)
+    decision = asyncio.run(planner.decide_next_action("inspect water", [{"result": {"formula": "H2O"}}]))
+    assert decision["action"] == "finish"
+    with pytest.raises(StopIteration):
+        next(outputs)
+
+
+def test_summary_recovery_cannot_invent_a_tool(monkeypatch):
+    outputs = iter(['{"summary":"work remains"}', '{"action":"tool","tool":"shell","args":{"cmd":"echo hi"}}'])
+
+    async def run(*args, **kwargs):
+        return SimpleNamespace(final_output=next(outputs))
+
+    monkeypatch.setattr(planner, "create_llm_model", lambda **kwargs: "mock")
+    monkeypatch.setattr(planner.Runner, "run", run)
+    with pytest.raises(ValueError, match="disallowed"):
+        asyncio.run(planner.decide_next_action("inspect water", [{"result": {}}]))
 
 
 def test_report_method_comes_from_calculation_parameters():

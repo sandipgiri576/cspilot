@@ -38,7 +38,7 @@ MATERIALS_PROMPT = (
 
 ANALYSIS_PROMPT = (
     "You are a calculation-result analysis assistant. Use available ORCA result "
-    "JSON query tools only. Multiwfn tools are not available unless explicitly "
+    "JSON query tools or Multiwfn analyses when requested. Multiwfn tools are available only if "
     "provided in the allowed tool list. Never infer absent properties."
 )
 

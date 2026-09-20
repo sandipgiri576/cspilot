@@ -14,6 +14,11 @@ it optimizes at ORCA level before frequencies. Query existing JSON only if reque
 If a calculation request gives neither molecule nor geometry, mark blocked and ask
 for that input. Do not infer a molecule from arbitrary files in the work directory.
 After each calculation inspect the actual geometry path and parsed properties.
+For Multiwfn charges/bond orders, use an existing wavefunction if supplied.
+Otherwise generate the molecule, run ORCA/OPI DFT and pass its returned files.gbw
+to multiwfn_analysis_tool. Optimize first only when requested. Supported analyses:
+mulliken, hirshfeld, mayer. No raw menu input, no .out-as-wavefunction, no invented paths.
+For open-shell O2 use mult=3 and xTB uhf=2. Match charge and spin across all steps.
 
 ## Reporter
 - field: final_energy_hartree

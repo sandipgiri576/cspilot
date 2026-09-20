@@ -8,6 +8,29 @@ from cspilot.agents import openai_agent, planner
 from cspilot.agents.planner import ExecutionPlan
 
 
+def test_short_lived_loop_closes_its_clients_on_failure(monkeypatch):
+    closed = []
+
+    class Client:
+        def __init__(self, **kwargs):
+            pass
+
+        async def close(self):
+            closed.append(True)
+
+    async def action():
+        llm.create_openrouter_client()
+        raise ValueError("failed request")
+
+    import pytest
+
+    monkeypatch.setenv("OPENROUTER_API_KEY", "test")
+    monkeypatch.setattr(llm, "AsyncOpenAI", Client)
+    with pytest.raises(ValueError, match="failed request"):
+        asyncio.run(llm.with_model_clients(action()))
+    assert closed == [True]
+
+
 def test_create_openrouter_model_uses_openrouter_defaults(monkeypatch, tmp_path):
     captured = {}
 

@@ -19,8 +19,8 @@ No separate model-generated shell or Python is executed.
 
 ```bash
 cspilot run "inspect tests/examples/input.xyz and print its formula" --workdir runs/inspect
-cspilot graph-run "build benzene from SMILES c1ccccc1 with stk" \
-  --profile auto --agent-mode multi --max-steps 8 --workdir runs/benzene
+cspilot graph-run "build water from SMILES O with stk" \
+  --profile auto --agent-mode multi --max-steps 8 --workdir runs/water
 ```
 
 `--max-steps` defaults to 8 tool calls; one final decision may follow the last
@@ -32,8 +32,27 @@ keep overall verification conservative even if a later action succeeds.
 Finish is the model's completion decision; deterministic verification checks
 returned artifacts, not full semantic fulfillment of the user's request.
 
+If a provider emits only summary text after tool observations, the planner makes
+one bounded request for an explicit action instead of assuming completion.
+An unambiguous generated XYZ can repair a missing input's parent directory only
+when the exact filename matches an existing verified output from this run.
+
 `multi` adds a deterministic profile router before the same agent loop.
 It does not create parallel autonomous agents.
+
+The separate `--multiagent` flag now performs model-backed decomposition into
+up to eight independent child loops, followed by deterministic aggregation,
+verification and reporting. `--workers 1` is the safe default; 2-4 enable concurrency.
+`--max-steps` and `--max-retries` apply per child, not globally. Every child uses
+the shared chemistry allowlist but separate observations, workdir and artifacts.
+Do not combine this flag with specialist profile/routing overrides.
+See [multi-agent and Multiwfn](multiagent_multiwfn.md) for scope and examples.
+
+This is bounded agentic orchestration: the model decomposes and selects the next
+tool from observations; it does not run a fixed plan. Individual scientific tools
+and combined workflows remain deterministic. It is not an unrestricted research
+agent: no dynamic tool creation, recursive delegation, checkpoint/resume, or
+arbitrary dependent task DAGs are implemented.
 
 ## Domain skills
 

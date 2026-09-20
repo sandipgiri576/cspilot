@@ -1,0 +1,9 @@
+{
+  "tool_name": "smiles_to_xyz_tool",
+  "success": true,
+  "smiles": "CO",
+  "canonical_smiles": "CO",
+  "xyz_path": "/home/chemgiri/project/cspilot/tests/examples/rurun/7/methanol.xyz",
+  "num_atoms": 6,
+  "forcefield": "MMFF"
+}

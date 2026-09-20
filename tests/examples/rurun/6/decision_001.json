@@ -1,0 +1,8 @@
+{
+  "action": "tool",
+  "tool": "molecule_name_to_smiles_tool",
+  "args": {
+    "name": "methanol"
+  },
+  "summary": ""
+}

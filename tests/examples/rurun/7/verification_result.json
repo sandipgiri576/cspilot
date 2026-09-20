@@ -1,0 +1,8 @@
+{
+  "verified": false,
+  "issues": [
+    "Agent stopped: blocked.",
+    "Agent status: SMILES CO resolved, XYZ generated, xTB optimization followed by ORCA frequency workflow executed. Gibbs free energy: -115.66832692884532\u202fHartree (~-115.7\u202fHartree)."
+  ],
+  "workdir": "/home/chemgiri/project/cspilot/tests/examples/rurun/7"
+}

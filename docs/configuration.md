@@ -25,6 +25,8 @@ OPENROUTER_MODEL=openai/gpt-oss-20b:free
 | `CSPILOT_RUNS_DIR` | deterministic commands and fixed workflows | `runs` |
 | `XTB_COMMAND` | xTB optimization | `xtb` |
 | `ORCA_COMMAND` | ORCA CLI and workflows | `orca` |
+| `MULTIWFN_COMMAND` | local wavefunction analyses | `Multiwfn_noGUI` |
+| `ORCA_2MKL_COMMAND` | isolated GBW to Molden conversion | `orca_2mkl`, then sibling of configured ORCA |
 | `NWPESSE_BIN` | NWPESSe workflow | `nwpesse` |
 | `MACE_MODEL` | `workflow mace-orca` when `--model` is omitted | fallback placeholder |
 | `OPENROUTER_API_KEY` | OpenRouter model backend | required for model-backed commands |
@@ -40,7 +42,7 @@ settings use `ORCA_COMMAND`.
 | --- | --- | --- |
 | `XTB_BIN` | not read | `XTB_COMMAND` |
 | `ORCA_BIN` | not read | `ORCA_COMMAND` |
-| `MULTIWFN_BIN` | planned only | none |
+| `MULTIWFN_BIN` | not read | `MULTIWFN_COMMAND` |
 | `MACE_MODEL_PATH` | not read | `MACE_MODEL` or `--model` |
 
 ## Work Directories

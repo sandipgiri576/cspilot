@@ -12,6 +12,8 @@ class Settings(BaseModel):
     xtb_command: str = Field(default="xtb")
     orca_command: str = Field(default="orca")
     nwpesse_command: str = Field(default="nwpesse")
+    multiwfn_command: str = Field(default="Multiwfn_noGUI")
+    orca_2mkl_command: str = Field(default="orca_2mkl")
 
 
 def load_settings(env_file: Path | str = ".env.cspilot") -> Settings:
@@ -21,4 +23,6 @@ def load_settings(env_file: Path | str = ".env.cspilot") -> Settings:
         xtb_command=os.getenv("XTB_COMMAND", "xtb"),
         orca_command=os.getenv("ORCA_COMMAND", "orca"),
         nwpesse_command=os.getenv("NWPESSE_BIN", "nwpesse"),
+        multiwfn_command=os.getenv("MULTIWFN_COMMAND", "Multiwfn_noGUI"),
+        orca_2mkl_command=os.getenv("ORCA_2MKL_COMMAND", "orca_2mkl"),
     )

@@ -20,7 +20,8 @@ and clean terminal/report output. Documentation is under developement and can be
 - stk/RDKit molecule generation, editing, export, and stk to xTB optimization.
 - OpenRouter agent with iterative tool decisions and verified observations.
 - Domain Markdown skills loaded automatically by the planner and reporter.
-- Single-agent and routed multi-agent graph modes.
+- Single-agent default, specialist routing, and opt-in independent multi-agent loops.
+- Local Multiwfn Mulliken/Hirshfeld charges and Mayer bond orders from ORCA GBW.
 - Rich terminal summaries plus Markdown or HTML reports.
 - Machine-readable JSON outputs for plans, steps, execution, verification, and final state.
 
@@ -67,7 +68,7 @@ cspilot graph-run "inspect tests/examples/input.xyz" \
 Multi graph mode routes to a specialist profile first:
 
 ```bash
-cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point" \
+cspilot graph-run "use stk to build water from SMILES O then run xTB and ORCA single point" \
   --workdir runs/stk_orca
 ```
 ```bash
@@ -85,8 +86,21 @@ Graph paths:
 - `single`: `planner -> decide -> tool -> observe -> planner; finish -> verifier -> reporter`
 - `multi`: `router -> planner -> decide -> tool -> observe -> planner; finish -> verifier -> reporter`
 
-Multi-agent mode is routing only. CSPilot does not spawn uncontrolled parallel
-agents and does not execute LLM-generated shell commands.
+The legacy `--agent-mode multi` is routing only. The additional `--multiagent`
+flag enables `decomposer -> independent child loops -> aggregator -> verify -> report`.
+Children run serially by default; `--workers 2` enables bounded concurrency.
+Each child has its own work directory and tool-call budget (up to eight children).
+No model-generated shell commands execute. See [multi-agent and Multiwfn usage](docs/multiagent_multiwfn.md).
+
+Use water for inexpensive routine tests:
+
+```bash
+cspilot "Optimize water from SMILES O and compute Gibbs energy and enthalpy with ORCA r2scan-3c" --workdir runs/water-thermo
+cspilot "Calculate gas-phase reaction enthalpy: CH4 + 2 O2 -> CO2 + 2 H2O, ORCA r2scan-3c. O2 is triplet. Optimize and calculate frequencies for every species." --multiagent --workdir runs/combustion
+```
+
+Reaction results use stoichiometric sums of verified enthalpies, not model arithmetic.
+This first version supports gas phase, 298.15 K, 1 atm; water is vapor, not liquid.
 
 `run` and `graph-run` choose one tool at a time, observe its real output, and
 decide what to do next. Use `--max-steps 8` and `--max-retries 1` to bound
@@ -107,6 +121,8 @@ Create `.env.cspilot`:
 CSPILOT_RUNS_DIR=runs
 XTB_COMMAND=xtb
 ORCA_COMMAND=/path/to/orca
+MULTIWFN_COMMAND=/path/to/Multiwfn_noGUI
+ORCA_2MKL_COMMAND=/path/to/orca_2mkl
 NWPESSE_BIN=nwpesse
 MACE_MODEL=/path/to/model.model
 
@@ -124,14 +140,14 @@ CSPilot does not install ORCA or xTB.
 ## 🧬 stk Molecule Generation
 
 ```bash
-cspilot stk-build-smiles "c1ccccc1" --workdir runs/stk_benzene
-cspilot stk-xtb "c1ccccc1" --workdir runs/stk_xtb
+cspilot stk-build-smiles "O" --workdir runs/stk_water
+cspilot stk-xtb "O" --workdir runs/stk_xtb
 ```
 
 Agent/planner route for stk followed by xTB and ORCA:
 
 ```bash
-cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point" \
+cspilot graph-run "use stk to build water from SMILES O then run xTB and ORCA single point" \
   --workdir runs/stk_orca
 ```
 
@@ -198,7 +214,7 @@ Implemented:
 Planned:
 
 - checkpoint/resume and request-level completion validation;
-- Multiwfn post-processing;
+- Expanded Multiwfn analyses beyond charges and Mayer bond orders;
 - expanded stk topology support;
 - torch-sim MLIP molecular dynamics;
 - MongoDB job database;

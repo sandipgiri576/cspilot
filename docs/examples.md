@@ -4,8 +4,8 @@
 
 ```bash
 cspilot "what is the SMILES string of caffeine?" --workdir runs/caffeine
-cspilot "what is the Gibbs free energy of benzene at ORCA with r2scan-3c" --workdir runs/benzene
-cspilot "Optimize benzene geometry and compute thermochemistry with ORCA r2scan-3c" --workdir runs/benzene-thermo
+cspilot "what is the Gibbs free energy of water at ORCA with r2scan-3c" --workdir runs/water
+cspilot "Optimize water geometry and compute thermochemistry with ORCA r2scan-3c" --workdir runs/water-thermo
 ```
 
 Use a molecule name, SMILES, or XYZ path for new calculations. Without one the
@@ -84,24 +84,24 @@ cspilot workflow xtb-orca-freq tests/examples/input.xyz \
 ## stk Build and xTB
 
 ```bash
-cspilot stk-build-smiles "c1ccccc1" --workdir runs/stk_benzene
+cspilot stk-build-smiles "O" --workdir runs/stk_water
 ```
 
 ```bash
-cspilot stk-xtb "c1ccccc1" --workdir runs/stk_xtb
+cspilot stk-xtb "O" --workdir runs/stk_xtb
 ```
 
 Graph request:
 
 ```bash
-cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 and optimize with xTB" \
-  --workdir runs/stk_benzene
+cspilot graph-run "use stk to build water from SMILES O and optimize with xTB" \
+  --workdir runs/stk_water
 ```
 
 ## stk to xTB to ORCA
 
 ```bash
-cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point" \
+cspilot graph-run "use stk to build water from SMILES O then run xTB and ORCA single point" \
   --workdir runs/stk_orca
 ```
 

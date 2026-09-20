@@ -1,0 +1,14 @@
+{
+  "action": "tool",
+  "tool": "run_xtb_orca_frequency_workflow",
+  "args": {
+    "xyz_path": "/home/chemgiri/project/cspilot/tests/examples/rurun/7/methanol.xyz",
+    "method": "r2scan-3c",
+    "basis": "def2-SVP",
+    "charge": 0,
+    "mult": 1,
+    "uhf": 0,
+    "nprocs": 1
+  },
+  "summary": ""
+}

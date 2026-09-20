@@ -11,6 +11,7 @@ from cspilot.agents.planner import AgentDecision, decide_next_action
 from cspilot.agents.reporter import generate_report
 from cspilot.agents.router import route_request
 from cspilot.agents.verifier import verify_execution, verify_request_completion, verify_tool_result
+from cspilot.llm import with_model_clients
 from cspilot.state import CspilotState
 from cspilot.tools.registry import call_tool, reset_allowed_profile, set_allowed_profile
 
@@ -29,11 +30,11 @@ def router_node(state: CspilotState) -> dict[str, Any]:
 def planner_node(state: CspilotState) -> dict[str, Any]:
     """Choose one action with the complete observation history."""
     try:
-        decision = AgentDecision.model_validate(asyncio.run(decide_next_action(
+        decision = AgentDecision.model_validate(asyncio.run(with_model_clients(decide_next_action(
             state["user_request"], state.get("observations", []),
             profile=state["profile"], workdir=state["workdir"],
             model=state.get("model"), base_url=state.get("base_url"),
-        ))).model_dump(mode="json")
+        )))).model_dump(mode="json")
         _write_json(
             Path(state["workdir"]) / f"decision_{len(state.get('observations', [])) + 1:03d}.json",
             decision,
@@ -60,11 +61,13 @@ def decide_node(state: CspilotState) -> dict[str, Any]:
 def executor_node(state: CspilotState) -> dict[str, Any]:
     """Execute exactly one registered action without model calls."""
     decision = state["decision"]
+    decision = _repair_observed_handoff(decision, state)
     step = {"tool": decision["tool"], "args": decision["args"]}
     plan = {"steps": [*(state.get("plan") or {"steps": []})["steps"], step]}
     token = set_allowed_profile(state["profile"], state["user_request"])
     try:
-        result = call_tool(step["tool"], step["args"], state["workdir"])
+        result = call_tool(step["tool"], step["args"], state["workdir"],
+                           **({"confine_outputs": True} if state.get("isolate_outputs") else {}))
     except Exception as exc:
         result = {"tool_name": step["tool"], "success": False,
                   "error": f"{type(exc).__name__}: {exc}"}
@@ -72,7 +75,31 @@ def executor_node(state: CspilotState) -> dict[str, Any]:
         reset_allowed_profile(token)
     _write_json(Path(state["workdir"]) / "plan.json", plan)
     _write_json(Path(state["workdir"]) / f"step_{len(plan['steps']):03d}_result.json", result)
-    return {"plan": plan, "pending_result": result}
+    return {"plan": plan, "pending_result": result, "decision": decision}
+
+
+def _repair_observed_handoff(decision: dict[str, Any], state: CspilotState) -> dict[str, Any]:
+    """Reuse an unambiguous, actually created XYZ when the model mangles its parent path."""
+    args = dict(decision["args"])
+    for key in ("input_xyz", "xyz_path"):
+        supplied = args.get(key)
+        if not isinstance(supplied, str):
+            continue
+        path = Path(supplied).expanduser()
+        if path.is_file() or (Path(state["workdir"]) / path).is_file():
+            continue
+        candidates = set()
+        for observation in state.get("observations", []):
+            result = observation.get("result", {})
+            produced = result.get("xyz_path")
+            if observation.get("verification", {}).get("verified") and isinstance(produced, str):
+                actual = Path(produced)
+                if actual.name == path.name and actual.is_file():
+                    candidates.add(str(actual.resolve()))
+        if len(candidates) == 1:
+            args[key] = candidates.pop()
+            decision = {**decision, "summary": f"Reused observed XYZ path: {args[key]}"}
+    return {**decision, "args": args}
 
 
 def observe_node(state: CspilotState) -> dict[str, Any]:
@@ -163,7 +190,18 @@ def run_graph_agent(
     user_request: str, workdir: str | Path, profile: str = "chem",
     agent_mode: str = "single", html: bool = False, max_retries: int = 1,
     model: str | None = None, base_url: str | None = None, max_steps: int = 8,
+    multiagent: bool = False, workers: int = 1,
+    isolate_outputs: bool = False,
 ) -> CspilotState:
+    if multiagent:
+        from cspilot.multiagent import run_multiagent
+
+        if profile not in {"chem", "auto"} or agent_mode != "single":
+            raise ValueError("multiagent uses chemistry child loops, not specialist routing overrides")
+        return run_multiagent(user_request, workdir, html=html, model=model, base_url=base_url,
+                              max_steps=max_steps, max_retries=max_retries, workers=workers)
+    if workers != 1:
+        raise ValueError("workers requires multiagent=True")
     root = Path(workdir).resolve()
     root.mkdir(parents=True, exist_ok=True)
     state: CspilotState = {
@@ -173,6 +211,7 @@ def run_graph_agent(
         "plan": {"steps": []}, "execution_result": None, "verification_result": None,
         "final_report": None, "errors": [], "observations": [], "decision": None,
         "stop_reason": None, "pending_result": None,
+        "isolate_outputs": isolate_outputs,
     }
     try:
         if agent_mode not in {"single", "multi"}:

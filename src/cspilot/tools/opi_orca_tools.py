@@ -239,6 +239,8 @@ def _run_orca_task(
         result["files"]["output"] = str(output_path)
         parsed = parse_orca_result(output_path)
         result["result"] = parsed
+        if (workdir / "job.gbw").is_file():
+            result["files"]["gbw"] = str(workdir / "job.gbw")
         optimized_xyz = workdir / "job.xyz"
         if task in {TASK_OPT, TASK_OPT_FREQ} and optimized_xyz.is_file():
             result["files"]["optimized_xyz"] = str(optimized_xyz)

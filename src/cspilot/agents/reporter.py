@@ -25,6 +25,23 @@ def terminal_report(execution: dict[str, Any], verification: dict[str, Any]) -> 
     }
     lines = []
     for result in execution.get("steps", []):
+        if result.get("tool") == "aggregate_subtasks":
+            for species in result.get("species_results", []):
+                lines.append(f"Subtask: {species['id']}")
+                if "value" in species:
+                    lines.append(f"  {species['property']}: {species['value']} {species['unit']} "
+                                 f"({species['role']}, coefficient {species['coefficient']})")
+                else:
+                    for item in species.get("results", []):
+                        lines.append(f"  {labels.get(item['property'], item['property'])}: {_format_value(item['value'])}")
+                    lines.append(f"  Summary: {species['summary_file']}")
+            if "reaction_energy_kj_mol" in result:
+                lines.append(f"Reaction {result['reaction_property']}: {result['reaction_energy_kj_mol']:.6f} kJ/mol "
+                             f"({result['reaction_energy_hartree']:.10f} Eh per equation as written)")
+                lines.append("Gas-phase result at 298.15 K and 1 atm; not a liquid-water heating value.")
+            if "relative_energies_kj_mol" in result:
+                lines.append(f"Relative energies (kJ/mol): {result['relative_energies_kj_mol']}")
+            continue
         parameters = [value for key, value in _walk(result)
                       if key == "parameters" and isinstance(value, dict) and "method" in value]
         if parameters:
@@ -259,6 +276,9 @@ def _format_value(value: Any) -> str:
 
 def _reported_values(result: dict[str, Any]) -> list[tuple[str, Any]]:
     keys = {
+        "atomic_charges", "charge_unit", "total_charge", "bond_order_matrix", "bond_order_unit",
+        "reaction_property", "reaction_energy_hartree", "reaction_energy_kj_mol",
+        "relative_energies_kj_mol", "species_results",
         "name",
         "smiles",
         "source",

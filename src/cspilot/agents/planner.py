@@ -24,6 +24,11 @@ class AgentDecision(BaseModel):
     def normalize_tool_fields(cls, value: Any) -> Any:
         if isinstance(value, dict):
             value = dict(value)
+            if isinstance(value.get("action"), dict):
+                # Some providers wrap the same structured decision twice.
+                nested = value["action"]
+                if set(nested) <= {"action", "tool", "args", "summary"} and "action" in nested:
+                    value = {**value, **nested}
             # A clarification emitted as text must never be treated as completion.
             if "action" not in value and "summary" in value and not any(
                 key in value for key in ("tool", "name", "arguments", "args")
@@ -57,10 +62,14 @@ async def decide_next_action(
 {SkillLoader().load(profile)}
 Select one provided tool, finish, or blocked. Do not emit a fixed multi-step plan.
 Finish only when observations support completion of the requested work.
+Call finish for a completed task. Never use blocked to report successful completion.
+Blocked means missing required input, unavailable capability, or inability to continue.
 Unsupported tasks are blocked. Use failures and verification feedback to recover.
 Never repeat successful calculations for values already returned.
 Your summary describes the action/status, not scientific results.
 Use the provided tool schemas. input_xyz aliases are accepted by the executor.
+Use simple relative output paths such as molecule.xyz, never $HOME or shell variables.
+For calculation inputs copy the exact xyz_path/optimized_xyz from observations.
 """
     async def select_tool(context: Any, arguments: str) -> str:
         return json.dumps({"action": "tool", "tool": context.tool_name,
@@ -110,6 +119,30 @@ Use the provided tool schemas. input_xyz aliases are accepted by the executor.
             summary="No action was selected by the model. Please provide the molecule "
                     "(name, SMILES, or XYZ file) and the calculation you want to run.",
         ).model_dump(mode="json")
+    # Some compatible providers ignore required tool_choice and emit only a summary.
+    # Ask for an explicit decision once; never infer completion from prose ourselves.
+    candidate = json.loads(output) if isinstance(output, str) else output
+    if observations and isinstance(candidate, dict) and not any(
+        key in candidate for key in ("action", "tool", "name")
+    ):
+        async def explicit_decision(context: Any, arguments: str) -> str:
+            return AgentDecision.model_validate_json(arguments).model_dump_json()
+
+        recovery = Agent(
+            name="cspilot_explicit_decision", model=create_llm_model(model=model, base_url=base_url),
+            instructions=instructions + "\nReturn an explicit AgentDecision object. "
+            "Your previous summary lacked an action. Review ALL requested operations against "
+            "observations. Choose finish only if complete, tool if work remains, blocked if "
+            "required input/capability is missing. A summary alone is not a decision.\n"
+            + json.dumps(get_tool_catalog(profile, user_request)),
+            tools=[FunctionTool(name="submit_decision", description="Return an explicit action, not just a summary.",
+                                params_json_schema=AgentDecision.model_json_schema(),
+                                on_invoke_tool=explicit_decision, strict_json_schema=False)],
+            model_settings=ModelSettings(tool_choice="required", parallel_tool_calls=False, max_tokens=2048),
+            tool_use_behavior="stop_on_first_tool",
+        )
+        recovered = await Runner.run(recovery, prompt, max_turns=1)
+        output = recovered.final_output
     decision = output if isinstance(output, AgentDecision) else (
         AgentDecision.model_validate_json(output) if isinstance(output, str)
         else AgentDecision.model_validate(output)

@@ -1,5 +1,16 @@
 # CLI Usage
 
+## Independent multi-agent and Multiwfn options
+
+`run`, bare prompts, and `graph-run` accept `--multiagent` (alias `--multi-agent`)
+and `--workers 1..4`. Default remains a single agent; child loops default to serial
+execution. This is separate from legacy `--agent-mode multi` specialist routing.
+See [scope, examples and artifacts](multiagent_multiwfn.md).
+
+`cspilot multiwfn FILE --analysis mulliken|hirshfeld|mayer --workdir runs/multiwfn`
+runs deterministic local analysis without an API key. Pass an existing GBW,
+Molden or FCH file. It prints parsed JSON and persists logs, menu input and results.
+
 Commands below are implemented in `src/cspilot/cli.py`. The installed script is
 `cspilot`; `cspiolt` is also currently configured as a legacy alias.
 
@@ -178,9 +189,9 @@ trajectory, and log files.
 ### Top-level shortcuts
 
 ```bash
-cspilot stk-build-smiles "c1ccccc1" --workdir runs/stk_benzene
+cspilot stk-build-smiles "O" --workdir runs/stk_water
 cspilot stk-polymer "BrCCBr" --repeating-unit A --num-repeating-units 4 --workdir runs/stk_polymer
-cspilot stk-xtb "c1ccccc1" --workdir runs/stk_xtb --charge 0 --uhf 0
+cspilot stk-xtb "O" --workdir runs/stk_xtb --charge 0 --uhf 0
 ```
 
 Output files: JSON results, molecule files such as `.mol`/`.xyz`, and for
@@ -189,7 +200,7 @@ Output files: JSON results, molecule files such as `.mol`/`.xyz`, and for
 ### `stk building-block-smiles`
 
 ```bash
-cspilot stk building-block-smiles "c1ccccc1" runs/stk/benzene.mol
+cspilot stk building-block-smiles "O" runs/stk/water.mol
 ```
 
 Purpose: build an stk building block from SMILES.
@@ -197,7 +208,7 @@ Purpose: build an stk building block from SMILES.
 ### `stk building-block-file`
 
 ```bash
-cspilot stk building-block-file runs/stk/benzene.mol --output-path runs/stk/copy.mol
+cspilot stk building-block-file runs/stk/water.mol --output-path runs/stk/copy.mol
 ```
 
 Purpose: load an stk building block from a file and optionally export it.
@@ -221,7 +232,7 @@ Purpose: edit a molecule with RDKit substructure replacement.
 ### `stk export-xyz`
 
 ```bash
-cspilot stk export-xyz runs/stk/benzene.mol runs/stk/benzene.xyz
+cspilot stk export-xyz runs/stk/water.mol runs/stk/water.xyz
 ```
 
 Purpose: export molecule files to XYZ using stk/RDKit fallback.

@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Added opt-in `--multiagent` decomposition, isolated child loops, bounded concurrency,
+  structured summaries and deterministic reaction/conformer aggregation.
+- Guarded reaction sums with atom/charge balance, spin, method, units and frequency checks.
+- Added local Multiwfn 3.8 Mulliken/Hirshfeld charges and Mayer bond orders, validated
+  menu maps, isolated GBW conversion, JSON outputs and a model-free CLI command.
+- Exposed ORCA/OPI GBW artifacts for wavefunction handoff and used water in routine examples.
+- Closed model clients before short-lived event loops exit; bounded schema/decision
+  recovery and unambiguous observed-path repairs address live provider failures.
+
 - Routed bare prompts to the tool agent and registered PubChem SMILES lookup.
 - Used native action tool schemas and handled empty/plain clarification responses.
 - Distinguished new thermochemistry from stored-result queries.

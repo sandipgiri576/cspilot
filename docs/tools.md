@@ -3,6 +3,18 @@
 This page describes implemented Python tools and agent wrappers in
 `src/cspilot/tools/`.
 
+## Multiwfn and aggregation
+
+`multiwfn_tools.analyze_wavefunction(input_path, workdir, analysis="mulliken")`
+is independently callable without a model. The registered wrapper is
+`multiwfn_analysis_tool(input_path, analysis)`. Supported operations are
+`mulliken`, `hirshfeld`, and `mayer`; input is GBW/Molden/FCH, not ORCA output text.
+See the [validated menu map and GBW conversion](multiagent_multiwfn.md).
+
+`aggregation.aggregate_results(plan, summaries)` performs deterministic reaction
+sums and conformer comparisons from verified ORCA records. It rejects missing or
+incompatible data. It is an internal aggregation boundary, not a model arithmetic tool.
+
 ## ASE
 
 Module: `ase_tools.py`

@@ -11,6 +11,7 @@ nav:
       - Examples: examples.md
   - Capabilities:
       - Agent Usage: agent_usage.md
+      - Multi-agent and Multiwfn: multiagent_multiwfn.md
       - Workflows: workflows.md
       - Tools: tools.md
       - Agentic Audit: agentic_audit.md

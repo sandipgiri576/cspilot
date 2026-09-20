@@ -24,6 +24,7 @@ class CspilotState(TypedDict):
     max_steps: NotRequired[int]
     stop_reason: NotRequired[str | None]
     pending_result: NotRequired[dict[str, Any] | None]
+    isolate_outputs: NotRequired[bool]
 
 
 cspilotState = CspilotState

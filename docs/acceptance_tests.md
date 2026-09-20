@@ -1,5 +1,29 @@
 # Live acceptance checks
 
+## Water and Multiwfn (2026-09-19)
+
+Routine tests now use `tests/examples/input.xyz` (water). The installed local
+Multiwfn 3.8 build was checked directly; no MCP service was involved.
+
+| Check | Observed result |
+| --- | --- |
+| Water xTB -> ORCA r2SCAN-3c Opt Freq | Completed, converged, enthalpy/Gibbs/frequencies returned |
+| Water FCH -> Mulliken/Hirshfeld/Mayer | All three numeric menu sequences completed and parsed |
+| New water ORCA GBW -> orca_2mkl -> Multiwfn | All three analyses completed; original GBW preserved |
+| Live single-agent DFT -> Multiwfn Mulliken | Verified; returned charges printed on screen |
+| Live multiagent water inspection, two workers | Two isolated child histories/summaries; parent verified |
+
+Local artifacts are under `runs/acceptance/water-thermo`, `water-gbw-multiwfn`,
+`water-agent-multiwfn`, and `multi-water-final`. They are ignored runtime outputs,
+not mandatory test fixtures. Unit tests mock model/subprocess boundaries.
+
+Live testing also exposed provider summary-only responses and malformed task
+schemas. Bounded structured-decision/schema retries were added; invalid plans
+fail closed before calculations. Client connections are now closed before their
+short-lived event loops to avoid shutdown tracebacks in terminal output.
+
+## Earlier benzene checks (2026-09-17)
+
 Checked on 2026-09-17 using the configured OpenRouter model, PubChem, and local
 xTB/ORCA binaries. Default unit tests still mock remote services.
 

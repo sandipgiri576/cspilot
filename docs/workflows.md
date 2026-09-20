@@ -4,6 +4,10 @@
 The fixed workflows below remain independently callable and may be selected as
 one action by the agent. Decisions and observations are saved alongside results.
 
+`--multiagent` adds independent child loops and deterministic reaction/conformer
+aggregation without changing these tools. See [multi-agent and Multiwfn](multiagent_multiwfn.md)
+for supported conditions, per-child artifacts, GBW handoffs and menu maps.
+
 ## xTB Optimization
 
 ```bash
@@ -69,7 +73,7 @@ workflow uses `MACE_MODEL`.
 ## stk to xTB
 
 ```bash
-cspilot stk-xtb "c1ccccc1" --workdir runs/stk_xtb --charge 0 --uhf 0
+cspilot stk-xtb "O" --workdir runs/stk_xtb --charge 0 --uhf 0
 ```
 
 Steps:
@@ -85,7 +89,7 @@ There is no fixed deterministic `stk-to-xtb-orca` CLI command yet. Use the
 planner/graph path:
 
 ```bash
-cspilot graph-run "use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point" \
+cspilot graph-run "use stk to build water from SMILES O then run xTB and ORCA single point" \
   --workdir runs/stk_orca --profile chem --agent-mode single
 ```
 

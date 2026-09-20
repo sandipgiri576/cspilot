@@ -78,6 +78,9 @@ runs/
 agent-example/
 stk-example/
 test-nwpess/
+ref-multiwfn/
+run
+runs
 .codex
 # Files
 

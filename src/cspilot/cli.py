@@ -234,12 +234,15 @@ def run_command(
     base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
     max_steps: Annotated[int, typer.Option(min=1, help="Maximum tool actions.")] = 8,
     max_retries: Annotated[int, typer.Option(min=0, help="Allowed recovery attempts after failures.")] = 1,
+    multiagent: Annotated[bool, typer.Option("--multiagent", "--multi-agent", help="Decompose into independent agent loops and aggregate.")] = False,
+    workers: Annotated[int, typer.Option(min=1, max=4, help="Concurrent child loops with --multiagent; default serial.")] = 1,
 ) -> None:
     """Run the iterative scientific agent and display its verified results."""
     graph_run_command(
         request=request, workdir=workdir, profile=profile, html=html,
         pretty=pretty, quiet=quiet, model=model, base_url=base_url,
         max_steps=max_steps, max_retries=max_retries,
+        multiagent=multiagent, workers=workers,
     )
 
 
@@ -265,11 +268,17 @@ def graph_run_command(
     base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
     max_retries: Annotated[int, typer.Option(min=0, help="Allowed recovery attempts after failures.")] = 1,
     max_steps: Annotated[int, typer.Option(min=1, help="Maximum tool actions.")] = 8,
+    multiagent: Annotated[bool, typer.Option("--multiagent", "--multi-agent", help="Decompose into independent agent loops and aggregate.")] = False,
+    workers: Annotated[int, typer.Option(min=1, max=4, help="Concurrent child loops with --multiagent; default serial.")] = 1,
 ) -> None:
     """Run the iterative LangGraph tool/observation loop with verified reporting."""
     from cspilot.graph import run_graph_agent
 
     workdir.mkdir(parents=True, exist_ok=True)
+    if multiagent and (profile not in {"chem", "auto"} or agent_mode != "single"):
+        raise typer.BadParameter("--multiagent uses chemistry child loops; omit specialist --profile/--agent-mode overrides")
+    if not multiagent and workers != 1:
+        raise typer.BadParameter("--workers requires --multiagent")
     try:
         final_state = run_graph_agent(
             user_request=request,
@@ -281,6 +290,7 @@ def graph_run_command(
             agent_mode=agent_mode,
             model=model,
             base_url=base_url,
+            **({"multiagent": True, "workers": workers} if multiagent else {}),
         )
     except (OSError, ValueError) as exc:
         console.print(f"[red]Graph run error:[/] {exc}")
@@ -313,6 +323,18 @@ def graph_run_command(
         else:
             console.print(screen_report, markup=False)
         console.print(f"Report: {report_path}", markup=False)
+
+
+@app.command("multiwfn")
+def multiwfn_command(
+    input_path: Annotated[Path, typer.Argument(exists=True, dir_okay=False)],
+    analysis: Annotated[Literal["mulliken", "hirshfeld", "mayer"], typer.Option()] = "mulliken",
+    workdir: Annotated[Path, typer.Option()] = Path("runs/multiwfn"),
+) -> None:
+    """Run deterministic local Multiwfn analysis without a model or MCP."""
+    from cspilot.tools.multiwfn_tools import analyze_wavefunction
+
+    _print_tool_json(analyze_wavefunction(input_path, workdir, analysis))
 
 
 def _print_tool_json(result: dict[str, object]) -> None:

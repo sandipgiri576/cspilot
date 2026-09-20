@@ -1,0 +1,7 @@
+{
+  "tool_name": "molecule_name_to_smiles_tool",
+  "success": true,
+  "name": "methanol",
+  "smiles": "CO",
+  "source": "PubChem"
+}

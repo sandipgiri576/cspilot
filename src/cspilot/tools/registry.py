@@ -18,6 +18,7 @@ from cspilot.tools.agent_tools import (
     inspect_structure,
     molecule_name_to_smiles_tool,
     molecule_name_to_xyz_tool,
+    multiwfn_analysis_tool,
     nwpesse_global_minimum_search_tool,
     parse_cluster_formula_tool,
     rdkit_replace_substructure_tool,
@@ -66,7 +67,7 @@ _TOOL_GROUPS = {
         stk_export_to_xyz_tool,
     ],
     "nwpesse": [parse_cluster_formula_tool, nwpesse_global_minimum_search_tool],
-    "analysis": [find_result_json_tool, get_property_from_result_tool],
+    "analysis": [find_result_json_tool, get_property_from_result_tool, multiwfn_analysis_tool],
     "thermo": [
         molecule_name_to_xyz_tool, smiles_to_xyz_tool,
         run_xtb_orca_frequency_workflow, find_result_json_tool, get_property_from_result_tool,
@@ -75,6 +76,7 @@ _TOOL_GROUPS = {
 _TOOLS = {tool.name: tool for tools in _TOOL_GROUPS.values() for tool in tools}
 _active_allowed_tools: ContextVar[set[str] | None] = ContextVar("active_allowed_tools", default=None)
 _TOOL_ARG_ALLOWLIST: dict[str, set[str]] = {
+    "multiwfn_analysis_tool": {"input_path", "analysis"},
     "inspect_structure": {"xyz_path"},
     "run_xtb_optimize": {"xyz_path", "charge", "uhf"},
     "run_orca_single_point": {"xyz_path", "method", "basis", "charge", "mult", "nprocs"},
@@ -127,7 +129,7 @@ def get_tool_catalog(profile: str, user_request: str = "") -> list[dict[str, Any
     ]
 
 
-def call_tool(tool_name: str, args: dict[str, Any], workdir: str) -> dict[str, Any]:
+def call_tool(tool_name: str, args: dict[str, Any], workdir: str, *, confine_outputs: bool = False) -> dict[str, Any]:
     """Call one allowlisted function tool; reject arbitrary tool or shell execution."""
     # The deterministic executor does not use remote Agents SDK tracing. Disabling
     # it here also prevents tool invocation from waiting on a trace exporter.
@@ -143,6 +145,10 @@ def call_tool(tool_name: str, args: dict[str, Any], workdir: str) -> dict[str, A
     try:
         normalized_args = normalize_tool_args(tool_name, args)
         normalized_args = _resolve_workdir_paths(normalized_args, root)
+        if confine_outputs:
+            for key in ("output_path", "output_file"):
+                if key in normalized_args and not Path(normalized_args[key]).resolve().is_relative_to(root.resolve()):
+                    raise ValueError("Independent child outputs must stay inside the child's workdir")
         arguments = json.dumps(normalized_args)
         context = ToolContext(
             context=None,
@@ -255,7 +261,8 @@ def _path_in_workdir(value: Any, root: Path, must_exist: bool) -> Any:
 
 def _prefers_input_path(tool_name: str) -> bool:
     lowered = tool_name.lower()
-    return "building_block_from_file" in lowered or "export_to_xyz" in lowered
+    return ("building_block_from_file" in lowered or "export_to_xyz" in lowered
+            or "multiwfn" in lowered)
 
 
 def _json_safe(value: Any) -> Any:
