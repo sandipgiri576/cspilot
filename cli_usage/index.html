@@ -438,6 +438,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#independent-multi-agent-and-multiwfn-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Independent multi-agent and Multiwfn options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#general-and-agent-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -856,6 +867,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../multiagent_multiwfn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-agent and Multiwfn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../workflows/" class="md-nav__link">
         
   
@@ -1191,6 +1230,17 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#independent-multi-agent-and-multiwfn-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Independent multi-agent and Multiwfn options
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#general-and-agent-commands" class="md-nav__link">
@@ -1554,6 +1604,14 @@
 
 
 <h1 id="cli-usage">CLI Usage<a class="headerlink" href="#cli-usage" title="Permanent link">&para;</a></h1>
+<h2 id="independent-multi-agent-and-multiwfn-options">Independent multi-agent and Multiwfn options<a class="headerlink" href="#independent-multi-agent-and-multiwfn-options" title="Permanent link">&para;</a></h2>
+<p><code>run</code>, bare prompts, and <code>graph-run</code> accept <code>--multiagent</code> (alias <code>--multi-agent</code>)
+and <code>--workers 1..4</code>. Default remains a single agent; child loops default to serial
+execution. This is separate from legacy <code>--agent-mode multi</code> specialist routing.
+See <a href="../multiagent_multiwfn/">scope, examples and artifacts</a>.</p>
+<p><code>cspilot multiwfn FILE --analysis mulliken|hirshfeld|mayer --workdir runs/multiwfn</code>
+runs deterministic local analysis without an API key. Pass an existing GBW,
+Molden or FCH file. It prints parsed JSON and persists logs, menu input and results.</p>
 <p>Commands below are implemented in <code>src/cspilot/cli.py</code>. The installed script is
 <code>cspilot</code>; <code>cspiolt</code> is also currently configured as a legacy alias.</p>
 <h2 id="general-and-agent-commands">General And Agent Commands<a class="headerlink" href="#general-and-agent-commands" title="Permanent link">&para;</a></h2>
@@ -1655,18 +1713,18 @@ Full diagnostics remain in the saved report. HTML saving still prints the answer
 trajectory, and log files.</p>
 <h2 id="stk-commands">stk Commands<a class="headerlink" href="#stk-commands" title="Permanent link">&para;</a></h2>
 <h3 id="top-level-shortcuts">Top-level shortcuts<a class="headerlink" href="#top-level-shortcuts" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_benzene
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">"O"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_water
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>cspilot<span class="w"> </span>stk-polymer<span class="w"> </span><span class="s2">"BrCCBr"</span><span class="w"> </span>--repeating-unit<span class="w"> </span>A<span class="w"> </span>--num-repeating-units<span class="w"> </span><span class="m">4</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_polymer
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">"O"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
 </span></code></pre></div>
 <p>Output files: JSON results, molecule files such as <code>.mol</code>/<code>.xyz</code>, and for
 <code>stk-xtb</code> a <code>workflow_result.json</code> plus xTB outputs when xTB runs.</p>
 <h3 id="stk-building-block-smiles"><code>stk building-block-smiles</code><a class="headerlink" href="#stk-building-block-smiles" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-smiles<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>runs/stk/benzene.mol
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-smiles<span class="w"> </span><span class="s2">"O"</span><span class="w"> </span>runs/stk/water.mol
 </span></code></pre></div>
 <p>Purpose: build an stk building block from SMILES.</p>
 <h3 id="stk-building-block-file"><code>stk building-block-file</code><a class="headerlink" href="#stk-building-block-file" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-file<span class="w"> </span>runs/stk/benzene.mol<span class="w"> </span>--output-path<span class="w"> </span>runs/stk/copy.mol
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>building-block-file<span class="w"> </span>runs/stk/water.mol<span class="w"> </span>--output-path<span class="w"> </span>runs/stk/copy.mol
 </span></code></pre></div>
 <p>Purpose: load an stk building block from a file and optionally export it.</p>
 <h3 id="stk-linear-polymer"><code>stk linear-polymer</code><a class="headerlink" href="#stk-linear-polymer" title="Permanent link">&para;</a></h3>
@@ -1678,7 +1736,7 @@ trajectory, and log files.</p>
 </span></code></pre></div>
 <p>Purpose: edit a molecule with RDKit substructure replacement.</p>
 <h3 id="stk-export-xyz"><code>stk export-xyz</code><a class="headerlink" href="#stk-export-xyz" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>export-xyz<span class="w"> </span>runs/stk/benzene.mol<span class="w"> </span>runs/stk/benzene.xyz
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cspilot<span class="w"> </span>stk<span class="w"> </span>export-xyz<span class="w"> </span>runs/stk/water.mol<span class="w"> </span>runs/stk/water.xyz
 </span></code></pre></div>
 <p>Purpose: export molecule files to XYZ using stk/RDKit fallback.</p>
 <h2 id="nwpesse">NWPESSe<a class="headerlink" href="#nwpesse" title="Permanent link">&para;</a></h2>

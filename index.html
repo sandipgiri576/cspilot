@@ -630,6 +630,34 @@
   
   
     <li class="md-nav__item">
+      <a href="multiagent_multiwfn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-agent and Multiwfn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="workflows/" class="md-nav__link">
         
   
@@ -1092,8 +1120,8 @@ reports.</p>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/water<span class="w"> </span>--profile<span class="w"> </span>chem<span class="w"> </span>--agent-mode<span class="w"> </span>single
 </span></code></pre></div>
 <p>Routed multi-agent graph:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"build benzene with stk"</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--workdir<span class="w"> </span>runs/benzene
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"build water from SMILES O with stk"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--workdir<span class="w"> </span>runs/water
 </span></code></pre></div>
 <h2 id="documentation-map">Documentation Map<a class="headerlink" href="#documentation-map" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1120,12 +1148,14 @@ reports.</p>
 <li>NWPESSe fragment-cluster search.</li>
 <li>OpenRouter direct agent and JSON planner/executor.</li>
 <li>LangGraph single mode and routed multi mode.</li>
+<li>Opt-in independent child loops with <code>--multiagent</code>; see <a href="multiagent_multiwfn/">usage and limits</a>.</li>
+<li>Local Multiwfn Mulliken/Hirshfeld charges and Mayer bond orders.</li>
 <li>Rich terminal reports and Markdown/HTML final reports.</li>
 </ul>
 <p>Planned:</p>
 <ul>
 <li>Checkpoint/resume and request-level completion validation.</li>
-<li>Multiwfn post-processing.</li>
+<li>Additional validated Multiwfn post-processing operations.</li>
 <li>Expanded stk topology presets.</li>
 <li>torch-sim MLIP molecular dynamics.</li>
 <li>MongoDB job database.</li>

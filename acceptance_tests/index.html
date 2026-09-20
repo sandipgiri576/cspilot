@@ -519,6 +519,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../multiagent_multiwfn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-agent and Multiwfn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../workflows/" class="md-nav__link">
         
   
@@ -729,6 +757,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acceptance Checks
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -745,6 +791,47 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#water-and-multiwfn-2026-09-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Water and Multiwfn (2026-09-19)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#earlier-benzene-checks-2026-09-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Earlier benzene checks (2026-09-17)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -861,6 +948,36 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#water-and-multiwfn-2026-09-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Water and Multiwfn (2026-09-19)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#earlier-benzene-checks-2026-09-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Earlier benzene checks (2026-09-17)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -933,6 +1050,47 @@
 
 
 <h1 id="live-acceptance-checks">Live acceptance checks<a class="headerlink" href="#live-acceptance-checks" title="Permanent link">&para;</a></h1>
+<h2 id="water-and-multiwfn-2026-09-19">Water and Multiwfn (2026-09-19)<a class="headerlink" href="#water-and-multiwfn-2026-09-19" title="Permanent link">&para;</a></h2>
+<p>Routine tests now use <code>tests/examples/input.xyz</code> (water). The installed local
+Multiwfn 3.8 build was checked directly; no MCP service was involved.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Observed result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Water xTB -&gt; ORCA r2SCAN-3c Opt Freq</td>
+<td>Completed, converged, enthalpy/Gibbs/frequencies returned</td>
+</tr>
+<tr>
+<td>Water FCH -&gt; Mulliken/Hirshfeld/Mayer</td>
+<td>All three numeric menu sequences completed and parsed</td>
+</tr>
+<tr>
+<td>New water ORCA GBW -&gt; orca_2mkl -&gt; Multiwfn</td>
+<td>All three analyses completed; original GBW preserved</td>
+</tr>
+<tr>
+<td>Live single-agent DFT -&gt; Multiwfn Mulliken</td>
+<td>Verified; returned charges printed on screen</td>
+</tr>
+<tr>
+<td>Live multiagent water inspection, two workers</td>
+<td>Two isolated child histories/summaries; parent verified</td>
+</tr>
+</tbody>
+</table>
+<p>Local artifacts are under <code>runs/acceptance/water-thermo</code>, <code>water-gbw-multiwfn</code>,
+<code>water-agent-multiwfn</code>, and <code>multi-water-final</code>. They are ignored runtime outputs,
+not mandatory test fixtures. Unit tests mock model/subprocess boundaries.</p>
+<p>Live testing also exposed provider summary-only responses and malformed task
+schemas. Bounded structured-decision/schema retries were added; invalid plans
+fail closed before calculations. Client connections are now closed before their
+short-lived event loops to avoid shutdown tracebacks in terminal output.</p>
+<h2 id="earlier-benzene-checks-2026-09-17">Earlier benzene checks (2026-09-17)<a class="headerlink" href="#earlier-benzene-checks-2026-09-17" title="Permanent link">&para;</a></h2>
 <p>Checked on 2026-09-17 using the configured OpenRouter model, PubChem, and local
 xTB/ORCA binaries. Default unit tests still mock remote services.</p>
 <table>

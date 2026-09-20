@@ -521,6 +521,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../multiagent_multiwfn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-agent and Multiwfn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../workflows/" class="md-nav__link">
         
   
@@ -607,6 +635,17 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#multiwfn-and-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiwfn and aggregation
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#ase" class="md-nav__link">
@@ -993,6 +1032,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#multiwfn-and-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiwfn and aggregation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#ase" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1156,6 +1206,15 @@
 <h1 id="tools">Tools<a class="headerlink" href="#tools" title="Permanent link">&para;</a></h1>
 <p>This page describes implemented Python tools and agent wrappers in
 <code>src/cspilot/tools/</code>.</p>
+<h2 id="multiwfn-and-aggregation">Multiwfn and aggregation<a class="headerlink" href="#multiwfn-and-aggregation" title="Permanent link">&para;</a></h2>
+<p><code>multiwfn_tools.analyze_wavefunction(input_path, workdir, analysis="mulliken")</code>
+is independently callable without a model. The registered wrapper is
+<code>multiwfn_analysis_tool(input_path, analysis)</code>. Supported operations are
+<code>mulliken</code>, <code>hirshfeld</code>, and <code>mayer</code>; input is GBW/Molden/FCH, not ORCA output text.
+See the <a href="../multiagent_multiwfn/">validated menu map and GBW conversion</a>.</p>
+<p><code>aggregation.aggregate_results(plan, summaries)</code> performs deterministic reaction
+sums and conformer comparisons from verified ORCA records. It rejects missing or
+incompatible data. It is an internal aggregation boundary, not a model arithmetic tool.</p>
 <h2 id="ase">ASE<a class="headerlink" href="#ase" title="Permanent link">&para;</a></h2>
 <p>Module: <code>ase_tools.py</code></p>
 <table>

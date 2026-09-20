@@ -13,7 +13,7 @@
       
       
       
-        <link rel="prev" href="../agent_usage/">
+        <link rel="prev" href="../multiagent_multiwfn/">
       
       
         <link rel="next" href="../tools/">
@@ -501,6 +501,34 @@
     
   
     Agent Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multiagent_multiwfn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-agent and Multiwfn
   
 
     
@@ -1179,6 +1207,9 @@
 <p><code>run</code> and <code>graph-run</code> now choose tools iteratively from observed outputs.
 The fixed workflows below remain independently callable and may be selected as
 one action by the agent. Decisions and observations are saved alongside results.</p>
+<p><code>--multiagent</code> adds independent child loops and deterministic reaction/conformer
+aggregation without changing these tools. See <a href="../multiagent_multiwfn/">multi-agent and Multiwfn</a>
+for supported conditions, per-child artifacts, GBW handoffs and menu maps.</p>
 <h2 id="xtb-optimization">xTB Optimization<a class="headerlink" href="#xtb-optimization" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cspilot<span class="w"> </span>xtb-opt<span class="w"> </span>tests/examples/input.xyz<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
 </span></code></pre></div>
@@ -1221,7 +1252,7 @@ See the <a href="https://www.faccts.de/docs/orca/6.1/tutorials/spec/IR.html">ORC
 <p>Requires <code>mace-torch</code> and a valid MACE model. If <code>--model</code> is omitted, the
 workflow uses <code>MACE_MODEL</code>.</p>
 <h2 id="stk-to-xtb">stk to xTB<a class="headerlink" href="#stk-to-xtb" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">"O"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb<span class="w"> </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--uhf<span class="w"> </span><span class="m">0</span>
 </span></code></pre></div>
 <p>Steps:</p>
 <ol>
@@ -1233,7 +1264,7 @@ workflow uses <code>MACE_MODEL</code>.</p>
 <h2 id="stk-to-xtb-to-orca">stk to xTB to ORCA<a class="headerlink" href="#stk-to-xtb-to-orca" title="Permanent link">&para;</a></h2>
 <p>There is no fixed deterministic <code>stk-to-xtb-orca</code> CLI command yet. Use the
 planner/graph path:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point"</span><span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"use stk to build water from SMILES O then run xTB and ORCA single point"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk_orca<span class="w"> </span>--profile<span class="w"> </span>chem<span class="w"> </span>--agent-mode<span class="w"> </span>single
 </span></code></pre></div>
 <p>The planner should create an stk build step producing an XYZ, then pass that
@@ -1288,7 +1319,7 @@ valid lowest-energy structure is parsed.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../agent_usage/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Agent Usage">
+          <a href="../multiagent_multiwfn/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Multi-agent and Multiwfn">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1298,7 +1329,7 @@ valid lowest-energy structure is parsed.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Agent Usage
+                Multi-agent and Multiwfn
               </div>
             </div>
           </a>

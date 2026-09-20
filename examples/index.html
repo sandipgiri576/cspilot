@@ -700,6 +700,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../multiagent_multiwfn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-agent and Multiwfn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../workflows/" class="md-nav__link">
         
   
@@ -1244,8 +1272,8 @@
 <h1 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h1>
 <h2 id="natural-language-acceptance-examples">Natural-language acceptance examples<a class="headerlink" href="#natural-language-acceptance-examples" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cspilot<span class="w"> </span><span class="s2">"what is the SMILES string of caffeine?"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/caffeine
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cspilot<span class="w"> </span><span class="s2">"what is the Gibbs free energy of benzene at ORCA with r2scan-3c"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/benzene
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cspilot<span class="w"> </span><span class="s2">"Optimize benzene geometry and compute thermochemistry with ORCA r2scan-3c"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/benzene-thermo
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cspilot<span class="w"> </span><span class="s2">"what is the Gibbs free energy of water at ORCA with r2scan-3c"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/water
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cspilot<span class="w"> </span><span class="s2">"Optimize water geometry and compute thermochemistry with ORCA r2scan-3c"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/water-thermo
 </span></code></pre></div>
 <p>Use a molecule name, SMILES, or XYZ path for new calculations. Without one the
 agent requests input. New thermochemistry runs optimization and frequencies;
@@ -1289,16 +1317,16 @@ external programs being used.</p>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span>--charge<span class="w"> </span><span class="m">0</span><span class="w"> </span>--mult<span class="w"> </span><span class="m">1</span><span class="w"> </span>--method<span class="w"> </span>r2scan-3c<span class="w"> </span>--basis<span class="w"> </span>def2-SVP
 </span></code></pre></div>
 <h2 id="stk-build-and-xtb">stk Build and xTB<a class="headerlink" href="#stk-build-and-xtb" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_benzene
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cspilot<span class="w"> </span>stk-build-smiles<span class="w"> </span><span class="s2">"O"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_water
 </span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">"c1ccccc1"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cspilot<span class="w"> </span>stk-xtb<span class="w"> </span><span class="s2">"O"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/stk_xtb
 </span></code></pre></div>
 <p>Graph request:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"use stk to build benzene from SMILES c1ccccc1 and optimize with xTB"</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk_benzene
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"use stk to build water from SMILES O and optimize with xTB"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk_water
 </span></code></pre></div>
 <h2 id="stk-to-xtb-to-orca">stk to xTB to ORCA<a class="headerlink" href="#stk-to-xtb-to-orca" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"use stk to build benzene from SMILES c1ccccc1 then run xTB and ORCA single point"</span><span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"use stk to build water from SMILES O then run xTB and ORCA single point"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span>--workdir<span class="w"> </span>runs/stk_orca
 </span></code></pre></div>
 <p>This is a planned/executed agent workflow path, not a fixed deterministic

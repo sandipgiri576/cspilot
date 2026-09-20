@@ -16,7 +16,7 @@
         <link rel="prev" href="../examples/">
       
       
-        <link rel="next" href="../workflows/">
+        <link rel="next" href="../multiagent_multiwfn/">
       
       
         
@@ -634,6 +634,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../multiagent_multiwfn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-agent and Multiwfn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../workflows/" class="md-nav__link">
         
   
@@ -1123,8 +1151,8 @@ Observations contain real tool outputs and deterministic verification feedback.
 A later action can reuse a returned path or change its arguments after failure.
 No separate model-generated shell or Python is executed.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cspilot<span class="w"> </span>run<span class="w"> </span><span class="s2">"inspect tests/examples/input.xyz and print its formula"</span><span class="w"> </span>--workdir<span class="w"> </span>runs/inspect
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"build benzene from SMILES c1ccccc1 with stk"</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--max-steps<span class="w"> </span><span class="m">8</span><span class="w"> </span>--workdir<span class="w"> </span>runs/benzene
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cspilot<span class="w"> </span>graph-run<span class="w"> </span><span class="s2">"build water from SMILES O with stk"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--profile<span class="w"> </span>auto<span class="w"> </span>--agent-mode<span class="w"> </span>multi<span class="w"> </span>--max-steps<span class="w"> </span><span class="m">8</span><span class="w"> </span>--workdir<span class="w"> </span>runs/water
 </span></code></pre></div>
 <p><code>--max-steps</code> defaults to 8 tool calls; one final decision may follow the last
 call. <code>--max-retries</code> defaults to 1: after the first failed/unverified call the
@@ -1134,8 +1162,24 @@ produces an incomplete/failed report. Historical failures remain visible and
 keep overall verification conservative even if a later action succeeds.
 Finish is the model's completion decision; deterministic verification checks
 returned artifacts, not full semantic fulfillment of the user's request.</p>
+<p>If a provider emits only summary text after tool observations, the planner makes
+one bounded request for an explicit action instead of assuming completion.
+An unambiguous generated XYZ can repair a missing input's parent directory only
+when the exact filename matches an existing verified output from this run.</p>
 <p><code>multi</code> adds a deterministic profile router before the same agent loop.
 It does not create parallel autonomous agents.</p>
+<p>The separate <code>--multiagent</code> flag now performs model-backed decomposition into
+up to eight independent child loops, followed by deterministic aggregation,
+verification and reporting. <code>--workers 1</code> is the safe default; 2-4 enable concurrency.
+<code>--max-steps</code> and <code>--max-retries</code> apply per child, not globally. Every child uses
+the shared chemistry allowlist but separate observations, workdir and artifacts.
+Do not combine this flag with specialist profile/routing overrides.
+See <a href="../multiagent_multiwfn/">multi-agent and Multiwfn</a> for scope and examples.</p>
+<p>This is bounded agentic orchestration: the model decomposes and selects the next
+tool from observations; it does not run a fixed plan. Individual scientific tools
+and combined workflows remain deterministic. It is not an unrestricted research
+agent: no dynamic tool creation, recursive delegation, checkpoint/resume, or
+arbitrary dependent task DAGs are implemented.</p>
 <h2 id="domain-skills">Domain skills<a class="headerlink" href="#domain-skills" title="Permanent link">&para;</a></h2>
 <p><code>src/cspilot/skills/</code> contains bundled Markdown files and is included in package
 distributions. <code>SkillLoader</code> automatically loads <code>common.md</code> plus
@@ -1272,13 +1316,13 @@ geometry-generation step alone cannot satisfy a thermochemistry request.</p>
         
         
           
-          <a href="../workflows/" class="md-footer__link md-footer__link--next" aria-label="Next: Workflows">
+          <a href="../multiagent_multiwfn/" class="md-footer__link md-footer__link--next" aria-label="Next: Multi-agent and Multiwfn">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Workflows
+                Multi-agent and Multiwfn
               </div>
             </div>
             <div class="md-footer__button md-icon">
