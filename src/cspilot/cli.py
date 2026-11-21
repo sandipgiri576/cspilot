@@ -1,3 +1,5 @@
+"""Expose CSPilot deterministic workflows and bounded agents through Typer."""
+
 from __future__ import annotations
 
 import asyncio
@@ -8,23 +10,47 @@ from typing import Annotated, Literal
 import click
 import typer
 from rich.console import Console
+from rich.panel import Panel
 from rich.table import Table
+from rich.text import Text
 from typer.core import TyperGroup
 
+from cspilot.agents.executor import execute_plan
+from cspilot.agents.openai_agent import run_agent_request
+from cspilot.agents.planner import create_plan
+from cspilot.agents.reporter import terminal_report
 from cspilot.config import load_settings
+from cspilot.docs_checker import check_documentation_consistency
+from cspilot.rag import answer_question_sync, build_index, fetch_openalex, retrieve
 from cspilot.schemas import CommandResult
 from cspilot.tools.ase_tools import summarize_structure
 from cspilot.tools.mace_tools import optimize_with_mace
+from cspilot.tools.multiwfn_tools import analyze_wavefunction
 from cspilot.tools.opi_orca_tools import single_point_with_orca
+from cspilot.tools.registry import reset_allowed_profile, set_allowed_profile
+from cspilot.tools.stk_tools import (
+    rdkit_replace_substructure,
+    stk_build_from_smiles,
+    stk_building_block_from_file,
+    stk_export_to_xyz,
+    stk_linear_polymer_from_smiles,
+)
 from cspilot.tools.xtb_tools import optimize_with_xtb
 from cspilot.utils.runner import copy_input, make_run_dir, write_json
 from cspilot.workflows.mace_to_orca import run_mace_to_orca
+from cspilot.workflows.nwpesse_workflows import nwpesse_global_minimum_search
+from cspilot.workflows.stk_workflows import stk_smiles_to_xtb_opt
 from cspilot.workflows.xtb_to_orca_freq import run_xtb_to_orca_freq
 from cspilot.workflows.xtb_to_orca_sp import run_xtb_to_orca_sp
 
 
 class SearchFallbackGroup(TyperGroup):
-    def resolve_command(self, ctx: click.Context, args: list[str]):
+    """Route an unknown natural-language command to the default agent command."""
+
+    def resolve_command(
+        self, ctx: click.Context, args: list[str]
+    ) -> tuple[str | None, click.Command | None, list[str]]:
+        """Resolve normal commands and bare natural-language requests."""
         try:
             return super().resolve_command(ctx, args)
         except click.UsageError:
@@ -38,8 +64,10 @@ class SearchFallbackGroup(TyperGroup):
 app = typer.Typer(cls=SearchFallbackGroup, help="Computational chemistry workflow CLI.")
 workflow_app = typer.Typer(help="Multi-step computational chemistry workflows.")
 stk_app = typer.Typer(help="stk molecule construction and editing tools.")
+rag_app = typer.Typer(help="Build and query grounded chemistry literature indexes.")
 app.add_typer(workflow_app, name="workflow")
 app.add_typer(stk_app, name="stk")
+app.add_typer(rag_app, name="rag")
 console = Console()
 
 
@@ -82,11 +110,11 @@ def search_command(
         typer.Option(help="Directory for search result JSON.", resolve_path=True),
     ] = Path("runs/search"),
     model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
-    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
+    base_url: Annotated[
+        str | None, typer.Option(help="OpenAI-compatible base URL override.")
+    ] = None,
 ) -> None:
     """Answer a general question through the configured model backend."""
-    from cspilot.agents.openai_agent import run_agent_request
-
     try:
         result = asyncio.run(
             run_agent_request(
@@ -109,8 +137,6 @@ def docs_check_command(
     root: Annotated[Path, typer.Option(help="Project root to check.", resolve_path=True)] = Path(),
 ) -> None:
     """Run lightweight documentation consistency checks."""
-    from cspilot.docs_checker import check_documentation_consistency
-
     result = check_documentation_consistency(root)
     if result["success"]:
         console.print("[green]Documentation consistency check passed.[/]")
@@ -123,21 +149,23 @@ def docs_check_command(
 
 @app.command("agent")
 def run_agent(
-    request: Annotated[str, typer.Argument(help="Natural language computational chemistry request.")],
+    request: Annotated[
+        str, typer.Argument(help="Natural language computational chemistry request.")
+    ],
     workdir: Annotated[
         Path,
         typer.Option(help="Directory for agent results and tool subruns.", resolve_path=True),
     ] = Path("runs/agent_test"),
     model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
-    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
+    base_url: Annotated[
+        str | None, typer.Option(help="OpenAI-compatible base URL override.")
+    ] = None,
     agent_profile: Annotated[
         Literal["chem", "materials", "general"],
         typer.Option(help="Agent instruction and tool profile."),
     ] = "chem",
 ) -> None:
     """Run a tool-using computational chemistry agent through the configured model backend."""
-    from cspilot.agents.openai_agent import run_agent_request
-
     try:
         result = asyncio.run(
             run_agent_request(
@@ -164,11 +192,11 @@ def plan_command(
     ] = Path("runs/test"),
     profile: Annotated[Profile, typer.Option(help="Planning tool and prompt profile.")] = "chem",
     model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
-    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
+    base_url: Annotated[
+        str | None, typer.Option(help="OpenAI-compatible base URL override.")
+    ] = None,
 ) -> None:
     """Create a JSON execution plan using the configured model backend."""
-    from cspilot.agents.planner import create_plan
-
     workdir.mkdir(parents=True, exist_ok=True)
     try:
         plan = asyncio.run(
@@ -192,7 +220,9 @@ def plan_command(
 def execute_command(
     plan_path: Annotated[
         Path,
-        typer.Argument(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True),
+        typer.Argument(
+            exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True
+        ),
     ],
     workdir: Annotated[
         Path,
@@ -201,9 +231,6 @@ def execute_command(
     profile: Annotated[Profile, typer.Option(help="Tool allowlist profile.")] = "chem",
 ) -> None:
     """Execute an existing JSON plan through allowlisted local tools."""
-    from cspilot.agents.executor import execute_plan
-    from cspilot.tools.registry import reset_allowed_profile, set_allowed_profile
-
     workdir.mkdir(parents=True, exist_ok=True)
     profile_token = set_allowed_profile(profile)
     try:
@@ -224,25 +251,55 @@ def run_command(
     request: Annotated[str, typer.Argument(help="Natural language workflow request.")],
     workdir: Annotated[
         Path,
-        typer.Option(help="Directory in which to save plan and execution outputs.", resolve_path=True),
+        typer.Option(
+            help="Directory in which to save plan and execution outputs.", resolve_path=True
+        ),
     ] = Path("runs/test"),
     profile: Annotated[Profile, typer.Option(help="Planning tool and report profile.")] = "chem",
-    html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
-    pretty: Annotated[bool, typer.Option("--pretty/--no-pretty", help="Print Rich panels and tables.")] = True,
+    html: Annotated[
+        bool, typer.Option(help="Write final_report.html instead of Markdown.")
+    ] = False,
+    pretty: Annotated[
+        bool, typer.Option("--pretty/--no-pretty", help="Print Rich panels and tables.")
+    ] = True,
     quiet: Annotated[bool, typer.Option(help="Print only final status and report path.")] = False,
     model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
-    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
+    base_url: Annotated[
+        str | None, typer.Option(help="OpenAI-compatible base URL override.")
+    ] = None,
     max_steps: Annotated[int, typer.Option(min=1, help="Maximum tool actions.")] = 8,
-    max_retries: Annotated[int, typer.Option(min=0, help="Allowed recovery attempts after failures.")] = 1,
-    multiagent: Annotated[bool, typer.Option("--multiagent", "--multi-agent", help="Decompose into independent agent loops and aggregate.")] = False,
-    workers: Annotated[int, typer.Option(min=1, max=4, help="Concurrent child loops with --multiagent; default serial.")] = 1,
+    max_retries: Annotated[
+        int, typer.Option(min=0, help="Allowed recovery attempts after failures.")
+    ] = 1,
+    multiagent: Annotated[
+        bool,
+        typer.Option(
+            "--multiagent",
+            "--multi-agent",
+            help="Decompose into independent agent loops and aggregate.",
+        ),
+    ] = False,
+    workers: Annotated[
+        int,
+        typer.Option(
+            min=1, max=4, help="Concurrent child loops with --multiagent; default serial."
+        ),
+    ] = 1,
 ) -> None:
     """Run the iterative scientific agent and display its verified results."""
     graph_run_command(
-        request=request, workdir=workdir, profile=profile, html=html,
-        pretty=pretty, quiet=quiet, model=model, base_url=base_url,
-        max_steps=max_steps, max_retries=max_retries,
-        multiagent=multiagent, workers=workers,
+        request=request,
+        workdir=workdir,
+        profile=profile,
+        html=html,
+        pretty=pretty,
+        quiet=quiet,
+        model=model,
+        base_url=base_url,
+        max_steps=max_steps,
+        max_retries=max_retries,
+        multiagent=multiagent,
+        workers=workers,
     )
 
 
@@ -261,22 +318,46 @@ def graph_run_command(
         AgentMode,
         typer.Option(help="Graph agent mode: single or multi."),
     ] = "single",
-    html: Annotated[bool, typer.Option(help="Write final_report.html instead of Markdown.")] = False,
-    pretty: Annotated[bool, typer.Option("--pretty/--no-pretty", help="Print Rich panels and tables.")] = True,
+    html: Annotated[
+        bool, typer.Option(help="Write final_report.html instead of Markdown.")
+    ] = False,
+    pretty: Annotated[
+        bool, typer.Option("--pretty/--no-pretty", help="Print Rich panels and tables.")
+    ] = True,
     quiet: Annotated[bool, typer.Option(help="Print only final status and report path.")] = False,
     model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
-    base_url: Annotated[str | None, typer.Option(help="OpenAI-compatible base URL override.")] = None,
-    max_retries: Annotated[int, typer.Option(min=0, help="Allowed recovery attempts after failures.")] = 1,
+    base_url: Annotated[
+        str | None, typer.Option(help="OpenAI-compatible base URL override.")
+    ] = None,
+    max_retries: Annotated[
+        int, typer.Option(min=0, help="Allowed recovery attempts after failures.")
+    ] = 1,
     max_steps: Annotated[int, typer.Option(min=1, help="Maximum tool actions.")] = 8,
-    multiagent: Annotated[bool, typer.Option("--multiagent", "--multi-agent", help="Decompose into independent agent loops and aggregate.")] = False,
-    workers: Annotated[int, typer.Option(min=1, max=4, help="Concurrent child loops with --multiagent; default serial.")] = 1,
+    multiagent: Annotated[
+        bool,
+        typer.Option(
+            "--multiagent",
+            "--multi-agent",
+            help="Decompose into independent agent loops and aggregate.",
+        ),
+    ] = False,
+    workers: Annotated[
+        int,
+        typer.Option(
+            min=1, max=4, help="Concurrent child loops with --multiagent; default serial."
+        ),
+    ] = 1,
 ) -> None:
     """Run the iterative LangGraph tool/observation loop with verified reporting."""
+    # Keep this local so callers can replace the graph entry point and basic
+    # deterministic CLI commands do not initialize graph dependencies.
     from cspilot.graph import run_graph_agent
 
     workdir.mkdir(parents=True, exist_ok=True)
     if multiagent and (profile not in {"chem", "auto"} or agent_mode != "single"):
-        raise typer.BadParameter("--multiagent uses chemistry child loops; omit specialist --profile/--agent-mode overrides")
+        raise typer.BadParameter(
+            "--multiagent uses chemistry child loops; omit specialist --profile/--agent-mode overrides"
+        )
     if not multiagent and workers != 1:
         raise typer.BadParameter("--workers requires --multiagent")
     try:
@@ -301,8 +382,6 @@ def graph_run_command(
     report = final_state.get("final_report") or ""
     report_path = workdir / ("final_report.html" if html else "final_report.md")
     report_path.write_text(report, encoding="utf-8")
-    from cspilot.agents.reporter import terminal_report
-
     screen_report = terminal_report(
         final_state.get("execution_result") or {},
         final_state.get("verification_result") or {},
@@ -316,9 +395,6 @@ def graph_run_command(
         console.print(f"Report: {report_path}")
     else:
         if pretty:
-            from rich.panel import Panel
-            from rich.text import Text
-
             console.print(Panel(Text(screen_report), title="CSPilot results"))
         else:
             console.print(screen_report, markup=False)
@@ -332,8 +408,6 @@ def multiwfn_command(
     workdir: Annotated[Path, typer.Option()] = Path("runs/multiwfn"),
 ) -> None:
     """Run deterministic local Multiwfn analysis without a model or MCP."""
-    from cspilot.tools.multiwfn_tools import analyze_wavefunction
-
     _print_tool_json(analyze_wavefunction(input_path, workdir, analysis))
 
 
@@ -345,6 +419,106 @@ def _print_tool_json(result: dict[str, object]) -> None:
 
 def _write_cli_json(path: Path, payload: dict[str, object]) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+@rag_app.command("index")
+def rag_index_command(
+    sources: Annotated[
+        list[Path],
+        typer.Argument(help="JSON, JSONL, PDF, or directories to ingest."),
+    ],
+    output_dir: Annotated[
+        Path,
+        typer.Option(help="Directory for chunks.json, index.faiss, and config.json."),
+    ] = Path("data/rag"),
+    embedding_model: Annotated[
+        str,
+        typer.Option(help="SentenceTransformer model identifier or local path."),
+    ] = "sentence-transformers/all-MiniLM-L6-v2",
+    chunk_size: Annotated[int, typer.Option(min=100)] = 1_200,
+    chunk_overlap: Annotated[int, typer.Option(min=0)] = 200,
+) -> None:
+    """Build a local FAISS index from chemistry literature sources."""
+    result = build_index(
+        sources,
+        output_dir,
+        embedding_model=embedding_model,
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    _write_cli_json(output_dir / "index_result.json", result)
+    console.print_json(json=json.dumps(result))
+    if not result["success"]:
+        raise typer.Exit(code=1)
+
+
+@rag_app.command("query")
+def rag_query_command(
+    question: Annotated[str, typer.Argument(help="Question about indexed literature.")],
+    index_dir: Annotated[
+        Path,
+        typer.Option(help="Directory containing the local RAG index."),
+    ] = Path("data/rag"),
+    top_k: Annotated[int, typer.Option(min=1, help="Number of passages to retrieve.")] = 5,
+    model: Annotated[str | None, typer.Option(help="OpenRouter model identifier.")] = None,
+    base_url: Annotated[
+        str | None, typer.Option(help="OpenRouter-compatible base URL override.")
+    ] = None,
+    retrieve_only: Annotated[
+        bool,
+        typer.Option(help="Print retrieved passages without calling OpenRouter."),
+    ] = False,
+) -> None:
+    """Retrieve literature and print a grounded answer with citations."""
+    result = (
+        retrieve(question, index_dir, top_k=top_k)
+        if retrieve_only
+        else answer_question_sync(
+            question,
+            index_dir,
+            top_k=top_k,
+            model=model,
+            base_url=base_url,
+        )
+    )
+    index_dir.mkdir(parents=True, exist_ok=True)
+    _write_cli_json(index_dir / "query_result.json", result)
+    if result.get("answer"):
+        console.print(result["answer"])
+        citations = result.get("citations", [])
+        if citations:
+            console.print("\n[bold]Sources[/]")
+            for citation in citations:
+                location = citation.get("doi") or citation.get("url") or citation.get("source")
+                page = f", page {citation['page']}" if citation.get("page") else ""
+                console.print(
+                    f"[{citation['number']}] {citation.get('title') or 'Untitled'}{page}: {location}"
+                )
+    else:
+        console.print_json(json=json.dumps(result))
+    if not result["success"]:
+        raise typer.Exit(code=1)
+
+
+@rag_app.command("openalex")
+def rag_openalex_command(
+    query: Annotated[str, typer.Argument(help="OpenAlex literature search query.")],
+    output_path: Annotated[
+        Path,
+        typer.Option(help="Destination for normalized OpenAlex JSON."),
+    ] = Path("data/literature/openalex_abstracts.json"),
+    limit: Annotated[int, typer.Option(min=1, max=200)] = 25,
+    mailto: Annotated[
+        str | None,
+        typer.Option(help="Contact email for the OpenAlex polite pool."),
+    ] = None,
+) -> None:
+    """Download normalized OpenAlex records for later local indexing."""
+    result = fetch_openalex(query, output_path, limit=limit, mailto=mailto)
+    console.print_json(json=json.dumps(result))
+    if not result["success"]:
+        raise typer.Exit(code=1)
 
 
 def _print_execution_summary(execution_result: dict[str, object], result_path: Path) -> None:
@@ -494,8 +668,6 @@ def stk_build_smiles_command(
     ),
 ) -> None:
     """Build a simple stk molecule from SMILES."""
-    from cspilot.tools.stk_tools import stk_build_from_smiles, stk_export_to_xyz
-
     workdir.mkdir(parents=True, exist_ok=True)
     mol_result = stk_build_from_smiles(smiles, str(workdir / "molecule.mol"))
     if mol_result.get("success"):
@@ -514,8 +686,6 @@ def stk_polymer_command(
     ),
 ) -> None:
     """Construct a linear polymer using stk.polymer.Linear."""
-    from cspilot.tools.stk_tools import stk_export_to_xyz, stk_linear_polymer_from_smiles
-
     workdir.mkdir(parents=True, exist_ok=True)
     result = stk_linear_polymer_from_smiles(
         monomer_smiles=monomer_smiles,
@@ -524,7 +694,9 @@ def stk_polymer_command(
         output_path=str(workdir / "polymer.mol"),
     )
     if result.get("success"):
-        result["xyz_result"] = stk_export_to_xyz(str(workdir / "polymer.mol"), str(workdir / "polymer.xyz"))
+        result["xyz_result"] = stk_export_to_xyz(
+            str(workdir / "polymer.mol"), str(workdir / "polymer.xyz")
+        )
     _print_tool_json(result)
 
 
@@ -538,8 +710,6 @@ def stk_xtb_command(
     uhf: Annotated[int, typer.Option(help="Number of unpaired electrons for xTB.")] = 0,
 ) -> None:
     """Build a molecule from SMILES, export XYZ, and run xTB optimization."""
-    from cspilot.workflows.stk_workflows import stk_smiles_to_xtb_opt
-
     result = stk_smiles_to_xtb_opt(smiles=smiles, workdir=workdir, charge=charge, uhf=uhf)
     _print_tool_json(result)
 
@@ -558,7 +728,9 @@ def nwpesse_search_command(
         "runs/nwpesse"
     ),
     result_name: Annotated[str, typer.Option(help="NWPESSe result base name.")] = "nwpesse_result",
-    max_calculations: Annotated[int, typer.Option(help="Maximum number of NWPESSe calculations.")] = 10,
+    max_calculations: Annotated[
+        int, typer.Option(help="Maximum number of NWPESSe calculations.")
+    ] = 10,
     box_size: Annotated[float, typer.Option(help="Default cubic inbox size.")] = 3.0,
     box_mode: Annotated[
         Literal["per_fragment_type", "single", "custom"],
@@ -572,8 +744,6 @@ def nwpesse_search_command(
     timeout: Annotated[int, typer.Option(help="NWPESSe timeout in seconds.")] = 86400,
 ) -> None:
     """Run an NWPESSe global-minimum search for a fragment cluster."""
-    from cspilot.workflows.nwpesse_workflows import nwpesse_global_minimum_search
-
     explicit_fragments = _parse_cli_fragments(fragment or [])
     result = nwpesse_global_minimum_search(
         formula=formula,
@@ -608,8 +778,6 @@ def stk_building_block_smiles_command(
     output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
 ) -> None:
     """Create an stk building block from SMILES."""
-    from cspilot.tools.stk_tools import stk_build_from_smiles
-
     _print_tool_json(stk_build_from_smiles(smiles=smiles, output_path=str(output_path)))
 
 
@@ -617,14 +785,18 @@ def stk_building_block_smiles_command(
 def stk_building_block_file_command(
     input_path: Annotated[
         Path,
-        typer.Argument(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True),
+        typer.Argument(
+            exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True
+        ),
     ],
-    output_path: Annotated[Path | None, typer.Option(help="Optional output copy/export path.")] = None,
+    output_path: Annotated[
+        Path | None, typer.Option(help="Optional output copy/export path.")
+    ] = None,
 ) -> None:
     """Load an stk building block from a molecule file."""
-    from cspilot.tools.stk_tools import stk_building_block_from_file
-
-    _print_tool_json(stk_building_block_from_file(str(input_path), str(output_path) if output_path else None))
+    _print_tool_json(
+        stk_building_block_from_file(str(input_path), str(output_path) if output_path else None)
+    )
 
 
 @stk_app.command("linear-polymer")
@@ -635,8 +807,6 @@ def stk_linear_polymer_command(
     output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
 ) -> None:
     """Construct a linear polymer with stk.polymer.Linear."""
-    from cspilot.tools.stk_tools import stk_linear_polymer_from_smiles
-
     _print_tool_json(
         stk_linear_polymer_from_smiles(
             monomer_smiles=monomer_smiles,
@@ -655,8 +825,6 @@ def stk_replace_smiles_command(
     output_path: Annotated[Path, typer.Argument(help="Output .mol, .sdf, or .xyz file.")],
 ) -> None:
     """Replace a SMILES substructure and export the edited molecule."""
-    from cspilot.tools.stk_tools import rdkit_replace_substructure
-
     _print_tool_json(
         rdkit_replace_substructure(
             parent_smiles=parent_smiles,
@@ -671,13 +839,13 @@ def stk_replace_smiles_command(
 def stk_export_xyz_command(
     input_path: Annotated[
         Path,
-        typer.Argument(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True),
+        typer.Argument(
+            exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True
+        ),
     ],
     output_path: Annotated[Path, typer.Argument(help="Output XYZ path.")],
 ) -> None:
     """Export a molecule file to XYZ using stk/RDKit fallback."""
-    from cspilot.tools.stk_tools import stk_export_to_xyz
-
     _print_tool_json(stk_export_to_xyz(str(input_path), str(output_path)))
 
 

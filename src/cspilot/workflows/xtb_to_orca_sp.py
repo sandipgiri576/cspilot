@@ -26,6 +26,7 @@ def run_xtb_to_orca_sp(
     nprocs: int = 1,
     settings: Settings | None = None,
 ) -> dict[str, Any]:
+    """Optimize with xTB, then run an ORCA single-point calculation."""
     settings, workdir = init_workflow_run("xtb-orca-sp", settings)
     result = base_workflow_result("xtb-orca-sp", input_xyz, workdir)
 

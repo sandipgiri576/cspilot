@@ -48,7 +48,15 @@ def test_generate_report_sections_and_html_fragment(tmp_path):
     markdown = generate_report("calculate water", {"steps": []}, execution, verification)
     html = generate_report("calculate water", {"steps": []}, execution, verification, html=True)
 
-    for section in ("Welcome", "Task", "Workflow", "Results", "Generated Files", "Verification", "Notes"):
+    for section in (
+        "Welcome",
+        "Task",
+        "Workflow",
+        "Results",
+        "Generated Files",
+        "Verification",
+        "Notes",
+    ):
         assert f"## {section}" in markdown
     assert "Gibbs free energy: not found in parsed results." not in markdown
     assert "HOMO-LUMO gap: not found in parsed results." not in markdown

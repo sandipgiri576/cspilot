@@ -72,6 +72,7 @@ def stk_smiles_to_xtb_opt(
         "error": error,
         "workflow_result_path": str(root / "workflow_result.json"),
     }
-    (root / "workflow_result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    (root / "workflow_result.json").write_text(
+        json.dumps(result, indent=2) + "\n", encoding="utf-8"
+    )
     return result
-

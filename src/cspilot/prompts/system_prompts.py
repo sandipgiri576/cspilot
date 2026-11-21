@@ -1,3 +1,5 @@
+"""Define profile instructions and deterministic tool-group permissions."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -5,6 +7,8 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class PromptProfile:
+    """Bundle instructions, tool groups, and report style for a profile."""
+
     system_prompt: str
     allowed_tool_groups: tuple[str, ...]
     default_output_style: str
@@ -92,6 +96,7 @@ PROFILES = {
 
 
 def get_profile(profile: str) -> PromptProfile:
+    """Return a configured prompt profile or raise for an unknown name."""
     try:
         return PROFILES[profile]
     except KeyError as exc:
@@ -100,4 +105,5 @@ def get_profile(profile: str) -> PromptProfile:
 
 
 def allowed_group_names(profile: str, user_request: str = "") -> tuple[str, ...]:
+    """Return deterministic tool-group names allowed for a profile."""
     return get_profile(profile).allowed_tool_groups

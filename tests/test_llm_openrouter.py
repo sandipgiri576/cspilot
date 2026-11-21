@@ -87,9 +87,7 @@ def test_direct_agent_uses_openrouter_by_default(monkeypatch, tmp_path):
     )
     monkeypatch.setattr(openai_agent.Runner, "run", fake_runner_run)
 
-    result = asyncio.run(
-        openai_agent.run_agent_request("hello", tmp_path, profile="general")
-    )
+    result = asyncio.run(openai_agent.run_agent_request("hello", tmp_path, profile="general"))
 
     assert calls == ["openrouter-model"]
     assert result["model_provider"] == "openrouter"

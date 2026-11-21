@@ -1,0 +1,695 @@
+[
+  {
+    "id": "W4414142955",
+    "title": "Quadricyclane and Norbornadiene as High-Energy Aviation Fuels: A DFT Study",
+    "authors": [
+      "Feng Wang"
+    ],
+    "year": 2025,
+    "journal": "Energy & Fuels",
+    "doi": "https://doi.org/10.1021/acs.energyfuels.5c03894",
+    "url": "https://doi.org/10.1021/acs.energyfuels.5c03894",
+    "open_access_url": null,
+    "abstract": "High-energy-density (HED) hydrocarbons, such as quadricyclane (QC) and norbornadiene (NBD), are gaining attention for advanced aerospace fuel applications due to their ability to store substantial strain energy. In this study, we employ high-level density functional theory (DFT) calculations to investigate the ground-state electronic structures of QC and NBD, focusing on their ionization potential (IP) spectra and outer valence Dyson orbitals in the context of energy storage. Our theoretical results are supported by recent high-resolution synchrotron-based photoelectron spectroscopy (PES) measurements. The data reveal that key C\u2013C bonds in QC (specifically C(1)\u2013C(2), C(1)\u2013C(7), and the newly formed C(2)\u2013C(6)) exhibit substantial bond strain, with bond lengths around 1.51 \u00c5, compared to the standard 1.54 \u00c5 in ethane and unstrained systems. Significant differences in the binding energy spectra between the two isomers underscore their distinct electronic structures. Excess orbital energy spectra (EOES) further reveal pronounced disparities in electron configurations from the core levels to the valence region. Notably, NBD\u2019s outer valence orbitals (below 12 eV) exhibit a 1:1:2 pattern indicative of through-space interactions, while QC displays a 1:2:1 configuration characteristic of a restructured \u03c3-framework. These differences highlight that the electronic reorganization accompanying the NBD-to-QC transformation involves fundamental shifts in the orbital character and electron density distribution. The total energy difference between the isomers reflects the strain energy stored in QC, underpinning its role as a high-energy fuel candidate. This study provides crucial insights into the electronic origins of strain energy storage in HED hydrocarbons, offering a foundation for the rational design of next-generation sustainable aviation fuels (SAFs)."
+  },
+  {
+    "id": "W4401746359",
+    "title": "DFT-based computational analysis of 2,4-dimethyl-6-tert-butylphenol (DTBP) as an antioxidant in aviation fuels",
+    "authors": [
+      "Alagesan Karthika",
+      "Tiju Thomas",
+      "Cyril Augustine",
+      "Thundiyil Arun Luiz",
+      "Renchu Scaria"
+    ],
+    "year": 2024,
+    "journal": "Molecular Physics",
+    "doi": "https://doi.org/10.1080/00268976.2024.2393435",
+    "url": "https://doi.org/10.1080/00268976.2024.2393435",
+    "open_access_url": null,
+    "abstract": "Antioxidants are indispensable additives for ensuring the long-term stability, performance, and reliability of aviation fuels. They prevent the formation of gum and other insoluble deposits in the fuel which clog fuel systems, leading to engine problems. This is achieved by inhibiting free radical chain reactions involved in the oxidation of hydrocarbons in the fuel. The compound 2,4-Dimethyl-6-tert-butyl phenol (DTBP) is one of the widely used antioxidants in aviation fuels. In this report, the radical scavenging done by DTBP is analysed computationally by density functional theory (DFT) with the model chemistry X/6-31+G(d,p), where X represents certain Minnesota functionals such as MN15, M05-2X, M06-2X, M08-HX, and M11. Among the well-known modes of radical scavenging, namely HAT, SETPT, and SPLET, the HAT mode is preferred in the gaseous phase, while SPLET operates in non-polar solvents, as computations indicate. Fukui indices, global reactivity descriptors, electronic spectra, and natural bond orbitals (NBOs) are also generated to explain the results. Understanding the mechanism of radical scavenging is important in designing powerful and efficient antioxidants for aviation fuels such as jet fuel, aviation gasoline, Jet B, and bio-kerosene."
+  },
+  {
+    "id": "W7223200231",
+    "title": "Improved Combustion Enthalpy Predictions Obtained by DFT-Based Methods through Empirical Correction: A Study of Cycloparaffins for Sustainable Aviation Fuel",
+    "authors": [
+      "Thiago Soares Silva",
+      "Luiz F. A. Ferr\u00e3o",
+      "Douglas Henrique Pereira"
+    ],
+    "year": 2026,
+    "journal": "ACS Omega",
+    "doi": "https://doi.org/10.1021/acsomega.6c08844",
+    "url": "https://doi.org/10.1021/acsomega.6c08844",
+    "open_access_url": null,
+    "abstract": "The growing demand for aviation fuels and the progressive depletion of petroleum resources pose challenges related to transportation logistics, pollution, and technological development, making the advancement of sustainable aviation fuels (SAFs) imperative. In this context, computational research plays a critical role in optimizing production methodologies and predicting compounds with physicochemical properties comparable to those of conventional kerosenes. In this context, this study evaluated the performance of different DFT approximations (B3LYP, M06-2X, and M08-HX) and composite methodologies (G4 and G4-MP2) in predicting combustion enthalpies of organic molecules with high potential as SAF candidates. Initially, the experimental enthalpies of combustion were analyzed to assess the accuracy of each theoretical approach. The analysis was extended to cycloparaffins synthesized, which are promising SAF candidates due to their high energy content and suitable flash and freezing points. The results showed that the relative error tended to stabilize for molecules with higher combustion energies. The enthalpy of combustion calculated by the M08-HX method presented errors comparable to those of G4-MP2. The DFT methods demonstrated greater accuracy when employing the combustion energy correction proposed in this study, highlighting the viability of density functional theory (DFT) approximations. The analysis of complex structures at a significantly lower computational cost than composite methodological approaches indicates that the careful selection and empirical refinement of theoretical methods allow for a more accurate prediction of the combustion enthalpies."
+  },
+  {
+    "id": "W7202113023",
+    "title": "Catalytic conversion of biomass-derived 6-amyl-\u03b1-pyrone into sustainable aviation fuel range C10 hydrocarbon: Experimental and DFT insights",
+    "authors": [
+      "A. NARAYANAN",
+      "K. Rajendran",
+      "Pranay R. Chandewar",
+      "Debaprasad Shee",
+      "Shelaka Gupta"
+    ],
+    "year": 2026,
+    "journal": "Molecular Catalysis",
+    "doi": "https://doi.org/10.1016/j.mcat.2026.116260",
+    "url": "https://doi.org/10.1016/j.mcat.2026.116260",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W4410157445",
+    "title": "Production of high-carbon-number hydrocarbon bio-aviation fuels via catalytic hydrogenation of vanillin and non-catalytic condensation: a mechanistic study with DFT and experimental insights",
+    "authors": [
+      "Jina Eun",
+      "Jeong Hun Kim",
+      "Han Byeol Kim",
+      "Do Heui Kim",
+      "Jae-Wook Choi",
+      "Kwang Ho Kim",
+      "Chun\u2010Jae Yoo",
+      "Seongmin Jin",
+      "Kyeongsu Kim",
+      "Hyunjoo Lee",
+      "Chang-Soo Kim",
+      "Kwan\u2010Young Lee",
+      "Jong Suk Yoo",
+      "Seo\u2010Jung Han",
+      "Keunhong Jeong",
+      "Jeong\u2010Myeong Ha"
+    ],
+    "year": 2025,
+    "journal": "Green Chemistry",
+    "doi": "https://doi.org/10.1039/d5gc00281h",
+    "url": "https://doi.org/10.1039/d5gc00281h",
+    "open_access_url": "https://pubs.rsc.org/en/content/articlepdf/2025/gc/d5gc00281h",
+    "abstract": "Lignocellulose or lignin present significant potential as sustainable feedstocks to replace petroleum-derived resources through catalytic upgrading."
+  },
+  {
+    "id": "W3089581928",
+    "title": "Investigating The Role Of Aviation Fuels Hydrocarbon Chemistry On Its Autoxidation",
+    "authors": [
+      "Matthew Dwyer"
+    ],
+    "year": 2019,
+    "journal": "White Rose eTheses Online (University of Leeds, The University of Sheffield, University of York)",
+    "doi": null,
+    "url": "https://etheses.whiterose.ac.uk/27184/1/Matt-Dwyer-thesis-corrected.pdf",
+    "open_access_url": "https://etheses.whiterose.ac.uk/27184/1/Matt-Dwyer-thesis-corrected.pdf",
+    "abstract": "Advancements in jet engine design have led to improvements in efficiency and power output. As a result the operating temperature of the engine has steadily increased over the years. To counter this increased thermal load on the engine, aviation fuel is used as a heat sink, which leads to it becoming thermally stressed. The increase in temperatures in the fuel causes it to undergo autoxidation. In these conditions, insoluble material, such as gums and sediments, are formed in the fuel systems. eventually this build up of insoluble material leads to in-service issues and an increase in operating costs for engine manufacturers and airlines. Not all fuels behave the same in thermally stressed conditions, with the fuels chemical composition affecting this property, referred to as thermal stability. The importance of environmental concerns and security of supply issues have led to numerous alternative fuels to be exploited in recent years. However, the effect that their chemical composition has on their autoxidation behaviour is not well understood, as these novel fuels can have very different chemistry to historical stocks. \\nThese novel fuels are chemically purer than conventionally derived fuels with lower concentrations of polar and sulfur species. As such, it is important to understand the role that an aviation fuels hydrocarbon composition has on its thermal stability, as this will become the dominant factor effecting their thermal stability. The work in this thesis focuses on understanding the mechanisms that govern the radical autoxidation of hydrocarbons and how their chemical and electronic structure affects these processes. Aviation fuels with well defined chemical composition, as well as individual hydrocarbon components, such as n-alkanes, cycloalkanes and aromatics are investigated in this study. \\nThis thesis uses computational and experimental techniques to investigate the role that hydrocarbon composition has on the thermal stability of an aviation fuel. The PetroOxy oxidation stability tester is demonstrated as an effective research tool for investigating the oxidation mechanism, with good repeatability of the data collected, and can study three distinct regimes of hydrocarbon oxidation. The induction period, rapid radical oxidation and slower oxidative coupling regimes are studied for fuels and mono-component hydrocarbons, with the results linked to findings in the literature. From this study, it is clear that aromatic hydrocarbon can act as antioxidants in the fuel by increasing the induction period, but eventually led to bigger issues with deposition in the fuels tested. As such, cycloalkanes offer an alternative, as they can alter the density of the fuel without sacrificing the thermal stability properties. \\nDensity functional theory (DFT) has been used to construct pseudo-detailed mechanisms for the initial oxidation of three distinct classes of hydrocarbons, n-alkanes, cycloalkanes and mono-aromatics. These mechanism are able to demonstrate the fundamental differences between the three classes of hydrocarbons, and how these structural and electronic differences affect the kinetics of their autoxidation. However, this work also highlighted the need to correctly describe these radical reaction mechanism, as single reference method like DFT fail to model the bi-radical nature of many of these reac- tions. This phenomena is investigated further, by applying multi-reference and unrestricted electronic structure methods to the reactions of peroxides and peroxyl radicals. These reactions are shown to be vital to understand autoxidation, and the inclusion of computational calculated rate parameter for these reactions into pseudo-detailed mechanisms, allows them to be able to predict the oxidation rate of an industrial solvent in an isothermal tube reactor. \\nA key finding of this thesis is the importance of using multi-reference computational chemistry methods to investigate the radical reactions that occur in the autoxidaiton process, and using these calculations to construct a pseudo- detailed kinetic mechanism, in order to correctly model thermal stability and better understand the fundamental chemistry at play. This also offers an interesting challenge, as this work is at the cutting edge of applications for theoretical chemistry, and can provide a link from first principles to real world applications."
+  },
+  {
+    "id": "W3134181563",
+    "title": "Construction of a reduced chemical kinetic mechanism for autoxidation of n-paraffinic solvent \u2013 A model for aviation fuel",
+    "authors": [
+      "Ehsan Alborzi",
+      "Matthew. R. Dwyer",
+      "Christopher M. Parks",
+      "Abdolkarim Sheikhansari",
+      "Detlev Conrad Mielczarek",
+      "M. Zanganeh",
+      "Anthony J. H. M. Meijer",
+      "Simon G. Blakey",
+      "Mohamed M. Pourkashanian"
+    ],
+    "year": 2021,
+    "journal": "Fuel",
+    "doi": "https://doi.org/10.1016/j.fuel.2021.120170",
+    "url": "https://doi.org/10.1016/j.fuel.2021.120170",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W4414777418",
+    "title": "Evaluating Fuel Properties of Strained Polycycloalkanes for High-Performance Sustainable Aviation Fuels",
+    "authors": [
+      "Dilip Rijal",
+      "Vladislav Vasilyev",
+      "Yunxia Yang",
+      "Feng Wang"
+    ],
+    "year": 2025,
+    "journal": "Energies",
+    "doi": "https://doi.org/10.3390/en18195253",
+    "url": "https://doi.org/10.3390/en18195253",
+    "open_access_url": "https://www.mdpi.com/1996-1073/18/19/5253/pdf?version=1759480358",
+    "abstract": "Sustainable aviation fuel (SAF) is a drop-in alternative to conventional jet fuels, designed to reduce greenhouse gas (GHG) emissions while requiring minimal infrastructure changes and certification under the American Society for Testing and Materials (ASTM) D7566 standard. This study assesses recently identified high-energy-density (HED) strained polycycloalkanes as SAF candidates. Strain energy (Ese) was calculated using density functional theory (DFT), while operational properties such as boiling point (BP) and flash point (FP) were predicted using support vector regression (SVR) models. The models demonstrated strong predictive performance (R2 > 0.96) with mean absolute errors of 6.92 K for BP and 9.58 K for FP, with robustness sensitivity analysis. It is found that approximately 65% of these studied polycycloalkanes fall within the Jet A fuel property boundaries. The polycycloalkanes (C9\u2013C15) with strain energies below approximately 60 kcal/mol achieve an balance between energy density and ignition safety, aligning with the specifications of Jet A. The majority of structures were dominated by five-membered rings, with a few three- or four-membered rings enhancing favorable trade-offs among BP, FP, and HED. This early pre-screening indicates that moderately strained polycycloalkanes are safe, energy-dense candidates for next-generation sustainable jet fuels and provide a framework for designing high-performance SAFs."
+  },
+  {
+    "id": "W4387978399",
+    "title": "A ReaxFF and DFT study of effect and mechanism of an electric field on JP-10 fuel pyrolysis",
+    "authors": [
+      "Wenjun Zhou",
+      "Weixing Zhou",
+      "Yifei Yue",
+      "Zhenjian Jia",
+      "Ling Yang"
+    ],
+    "year": 2023,
+    "journal": "Journal of the Energy Institute",
+    "doi": "https://doi.org/10.1016/j.joei.2023.101445",
+    "url": "https://doi.org/10.1016/j.joei.2023.101445",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W4388202299",
+    "title": "Fuelling a Sustainable Future: Chemical Energy of Strained Hydrocarbons for High-Energy-Density Aviation Fuel",
+    "authors": [
+      "Feng Wang",
+      "Delano Pun Chong"
+    ],
+    "year": 2023,
+    "journal": "SSRN Electronic Journal",
+    "doi": "https://doi.org/10.2139/ssrn.4613897",
+    "url": "https://doi.org/10.2139/ssrn.4613897",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W4295106224",
+    "title": "Sustainable commercial aviation: What determines air travellers\u2019 willingness to pay more for sustainable aviation fuel?",
+    "authors": [
+      "Bing Liang Xu",
+      "Salman Ahmad",
+      "Vincent Charles",
+      "Jin Xuan"
+    ],
+    "year": 2022,
+    "journal": "Journal of Cleaner Production",
+    "doi": "https://doi.org/10.1016/j.jclepro.2022.133990",
+    "url": "https://doi.org/10.1016/j.jclepro.2022.133990",
+    "open_access_url": "https://www.sciencedirect.com/science/article/pii/S0959652622035624/pdf",
+    "abstract": "While low carbon jet fuels (LCJF) offer a viable alternative to conventional jet fuels in terms of reducing aviation emissions, the higher fuel costs may be passed on to customers in the form of increased ticket prices. However, there has been little research into the public's willingness to pay (WTP) for LCJF use. Our study addresses this gap by exploring citizen's perceptions of, attitudes toward, and willingness to pay a premium ticket price. We conducted an online survey among UK citizens (N = 1008) who flew at least once a year. We used ordered logistic regression to predict the factors that influence WTP for LCJF. The findings confirmed the existence of three factors that explain air travellers' WTP: social trust, perceived risks, and attitude. Although the overall perception of the benefits of LCJF outweighs the associated risks, the level of awareness of LCJF use is rather low. Despite a favourable attitude toward LCJF use, the majority of respondents were unwilling to pay more for carbon-neutral air travel. Our research contributes to and expands the literature on the current debates about acceptance and WTP for LCJF and energy transitions. Additionally, the findings of our study encourage public and corporate managers to leverage the identified key factors to inform and structure campaigns to increase the acceptability of LCJF use."
+  },
+  {
+    "id": "W4391805043",
+    "title": "Reducing the environmental impact of international aviation through sustainable aviation fuel with integrated carbon capture and storage",
+    "authors": [
+      "Alberto Almena",
+      "Regina Siu",
+      "Katie Chong",
+      "Patricia Thornley",
+      "Mirjam R\u00f6der"
+    ],
+    "year": 2024,
+    "journal": "Energy Conversion and Management",
+    "doi": "https://doi.org/10.1016/j.enconman.2024.118186",
+    "url": "https://doi.org/10.1016/j.enconman.2024.118186",
+    "open_access_url": null,
+    "abstract": "Sustainable aviation fuels (SAFs) represent the short-term solution to reduce fossil carbon emissions from aviation. The Carbon Offsetting and Reduction Scheme for International Aviation (CORSIA) was globally adopted to foster and make SAFs production economically competitive. Fischer-Tropsch synthetic paraffinic kerosene (FT-SPK) produced from forest residue is a promising CORSIA-eligible fuel. FT conversion pathway permits the integration of carbon capture and storage (CCS) technology, which provides additional carbon offsetting capacities. The FT-SPK with CCS process was modelled to conduct a comprehensive analysis of the conversion pathway. Life-cycle assessment (LCA) with a well-to-wake approach was performed to quantify the SAF\u2019s carbon footprint considering both biogenic and fossil carbon dynamics. Results showed that 0.09 kg FT-SPK per kg of dry biomass could be produced, together with other hydrocarbon products. Well-to-wake fossil emissions scored 21.6 gCO2e per MJ of FT-SPK utilised. When considering fossil and biogenic carbon dynamics, a negative carbon flux (-20.0 gCO2eMJ\u22121) from the atmosphere to permanent storage was generated. However, FT-SPK is limited to a 50 %mass blend with conventional Jet A/A1 fuel. Using the certified blend reduced Jet A/A1 fossil emissions in a 37 %, and the net carbon flux resulted positive (30.9 gCO2eMJ\u22121). Sensitivity to variations in process assumptions was investigated. The lifecycle fossil-emissions reported in this study resulted 49 % higher than the CORSIA default value for FT-SPK. In a UK framework, only 0.7 % of aviation fuel demand could be covered using national resources, but the emission reduction goal in aviation targeted for 2037 could be satisfied when considering CCS."
+  },
+  {
+    "id": "W7203640088",
+    "title": "Hydrodeoxygenation of Mixed Plastic Wastes Towards Aviation Fuels over Ni\u2212Re Alloy Catalyst",
+    "authors": [
+      "Nan Wang",
+      "Guorui Fan",
+      "Junhao Guo",
+      "Yuqiu Chen",
+      "Sibao Liu",
+      "Guozhu Liu"
+    ],
+    "year": 2026,
+    "journal": "ACS Catalysis",
+    "doi": "https://doi.org/10.1021/acscatal.6c03327",
+    "url": "https://doi.org/10.1021/acscatal.6c03327",
+    "open_access_url": null,
+    "abstract": "To address the challenge of mixed plastic waste management, we present a one-pot hydrodeoxygenation (HDO) process that selectively converts mixed oxygenated aromatic plastics including polyethylene terephthalate (PET), polycarbonate (PC), polyphenyl ether (PPO), and bisphenol-A-based epoxy resin (E20) into high-value cycloalkanes suitable as blendstocks for aviation fuel. Employing a cost-effective Ni\u2212Re/SiO2 bimetallic catalyst with metal loadings of 15.0 wt % Ni and 11.9 wt % Re, we achieve near-quantitative conversion (up to ca. 94% carbon yield) under mild reaction conditions (240 \u00b0C, 4 MPa H2) and at a high substrate loading of 11.4 wt %. The HDO reaction proceeds through the initial depolymerization of the polymers via acyl and alkyl C\u2212O hydrogenolysis, followed by hydrogenation and deoxygenation. Mechanistic studies including systematic characterizations, control experiments with model compounds, in situ spectroscopy, and DFT calculations indicate that Ni\u2212Re alloy serves as the active site for HDO, with electron-deficient metallic Ni facilitating hydrogen activation and aromatic ring hydrogenation, while oxophilic Re species promote the adsorption and cleavage of diverse C\u2212O bonds. Furthermore, the upscaling potential of this catalytic process was evaluated by integrating laboratory-scale batch experiments with steady-state process simulation (Aspen Plus). Techno-economic analysis (TEA) and life cycle assessment (LCA) reveal that increasing the plastic feedstock concentrations from 4.5 wt % to 11.4 wt % significantly optimizes both economic and environmental performance: the minimum selling price (MSP) is reduced by 6.89% (from 1349 $/t to 1256 $/t), and the global warming potential (GWP) is lowered by 20.7% (from 3.05 to 2.42 kg CO2 eq). This work provides a practical and non-noble-metal approach for chemically upcycling high concentrated mixed plastic waste, effectively bridging plastic waste valorization with aviation fuel production."
+  },
+  {
+    "id": "W6964320637",
+    "title": "Detailed and simplified chemical kinetics of aviation fuels and surrogates",
+    "authors": [
+      "Markaki, Valentini"
+    ],
+    "year": 2009,
+    "journal": null,
+    "doi": "https://doi.org/10.25560/5655",
+    "url": "http://hdl.handle.net/10044/1/5655",
+    "open_access_url": null,
+    "abstract": "The chemistries of aviation fuels are invariably complex due to large hydrocarbon molecules. There are also large variations for a given fuel type. Furthermore, flow timescales encountered in high performance propulsion devices increasingly lead to difficulties associated with kinetically controlled or influenced phenomena such as flame stability, extinction and re-light. Current indications also suggest that fuel sources will become significantly more diverse in the future and may, for example, encompass Fischer-Tropsch and/or bio-derived components. The combustion properties of such fuels can vary significantly from those in current use and this work outlines a route towards surrogate fuel mechanisms of sufficient accuracy and generality to support the development of practical devices. A reaction class based route to the derivation of detailed chemical kinetic mechanisms for alkyl-substituted aromatics is outlined and applied to the cyclopentadiene/indene, benzene/naphthalene, toluene/1-methyl naphthalene systems. Work has also been extended to the n-propyl benzene system as well. These reaction classes were applied to model the oxidation of the above fuels with encouraging results. Important reaction channels during oxidation were identified and specifically, the methyl groups on aromatic rings have been identified as important in the context of radical scavenging. Furthermore, 1-methyl naphthalene may also be used to modulate sooting tendencies in aviation and Diesel surrogates. Results obtained from chemical kinetic modelling of cyclopentadiene, toluene, npropyl benzene, naphthalene and 1-methyl naphthalene oxidation in shock tubes, jet-stirred and plug-flow reactors at various sets of representative stoichiometries and temperatures are reported."
+  },
+  {
+    "id": "W2282622273",
+    "title": "Autoxidation Behaviour of Hydrocarbons in the Context of Conventional and Alternative Aviation Fuels",
+    "authors": [
+      "Detlev Conrad Mielczarek"
+    ],
+    "year": 2015,
+    "journal": "White Rose eTheses Online (University of Leeds, The University of Sheffield, University of York)",
+    "doi": null,
+    "url": "http://etheses.whiterose.ac.uk/10407/1/PhD_Thesis_Detlev_Conrad_Mielczarek.pdf",
+    "open_access_url": "http://etheses.whiterose.ac.uk/10407/1/PhD_Thesis_Detlev_Conrad_Mielczarek.pdf",
+    "abstract": "This PhD aspired to a develop greater insight into the fundamentals of hydrocarbon autoxidation processes in the context of thermal stability of aviation fuels. A number of approaches to develop a better understanding of the observed processes have been considered. This covers establishing the suitability of an automated reaction mechanism generator to develop autoxidation reaction mechanism as well as manipulating the resultant schemes, for example by lumping species and their associated reactions as well as reaction rate based mechanism reduction. \\nFurther a number of postulated interactions between contaminants in fuel and oxidised products in thermally stressed hydrocarbons employing ab initio quantum chemistry methods were examined. Finally a set of systematic experiments was carried out to obtain quantitative data of the effect of a number of additives on the stability of thermally stressed hydrocarbons. These tests employed a small scale test device, the PetroOxy which provides reliable and reproducible experimental data under well defined test conditions. The PetroOxy enabled the collection of samples of the deposition products on metal foils for further analysis under a scanning electron microscope with x-ray dispersive spectroscopy for elemental analysis. This provided both the morphology as well as the elemental distribution of the deposits formed on the foils, offering a first hand look at the differences between deposits formed from different additives. This thesis shows that automated mechanism generation is a suitable method when describing the initial steps of autoxidation processes without any additives. It further shows that the PetroOxy is a very useful tool for obtaining systematic, reliable, experimental data for further analysis. \\n"
+  },
+  {
+    "id": "W3006725574",
+    "title": "Low-carbon aviation fuels",
+    "authors": [
+      "Parliamentary Office of Science and Technology",
+      "Luciana Maria Miu",
+      "Jack R. Miller"
+    ],
+    "year": 2020,
+    "journal": null,
+    "doi": "https://doi.org/10.58248/pn616",
+    "url": "https://doi.org/10.58248/pn616",
+    "open_access_url": "https://researchbriefings.files.parliament.uk/documents/POST-PN-0616/POST-PN-0616.pdf",
+    "abstract": "This POSTnote reviews the main types of low-carbon aviation fuels and their potential for use, as well as associated challenges and opportunities. It supplements POSTnote 615: Climate Change and Aviation."
+  },
+  {
+    "id": "W4387621433",
+    "title": "Sustainable Aviation Fuels: Policy Status Report",
+    "authors": [
+      "International Transport Forum"
+    ],
+    "year": 2023,
+    "journal": "International transport forum policy papers",
+    "doi": "https://doi.org/10.1787/5f03e208-en",
+    "url": "https://doi.org/10.1787/5f03e208-en",
+    "open_access_url": "https://www.oecd-ilibrary.org/deliver/5f03e208-en.pdf?itemId=%2Fcontent%2Fpaper%2F5f03e208-en&mimeType=pdf",
+    "abstract": "The aviation sector has pledged to become climate neutral by 2050. Sustainable Aviation Fuels (SAFs) are the only available low-carbon fuel technology for air travel today. They are thus indispensable for the sector to reach its climate targets. This report presents recommendations to promote the production and deployment of SAFs, which can replace conventional fossil aviation fuel to reduce carbon dioxide emissions from aircraft. The insights come from discussions in the ITF\u2019s Decarbonising Aviation Common Interest Group, an expert forum on SAF policies bringing together government and industry representatives."
+  },
+  {
+    "id": "W3210870671",
+    "title": "A cognitive mapping approach to analyse stakeholders\u2019 perspectives on sustainable aviation fuels",
+    "authors": [
+      "Salman Ahmad",
+      "Bing Liang Xu"
+    ],
+    "year": 2021,
+    "journal": "Transportation Research Part D Transport and Environment",
+    "doi": "https://doi.org/10.1016/j.trd.2021.103076",
+    "url": "https://doi.org/10.1016/j.trd.2021.103076",
+    "open_access_url": "https://www.sciencedirect.com/science/article/pii/S1361920921003734/pdf",
+    "abstract": "Despite sustainable aviation fuel (SAF) provides a viable option to decarbonise global aviation, the fuel transition to the commercial level is stagnant. Our paper investigates the key barriers and opportunities in upscaling the SAF consumption perceived by industrial stakeholders along the SAF supply chain. The primary interview data of stakeholders is analysed using the cognitive mapping approach. We contribute to the literature by developing multi-layer cognitive maps of stakeholder groups followed by a composite map to investigate the SAF development process. Though there is a common goal of lowering emissions, producers, airlines, distributors, and governmental and other advocating agencies map their distinct paths. Furthermore, our composite cognitive map presents strategic levers which are critical in SAF development and are shared by all shareholder groups. Such an understanding of SAF development is instrumental in developing progressive strategies for expediting the transition to SAF that balances environmental sustainability and economic benefits."
+  },
+  {
+    "id": "W7148369946",
+    "title": "Deciphering structure-activity relationships in La/Ce/Ga/In-modified Pt/Y zeolites for n-docosane hydrocracking to aviation fuel",
+    "authors": [
+      "Fan Shao",
+      "Wenbin Huang",
+      "Huayu Wu",
+      "Meng Huang",
+      "Han Yang",
+      "Tianyu Bai",
+      "Yasong Zhou",
+      "Yunpeng Liu",
+      "Minghan Han",
+      "Qiang Wei"
+    ],
+    "year": 2026,
+    "journal": "Chemical Engineering Journal",
+    "doi": "https://doi.org/10.1016/j.cej.2026.175787",
+    "url": "https://doi.org/10.1016/j.cej.2026.175787",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W1581178837",
+    "title": "Investigation on Elastomer Compatibility with Alternative Aviation Fuels",
+    "authors": [
+      "Yue Liu"
+    ],
+    "year": 2013,
+    "journal": "White Rose eTheses Online (University of Leeds, The University of Sheffield, University of York)",
+    "doi": null,
+    "url": "http://etheses.whiterose.ac.uk/4829/1/Thesis%20Yue%20Liu.pdf",
+    "open_access_url": "http://etheses.whiterose.ac.uk/4829/1/Thesis%20Yue%20Liu.pdf",
+    "abstract": "The introduction of synthetic fuels produced from various alternative approaches has led to the concern over their compatibility with elastomeric seals used in current aircraft engines. The aim of this research is to investigate into this compatibility issue of alternative aviation fuels with typical elastomeric sealing materials. Experimental methodologies employed were the stress relaxation test (under both isothermal and temperature cycling conditions) and the Fourier Transform Infrared (FTIR) spectroscopy. A wide range of valuable data was collected and detailed analysis was carried out using statistical method and the Hansen Solubility Parameters (HSPs). \\n \\nThe outcome of this research establishes the fundamental stress relaxation characteristics of typical sealing materials in jet fuels produced via various sources. It demonstrates different impacts that individual fuel species may have on seals. A correlation has been found between the stress relaxation and the molecular structure changes of the O-rings. The HSP analysis suggests a good non-linear correlation between the equilibrium compression force and the RED number generated from the \u2018triangle\u2019 test data. It is proved that temperature is an influential factor in terms of the sealing performance of an O-ring. Generally, the stress relaxation process slows down (accelerates) as the temperature decreases (increases). At extremely low temperatures, seals become very inert and the relaxation process would stop. Temperature cycling tests show the relationship between seals\u2019 ability to recovery from thermal contraction and the aromatic content in the fuel. Based on the knowledge gained here, recommendations have been given on the potential future work related to this topic. \\n"
+  },
+  {
+    "id": "W4413080480",
+    "title": "Structure-Property Relationship of Ring Opening Energies in Mono and Polycycloalkanes for Aviation Fuel",
+    "authors": [
+      "Evan M. Griffin",
+      "Faihim Ahmed",
+      "Md Nawshad Arslan Islam",
+      "Jaeyoung Cho"
+    ],
+    "year": 2025,
+    "journal": "ChemRxiv",
+    "doi": "https://doi.org/10.26434/chemrxiv-2025-zszh0",
+    "url": "https://doi.org/10.26434/chemrxiv-2025-zszh0",
+    "open_access_url": "https://chemrxiv.org/doi/pdf/10.26434/chemrxiv-2025-zszh0",
+    "abstract": "Polycycloalkanes have interested aerospace engineers due to their high energy density and low oxidation stability, which usually take up ~30% of conventional aviation fuels. Still, the ring opening energy (ROE) and its relationship with their molecular structure have been understudied, hindering the rational design of the polycycloalkanes for improving propulsion efficiency. The present study provides a systematic analysis of the ROE of mono and polycycloalkane by leveraging density functional theory. Total observed 75 cycloalkane molecules were curated from literature, including mono-, bi-, tri-, tetra-, or higher-order cyclic structures. Then, each cycloalkanes\u2019 ring bonds were identified, and its corresponding diradical structure after the ring opening reaction was generated automatically using Python and RDkit. Comparing the ground energies of diradicals and their parent cycloalkanes, the ROE of all ring bonds was calculated in the M06-2X/cc-pVTZ level of theory, yielding a compressive database with 597 ROEs. The curated database shows that the ROE of monocycloalkanes spans 56.6 \u2013 86.4 kcal/mol, while those of polycycloalkanes spans 36.3 \u2013 99.0 kcal/mol, indicating the intricacy of polycycloalkane\u2019s ring opening kinetics. The constructed database was utilized to draw the quantitative structure-property relationship (QSPR) pertaining to the ROEs of mono and polycycloalkane. Each bond was featured with i) the size of the smallest ring that the bond belongs to and ii) the number of hydrogen attached to the carbons that the bond is connecting. As a result, a total of 19 features were identified from 597 ring bonds. Each bond feature was then converted into a 19x1 numeric vector using a one-hot vector approach, which was used for multivariate linear regression (MLR) analysis to build the QSPR model of ROE. Consequently, the QSPR model could capture the ROE of monocycloalkanes with R2 of 0.9234. However, its accuracy for polycycloalkane was as low as R2 of 0.7521. The present study provides the first systematic study on the ROE of mono and polycycloalkanes, which sheds light on the complex nature of polycycloalkane\u2019s ring opening kinetics."
+  },
+  {
+    "id": "W7214472652",
+    "title": "Catalytic synthesis, spectroscopic characterization, dft calculations, and evaluation of n-hexylnorbornane as a fuel component",
+    "authors": [
+      "Vagif M. Abbasov",
+      "Ayaz M. Mammadov",
+      "Sanan S. Aliyev",
+      "Sayyara G. Aliyeva",
+      "Nushaba M. Aliyeva",
+      "Elnara M. Guliyeva",
+      "Leman E. Abdullayeva",
+      "Fidan S. Gurbanova",
+      "Naila A. Mammadova"
+    ],
+    "year": 2026,
+    "journal": "PPOR",
+    "doi": "https://doi.org/10.62972/1726-4685.2026.4.1466",
+    "url": "https://doi.org/10.62972/1726-4685.2026.4.1466",
+    "open_access_url": "https://ppor.az/index.php/ppor/article/download/758/694/909",
+    "abstract": "In this work, a Diels-Alder reaction between cyclopentadiene and 1-octene was carried out for the purpose of synthesizing a new generation of fuel components, and the resulting n-hexylnorbornene intermediate was hydrogenated over a Ni/Cr 2 O 3 catalyst under high pressure to obtain n-hexylnorbornane.The intermediate product and its retro-Diels-Alder decomposition were recorded by GC-MS ( = 178.2 and 66.2).The structure of the target hydrocarbon was investigated by one-and two-dimensional NMR analyses (\u00b9H, \u00b9\u00b3C, DEPT-135, HSQC, HMBC).Simultaneous TG/DTG/DTA thermal analysis revealed that the synthesized compound exhibits its main thermal degradation stage between 25 and 312.8 \u00b0C, with a maximum decomposition rate observed at 146.1\u00b0C.The synthesized substance was tested in standard TC-1 aviation fuel and hydrotreated diesel fuel.When only 0.004 wt% n-hexylnorbornane was added to TC-1 fuel, the density reached 809.32 kg/m\u00b3, the heat of combustion reached 43120.19kJ/kg, and the thermo-oxidative sediment decreased to 16.1 mg/100 ml.In diesel fuel, the amount of sediment (0.05%) decreased from 2.0 mg to 0.1 mg/100 ml, a 20 times reduction.The r2SCAN-3c DFT calculations performed revealed that the molecule possesses a wide energy gap (8.910 eV) and high chemical hardness (\u03b7 = 4.455 eV), which explains the strong antioxidant activity and thermal stability observed experimentally.The calculated specific heat of combustion of 39.39 MJ/kg demonstrates the energetic advantage provided by the bicyclic framework and proves that n-hexylnorbornane is a promising fuel component"
+  },
+  {
+    "id": "W7138975973",
+    "title": "Waste Lipids Conversion to Sustainable Aviation Fuel",
+    "authors": [
+      "Chuhan Fu",
+      "Lu Liu"
+    ],
+    "year": 2026,
+    "journal": "Chemical Science and Engineering",
+    "doi": "https://doi.org/10.57237/j.cse.2026.01.002",
+    "url": "https://doi.org/10.57237/j.cse.2026.01.002",
+    "open_access_url": "http://article.isciencegroup.com/pdf/10460072.pdf",
+    "abstract": "The decarbonization of the aviation sector requires scalable, drop-in sustainable aviation fuels (SAFs) capable of meeting stringent performance specifications while achieving substantial lifecycle greenhouse gas reductions. Among certified SAF pathways, the upgrading of waste lipids\u2014such as used cooking oil, animal fats, and acid oils\u2014via catalytic hydroprocessing has emerged as the most technologically mature and commercially deployed solution. Owing to their intrinsic molecular similarity to long-chain hydrocarbons, triglycerides and free fatty acids provide a structurally favorable platform for jet fuel production. However, compositional heterogeneity, high free fatty acid content, contaminant-induced catalyst deactivation, and hydrogen-intensive deoxygenation pose significant upgrading challenges. Catalytic conversion toward jet-range hydrocarbons involves an integrated network of hydrogenation, hydrodeoxygenation, decarboxylation/decarbonylation, hydroisomerization, and selective hydrocracking reactions. Balancing hydrogen efficiency, carbon retention, and product selectivity within the C8\u2013C16 range is central to achieving aviation-grade fuel specifications. Advances in multifunctional metal\u2013acid catalysts, hierarchical porous materials, and hydrogen management strategies are improving jet fuel yield and process stability. Although feedstock availability limits long-term scalability, waste lipid valorization provides a critical near-term pathway for aviation decarbonization and serves as a technological foundation for future SAF innovations. Continued progress in catalyst design, renewable hydrogen integration, and process intensification will determine its evolving role within a low-carbon aviation ecosystem."
+  },
+  {
+    "id": "W7112776410",
+    "title": "The Potential Role of Ammonia as a Low Carbon Aviation Fuel",
+    "authors": [
+      "Abhilasha Fullonton",
+      "Christopher Jones",
+      "Alice Bows\u2010Larkin"
+    ],
+    "year": 2024,
+    "journal": "Research Explorer (The University of Manchester)",
+    "doi": null,
+    "url": "https://research.manchester.ac.uk/en/publications/59441a98-4528-4212-b5c0-45ead30d002e",
+    "open_access_url": null,
+    "abstract": "The aviation sector faces significant challenges in curtailing its contribution to climate change. Pathways for changes in aviation\u2019s greenhouse gas emissions vary, but in all cases new fuels are called for in the coming decades. Without new fuels and/or demand side measures aviation will rely on significant levels of designated carbon dioxide removals (CDR) to keep within global carbon budgets. CDR is currently underdeveloped and in demand across multiple sectors. It is necessary, therefore, to consider more radical options for decarbonising aviation. This report considers the potential for ammonia as an alternative low carbon fuel and as an energy carrier for hydrogen."
+  },
+  {
+    "id": "W7171291286",
+    "title": "Sustainable Aviation Fuel Production Under Mild Conditions Enabled by Photothermal High\u2010Entropy Alloy Catalyst",
+    "authors": [
+      "Yichen Nie",
+      "Xueyan Jing",
+      "Jiake Wang",
+      "Xingyong Li",
+      "Qiaoqiang Gan",
+      "Na Liu",
+      "Senshen Yu",
+      "Xuexiang Fu",
+      "Phidsavard Keomeesay",
+      "Olajide-rasheed Olalekan",
+      "Yubao Chen"
+    ],
+    "year": 2026,
+    "journal": "Small",
+    "doi": "https://doi.org/10.1002/smll.74835",
+    "url": "https://doi.org/10.1002/smll.74835",
+    "open_access_url": null,
+    "abstract": "Sustainable aviation fuels derived from biomass offer a renewable alternative to fossil\u2010based jet fuel. However, conventional production processes are often hindered by harsh operating conditions, which increase energy consumption and overall costs. In this study, a novel PtPdBiNiZn/TiO 2 high\u2010entropy alloy (HEA) catalyst was prepared via a rapid and facile multi\u2010step one\u2010pot reaction system under mild conditions for the photothermally driven hydrodeoxygenation of oleic acid to produce bio\u2010aviation fuel. The prepared catalyst promotes hydrogen spillover and oxygen vacanciesgeneration. AC\u2010HAADF\u2010STEM and XAS identified the presence of an alloy structure. Under mild conditions with 120\u00b0C and hydrogen pressure of 0.6 MPa, the catalyst achieved a selectivity of 93.2% for C 8 \u223c C 17 alkanes, exceeding that of previously reported Pt\u2010based systems under the same reaction conditions. DFT calculations revealed that Ovs on the TiO 2 preferentially adsorb H 2 (\u22120.39 eV) and propionic acid (\u22122.20 eV), confirming the key role of Ovs in the HDO mechanism. These mild conditions significantly reduce the energy consumption of the reaction, offering a new approach for producing sustainable aviation fuels."
+  },
+  {
+    "id": "W4412890155",
+    "title": "Design of Pt3Ni/TiO2 octahedral alloy catalysts for the production of bio-aviation fuel via photothermal catalysis under a mild condition",
+    "authors": [
+      "Yichen Nie",
+      "Xingyong Li",
+      "Na Liu",
+      "Phidsavard Keomeesay",
+      "Olajide-rasheed Olalekan",
+      "Shuaizhe Li",
+      "Misbah Uddin",
+      "Yubao Chen",
+      "Longlong Ma",
+      "Shijie Liu"
+    ],
+    "year": 2025,
+    "journal": "Energy",
+    "doi": "https://doi.org/10.1016/j.energy.2025.137749",
+    "url": "https://doi.org/10.1016/j.energy.2025.137749",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W4389090149",
+    "title": "Uncertainties in mitigating aviation non-CO 2 emissions for climate and air quality using hydrocarbon fuels",
+    "authors": [
+      "David Stephen Lee",
+      "Myles R. Allen",
+      "Nicholas A. Cumpsty",
+      "Bethan Owen",
+      "Keith P. Shine",
+      "Agnieszka Skowron"
+    ],
+    "year": 2023,
+    "journal": "Environmental Science Atmospheres",
+    "doi": "https://doi.org/10.1039/d3ea00091e",
+    "url": "https://doi.org/10.1039/d3ea00091e",
+    "open_access_url": "https://pubs.rsc.org/en/content/articlepdf/2023/ea/d3ea00091e",
+    "abstract": "The effects of aviation's non-CO 2 emissions on climate and air quality are complex and relatively poorly understood. Mitigation measures need to be very carefully considered so that perverse outcomes do not result."
+  },
+  {
+    "id": "W4412548705",
+    "title": "Directional synthesis of high-density aviation fuel through CO2 hydrogenation coupling with naphthalene alkylation over ZnZrOx/H\u03b2 catalyst",
+    "authors": [
+      "Xiaopo Niu",
+      "Hongming Qian",
+      "Dongyuan Cai",
+      "Wenli Zhao",
+      "Qingfa Wang",
+      "Quanli Ke",
+      "Guokai Cui",
+      "Chunliang Ge",
+      "Lina Tang",
+      "Hanfeng Lu"
+    ],
+    "year": 2025,
+    "journal": "Chemical Engineering Journal",
+    "doi": "https://doi.org/10.1016/j.cej.2025.166241",
+    "url": "https://doi.org/10.1016/j.cej.2025.166241",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W4413000164",
+    "title": "Metal-Modified Layered Double Hydroxide as Efficient Catalysts for the C\u2013C Coupling of Furfural to Sustainable Aviation Fuel Precursors",
+    "authors": [
+      "Zhouxuan Zang",
+      "Jian-Hua Zhou",
+      "Ningke Pang",
+      "Wencai Bai",
+      "Yong Xiang",
+      "Yi Yu",
+      "Li Hua Xu",
+      "Guoji Liu"
+    ],
+    "year": 2025,
+    "journal": "ACS Sustainable Chemistry & Engineering",
+    "doi": "https://doi.org/10.1021/acssuschemeng.5c04480",
+    "url": "https://doi.org/10.1021/acssuschemeng.5c04480",
+    "open_access_url": null,
+    "abstract": "High-energy-density sustainable aviation fuels are recognized as effective means to mitigate carbon emissions in the aviation sector. Here, we report various metal-modified layered double hydroxides (LDHs). The screened MgAlSn-LDH catalyst incorporating abundant oxygen vacancies and strong base sites yields ( E )-1-(furan-2-yl)-5-methylhex-1-en-3-one (ALD) over 96% at 120 \u00b0C for 4 h. The catalyst exhibits promising long-term stability in a fixed-bed reactor at 170 \u00b0C. A combination of investigations using in situ DRIFTS studies and DFT calculations reveals that MgAlSn-LDH enhances the adsorption of methyl isobutyl ketone (MIBK) and furfural (FF). Further calculations have shown that the synergy of oxygen vacancies and strong base sites decreases the energy barrier of MIBK enolation, which increases the rate of the enolation reaction. This research provides a versatile synthesis method for improving the alkaline catalytic activity of LDH catalysts, and the performance of the catalysts can be extended to other upgrading processes of biomass chemicals."
+  },
+  {
+    "id": "W7221354551",
+    "title": "Thermal Oxidation and Pyrolysis of Pentalenane: A Biomass-Derived Tricyclic Sesquiterpene as a High-Density Aviation Fuel Component",
+    "authors": [
+      "Xiwei Ye",
+      "Jiajia Liu",
+      "Xiaokun Wang",
+      "Hui Jiang",
+      "Wenjun Fang",
+      "Shu Yan",
+      "Penggang Han",
+      "Yongsheng Guo"
+    ],
+    "year": 2026,
+    "journal": "SSRN Electronic Journal",
+    "doi": "https://doi.org/10.2139/ssrn.7592623",
+    "url": "https://doi.org/10.2139/ssrn.7592623",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W7134252582",
+    "title": "Net zero aviation fuels: resource requirements and environmental impacts",
+    "authors": [
+      "Graham J. Hutchings",
+      "Alberto Almena",
+      "Bill David",
+      "Piers Forster",
+      "Guy Gratton",
+      "David Kuo Chuen LEE",
+      "M. Mercedes Maroto\u2010Valer",
+      "Marcelle C. McManus",
+      "Adam Morton",
+      "Mike Muskett",
+      "Naresh Kumar",
+      "John Pickett",
+      "Mohamed Pourkashanian",
+      "Matthew J. Rosseinsky",
+      "Alfred William Rutherford"
+    ],
+    "year": 2023,
+    "journal": null,
+    "doi": "https://doi.org/10.1098/rs-policy.2026-15",
+    "url": "https://doi.org/10.1098/rs-policy.2026-15",
+    "open_access_url": "https://royalsociety.org/-/media/policy/projects/net-zero-aviation/net-zero-aviation-fuels-policy-briefing.pdf",
+    "abstract": "This Royal Society briefing looks at the life cycle analysis and global warming impacts of alternative aviation fuels in the UK context and explores the resource implications, scaling challenge, and operational considerations for both the aircraft and the airport infrastructure."
+  },
+  {
+    "id": "W4405925918",
+    "title": "Aqueous hydroalkylation of phenols for synthesis of high-density bicyclic alkane fuels",
+    "authors": [
+      "Zhensheng Shen",
+      "Chengjie Liu",
+      "Tianzuo Wang",
+      "Chengxiang Shi",
+      "Lun Pan",
+      "Zhenfeng Huang",
+      "Xiangwen Zhang",
+      "Ji\u2010Jun Zou"
+    ],
+    "year": 2024,
+    "journal": "Chemical Engineering Science",
+    "doi": "https://doi.org/10.1016/j.ces.2024.121176",
+    "url": "https://doi.org/10.1016/j.ces.2024.121176",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W4407426118",
+    "title": "UK Policy Instruments for Aviation Decarbonisation: The Sustainable Aviation Fuel Mandate and Policymaking Approach Underlying the Future UK Framework",
+    "authors": [
+      "Nicolas Maulet"
+    ],
+    "year": 2024,
+    "journal": "Global Energy Law and Sustainability",
+    "doi": "https://doi.org/10.3366/gels.2024.0123",
+    "url": "https://doi.org/10.3366/gels.2024.0123",
+    "open_access_url": null,
+    "abstract": "The UK\u2019s fuel decarbonisation toolbox is expanding to include more policy support for developing sustainable aviation fuel (SAF). This support framework will grow out of the UK experience with the Renewable Transport Fuel Obligation by including a sector-specific mandate. Westminster is also working on a future revenue certainty mechanism for SAF, that is yet to be legislated. In doing so, the UK government proposes to deliver a continued support to low-carbon fuel innovation. The government also intends to address the Climate Change Committee\u2019s persistent calls for a swifter decarbonisation across transport modes. This SAF policy should help speed up aviation decarbonisation by serving multiple purposes and targets, a policymaking approach typically associated with renewable energy support programmes. The SAF policy\u2019s consultations, government documentation, and expert opinions, help recognize several policy traits, coming out as critical design characteristics when structuring policy programmes supporting renewable energy sources. Such policy characteristics include providing certainty, clarity, continuity, and adaptability when structuring instruments and government interventions. Policy programmes should also prove capable of adapting to market and trade conditions. Instruments should equally factor in WTO rules and rulings on subsidies, renewable support schemes, sustainable fuels, or export markets, as and when applicable."
+  },
+  {
+    "id": "W7204094061",
+    "title": "Biological production of synthetic aviation fuels (SAFs) from biomass",
+    "authors": [
+      "Chae Won Kang",
+      "Taek Soon Lee"
+    ],
+    "year": 2026,
+    "journal": "Systems Microbiology and Biomanufacturing",
+    "doi": "https://doi.org/10.1007/s43393-026-00542-9",
+    "url": "https://doi.org/10.1007/s43393-026-00542-9",
+    "open_access_url": "https://link.springer.com/content/pdf/10.1007/s43393-026-00542-9.pdf",
+    "abstract": "Synthetic aviation fuels (SAFs) produced from biological routes are emerging as a practical way to decarbonize the aviation sector. This review summarizes progress in producing jet-range molecules from renewable carbon and benchmarks them against the Jet A and Jet A-1 property window defined by the standard specification for aviation turbine fuels (ASTM D1655). We group candidates into three families, fatty acid-derived streams, alcohol-based precursors, and isoprenoid-derived hydrocarbons, and map their properties and upgrading chemistry to the standard specification for aviation turbine fuel containing synthesized hydrocarbons (ASTM D7566) certification framework. We survey diverse microbial hosts on renewable feedstocks and highlight advances in pathway and chassis engineering and bioprocess intensification that raise titers, productivities, and carbon efficiency. Together, these advances chart a practical route to certified, scalable, and cost-competitive SAF supply."
+  },
+  {
+    "id": "W4411619371",
+    "title": "Advances in supported monometallic and bimetallic catalysts towards green aviation fuels: a review",
+    "authors": [
+      "Nur Athirah Adzahar",
+      "G. Abdulkareem-Alsultan",
+      "Hwei Voon Lee",
+      "Y. H. Taufiq-Yap"
+    ],
+    "year": 2025,
+    "journal": "Energy Advances",
+    "doi": "https://doi.org/10.1039/d5ya00078e",
+    "url": "https://doi.org/10.1039/d5ya00078e",
+    "open_access_url": "https://pubs.rsc.org/en/content/articlepdf/2025/ya/d5ya00078e",
+    "abstract": "This article aims to highlight the use of heterogeneous bimetallic acid/base catalysts for the production of safe aviation fuels from environmentally friendly and non-edible palm kernel oil."
+  },
+  {
+    "id": "W7152523163",
+    "title": "Cool GTL SM for the Conversion of Biogas and CO2 to Sustainable Aviation Fuel",
+    "authors": [
+      "Terry Marker",
+      "Pedro J Ortiz-toral",
+      "Soheil Hussain",
+      "Jim Wangerow"
+    ],
+    "year": 2026,
+    "journal": "Research Square",
+    "doi": "https://doi.org/10.21203/rs.3.rs-9076574/v1",
+    "url": "https://doi.org/10.21203/rs.3.rs-9076574/v1",
+    "open_access_url": "https://www.researchsquare.com/article/rs-9076574/latest.pdf",
+    "abstract": "This article describes the development and testing of a new low cost, streamlined gas to liquids(GTL) process named Cool GTL TM to make drop in sustainable aviation fuel (SAF) from bioderived gas or carbon dioxide and hydrogen. This system uses an improved catalyst in the reformer, Fischer Tropsch and upgrading reactor and an electric reformer. The Cool GTL system is simplified compared to the commercial state of the art. The Cool GTL system requires no membranes to adjust the compositions of synthesis gas and the vapor product from the Fischer Tropsch reactor goes directly to the upgrading reactor without removing the CO. The liquid hydrocarbon product made from this streamlined system is 50% high quality SAF meeting all SAF specification including freeze point. Trace levels of wax are produced which can be recycled to extinction. A novel electrically heated reformer was tested in the integrated system which uses internal resistive heaters in a bed of catalyst. This design eliminates the need for a pre-reformer for C2+ since the feed enters the catalyst bed at 537 \u00b0C and the temperature is increased in the reformer reactor through the internal heaters to reach the 808\u00b0C. The electric reformer is 10 percent of the size of a reformer using a furnace. By using bi-reforming catalyst both methane, C2+ and carbon dioxide can be converted to synthesis gas with a H2/CO ratio of 2.0-2.5 which can be fed directly to the Fisher Tropsch reactor without membranes to adjust the H2/CO ratio. More than 24 gallons of SAF was made using this integrated, simple, low cost, compact system. Statement of Industrial Relevance: This testing demonstrated a simplified streamlined GTL process which can be used to make SAF at small scales. Novelty or Significance : The Cool GTL is a new streamlined approach to converting biogas, bioderived gas or CO2 to SAF."
+  },
+  {
+    "id": "W7223675070",
+    "title": "Upgrading of coconut oil to sustainable aviation fuel over Mg-exchanged PtSn/ZSM-5\u2013alumina catalysts",
+    "authors": [
+      "Taufik Kumar",
+      "Toshiya Tsunakawa",
+      "Mingming Peng",
+      "Shaohua She",
+      "Eika Weihua QIAN"
+    ],
+    "year": 2026,
+    "journal": "Microporous and Mesoporous Materials",
+    "doi": "https://doi.org/10.1016/j.micromeso.2026.114441",
+    "url": "https://doi.org/10.1016/j.micromeso.2026.114441",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W4401526336",
+    "title": "Sustainable Aviation Fuel Molecules from (Hemi)Cellulose: Computational Insights into Synthesis Routes, Fuel Properties, and Process Chemistry Metrics",
+    "authors": [
+      "Chin-Fei Chang",
+      "Kristin Paragian",
+      "Sunitha Sadula",
+      "Srinivas Rangarajan",
+      "Dionisios G. Vlachos"
+    ],
+    "year": 2024,
+    "journal": "ACS Sustainable Chemistry & Engineering",
+    "doi": "https://doi.org/10.1021/acssuschemeng.4c04199",
+    "url": "https://doi.org/10.1021/acssuschemeng.4c04199",
+    "open_access_url": "https://pubs.acs.org/doi/pdf/10.1021/acssuschemeng.4c04199",
+    "abstract": "High Resolution Image Download MS PowerPoint Slide Production of sustainable aviation fuels (SAFs) can significantly reduce the aviation industry\u2019s carbon footprint. Current pathways that produce SAFs in significant volumes from ethanol and fatty acids can be costly, have a relatively high carbon intensity (CI), and impose sustainability challenges. There is a need for a diversified approach to reduce costs and utilize more sustainable feedstocks effectively. Here, we map out catalytic synthesis routes to convert furanics derived from the (hemi)cellulosic biomass to alkanes and cycloalkanes using automated network generation with RING and semiempirical thermochemistry calculations. We find >100 energy-dense C 8 \u2013C 16 alkane and cycloalkane SAF candidates over 300 synthesis routes; the top three are 2-methyl heptane, ethyl cyclohexane, and propyl cyclohexane, although these are relatively short. The shortest, least endothermic process chemistry involves C\u2013C coupling, oxygen removal, and hydrogen addition, with dehydracyclization of the heterocyclic oxygens in the furan ring being the most endothermic step. The global warming potential due to hydrogen use and byproduct CO 2 is typically 0.7\u20131 kg CO 2 /kg SAF product; the least CO 2 emitting routes entail making larger molecules with fewer ketonization, hydrogenation, and hydrodeoxygenation steps. The large number of SAF candidates highlights the rich potential of furanics as a source of SAF molecules. However, the structural dissimilarity between reactants and target products precludes pathways with fewer than six synthetic steps, thus necessitating intensified processes, integrating multiple reaction steps in multifunctional catalytic reactors."
+  },
+  {
+    "id": "W4297932666",
+    "title": "Cost and emissions pathways towards net-zero climate impacts in aviation",
+    "authors": [
+      "Lynnette M. Dray",
+      "Andreas W. Sch\u00e4fer",
+      "Carla Grobler",
+      "Christoph P. Falter",
+      "Florian Allroggen",
+      "Marc E. J. Stettler",
+      "Steven R. H. Barrett"
+    ],
+    "year": 2022,
+    "journal": "Nature Climate Change",
+    "doi": "https://doi.org/10.1038/s41558-022-01485-4",
+    "url": "https://doi.org/10.1038/s41558-022-01485-4",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W4313420499",
+    "title": "Strong electronic metal-support interactions on supported Pt catalysts for efficient perhydrogenation of polyaromatics to aviation fuels",
+    "authors": [
+      "Xiaopo Niu",
+      "Jiuyi Sun",
+      "Wenli Zhao",
+      "Xinyue Yang",
+      "Xiangwen Zhang",
+      "Qingfa Wang"
+    ],
+    "year": 2022,
+    "journal": "Fuel Processing Technology",
+    "doi": "https://doi.org/10.1016/j.fuproc.2022.107622",
+    "url": "https://doi.org/10.1016/j.fuproc.2022.107622",
+    "open_access_url": null,
+    "abstract": null
+  }
+]

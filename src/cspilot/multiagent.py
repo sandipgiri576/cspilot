@@ -1,4 +1,5 @@
 """Opt-in decomposer -> isolated agent loops -> deterministic aggregation graph."""
+
 from __future__ import annotations
 
 import asyncio
@@ -16,6 +17,8 @@ from cspilot.tools.aggregation import aggregate_results, validate_species
 
 
 class MultiState(TypedDict, total=False):
+    """Store state shared by the bounded multi-agent orchestration graph."""
+
     user_request: str
     workdir: str
     model: str | None
@@ -38,9 +41,17 @@ def _save(root: str | Path, name: str, value: Any) -> None:
 
 
 def decompose_node(state: MultiState) -> dict[str, Any]:
+    """Decompose a request and validate its species before child execution."""
     try:
-        plan = Decomposition.model_validate(asyncio.run(with_model_clients(decompose_request(
-            state["user_request"], state.get("model"), state.get("base_url"))))).model_dump(mode="json")
+        plan = Decomposition.model_validate(
+            asyncio.run(
+                with_model_clients(
+                    decompose_request(
+                        state["user_request"], state.get("model"), state.get("base_url")
+                    )
+                )
+            )
+        ).model_dump(mode="json")
         if plan["blocked_reason"]:
             raise ValueError(plan["blocked_reason"])
         # Resolve supplied paths before changing into isolated child work directories.
@@ -50,12 +61,18 @@ def decompose_node(state: MultiState) -> dict[str, Any]:
                 path = Path(task["input_xyz"]).expanduser()
                 if not path.is_absolute() and (Path(state["workdir"]) / path).is_file():
                     path = Path(state["workdir"]) / path
-                if (plan["kind"] == "reaction" and task["smiles"] and not path.is_file()
-                        and task["input_xyz"] not in state["user_request"]
-                        and path.name not in state["user_request"]):
+                if (
+                    plan["kind"] == "reaction"
+                    and task["smiles"]
+                    and not path.is_file()
+                    and task["input_xyz"] not in state["user_request"]
+                    and path.name not in state["user_request"]
+                ):
                     # A model-proposed output is not a supplied input. Generate from
                     # the declared species instead; never discard a user-named file.
-                    notes.append(f"{task['id']}: discarded unsupplied missing input {task['input_xyz']}; generate from SMILES")
+                    notes.append(
+                        f"{task['id']}: discarded unsupplied missing input {task['input_xyz']}; generate from SMILES"
+                    )
                     task["input_xyz"] = None
                     continue
                 task["input_xyz"] = str(path.resolve())
@@ -81,32 +98,51 @@ def _run_child(task: dict[str, Any], state: MultiState) -> dict[str, Any]:
     elif task.get("smiles"):
         request += f"\nGenerate geometry from this explicit SMILES: {task['smiles']}"
     if plan["kind"] != "collection":
-        request += (f"\nCalculate {plan['property']} with ORCA/OPI. Use method={plan['method']}, "
-                    f"basis={plan['basis']}, charge={task['charge']}, mult={task['mult']}, "
-                    f"xTB uhf={task['mult'] - 1}, nprocs=1. Gas phase, 298.15 K, 1 atm. "
-                    "For enthalpy or Gibbs energy use run_xtb_orca_frequency_workflow "
-                    "(ORCA optimization and frequencies). Do not use single point thermochemistry. "
-                    "Report only this species, do not calculate a reaction or other species.")
+        request += (
+            f"\nCalculate {plan['property']} with ORCA/OPI. Use method={plan['method']}, "
+            f"basis={plan['basis']}, charge={task['charge']}, mult={task['mult']}, "
+            f"xTB uhf={task['mult'] - 1}, nprocs=1. Gas phase, 298.15 K, 1 atm. "
+            "For enthalpy or Gibbs energy use run_xtb_orca_frequency_workflow "
+            "(ORCA optimization and frequencies). Do not use single point thermochemistry. "
+            "Report only this species, do not calculate a reaction or other species."
+        )
     try:
-        child = run_graph_agent(request, root, profile="chem", agent_mode="single",
-                                model=state.get("model"), base_url=state.get("base_url"),
-                                max_steps=state["max_steps"], max_retries=state["max_retries"],
-                                isolate_outputs=True)
+        child = run_graph_agent(
+            request,
+            root,
+            profile="chem",
+            agent_mode="single",
+            model=state.get("model"),
+            base_url=state.get("base_url"),
+            max_steps=state["max_steps"],
+            max_retries=state["max_retries"],
+            isolate_outputs=True,
+        )
         execution = child.get("execution_result") or {}
         verification = child.get("verification_result") or {}
-        summary = {"id": task["id"], "verified": verification.get("verified") is True,
-                   "issues": verification.get("issues", []), "execution_result": execution,
-                   "results": [{"property": k, "value": v} for k, v in _reported_values(execution)],
-                   "final_state": str(root / "final_state.json")}
+        summary = {
+            "id": task["id"],
+            "verified": verification.get("verified") is True,
+            "issues": verification.get("issues", []),
+            "execution_result": execution,
+            "results": [{"property": k, "value": v} for k, v in _reported_values(execution)],
+            "final_state": str(root / "final_state.json"),
+        }
     except Exception as exc:
-        summary = {"id": task["id"], "verified": False, "issues": [str(exc)],
-                   "execution_result": {}, "results": []}
+        summary = {
+            "id": task["id"],
+            "verified": False,
+            "issues": [str(exc)],
+            "execution_result": {},
+            "results": [],
+        }
     summary["summary_file"] = str(root / "summary.json")
     _save(root, "summary.json", summary)
     return summary
 
 
 def children_node(state: MultiState) -> dict[str, Any]:
+    """Run isolated child loops serially or with bounded concurrency."""
     if state.get("errors"):
         return {"summaries": []}
     tasks = state["decomposition"]["subtasks"]
@@ -121,20 +157,29 @@ def children_node(state: MultiState) -> dict[str, Any]:
 
 
 def aggregate_node(state: MultiState) -> dict[str, Any]:
-    result = ({"success": False, "error": "; ".join(state["errors"])} if state.get("errors")
-              else aggregate_results(state["decomposition"], state["summaries"]))
+    """Aggregate verified child summaries through deterministic chemistry logic."""
+    result = (
+        {"success": False, "error": "; ".join(state["errors"])}
+        if state.get("errors")
+        else aggregate_results(state["decomposition"], state["summaries"])
+    )
     _save(state["workdir"], "aggregate.json", result)
     return {"aggregate": result}
 
 
 def verify_node(state: MultiState) -> dict[str, Any]:
+    """Combine child and aggregate issues into final verification state."""
     issues = list(state.get("errors", []))
     for summary in state.get("summaries", []):
         if not summary["verified"]:
             issues.append(f"{summary['id']}: " + "; ".join(summary["issues"]))
     if state["aggregate"].get("success") is not True:
         issues.append(state["aggregate"].get("error") or "Aggregation incomplete")
-    verification = {"verified": not issues, "issues": list(dict.fromkeys(issues)), "workdir": state["workdir"]}
+    verification = {
+        "verified": not issues,
+        "issues": list(dict.fromkeys(issues)),
+        "workdir": state["workdir"],
+    }
     execution = {"success": not issues, "workdir": state["workdir"], "steps": [state["aggregate"]]}
     _save(state["workdir"], "execution_result.json", execution)
     _save(state["workdir"], "verification_result.json", verification)
@@ -142,25 +187,57 @@ def verify_node(state: MultiState) -> dict[str, Any]:
 
 
 def report_node(state: MultiState) -> dict[str, Any]:
-    report = generate_report(state["user_request"], {"steps": []}, state["execution_result"],
-                             state["verification_result"], html=state["html"], profile="chem")
-    (Path(state["workdir"]) / ("final_report.html" if state["html"] else "final_report.md")).write_text(report)
+    """Generate the parent report from aggregate execution JSON."""
+    report = generate_report(
+        state["user_request"],
+        {"steps": []},
+        state["execution_result"],
+        state["verification_result"],
+        html=state["html"],
+        profile="chem",
+    )
+    (
+        Path(state["workdir"]) / ("final_report.html" if state["html"] else "final_report.md")
+    ).write_text(report)
     return {"final_report": report}
 
 
-def run_multiagent(user_request: str, workdir: str | Path, *, model: str | None = None,
-                   base_url: str | None = None, html: bool = False, max_steps: int = 8,
-                   max_retries: int = 1, workers: int = 1) -> dict[str, Any]:
+def run_multiagent(
+    user_request: str,
+    workdir: str | Path,
+    *,
+    model: str | None = None,
+    base_url: str | None = None,
+    html: bool = False,
+    max_steps: int = 8,
+    max_retries: int = 1,
+    workers: int = 1,
+) -> dict[str, Any]:
+    """Run the opt-in bounded multi-agent graph and persist all artifacts."""
     if not 1 <= workers <= 4 or max_steps < 1 or max_retries < 0:
         raise ValueError("Require workers=1..4, max_steps>=1 and max_retries>=0")
     root = Path(workdir).resolve()
     root.mkdir(parents=True, exist_ok=True)
-    state: MultiState = {"user_request": user_request, "workdir": str(root), "model": model,
-        "base_url": base_url, "html": html, "max_steps": max_steps, "max_retries": max_retries,
-        "workers": workers, "errors": [], "summaries": []}
+    state: MultiState = {
+        "user_request": user_request,
+        "workdir": str(root),
+        "model": model,
+        "base_url": base_url,
+        "html": html,
+        "max_steps": max_steps,
+        "max_retries": max_retries,
+        "workers": workers,
+        "errors": [],
+        "summaries": [],
+    }
     graph = StateGraph(MultiState)
-    nodes = [("decomposer", decompose_node), ("independent_agents", children_node),
-             ("aggregator", aggregate_node), ("verify", verify_node), ("report", report_node)]
+    nodes = [
+        ("decomposer", decompose_node),
+        ("independent_agents", children_node),
+        ("aggregator", aggregate_node),
+        ("verify", verify_node),
+        ("report", report_node),
+    ]
     previous = START
     for name, function in nodes:
         graph.add_node(name, function)

@@ -14,6 +14,7 @@ nav:
       - Multi-agent and Multiwfn: multiagent_multiwfn.md
       - Workflows: workflows.md
       - Tools: tools.md
+      - Literature RAG: rag.md
       - Agentic Audit: agentic_audit.md
       - Safety: safety.md
   - Project:

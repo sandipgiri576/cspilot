@@ -11,7 +11,9 @@ from cspilot.tools.registry import get_allowed_tools, normalize_tool_args
 def test_registry_and_menu_map():
     assert "multiwfn_analysis_tool" in get_allowed_tools("chem")
     assert "multiwfn_analysis_tool" in get_allowed_tools("analysis")
-    assert normalize_tool_args("multiwfn_analysis_tool", {"input_file": "water.gbw", "analysis": "mulliken"}) == {"input_path": "water.gbw", "analysis": "mulliken"}
+    assert normalize_tool_args(
+        "multiwfn_analysis_tool", {"input_file": "water.gbw", "analysis": "mulliken"}
+    ) == {"input_path": "water.gbw", "analysis": "mulliken"}
     assert mw.MENU_MAP["mulliken"] == ("7", "5", "1", "y", "0", "0", "q")
     assert mw.MENU_MAP["hirshfeld"] == ("7", "1", "1", "y", "0", "q")
 
@@ -32,10 +34,14 @@ def test_gbw_conversion_and_parsed_outputs(tmp_path, monkeypatch, operation):
         assert kwargs["input"] == "\n".join(mw.MENU_MAP[operation]) + "\n"
         assert "shell" not in kwargs
         if operation == "mayer":
-            (root / "bndmat.txt").write_text(" Note: diagonal\n 1 2 3\n1 1.6 .8 .8\n2 .8 .8 0.0\n3 .8 0.0 .8\n")
+            (root / "bndmat.txt").write_text(
+                " Note: diagonal\n 1 2 3\n1 1.6 .8 .8\n2 .8 .8 0.0\n3 .8 0.0 .8\n"
+            )
         else:
             (root / "wavefunction.chg").write_text("O 0 0 0 -0.8\nH 0 1 0 0.4\nH 0 -1 0 0.4\n")
-        return SimpleNamespace(returncode=0, stdout="Version 3.8\nNet charge: 0.0\nTotal atoms: 3", stderr="")
+        return SimpleNamespace(
+            returncode=0, stdout="Version 3.8\nNet charge: 0.0\nTotal atoms: 3", stderr=""
+        )
 
     monkeypatch.setattr(mw.subprocess, "run", run)
     result = mw.analyze_wavefunction(source, tmp_path, operation)
@@ -47,7 +53,7 @@ def test_gbw_conversion_and_parsed_outputs(tmp_path, monkeypatch, operation):
     if operation != "mayer":
         assert result["total_charge"] == pytest.approx(0)
     else:
-        assert result["bond_order_matrix"][0][1] == .8
+        assert result["bond_order_matrix"][0][1] == 0.8
 
 
 @pytest.mark.parametrize("failure", ["timeout", "exit", "missing", "version", "charge"])
@@ -61,10 +67,13 @@ def test_failure_never_becomes_a_scientific_success(tmp_path, monkeypatch, failu
             raise subprocess.TimeoutExpired(command, 1)
         root = Path(kwargs["cwd"])
         if failure != "missing":
-            charge = -1 if failure == "charge" else -.8
+            charge = -1 if failure == "charge" else -0.8
             (root / "wavefunction.chg").write_text(f"O 0 0 0 {charge}\nH 0 1 0 0.4\nH 0 -1 0 0.4\n")
-        return SimpleNamespace(returncode=1 if failure == "exit" else 0,
-            stdout=f"Version {'4.0' if failure == 'version' else '3.8'}\nNet charge: 0.0\nTotal atoms: 3", stderr="")
+        return SimpleNamespace(
+            returncode=1 if failure == "exit" else 0,
+            stdout=f"Version {'4.0' if failure == 'version' else '3.8'}\nNet charge: 0.0\nTotal atoms: 3",
+            stderr="",
+        )
 
     monkeypatch.setattr(mw.subprocess, "run", run)
     result = mw.analyze_wavefunction(source, tmp_path)
@@ -75,4 +84,4 @@ def test_failure_never_becomes_a_scientific_success(tmp_path, monkeypatch, failu
 
 def test_unsupported_commands_rejected_before_subprocess(tmp_path, monkeypatch):
     monkeypatch.setattr(mw.subprocess, "run", lambda *a, **kw: pytest.fail("must not execute"))
-    assert not mw.analyze_wavefunction("water.gbw", tmp_path, "7\n1\n")['success']
+    assert not mw.analyze_wavefunction("water.gbw", tmp_path, "7\n1\n")["success"]

@@ -9,14 +9,17 @@ from cspilot.schemas import StructureSummary
 
 
 def load_structure(path: Path) -> Atoms:
+    """Load an atomic structure from a file supported by ASE."""
     return read(path)
 
 
 def save_structure(atoms: Atoms, path: Path) -> None:
+    """Save an atomic structure using the format inferred from its path."""
     write(path, atoms)
 
 
 def summarize_structure(path: Path) -> StructureSummary:
+    """Return a JSON-compatible summary of an atomic structure."""
     atoms = load_structure(path)
     charge = atoms.get_initial_charges().sum()
     return StructureSummary(

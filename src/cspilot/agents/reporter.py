@@ -12,16 +12,25 @@ from cspilot.skill_loader import SkillLoader
 def terminal_report(execution: dict[str, Any], verification: dict[str, Any]) -> str:
     """Show returned answers without plans, repeated file lists, or unrelated properties."""
     labels = {
-        "name": "Molecule", "smiles": "SMILES", "source": "Source",
-        "canonical_smiles": "Canonical SMILES", "formula": "Formula", "natoms": "Atoms",
-        "property": "Property", "value": "Value", "source_file": "Source file",
+        "name": "Molecule",
+        "smiles": "SMILES",
+        "source": "Source",
+        "canonical_smiles": "Canonical SMILES",
+        "formula": "Formula",
+        "natoms": "Atoms",
+        "property": "Property",
+        "value": "Value",
+        "source_file": "Source file",
         "final_energy_hartree": "Electronic energy (Eh)",
-        "gibbs_free_energy": "Gibbs free energy (Eh)", "enthalpy": "Enthalpy (Eh)",
+        "gibbs_free_energy": "Gibbs free energy (Eh)",
+        "enthalpy": "Enthalpy (Eh)",
         "zero_point_energy": "Zero-point energy (Eh)",
         "entropy_hartree_per_kelvin": "Entropy (Eh/K)",
-        "temperature_kelvin": "Temperature (K)", "pressure_atm": "Pressure (atm)",
+        "temperature_kelvin": "Temperature (K)",
+        "pressure_atm": "Pressure (atm)",
         "imaginary_frequency_count": "Significant imaginary frequencies (< -20 cm^-1)",
-        "lowest_energy": "Lowest energy", "energy_unit": "Energy unit",
+        "lowest_energy": "Lowest energy",
+        "energy_unit": "Energy unit",
     }
     lines = []
     for result in execution.get("steps", []):
@@ -29,40 +38,62 @@ def terminal_report(execution: dict[str, Any], verification: dict[str, Any]) -> 
             for species in result.get("species_results", []):
                 lines.append(f"Subtask: {species['id']}")
                 if "value" in species:
-                    lines.append(f"  {species['property']}: {species['value']} {species['unit']} "
-                                 f"({species['role']}, coefficient {species['coefficient']})")
+                    lines.append(
+                        f"  {species['property']}: {species['value']} {species['unit']} "
+                        f"({species['role']}, coefficient {species['coefficient']})"
+                    )
                 else:
                     for item in species.get("results", []):
-                        lines.append(f"  {labels.get(item['property'], item['property'])}: {_format_value(item['value'])}")
+                        lines.append(
+                            f"  {labels.get(item['property'], item['property'])}: {_format_value(item['value'])}"
+                        )
                     lines.append(f"  Summary: {species['summary_file']}")
             if "reaction_energy_kj_mol" in result:
-                lines.append(f"Reaction {result['reaction_property']}: {result['reaction_energy_kj_mol']:.6f} kJ/mol "
-                             f"({result['reaction_energy_hartree']:.10f} Eh per equation as written)")
-                lines.append("Gas-phase result at 298.15 K and 1 atm; not a liquid-water heating value.")
+                lines.append(
+                    f"Reaction {result['reaction_property']}: {result['reaction_energy_kj_mol']:.6f} kJ/mol "
+                    f"({result['reaction_energy_hartree']:.10f} Eh per equation as written)"
+                )
+                lines.append(
+                    "Gas-phase result at 298.15 K and 1 atm; not a liquid-water heating value."
+                )
             if "relative_energies_kj_mol" in result:
                 lines.append(f"Relative energies (kJ/mol): {result['relative_energies_kj_mol']}")
             continue
-        parameters = [value for key, value in _walk(result)
-                      if key == "parameters" and isinstance(value, dict) and "method" in value]
+        parameters = [
+            value
+            for key, value in _walk(result)
+            if key == "parameters" and isinstance(value, dict) and "method" in value
+        ]
         if parameters:
             settings = parameters[-1]
-            lines.append(f"Method: {settings['method']} (basis: {settings.get('basis', 'not returned')})")
-        geometries = [value["optimized_xyz"] for key, value in _walk(result)
-                      if key == "files" and isinstance(value, dict) and value.get("optimized_xyz")]
+            lines.append(
+                f"Method: {settings['method']} (basis: {settings.get('basis', 'not returned')})"
+            )
+        geometries = [
+            value["optimized_xyz"]
+            for key, value in _walk(result)
+            if key == "files" and isinstance(value, dict) and value.get("optimized_xyz")
+        ]
         if geometries:
             lines.append(f"Optimized geometry: {geometries[-1]}")
         values = dict(_reported_values(result))
-        relevant = [(labels.get(key, key), value) for key, value in values.items()
-                    if key not in {"frequencies", "vibrational_frequencies", "canonical_smiles"}
-                    or (key == "canonical_smiles" and "smiles" not in values)]
+        relevant = [
+            (labels.get(key, key), value)
+            for key, value in values.items()
+            if key not in {"frequencies", "vibrational_frequencies", "canonical_smiles"}
+            or (key == "canonical_smiles" and "smiles" not in values)
+        ]
         if relevant:
             lines.extend(f"{label}: {_format_value(value)}" for label, value in relevant)
     if not lines:
         lines.append("No scientific result was produced.")
     lines.append("Verification: " + ("passed" if verification.get("verified") else "incomplete"))
     issues = verification.get("issues", [])
-    clarification = [str(issue).removeprefix("Agent status: ") for issue in issues
-                     if str(issue).startswith("Agent status: ")]
+    clarification = [
+        str(issue).removeprefix("Agent status: ")
+        for issue in issues
+        if str(issue).startswith("Agent status: ")
+    ]
     lines.extend(clarification or [f"- {issue}" for issue in issues])
     return "\n".join(lines)
 
@@ -167,9 +198,13 @@ def _report_sections(
         key_values = _reported_values(execution_result)
         key_lines = [f"{key}: {_format_value(value)}" for key, value in key_values]
         keys_found = {key for key, _value in key_values}
-        if "gibbs" in user_request.lower() and not keys_found.intersection({"gibbs_free_energy", "gibbs_energy", "final_gibbs_energy", "value"}):
+        if "gibbs" in user_request.lower() and not keys_found.intersection(
+            {"gibbs_free_energy", "gibbs_energy", "final_gibbs_energy", "value"}
+        ):
             key_lines.append("Gibbs free energy: not found in parsed results.")
-        if "gap" in user_request.lower() and not keys_found.intersection({"homo_lumo_gap", "homo_lumo_gap_ev", "value"}):
+        if "gap" in user_request.lower() and not keys_found.intersection(
+            {"homo_lumo_gap", "homo_lumo_gap_ev", "value"}
+        ):
             key_lines.append("HOMO-LUMO gap: not found in parsed results.")
 
     generated_files = _report_files(execution_result, workdir)
@@ -184,7 +219,15 @@ def _report_sections(
                 "Only values returned by tools or parsed result files are reported.",
             ],
         ),
-        ("Task", [user_request, f"Profile: {profile}", f"Output style: {output_style}", f"Workdir: {workdir}"]),
+        (
+            "Task",
+            [
+                user_request,
+                f"Profile: {profile}",
+                f"Output style: {output_style}",
+                f"Workdir: {workdir}",
+            ],
+        ),
         ("Workflow", [*plan_lines, *completed_lines]),
         ("Results", key_lines),
         ("Generated Files", file_lines),
@@ -276,9 +319,16 @@ def _format_value(value: Any) -> str:
 
 def _reported_values(result: dict[str, Any]) -> list[tuple[str, Any]]:
     keys = {
-        "atomic_charges", "charge_unit", "total_charge", "bond_order_matrix", "bond_order_unit",
-        "reaction_property", "reaction_energy_hartree", "reaction_energy_kj_mol",
-        "relative_energies_kj_mol", "species_results",
+        "atomic_charges",
+        "charge_unit",
+        "total_charge",
+        "bond_order_matrix",
+        "bond_order_unit",
+        "reaction_property",
+        "reaction_energy_hartree",
+        "reaction_energy_kj_mol",
+        "relative_energies_kj_mol",
+        "species_results",
         "name",
         "smiles",
         "source",
@@ -324,8 +374,7 @@ def _reported_values(result: dict[str, Any]) -> list[tuple[str, Any]]:
 
 def _is_nwpesse_result(result: dict[str, Any]) -> bool:
     identifiers = " ".join(
-        str(result.get(key, ""))
-        for key in ("tool", "tool_name", "workflow", "workflow_type")
+        str(result.get(key, "")) for key in ("tool", "tool_name", "workflow", "workflow_type")
     ).lower()
     return "nwpesse" in identifiers or "global_minimum" in identifiers or "lowest_energy" in result
 
@@ -336,7 +385,9 @@ def _nwpesse_key_lines(result: dict[str, Any]) -> list[str]:
     fragments = source.get("fragments")
     if isinstance(fragments, list):
         fragment_text = ", ".join(
-            f"{item.get('name')}:{item.get('count')}" for item in fragments if isinstance(item, dict)
+            f"{item.get('name')}:{item.get('count')}"
+            for item in fragments
+            if isinstance(item, dict)
         )
         if fragment_text:
             lines.append(f"Fragments: {fragment_text}")
@@ -395,7 +446,16 @@ def _generated_files(result: dict[str, Any]) -> list[str]:
     for key, value in _walk(result):
         if isinstance(value, str) and (
             (key.endswith("_path") and key not in {"input_path"})
-            or key in {"optimized_xyz", "orca_input", "orca_output", "trajectory", "log", "input", "output"}
+            or key
+            in {
+                "optimized_xyz",
+                "orca_input",
+                "orca_output",
+                "trajectory",
+                "log",
+                "input",
+                "output",
+            }
         ):
             values.append(str(Path(value)))
     return list(dict.fromkeys(values))

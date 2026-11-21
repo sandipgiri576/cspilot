@@ -1,3 +1,5 @@
+"""Provide the direct OpenRouter agent interface for CSPilot tools."""
+
 from __future__ import annotations
 
 import json
@@ -81,6 +83,7 @@ def create_computational_chemistry_agent(
     model: str | None = None,
     base_url: str | None = None,
 ) -> Agent:
+    """Create a direct tool-calling agent for the selected profile."""
     instructions = _profile_instructions(profile)
     model_obj = create_llm_model(
         model=model,
@@ -101,6 +104,7 @@ async def run_agent_request(
     base_url: str | None = None,
     profile: str = "chem",
 ) -> dict[str, Any]:
+    """Run one direct agent request and persist verified tool results."""
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
     token = set_agent_workdir(workdir)

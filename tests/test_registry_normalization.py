@@ -10,36 +10,78 @@ from cspilot.tools.registry import normalize_tool_args, normalize_tool_result
 def test_normalize_tool_result_dict_is_json_safe(tmp_path):
     result = normalize_tool_result("tool", {"success": True, "path": tmp_path / "file.xyz"})
 
-    assert result == {"success": True, "path": str(tmp_path / "file.xyz")}
+    assert result == {
+        "success": True,
+        "tool": "tool",
+        "error": None,
+        "metadata": {},
+        "path": str(tmp_path / "file.xyz"),
+    }
 
 
 def test_normalize_tool_result_json_string():
     result = normalize_tool_result("tool", json.dumps({"success": True, "value": 3}))
 
-    assert result == {"success": True, "value": 3}
+    assert result == {
+        "success": True,
+        "tool": "tool",
+        "error": None,
+        "metadata": {},
+        "value": 3,
+    }
 
 
 def test_normalize_tool_result_plain_string():
     result = normalize_tool_result("tool", "completed")
 
-    assert result == {"success": True, "tool": "tool", "message": "completed"}
+    assert result == {
+        "success": True,
+        "tool": "tool",
+        "error": None,
+        "metadata": {},
+        "message": "completed",
+    }
 
 
 def test_normalize_tool_result_path():
     result = normalize_tool_result("tool", Path("out.xyz"))
 
-    assert result == {"success": True, "tool": "tool", "path": "out.xyz"}
+    assert result == {
+        "success": True,
+        "tool": "tool",
+        "error": None,
+        "metadata": {},
+        "path": "out.xyz",
+    }
 
 
 def test_normalize_tool_result_none():
     result = normalize_tool_result("tool", None)
 
-    assert result == {"success": False, "tool": "tool", "error": "Tool returned None"}
+    assert result == {
+        "success": False,
+        "tool": "tool",
+        "error": "Tool returned None",
+        "metadata": {},
+    }
 
 
 def test_normalize_tool_result_bool_and_number():
-    assert normalize_tool_result("tool", True) == {"success": True, "tool": "tool", "value": True}
-    assert normalize_tool_result("tool", 2.5) == {"success": True, "tool": "tool", "value": 2.5}
+    expected = {"success": True, "tool": "tool", "error": None, "metadata": {}}
+    assert normalize_tool_result("tool", True) == {**expected, "value": True}
+    assert normalize_tool_result("tool", 2.5) == {**expected, "value": 2.5}
+
+
+def test_normalize_tool_result_infers_failure_and_repairs_metadata():
+    result = normalize_tool_result("tool", {"status": "failed", "metadata": "legacy"})
+
+    assert result == {
+        "success": False,
+        "tool": "tool",
+        "error": None,
+        "metadata": {"original_metadata": "legacy"},
+        "status": "failed",
+    }
 
 
 def test_normalize_tool_args_input_file_alias():

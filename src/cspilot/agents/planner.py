@@ -1,3 +1,5 @@
+"""Select bounded agent actions and create optional saved execution plans."""
+
 from __future__ import annotations
 
 import json
@@ -14,6 +16,8 @@ from cspilot.tools.registry import get_allowed_tools, get_tool_catalog
 
 
 class AgentDecision(BaseModel):
+    """Represent one tool, finish, or blocked action from the planner."""
+
     action: Literal["tool", "finish", "blocked"]
     tool: str | None = None
     args: dict[str, Any] = Field(default_factory=dict)
@@ -22,6 +26,7 @@ class AgentDecision(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def normalize_tool_fields(cls, value: Any) -> Any:
+        """Normalize provider-specific action fields before validation."""
         if isinstance(value, dict):
             value = dict(value)
             if isinstance(value.get("action"), dict):
@@ -30,8 +35,10 @@ class AgentDecision(BaseModel):
                 if set(nested) <= {"action", "tool", "args", "summary"} and "action" in nested:
                     value = {**value, **nested}
             # A clarification emitted as text must never be treated as completion.
-            if "action" not in value and "summary" in value and not any(
-                key in value for key in ("tool", "name", "arguments", "args")
+            if (
+                "action" not in value
+                and "summary" in value
+                and not any(key in value for key in ("tool", "name", "arguments", "args"))
             ):
                 value["action"] = "blocked"
             # Some OpenAI-compatible models use native function-call field names.
@@ -45,6 +52,7 @@ class AgentDecision(BaseModel):
 
     @model_validator(mode="after")
     def validate_action(self) -> AgentDecision:
+        """Reject incomplete tools and terminal actions containing tool data."""
         if self.action == "tool" and not self.tool:
             raise ValueError("A tool action requires a tool name.")
         if self.action != "tool" and (self.tool or self.args):
@@ -53,8 +61,12 @@ class AgentDecision(BaseModel):
 
 
 async def decide_next_action(
-    user_request: str, observations: list[dict[str, Any]], profile: str = "chem",
-    workdir: str = ".", model: str | None = None, base_url: str | None = None,
+    user_request: str,
+    observations: list[dict[str, Any]],
+    profile: str = "chem",
+    workdir: str = ".",
+    model: str | None = None,
+    base_url: str | None = None,
 ) -> dict[str, Any]:
     """Choose one action from the request and actual observed tool results."""
     instructions = f"""Select the next action for a scientific agent.
@@ -71,44 +83,65 @@ Use the provided tool schemas. input_xyz aliases are accepted by the executor.
 Use simple relative output paths such as molecule.xyz, never $HOME or shell variables.
 For calculation inputs copy the exact xyz_path/optimized_xyz from observations.
 """
+
     async def select_tool(context: Any, arguments: str) -> str:
-        return json.dumps({"action": "tool", "tool": context.tool_name,
-                           "args": json.loads(arguments)})
+        return json.dumps(
+            {"action": "tool", "tool": context.tool_name, "args": json.loads(arguments)}
+        )
 
     async def finish(context: Any, arguments: str) -> str:
         return json.dumps({"action": context.tool_name, **json.loads(arguments)})
 
     tools = [
-        FunctionTool(name=item["name"], description=item["description"],
-                     params_json_schema=item["parameters"], on_invoke_tool=select_tool)
+        FunctionTool(
+            name=item["name"],
+            description=item["description"],
+            params_json_schema=item["parameters"],
+            on_invoke_tool=select_tool,
+        )
         for item in get_tool_catalog(profile, user_request)
     ]
     for name in ("finish", "blocked"):
         # Completion without an observation cannot substantiate a scientific answer.
         if name == "finish" and not observations:
             continue
-        tools.append(FunctionTool(
-            name=name,
-            description=("Finish after observed results satisfy the request." if name == "finish"
-                         else "Stop and explain missing molecule/input or unsupported capability."),
-            params_json_schema={"type": "object", "properties": {"summary": {"type": "string"}},
-                                "required": ["summary"], "additionalProperties": False},
-            on_invoke_tool=finish,
-        ))
+        tools.append(
+            FunctionTool(
+                name=name,
+                description=(
+                    "Finish after observed results satisfy the request."
+                    if name == "finish"
+                    else "Stop and explain missing molecule/input or unsupported capability."
+                ),
+                params_json_schema={
+                    "type": "object",
+                    "properties": {"summary": {"type": "string"}},
+                    "required": ["summary"],
+                    "additionalProperties": False,
+                },
+                on_invoke_tool=finish,
+            )
+        )
     agent = Agent(
         name="cspilot_decision",
         instructions=instructions + "\nCall exactly one provided tool. Do not print JSON as text.",
-        model=create_llm_model(model=model, base_url=base_url), tools=tools,
+        model=create_llm_model(model=model, base_url=base_url),
+        tools=tools,
         model_settings=ModelSettings(tool_choice="required", parallel_tool_calls=False),
         tool_use_behavior="stop_on_first_tool",
     )
-    prompt = json.dumps({
-        "request": user_request, "workdir": workdir, "observations": observations,
-    })
+    prompt = json.dumps(
+        {
+            "request": user_request,
+            "workdir": workdir,
+            "observations": observations,
+        }
+    )
     result = await Runner.run(agent, prompt, max_turns=2)
     if not result.final_output:
         result = await Runner.run(
-            agent, prompt + "\nYour previous response selected no action. Call one tool. "
+            agent,
+            prompt + "\nYour previous response selected no action. Call one tool. "
             "If the molecule or input geometry is missing, call blocked and ask for it.",
             max_turns=2,
         )
@@ -117,35 +150,52 @@ For calculation inputs copy the exact xyz_path/optimized_xyz from observations.
         return AgentDecision(
             action="blocked",
             summary="No action was selected by the model. Please provide the molecule "
-                    "(name, SMILES, or XYZ file) and the calculation you want to run.",
+            "(name, SMILES, or XYZ file) and the calculation you want to run.",
         ).model_dump(mode="json")
     # Some compatible providers ignore required tool_choice and emit only a summary.
     # Ask for an explicit decision once; never infer completion from prose ourselves.
     candidate = json.loads(output) if isinstance(output, str) else output
-    if observations and isinstance(candidate, dict) and not any(
-        key in candidate for key in ("action", "tool", "name")
+    if (
+        observations
+        and isinstance(candidate, dict)
+        and not any(key in candidate for key in ("action", "tool", "name"))
     ):
+
         async def explicit_decision(context: Any, arguments: str) -> str:
             return AgentDecision.model_validate_json(arguments).model_dump_json()
 
         recovery = Agent(
-            name="cspilot_explicit_decision", model=create_llm_model(model=model, base_url=base_url),
+            name="cspilot_explicit_decision",
+            model=create_llm_model(model=model, base_url=base_url),
             instructions=instructions + "\nReturn an explicit AgentDecision object. "
             "Your previous summary lacked an action. Review ALL requested operations against "
             "observations. Choose finish only if complete, tool if work remains, blocked if "
             "required input/capability is missing. A summary alone is not a decision.\n"
             + json.dumps(get_tool_catalog(profile, user_request)),
-            tools=[FunctionTool(name="submit_decision", description="Return an explicit action, not just a summary.",
-                                params_json_schema=AgentDecision.model_json_schema(),
-                                on_invoke_tool=explicit_decision, strict_json_schema=False)],
-            model_settings=ModelSettings(tool_choice="required", parallel_tool_calls=False, max_tokens=2048),
+            tools=[
+                FunctionTool(
+                    name="submit_decision",
+                    description="Return an explicit action, not just a summary.",
+                    params_json_schema=AgentDecision.model_json_schema(),
+                    on_invoke_tool=explicit_decision,
+                    strict_json_schema=False,
+                )
+            ],
+            model_settings=ModelSettings(
+                tool_choice="required", parallel_tool_calls=False, max_tokens=2048
+            ),
             tool_use_behavior="stop_on_first_tool",
         )
         recovered = await Runner.run(recovery, prompt, max_turns=1)
         output = recovered.final_output
-    decision = output if isinstance(output, AgentDecision) else (
-        AgentDecision.model_validate_json(output) if isinstance(output, str)
-        else AgentDecision.model_validate(output)
+    decision = (
+        output
+        if isinstance(output, AgentDecision)
+        else (
+            AgentDecision.model_validate_json(output)
+            if isinstance(output, str)
+            else AgentDecision.model_validate(output)
+        )
     )
     if decision.action == "tool" and decision.tool not in get_allowed_tools(profile, user_request):
         raise ValueError(f"Decision returned disallowed tool: {decision.tool}")
@@ -153,11 +203,15 @@ For calculation inputs copy the exact xyz_path/optimized_xyz from observations.
 
 
 class PlanStep(BaseModel):
+    """Represent one allowlisted tool and its structured arguments."""
+
     tool: str
     args: dict[str, Any] = Field(default_factory=dict)
 
 
 class ExecutionPlan(BaseModel):
+    """Represent an ordered collection of allowlisted plan steps."""
+
     steps: list[PlanStep] = Field(default_factory=list)
 
 

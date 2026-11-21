@@ -66,7 +66,11 @@ def test_repair_missing_smiles_inserts_smiles_to_xyz(tmp_path):
         "steps": [
             {
                 "tool": "run_xtb_orca_workflow",
-                "args": {"input_xyz": "stk_molecule.xyz", "method": "r2scan-3c", "basis": "def2-SVP"},
+                "args": {
+                    "input_xyz": "stk_molecule.xyz",
+                    "method": "r2scan-3c",
+                    "basis": "def2-SVP",
+                },
             }
         ]
     }
@@ -78,7 +82,9 @@ def test_repair_missing_smiles_inserts_smiles_to_xyz(tmp_path):
         "steps": [],
     }
 
-    result = repair_plan('optimize "c1ccccc1" with xTB then ORCA', plan, execution_result, str(tmp_path))
+    result = repair_plan(
+        'optimize "c1ccccc1" with xTB then ORCA', plan, execution_result, str(tmp_path)
+    )
 
     assert result["success"] is True
     assert result["level"] == "workflow_repair"

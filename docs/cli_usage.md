@@ -14,6 +14,24 @@ Molden or FCH file. It prints parsed JSON and persists logs, menu input and resu
 Commands below are implemented in `src/cspilot/cli.py`. The installed script is
 `cspilot`; `cspiolt` is also currently configured as a legacy alias.
 
+## Literature RAG Commands
+
+Build a local SentenceTransformer/FAISS index from JSON, JSONL, PDF files, or
+directories:
+
+```bash
+cspilot rag index data/demo/chemistry_abstracts.json --output-dir data/rag
+```
+
+Retrieve passages and ask the configured OpenRouter model for a grounded answer:
+
+```bash
+cspilot rag query "Which studies use water as solvent?" --index-dir data/rag
+```
+
+Use `--retrieve-only` to avoid the model call. `rag openalex` downloads normalized
+literature metadata for subsequent indexing. See [Chemistry Literature RAG](rag.md).
+
 ## General And Agent Commands
 
 ### `search`

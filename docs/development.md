@@ -20,6 +20,28 @@ The package uses a `src/` layout; the Typer entry point is
 - The verifier and reporter inspect returned data without using an LLM to
   create scientific values.
 
+## Coding Style
+
+`AGENTS.md` is the authoritative engineering guide. In particular:
+
+- annotate every function signature;
+- document public functions, methods, and classes with clear docstrings;
+- keep imports at module scope and organize them as standard-library,
+  third-party, then internal imports;
+- use local imports only for optional heavy dependencies or to avoid a
+  documented circular dependency;
+- keep deterministic chemistry functions independent of model orchestration;
+- return JSON-serializable tool results with stable `success`, `tool`, `error`,
+  and `metadata` fields at the registry boundary.
+
+Before submitting a change, run:
+
+```bash
+uv run --extra dev ruff format --check src tests
+uv run --extra dev ruff check src tests
+uv run --extra dev pytest -q
+```
+
 ## Adding Capabilities
 
 When adding a tool or workflow:

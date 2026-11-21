@@ -75,7 +75,9 @@ def test_run_graph_agent_multi_mode_calls_router(monkeypatch, tmp_path):
     _mock_graph_dependencies(monkeypatch, {"steps": []})
     monkeypatch.setattr("cspilot.graph.route_request", fake_router)
 
-    state = run_graph_agent("construct an stk polymer", tmp_path, profile="auto", agent_mode="multi")
+    state = run_graph_agent(
+        "construct an stk polymer", tmp_path, profile="auto", agent_mode="multi"
+    )
 
     assert called["router"] is True
     assert state["profile"] == "stk"
@@ -89,7 +91,9 @@ def test_run_graph_agent_single_inspect_water_plan(monkeypatch, tmp_path):
 
     _mock_graph_dependencies(monkeypatch, plan)
 
-    state = run_graph_agent(f"inspect {water}", tmp_path / "run", profile="chem", agent_mode="single")
+    state = run_graph_agent(
+        f"inspect {water}", tmp_path / "run", profile="chem", agent_mode="single"
+    )
 
     assert state["plan"] == plan
     assert state["execution_result"]["success"] is True
@@ -129,7 +133,16 @@ def test_cli_graph_run_saves_state_on_internal_failure(monkeypatch, tmp_path):
     monkeypatch.setattr("cspilot.graph.run_graph_agent", fake_run_graph_agent)
     result = CliRunner().invoke(
         app,
-        ["graph-run", "request", "--workdir", str(tmp_path), "--profile", "chem", "--agent-mode", "single"],
+        [
+            "graph-run",
+            "request",
+            "--workdir",
+            str(tmp_path),
+            "--profile",
+            "chem",
+            "--agent-mode",
+            "single",
+        ],
     )
 
     assert result.exit_code == 0

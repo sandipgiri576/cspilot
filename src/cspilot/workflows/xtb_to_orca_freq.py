@@ -26,6 +26,7 @@ def run_xtb_to_orca_freq(
     nprocs: int = 1,
     settings: Settings | None = None,
 ) -> dict[str, Any]:
+    """Optimize with xTB, then run ORCA optimization and frequencies."""
     settings, workdir = init_workflow_run("xtb-orca-freq", settings)
     result = base_workflow_result("xtb-orca-freq", input_xyz, workdir)
 

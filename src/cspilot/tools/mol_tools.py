@@ -93,7 +93,9 @@ def smiles_to_xyz(
     molecule = Chem.AddHs(molecule)
     parameters = AllChem.ETKDGv3()
     parameters.randomSeed = 0xF00D
-    conformer_ids = list(AllChem.EmbedMultipleConfs(molecule, numConfs=num_confs, params=parameters))
+    conformer_ids = list(
+        AllChem.EmbedMultipleConfs(molecule, numConfs=num_confs, params=parameters)
+    )
     if not conformer_ids:
         return {
             "success": False,

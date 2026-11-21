@@ -1,3 +1,5 @@
+"""Shared Pydantic schemas for deterministic commands and subprocesses."""
+
 from __future__ import annotations
 
 from datetime import datetime
@@ -10,6 +12,8 @@ RunStatus = Literal["ok", "failed", "skipped"]
 
 
 class StructureSummary(BaseModel):
+    """Describe structure properties read directly from a molecular file."""
+
     path: Path
     formula: str
     natoms: int
@@ -20,6 +24,8 @@ class StructureSummary(BaseModel):
 
 
 class CommandResult(BaseModel):
+    """Describe a deterministic CLI command and its generated artifacts."""
+
     command: str
     status: RunStatus
     run_dir: Path
@@ -32,6 +38,8 @@ class CommandResult(BaseModel):
 
 
 class ProcessResult(BaseModel):
+    """Record a subprocess command, return code, and captured streams."""
+
     command: list[str]
     returncode: int
     stdout: str

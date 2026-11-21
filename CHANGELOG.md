@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added local chemistry-literature RAG ingestion for JSON, JSONL and page-aware
+  PDFs, SentenceTransformer embeddings, FAISS retrieval, OpenAlex normalization,
+  and citation-constrained OpenRouter answers printed by new `cspilot rag` commands.
+
 - Added opt-in `--multiagent` decomposition, isolated child loops, bounded concurrency,
   structured summaries and deterministic reaction/conformer aggregation.
 - Guarded reaction sums with atom/charge balance, spin, method, units and frequency checks.

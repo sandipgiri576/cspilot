@@ -50,7 +50,8 @@ def verify_request_completion(user_request: str, execution_result: dict[str, Any
             returned[payload["matched_key"]] = payload.get("value")
     issues = [
         f"Requested property not found in tool results: {key}."
-        for key in dict.fromkeys(required) if not _numeric_value(returned.get(key))
+        for key in dict.fromkeys(required)
+        if not _numeric_value(returned.get(key))
     ]
     if "smiles" in lowered and not any(
         isinstance(returned.get(key), str) and returned[key]
@@ -206,7 +207,9 @@ def _verify_nwpesse_result(result: dict[str, Any], root: Path, issues: list[str]
 
     candidate_count = result.get("candidate_count")
     if candidate_count is not None and (
-        not isinstance(candidate_count, int) or isinstance(candidate_count, bool) or candidate_count < 1
+        not isinstance(candidate_count, int)
+        or isinstance(candidate_count, bool)
+        or candidate_count < 1
     ):
         issues.append("NWPESSe candidate_count must be an integer >= 1.")
 
@@ -226,7 +229,9 @@ def _has_valid_nwpesse_outputs(result: dict[str, Any], root: Path) -> bool:
         and isinstance(result.get("candidate_count"), int)
         and result.get("candidate_count", 0) >= 1
         and isinstance(result.get("lowest_geometry_copy") or result.get("lowest_geometry"), str)
-        and _existing_path(str(result.get("lowest_geometry_copy") or result.get("lowest_geometry")), root)
+        and _existing_path(
+            str(result.get("lowest_geometry_copy") or result.get("lowest_geometry")), root
+        )
         is not None
     )
 
@@ -240,7 +245,11 @@ def _existing_path(value: str, root: Path) -> Path | None:
 def _verify_expected_outputs(result: dict[str, Any], root: Path, issues: list[str]) -> None:
     for value in _dicts(result):
         if "task" in value and value["task"] in {"sp", "opt", "freq", "opt_freq"}:
-            output = value.get("files", {}).get("output") if isinstance(value.get("files"), dict) else None
+            output = (
+                value.get("files", {}).get("output")
+                if isinstance(value.get("files"), dict)
+                else None
+            )
             if not isinstance(output, str) or _existing_path(output, root) is None:
                 issues.append("ORCA output file is missing after an ORCA job.")
             properties = value.get("result", {}).get("properties", {})
@@ -251,8 +260,13 @@ def _verify_expected_outputs(result: dict[str, Any], root: Path, issues: list[st
                 if not properties.get("frequencies"):
                     issues.append("ORCA vibrational frequencies not found.")
                 if properties.get("imaginary_frequency_count", 0):
-                    issues.append("Significant imaginary frequencies: geometry is not a verified minimum.")
-            if value["task"] == "opt_freq" and properties.get("geometry_optimization_converged") is not True:
+                    issues.append(
+                        "Significant imaginary frequencies: geometry is not a verified minimum."
+                    )
+            if (
+                value["task"] == "opt_freq"
+                and properties.get("geometry_optimization_converged") is not True
+            ):
                 issues.append("ORCA geometry optimization convergence was not confirmed.")
 
         outputs = value.get("outputs")

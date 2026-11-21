@@ -35,9 +35,13 @@ def test_decision_prompt_contains_skill_and_observations(monkeypatch):
 
     monkeypatch.setattr(planner, "create_llm_model", lambda **kw: "mock")
     monkeypatch.setattr(planner.Runner, "run", run)
-    result = asyncio.run(planner.decide_next_action(
-        "print Gibbs", [{"result": {"value": -12.5}}], profile="thermo",
-    ))
+    result = asyncio.run(
+        planner.decide_next_action(
+            "print Gibbs",
+            [{"result": {"value": -12.5}}],
+            profile="thermo",
+        )
+    )
     assert result["action"] == "finish"
 
 
@@ -57,8 +61,14 @@ def test_next_action_uses_returned_path(monkeypatch, tmp_path):
     state = run_graph_agent("inspect hydrogen", tmp_path / "run")
     assert state["verification_result"]["verified"]
     assert len(state["observations"]) == 1
-    for name in ("observations.json", "decision_001.json", "decision_002.json",
-                 "step_001_result.json", "final_state.json", "verification_result.json"):
+    for name in (
+        "observations.json",
+        "decision_001.json",
+        "decision_002.json",
+        "step_001_result.json",
+        "final_state.json",
+        "verification_result.json",
+    ):
         json.loads((tmp_path / "run" / name).read_text())
 
 
@@ -68,12 +78,20 @@ def test_dynamic_two_step_file_handoff(monkeypatch, tmp_path):
 
     async def decide(request, observations, **kwargs):
         if not observations:
-            return {"action": "tool", "tool": "find_result_json_tool",
-                    "args": {"workdir": str(tmp_path)}}
+            return {
+                "action": "tool",
+                "tool": "find_result_json_tool",
+                "args": {"workdir": str(tmp_path)},
+            }
         if len(observations) == 1:
-            return {"action": "tool", "tool": "get_property_from_result_tool",
-                    "args": {"path": observations[0]["result"]["path"],
-                             "property_name": "custom_property"}}
+            return {
+                "action": "tool",
+                "tool": "get_property_from_result_tool",
+                "args": {
+                    "path": observations[0]["result"]["path"],
+                    "property_name": "custom_property",
+                },
+            }
         assert observations[-1]["result"]["value"] == 42.5
         return {"action": "finish"}
 
@@ -91,8 +109,11 @@ def test_loop_terminates_and_keeps_artifacts(monkeypatch, tmp_path, mode):
             return {"action": "blocked", "summary": "No supported tool."}
         if mode == "model_error":
             raise RuntimeError("backend unavailable")
-        return {"action": "tool", "tool": "run_shell" if mode == "disallowed" else "inspect_structure",
-                "args": {"input_xyz": "missing.xyz"}}
+        return {
+            "action": "tool",
+            "tool": "run_shell" if mode == "disallowed" else "inspect_structure",
+            "args": {"input_xyz": "missing.xyz"},
+        }
 
     monkeypatch.setattr("cspilot.graph.decide_next_action", decide)
     state = run_graph_agent("request", tmp_path, max_steps=2, max_retries=0)
@@ -111,8 +132,11 @@ def test_failure_feedback_can_change_action(monkeypatch, tmp_path):
             return {"action": "finish"}
         if observations:
             assert not observations[-1]["verification"]["verified"]
-        return {"action": "tool", "tool": "inspect_structure",
-                "args": {"input_xyz": str(xyz) if observations else "missing.xyz"}}
+        return {
+            "action": "tool",
+            "tool": "inspect_structure",
+            "args": {"input_xyz": str(xyz) if observations else "missing.xyz"},
+        }
 
     monkeypatch.setattr("cspilot.graph.decide_next_action", decide)
     state = run_graph_agent("inspect", tmp_path / "run")
@@ -128,8 +152,7 @@ def test_successful_calls_cannot_exceed_step_limit(monkeypatch, tmp_path):
     xyz.write_text("1\nH\nH 0 0 0\n")
 
     async def decide(*args, **kwargs):
-        return {"action": "tool", "tool": "inspect_structure",
-                "args": {"input_xyz": str(xyz)}}
+        return {"action": "tool", "tool": "inspect_structure", "args": {"input_xyz": str(xyz)}}
 
     monkeypatch.setattr("cspilot.graph.decide_next_action", decide)
     state = run_graph_agent("inspect", tmp_path / "run", max_steps=2)
@@ -145,16 +168,30 @@ def test_cli_displays_stored_value_and_saves_json(monkeypatch, tmp_path, flags):
     source.write_text('{"custom": 123.45}')
 
     async def decide(request, observations, **kwargs):
-        return {"action": "finish"} if observations else {
-            "action": "tool", "tool": "get_property_from_result_tool",
-            "args": {"path": str(source), "property_name": "custom"},
-        }
+        return (
+            {"action": "finish"}
+            if observations
+            else {
+                "action": "tool",
+                "tool": "get_property_from_result_tool",
+                "args": {"path": str(source), "property_name": "custom"},
+            }
+        )
 
     monkeypatch.setattr("cspilot.graph.decide_next_action", decide)
     run = tmp_path / "run"
-    result = CliRunner().invoke(app, [
-        "run", "print custom on screen", "--profile", "analysis", "--workdir", str(run), *flags,
-    ])
+    result = CliRunner().invoke(
+        app,
+        [
+            "run",
+            "print custom on screen",
+            "--profile",
+            "analysis",
+            "--workdir",
+            str(run),
+            *flags,
+        ],
+    )
     assert result.exit_code == 0, result.output
     assert "123.45" in result.output
     assert (run / "final_state.json").is_file()

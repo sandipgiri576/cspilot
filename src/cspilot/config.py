@@ -1,3 +1,5 @@
+"""Load environment-backed CSPilot runtime settings."""
+
 from __future__ import annotations
 
 import os
@@ -8,6 +10,8 @@ from pydantic import BaseModel, Field
 
 
 class Settings(BaseModel):
+    """Store deterministic executable paths and the default runs directory."""
+
     runs_dir: Path = Field(default=Path("runs"))
     xtb_command: str = Field(default="xtb")
     orca_command: str = Field(default="orca")
@@ -17,6 +21,14 @@ class Settings(BaseModel):
 
 
 def load_settings(env_file: Path | str = ".env.cspilot") -> Settings:
+    """Load CSPilot settings from a dotenv file and environment variables.
+
+    Args:
+        env_file: Dotenv file loaded before reading process environment values.
+
+    Returns:
+        Validated runtime settings.
+    """
     load_dotenv(env_file)
     return Settings(
         runs_dir=Path(os.getenv("CSPILOT_RUNS_DIR", "runs")),

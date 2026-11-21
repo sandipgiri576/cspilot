@@ -92,7 +92,9 @@ def nwpesse_global_minimum_search(
         return _finalize(root, result_path, False, steps, f"{type(exc).__name__}: {exc}")
 
 
-def _resolve_fragment_specs(formula: str | None, fragments: list[dict] | None) -> list[dict[str, Any]]:
+def _resolve_fragment_specs(
+    formula: str | None, fragments: list[dict] | None
+) -> list[dict[str, Any]]:
     if formula and fragments:
         raise ValueError("Provide either formula or fragments, not both.")
     if formula:
@@ -101,7 +103,9 @@ def _resolve_fragment_specs(formula: str | None, fragments: list[dict] | None) -
             raise ValueError(str(parsed["error"]))
         return list(parsed["fragments"])
     if fragments:
-        return [{"name": str(item["name"]).lower(), "count": int(item["count"])} for item in fragments]
+        return [
+            {"name": str(item["name"]).lower(), "count": int(item["count"])} for item in fragments
+        ]
     raise ValueError("Provide a formula or at least one fragment.")
 
 
@@ -123,13 +127,17 @@ def _prepare_fragment_files(
                 issues.append(f"Missing fragment xyz for '{name}' in {source_dir}")
                 continue
             shutil.copy2(source, target)
-            prepared.append({"name": name, "count": count, "filename": target.name, "source": str(source)})
+            prepared.append(
+                {"name": name, "count": count, "filename": target.name, "source": str(source)}
+            )
             continue
         written = write_fragment_xyz(name, str(target))
         if not written["success"]:
             issues.append(str(written["error"]))
             continue
-        prepared.append({"name": name, "count": count, "filename": target.name, "source": "internal_library"})
+        prepared.append(
+            {"name": name, "count": count, "filename": target.name, "source": "internal_library"}
+        )
     return {
         "success": not issues,
         "tool": "prepare_nwpesse_fragments",

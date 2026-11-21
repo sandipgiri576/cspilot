@@ -190,7 +190,9 @@ def write_fragment_xyz(
             "error": None,
         }
     except Exception as exc:
-        return _failure("write_fragment_xyz", f"{type(exc).__name__}: {exc}", output_path=str(output))
+        return _failure(
+            "write_fragment_xyz", f"{type(exc).__name__}: {exc}", output_path=str(output)
+        )
 
 
 def parse_cluster_formula(formula: str) -> dict[str, Any]:
@@ -207,7 +209,13 @@ def parse_cluster_formula(formula: str) -> dict[str, Any]:
             fragments = _parse_grouped_formula(text)
         if not fragments:
             return _failure("parse_cluster_formula", "No fragments found")
-        return {"success": True, "tool": "parse_cluster_formula", "formula": formula, "fragments": fragments, "error": None}
+        return {
+            "success": True,
+            "tool": "parse_cluster_formula",
+            "formula": formula,
+            "fragments": fragments,
+            "error": None,
+        }
     except ValueError as exc:
         return _failure("parse_cluster_formula", str(exc), formula=formula)
 

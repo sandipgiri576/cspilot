@@ -1,9 +1,13 @@
+"""Define typed state passed through the single-agent LangGraph."""
+
 from __future__ import annotations
 
 from typing import Any, NotRequired, TypedDict
 
 
 class CspilotState(TypedDict):
+    """Store planner, execution, verification, and reporting graph state."""
+
     user_request: str
     workdir: str
     profile: str

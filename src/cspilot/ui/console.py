@@ -11,12 +11,14 @@ from rich.text import Text
 
 
 def print_banner(console: Console) -> None:
+    """Print the CSPilot terminal banner."""
     title = Text("CSPilot", style="bold cyan")
     subtitle = "Computational chemistry agentic workflow package\nCreated by Sandip Giri"
     console.print(Panel(subtitle, title=title, border_style="cyan", box=box.ROUNDED))
 
 
 def print_plan_summary(console: Console, plan: dict[str, Any]) -> None:
+    """Print a compact table of planned tool calls."""
     table = Table(title="Plan", box=box.SIMPLE_HEAVY)
     table.add_column("#", justify="right", style="cyan")
     table.add_column("Tool", style="bold")
@@ -32,6 +34,7 @@ def print_plan_summary(console: Console, plan: dict[str, Any]) -> None:
 
 
 def print_execution_summary(console: Console, execution_result: dict[str, Any]) -> None:
+    """Print tool execution status and per-step outcomes."""
     success = execution_result.get("success") is True
     status = "PASSED" if success else "FAILED"
     style = "green" if success else "red"
@@ -43,7 +46,11 @@ def print_execution_summary(console: Console, execution_result: dict[str, Any]) 
     if isinstance(steps, list) and steps:
         for index, step in enumerate(steps, start=1):
             if isinstance(step, dict):
-                table.add_row(str(index), str(step.get("tool_name", step.get("tool", "unknown"))), _status(step))
+                table.add_row(
+                    str(index),
+                    str(step.get("tool_name", step.get("tool", "unknown"))),
+                    _status(step),
+                )
     else:
         table.add_row("-", "No executed steps", status)
     console.print(Panel(f"[{style}]{status}[/]", title="Execution Status", border_style=style))
@@ -51,6 +58,7 @@ def print_execution_summary(console: Console, execution_result: dict[str, Any]) 
 
 
 def print_verification_summary(console: Console, verification_result: dict[str, Any]) -> None:
+    """Print the verification outcome and any reported issues."""
     verified = verification_result.get("verified") is True
     status = "PASSED" if verified else "FAILED OR INCOMPLETE"
     style = "green" if verified else "yellow"
@@ -61,7 +69,10 @@ def print_verification_summary(console: Console, verification_result: dict[str, 
     console.print(Panel(body, title="Verification", border_style=style))
 
 
-def print_generated_files(console: Console, workdir: str | Path, execution_result: dict[str, Any]) -> None:
+def print_generated_files(
+    console: Console, workdir: str | Path, execution_result: dict[str, Any]
+) -> None:
+    """Print files found in the result and work directory."""
     files = _discover_files(Path(workdir), execution_result)
     table = Table(title="Generated Files", box=box.SIMPLE_HEAVY)
     table.add_column("Type", style="cyan")
@@ -80,8 +91,11 @@ def print_generated_files(console: Console, workdir: str | Path, execution_resul
 
 
 def print_final_message(console: Console, final_report: str, html: bool = False) -> None:
+    """Print the final Markdown or HTML report."""
     label = "HTML report" if html else "Markdown report"
-    console.print(Panel(Text(final_report or "Report generated."), title=label, border_style="blue"))
+    console.print(
+        Panel(Text(final_report or "Report generated."), title=label, border_style="blue")
+    )
 
 
 def _discover_files(workdir: Path, execution_result: dict[str, Any]) -> list[tuple[str, Path]]:
@@ -142,7 +156,12 @@ def _resolve(workdir: Path, value: str) -> Path:
 
 def _file_kind(path: Path) -> str:
     name = path.name.lower()
-    if name in {"plan.json", "execution_result.json", "verification_result.json", "final_state.json"}:
+    if name in {
+        "plan.json",
+        "execution_result.json",
+        "verification_result.json",
+        "final_state.json",
+    }:
         return "JSON"
     if name.startswith("final_report"):
         return "Report"

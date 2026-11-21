@@ -75,7 +75,9 @@ def check_documentation_consistency(root: str | Path = ".") -> dict[str, Any]:
         text = path.read_text(encoding="utf-8", errors="replace")
         for marker in FORBIDDEN_TEMPLATE_MARKERS:
             if marker in text:
-                issues.append(f"Template marker '{marker}' remains in {path.relative_to(root_path)}")
+                issues.append(
+                    f"Template marker '{marker}' remains in {path.relative_to(root_path)}"
+                )
 
     return {
         "success": not issues,

@@ -1,0 +1,362 @@
+[
+  {
+    "id": "C001",
+    "title": "Aqueous-Compatible Suzuki-Miyaura Couplings Using Pd/XPhos Precatalysts",
+    "authors": "Reyes, T. et al.",
+    "year": 2022,
+    "journal": "J. Synth. Methods",
+    "topic": "suzuki_coupling",
+    "abstract": "We report a broadly applicable protocol for Suzuki-Miyaura cross-coupling of aryl chlorides with boronic acids using a Pd/XPhos precatalyst system. Reactions proceed efficiently in dioxane/water (4:1) at 60-80 C with K2CO3 as base, reaching full conversion within 2 hours for electron-neutral and electron-rich substrates. Electron-poor aryl chlorides required switching to a THF/water mixture with Cs2CO3 to suppress protodeboronation. Ethanol/water was also evaluated and gave comparable yields for sterically unhindered couplings, offering a greener alternative to dioxane. The method tolerates free amines, esters, and unprotected phenols, and was demonstrated on 24 substrates with isolated yields of 74-96%."
+  },
+  {
+    "id": "C002",
+    "title": "Solvent Effects on Transmetalation Rates in Suzuki-Type Cross-Coupling",
+    "authors": "Okonkwo, L. et al.",
+    "year": 2021,
+    "journal": "Adv. Catal. Lett.",
+    "topic": "suzuki_coupling",
+    "abstract": "The rate of transmetalation in Pd-catalyzed Suzuki coupling was studied across a panel of solvents including THF, 1,4-dioxane, DMF, toluene, and ethanol, each with an aqueous co-solvent. Kinetic profiling showed that polar aprotic solvents (DMF, dioxane) accelerate boronate formation but can promote protodeboronation of heteroaryl boronic acids at elevated temperature. Toluene/water biphasic systems gave the slowest but most selective transmetalation, useful for sensitive substrates. Ethanol/water mixtures balanced rate and selectivity for most benchmark couplings. The study provides a practical solvent-selection guide for chemists optimizing Suzuki couplings on unfamiliar substrates."
+  },
+  {
+    "id": "C003",
+    "title": "Ligand-Free Suzuki Coupling in Ethanol-Water Mixtures",
+    "authors": "Park, J. et al.",
+    "year": 2020,
+    "journal": "Green Chem. Reports",
+    "topic": "suzuki_coupling",
+    "abstract": "A ligand-free Pd(OAc)2-catalyzed Suzuki coupling protocol is described that operates in ethanol/water (3:1) at room temperature. The absence of phosphine ligands simplifies purification and reduces cost. Aryl bromides and iodides couple with arylboronic acids in yields of 65-92% using K3PO4 as base. Aryl chlorides remained largely unreactive under these mild, ligand-free conditions, indicating that oxidative addition, not solvent choice, is rate-limiting for less activated electrophiles. This work highlights ethanol/water as a sustainable solvent system for Suzuki couplings of activated aryl halides."
+  },
+  {
+    "id": "C004",
+    "title": "Continuous-Flow Suzuki-Miyaura Coupling for Pharmaceutical Intermediates",
+    "authors": "Haddad, R. et al.",
+    "year": 2023,
+    "journal": "J. Synth. Methods",
+    "topic": "suzuki_coupling",
+    "abstract": "A continuous-flow reactor was developed for Suzuki-Miyaura coupling of pharmaceutically relevant heteroaryl fragments. THF/water was selected as the flow-compatible solvent system after screening dioxane, DMF, and acetonitrile mixtures, based on solubility of both the palladium catalyst and inorganic base. Residence times of 4-6 minutes at 100 C gave conversions exceeding 90% for pyridyl and pyrimidyl boronates. The flow process reduced catalyst loading from 3 mol% (batch) to 0.5 mol% while maintaining yield, illustrating how solvent and reactor engineering jointly improve process efficiency for cross-coupling steps in drug synthesis."
+  },
+  {
+    "id": "C005",
+    "title": "Buchwald-Hartwig Amination versus Suzuki Coupling: A Solvent Compatibility Study",
+    "authors": "Nilsson, E. et al.",
+    "year": 2019,
+    "journal": "Adv. Catal. Lett.",
+    "topic": "suzuki_coupling",
+    "abstract": "This comparative study examines solvent requirements for Buchwald-Hartwig amination and Suzuki-Miyaura coupling when performed sequentially on the same substrate without intermediate purification. Toluene proved compatible with both transformations, while dioxane/water mixtures used for Suzuki coupling required careful drying before the subsequent amination step. A one-pot toluene-based protocol combining both couplings is described, avoiding solvent switches and improving overall yield of a biaryl-amine building block from 58% (stepwise, two solvents) to 79% (one-pot, toluene only)."
+  },
+  {
+    "id": "C006",
+    "title": "Microwave-Assisted Suzuki Coupling in Dimethylformamide",
+    "authors": "Abara, C. et al.",
+    "year": 2018,
+    "journal": "J. Synth. Methods",
+    "topic": "suzuki_coupling",
+    "abstract": "Microwave irradiation was applied to accelerate Suzuki-Miyaura couplings in DMF/water (5:1), reducing reaction times from hours to under 10 minutes for a range of aryl bromides. DMF was chosen over dioxane for its higher microwave absorptivity, giving faster and more uniform heating. Yields were generally comparable to conventional thermal heating in dioxane/water, though a subset of electron-poor boronic acids showed increased protodeboronation under microwave conditions in DMF, an effect attributed to localized superheating rather than bulk solvent temperature."
+  },
+  {
+    "id": "C007",
+    "title": "Visible-Light Photoredox Catalysis for C-C Bond Formation",
+    "authors": "Weiss, D. et al.",
+    "year": 2021,
+    "journal": "J. Synth. Methods",
+    "topic": "photoredox",
+    "abstract": "An Ru(bpy)3-catalyzed photoredox protocol enables C-C bond formation between alpha-amino radicals and Michael acceptors under visible-light irradiation. Reactions proceed at room temperature in degassed acetonitrile, generating quaternary stereocenters with moderate diastereoselectivity. The method complements two-electron enolate chemistry by accessing radical intermediates that are difficult to generate under classical basic conditions, and was applied to the late-stage functionalization of three drug-like scaffolds."
+  },
+  {
+    "id": "C008",
+    "title": "Dual Photoredox/Nickel Catalysis for Aryl-Alkyl Cross-Coupling",
+    "authors": "Fujimoto, K. et al.",
+    "year": 2022,
+    "journal": "Adv. Catal. Lett.",
+    "topic": "photoredox",
+    "abstract": "Merging photoredox catalysis with nickel catalysis enables direct cross-coupling of aryl halides with unactivated alkyl radicals generated from carboxylic acid precursors via decarboxylation. The dual catalytic cycle operates under blue LED irradiation in DMSO, avoiding the need for pre-formed organometallic nucleophiles. This strategy expands the scope of cross-coupling beyond boronic acids and organozinc reagents to abundant, bench-stable carboxylic acid feedstocks."
+  },
+  {
+    "id": "C009",
+    "title": "Energy Transfer Photocatalysis for [2+2] Cycloadditions",
+    "authors": "Costa, M. et al.",
+    "year": 2020,
+    "journal": "J. Synth. Methods",
+    "topic": "photoredox",
+    "abstract": "Triplet energy transfer photocatalysis using an iridium photosensitizer promotes intramolecular [2+2] cycloadditions of tethered enones under mild conditions. Unlike direct UV irradiation, the triplet-sensitized pathway avoids competing Norrish-type fragmentation, improving yields of cyclobutane-fused products to 70-88% across a substrate series relevant to terpenoid natural product synthesis."
+  },
+  {
+    "id": "C010",
+    "title": "Organophotoredox Catalysts as Sustainable Alternatives to Iridium Complexes",
+    "authors": "Sato, Y. et al.",
+    "year": 2023,
+    "journal": "Green Chem. Reports",
+    "topic": "photoredox",
+    "abstract": "Metal-free organic photocatalysts based on acridinium salts are evaluated as replacements for iridium and ruthenium photoredox catalysts in radical cation Diels-Alder reactions. The organic catalysts show comparable quantum yields and improved recyclability from reaction mixtures via simple aqueous extraction, addressing cost and metal-contamination concerns for pharmaceutical-relevant photoredox transformations."
+  },
+  {
+    "id": "C011",
+    "title": "Mechanochemical Synthesis: Eliminating Solvent Waste in Amide Coupling",
+    "authors": "Dubois, A. et al.",
+    "year": 2021,
+    "journal": "Green Chem. Reports",
+    "topic": "green_chemistry",
+    "abstract": "Ball-mill mechanochemistry is applied to amide bond formation between carboxylic acids and amines, achieving yields comparable to solution-phase coupling reagents (HATU, DCC) without any solvent. Reaction times of 20-40 minutes of milling produced amides in 80-95% yield across 15 substrate pairs. Life-cycle analysis indicated a 90% reduction in process mass intensity relative to conventional DMF-based coupling protocols."
+  },
+  {
+    "id": "C012",
+    "title": "Deep Eutectic Solvents as Reaction Media for Aldol Condensations",
+    "authors": "Ivanova, S. et al.",
+    "year": 2019,
+    "journal": "Green Chem. Reports",
+    "topic": "green_chemistry",
+    "abstract": "Choline chloride/urea deep eutectic solvent was investigated as a biodegradable, low-toxicity medium for base-catalyzed aldol condensations. The DES both dissolves the reactants and stabilizes the enolate intermediate through hydrogen bonding, giving yields 10-15% higher than the same reaction in aqueous ethanol. The solvent was recycled five times with less than 8% loss in catalytic performance."
+  },
+  {
+    "id": "C013",
+    "title": "Supercritical CO2 as an Extraction and Reaction Medium in Flow Chemistry",
+    "authors": "Larsen, P. et al.",
+    "year": 2022,
+    "journal": "Green Chem. Reports",
+    "topic": "green_chemistry",
+    "abstract": "Supercritical carbon dioxide was used both as reaction solvent and in-line extraction medium for a hydrogenation-extraction tandem flow process. Tunable density of scCO2 allowed switching between homogeneous reaction conditions and biphasic product separation simply by adjusting pressure, eliminating a separate liquid-liquid extraction step and reducing organic solvent consumption by an estimated 95% relative to a conventional batch protocol."
+  },
+  {
+    "id": "C014",
+    "title": "Water as the Sole Solvent for Pd-Catalyzed Allylic Substitution",
+    "authors": "Mensah, K. et al.",
+    "year": 2020,
+    "journal": "Green Chem. Reports",
+    "topic": "green_chemistry",
+    "abstract": "A water-soluble Pd/TPPTS catalyst system enables Tsuji-Trost allylic substitution entirely in water, avoiding organic co-solvents commonly required for substrate solubility. Surfactant-free micellar aggregation of hydrophobic allylic substrates in water was sufficient to achieve turnover frequencies comparable to THF-based systems, and simplified catalyst recovery via simple phase separation after reaction."
+  },
+  {
+    "id": "C015",
+    "title": "RAFT Polymerization of Acrylamides for Stimuli-Responsive Hydrogels",
+    "authors": "Bergstrom, N. et al.",
+    "year": 2021,
+    "journal": "Polym. Chem. Frontiers",
+    "topic": "polymer_chemistry",
+    "abstract": "Reversible addition-fragmentation chain transfer (RAFT) polymerization was used to prepare well-defined poly(N-isopropylacrylamide) block copolymers with narrow dispersity (Mw/Mn less than 1.2). The resulting polymers self-assemble into hydrogels exhibiting a sharp lower critical solution temperature transition near 32 C, tunable by copolymerization with hydrophilic comonomers, with applications in controlled drug release."
+  },
+  {
+    "id": "C016",
+    "title": "ATRP-Derived Block Copolymers for Battery Separator Membranes",
+    "authors": "Wojcik, M. et al.",
+    "year": 2022,
+    "journal": "Polym. Chem. Frontiers",
+    "topic": "polymer_chemistry",
+    "abstract": "Atom transfer radical polymerization was used to synthesize triblock copolymers combining a mechanically robust polystyrene domain with an ion-conducting poly(ethylene oxide) domain. Cast as thin films, the microphase-separated copolymers function as battery separator membranes with ionic conductivities up to 0.4 mS/cm at room temperature, while maintaining sufficient mechanical integrity to suppress lithium dendrite penetration."
+  },
+  {
+    "id": "C017",
+    "title": "Ring-Opening Metathesis Polymerization of Norbornene Derivatives",
+    "authors": "Delacroix, F. et al.",
+    "year": 2020,
+    "journal": "Polym. Chem. Frontiers",
+    "topic": "polymer_chemistry",
+    "abstract": "Grubbs third-generation catalyst was used for living ring-opening metathesis polymerization of functionalized norbornene monomers, giving polymers with predictable molecular weight and dispersity below 1.1. Post-polymerization functionalization via thiol-ene click chemistry installed pendant fluorescent tags without disrupting the polymer backbone, enabling straightforward tracking of the material in downstream processing."
+  },
+  {
+    "id": "C018",
+    "title": "Self-Healing Polymer Networks via Dynamic Diels-Alder Crosslinks",
+    "authors": "Yamamoto, H. et al.",
+    "year": 2023,
+    "journal": "Polym. Chem. Frontiers",
+    "topic": "polymer_chemistry",
+    "abstract": "Thermoreversible Diels-Alder crosslinks between furan and maleimide pendant groups were incorporated into a polyurethane network, granting the material self-healing capability upon mild heating (80-90 C). Mechanical testing showed recovery of over 85% of original tensile strength after three damage-heal cycles, suggesting utility in coatings requiring extended service life."
+  },
+  {
+    "id": "C019",
+    "title": "High-Nickel Layered Cathodes for Long-Cycle-Life Lithium-Ion Batteries",
+    "authors": "Choudhury, R. et al.",
+    "year": 2021,
+    "journal": "Electrochem. Energy Mater.",
+    "topic": "electrochemistry",
+    "abstract": "NMC811 cathode materials were synthesized via co-precipitation and evaluated for cycling stability in lithium-ion full cells. A tungsten-doped surface coating suppressed cation mixing at the particle surface, improving capacity retention from 78% to 92% after 500 cycles at 1C, while maintaining an initial discharge capacity above 200 mAh/g."
+  },
+  {
+    "id": "C020",
+    "title": "Solid Polymer Electrolytes for Room-Temperature Sodium-Ion Batteries",
+    "authors": "Berg, A. et al.",
+    "year": 2022,
+    "journal": "Electrochem. Energy Mater.",
+    "topic": "electrochemistry",
+    "abstract": "A polyethylene oxide-based solid electrolyte doped with sodium bis(trifluoromethanesulfonyl)imide was characterized for use in sodium-ion batteries. Ionic conductivity reached 1.2 x 10^-4 S/cm at 25 C, sufficient for slow-charge applications, and the electrolyte suppressed dendrite formation over 200 plating/stripping cycles in symmetric cells."
+  },
+  {
+    "id": "C021",
+    "title": "Redox Flow Batteries Using Water-Soluble Quinone Anolytes",
+    "authors": "Petrova, I. et al.",
+    "year": 2019,
+    "journal": "Electrochem. Energy Mater.",
+    "topic": "electrochemistry",
+    "abstract": "An anthraquinone disulfonic acid anolyte was paired with a bromide catholyte in an aqueous redox flow battery, achieving a round-trip energy efficiency of 82% at 100 mA/cm2. Degradation studies over 500 cycles identified quinone dimerization as the primary capacity fade mechanism, motivating future substituent modifications to improve stability."
+  },
+  {
+    "id": "C022",
+    "title": "Electrocatalytic CO2 Reduction on Copper-Based Nanostructured Electrodes",
+    "authors": "Nguyen, T. et al.",
+    "year": 2023,
+    "journal": "Electrochem. Energy Mater.",
+    "topic": "electrochemistry",
+    "abstract": "Dendritic copper electrodeposits were evaluated for electrochemical CO2 reduction, showing enhanced selectivity toward C2+ products (ethylene, ethanol) relative to polycrystalline copper foil. Faradaic efficiency for C2+ products reached 58% at -0.9 V vs RHE, attributed to increased local CO concentration within the dendritic nanostructure promoting C-C coupling."
+  },
+  {
+    "id": "C023",
+    "title": "Structure-Activity Relationships of Kinase Inhibitor Scaffolds",
+    "authors": "Alberti, G. et al.",
+    "year": 2021,
+    "journal": "Med. Chem. Insights",
+    "topic": "medicinal_chemistry",
+    "abstract": "A series of pyrazolopyrimidine analogs were synthesized and evaluated against a panel of tyrosine kinases to establish structure-activity relationships. Introduction of a fluorine substituent at the 4-position improved selectivity for the target kinase by 15-fold while reducing off-target activity on a structurally related kinase implicated in cardiotoxicity."
+  },
+  {
+    "id": "C024",
+    "title": "Prodrug Strategies for Improving Oral Bioavailability of Poorly Soluble APIs",
+    "authors": "Osei, B. et al.",
+    "year": 2020,
+    "journal": "Med. Chem. Insights",
+    "topic": "medicinal_chemistry",
+    "abstract": "Phosphate ester prodrugs were designed to improve the aqueous solubility and oral bioavailability of a poorly water-soluble antifungal candidate. In vivo pharmacokinetic studies in rats showed a 4-fold increase in area-under-curve exposure relative to the parent compound, with rapid enzymatic conversion back to active drug in plasma."
+  },
+  {
+    "id": "C025",
+    "title": "Fragment-Based Drug Discovery Targeting Protein-Protein Interactions",
+    "authors": "Lindqvist, E. et al.",
+    "year": 2022,
+    "journal": "Med. Chem. Insights",
+    "topic": "medicinal_chemistry",
+    "abstract": "A fragment library was screened by surface plasmon resonance against a shallow protein-protein interaction interface implicated in inflammatory signaling. Two fragment hits were merged and elaborated through structure-guided synthesis into a lead compound with low micromolar binding affinity, representing a starting point for further optimization of this traditionally difficult target class."
+  },
+  {
+    "id": "C026",
+    "title": "Late-Stage C-H Fluorination for Pharmaceutical Analog Synthesis",
+    "authors": "Kowalski, D. et al.",
+    "year": 2019,
+    "journal": "Med. Chem. Insights",
+    "topic": "medicinal_chemistry",
+    "abstract": "A silver-mediated late-stage C-H fluorination protocol was applied directly to complex drug-like molecules, avoiding the need for de novo synthesis of fluorinated analogs. The method tolerates esters, amides, and heterocycles, enabling rapid generation of a fluorine-scanning analog series for metabolic stability assessment."
+  },
+  {
+    "id": "C027",
+    "title": "Two-Dimensional NMR Assignment Strategies for Complex Natural Products",
+    "authors": "Tanaka, R. et al.",
+    "year": 2020,
+    "journal": "Spectrosc. Applied",
+    "topic": "spectroscopy",
+    "abstract": "A combined HSQC-COSY-HMBC workflow is presented for full structural assignment of a polyketide natural product isolated in submilligram quantity. Careful analysis of long-range HMBC correlations resolved an ambiguity in ring connectivity that could not be settled from 1D NMR data alone, illustrating the value of multi-dimensional NMR for structure elucidation of scarce natural products."
+  },
+  {
+    "id": "C028",
+    "title": "In Situ Raman Spectroscopy for Monitoring Catalytic Reaction Progress",
+    "authors": "Fischer, J. et al.",
+    "year": 2021,
+    "journal": "Spectrosc. Applied",
+    "topic": "spectroscopy",
+    "abstract": "A fiber-optic Raman probe was integrated into a batch reactor to monitor a heterogeneously catalyzed hydrogenation in real time. Characteristic vibrational bands for the alkene starting material and saturated product were tracked throughout the reaction, allowing determination of reaction kinetics without the need for offline sampling and chromatographic analysis."
+  },
+  {
+    "id": "C029",
+    "title": "Infrared Spectroscopic Signatures of Nitro Group Vibrations in Energetic Materials",
+    "authors": "Volkov, S. et al.",
+    "year": 2022,
+    "journal": "Spectrosc. Applied",
+    "topic": "spectroscopy",
+    "abstract": "FTIR spectra of a series of nitroaromatic and nitramine compounds were analyzed to catalog characteristic asymmetric and symmetric NO2 stretching frequencies. Systematic shifts in stretching frequency correlated with electron density at the nitro-bearing carbon, providing a spectroscopic handle for rapid, non-destructive classification of unknown nitro-containing compounds in field settings."
+  },
+  {
+    "id": "C030",
+    "title": "Chemometric Analysis of UV-Vis Spectra for Reaction Endpoint Detection",
+    "authors": "Moreau, C. et al.",
+    "year": 2023,
+    "journal": "Spectrosc. Applied",
+    "topic": "spectroscopy",
+    "abstract": "Principal component analysis was applied to time-resolved UV-Vis spectra collected during a multistep one-pot synthesis, enabling automated detection of reaction endpoints without manual spectral interpretation. The chemometric model correctly flagged completion within 2 minutes of the endpoint determined by offline HPLC in 18 of 20 test runs."
+  },
+  {
+    "id": "C031",
+    "title": "DFT Benchmarking of Exchange-Correlation Functionals for Transition Metal Catalysis",
+    "authors": "Andersen, K. et al.",
+    "year": 2021,
+    "journal": "Comput. Chem. Studies",
+    "topic": "computational_chemistry",
+    "abstract": "A benchmark study compares B3LYP, M06, and omega-B97X-D functionals against high-level CCSD(T) reference energies for a set of palladium oxidative addition transition states relevant to cross-coupling catalysis. omega-B97X-D gave the closest agreement with reference barriers, while B3LYP systematically underestimated activation energies by 3-5 kcal/mol, a finding relevant to computational screening of new cross-coupling catalyst designs."
+  },
+  {
+    "id": "C032",
+    "title": "Machine-Learned Interatomic Potentials for Accelerated Molecular Dynamics",
+    "authors": "Zhou, W. et al.",
+    "year": 2022,
+    "journal": "Comput. Chem. Studies",
+    "topic": "computational_chemistry",
+    "abstract": "A neural network interatomic potential trained on DFT single-point energies was used to accelerate molecular dynamics simulations of a solid-electrolyte interphase model by three orders of magnitude relative to ab initio MD, while reproducing radial distribution functions within 5% of the reference DFT-MD trajectory."
+  },
+  {
+    "id": "C033",
+    "title": "QSPR Modeling of Detonation Velocity from Molecular Descriptors",
+    "authors": "Hassan, N. et al.",
+    "year": 2020,
+    "journal": "Comput. Chem. Studies",
+    "topic": "computational_chemistry",
+    "abstract": "A group-additivity quantitative structure-property relationship model was developed to predict detonation velocity of energetic compounds directly from molecular substructure counts, without requiring prior identification of the specific compound. The model achieved a mean absolute error of under 3% across a validation set spanning nitroaromatic, nitramine, and nitrate ester compound classes, and was shown to generalize reasonably to novel, previously uncharacterized candidate molecules."
+  },
+  {
+    "id": "C034",
+    "title": "Transfer Learning for Reaction Yield Prediction Across Chemical Reaction Classes",
+    "authors": "Ferreira, L. et al.",
+    "year": 2023,
+    "journal": "Comput. Chem. Studies",
+    "topic": "computational_chemistry",
+    "abstract": "A transformer-based model pretrained on a large corpus of high-throughput experimentation data was fine-tuned to predict yields for a new class of reactions with only a few hundred labeled examples. Transfer learning improved prediction R2 from 0.41 (trained from scratch) to 0.77 (fine-tuned), demonstrating the value of pretraining for low-data reaction optimization campaigns."
+  },
+  {
+    "id": "C035",
+    "title": "Mesoporous Silica-Supported Palladium Nanoparticles for Heterogeneous Catalysis",
+    "authors": "Kim, S. et al.",
+    "year": 2021,
+    "journal": "Nano Catal. Today",
+    "topic": "nanomaterials",
+    "abstract": "Palladium nanoparticles supported on SBA-15 mesoporous silica were prepared by wet impregnation and evaluated for hydrogenation of nitroarenes. The confined mesopore environment limited nanoparticle sintering during repeated use, maintaining greater than 90% conversion over ten reaction cycles, compared to a 40% drop in activity for unsupported palladium black over the same number of cycles."
+  },
+  {
+    "id": "C036",
+    "title": "Gold Nanoparticle Catalysts for Aerobic Alcohol Oxidation",
+    "authors": "Rossi, F. et al.",
+    "year": 2020,
+    "journal": "Nano Catal. Today",
+    "topic": "nanomaterials",
+    "abstract": "Citrate-stabilized gold nanoparticles of controlled size (3-8 nm) were tested for aerobic oxidation of benzylic alcohols to aldehydes using molecular oxygen as the terminal oxidant. Catalytic activity scaled inversely with particle size, consistent with a surface-area-dependent mechanism, and the smallest nanoparticles achieved full conversion within 4 hours at 80 C without over-oxidation to the carboxylic acid."
+  },
+  {
+    "id": "C037",
+    "title": "Metal-Organic Framework Catalysts for Selective CO2 Cycloaddition",
+    "authors": "Aboud, Y. et al.",
+    "year": 2022,
+    "journal": "Nano Catal. Today",
+    "topic": "nanomaterials",
+    "abstract": "A zinc-based metal-organic framework bearing accessible Lewis acidic sites was evaluated as a heterogeneous catalyst for cycloaddition of CO2 with epoxides to form cyclic carbonates. The framework maintained catalytic activity across five recycling runs and outperformed a homogeneous zinc salt analog under identical conditions, attributed to the confined pore environment concentrating both reactants near the active site."
+  },
+  {
+    "id": "C038",
+    "title": "Discovery of a Tandem C-H Borylation/Suzuki Relay: The Kessler-Onyema Coupling",
+    "authors": "Kessler, F. and Onyema, U.",
+    "year": 2026,
+    "journal": "Frontiers in Cross-Coupling Chemistry",
+    "topic": "fictional_reaction",
+    "abstract": "We report a previously undescribed tandem process, herein termed the Kessler-Onyema coupling, in which an Ir-catalyzed C-H borylation is directly relayed into a Suzuki-Miyaura coupling within a single reaction vessel, without isolation of the intermediate boronate ester. The two catalytic cycles are compatibilized using a mixed dioxane/water/tert-amyl alcohol solvent system, which supports both the anhydrous borylation step and the subsequent aqueous-base-mediated coupling step. Across 19 heteroarene substrates, one-pot yields of the biaryl products averaged 71%, outperforming the corresponding two-step, two-solvent sequence (average 52% over two steps) and eliminating a chromatographic purification of the boronate intermediate. Catalyst loadings of 2 mol% Ir and 3 mol% Pd were required; lower Pd loadings led to incomplete consumption of the in-situ-generated boronate before protodeboronation became competitive. This tandem strategy is expected to streamline the synthesis of unsymmetrical heterobiaryl fragments common in agrochemical and pharmaceutical discovery programs."
+  },
+  {
+    "id": "C039",
+    "title": "Organocatalytic Enantioselective Michael Additions Using Cinchona Alkaloids",
+    "authors": "Bianchi, E. et al.",
+    "year": 2019,
+    "journal": "Adv. Catal. Lett.",
+    "topic": "misc_catalysis",
+    "abstract": "A cinchona-alkaloid-derived thiourea catalyst promotes enantioselective Michael addition of malonate nucleophiles to nitroolefins, giving products in up to 96% ee. The reaction proceeds in toluene at -20 C, and catalyst loading could be reduced to 2 mol% without loss of enantioselectivity, making the protocol practical for gram-scale synthesis of chiral building blocks."
+  },
+  {
+    "id": "C040",
+    "title": "Directed C-H Activation for Site-Selective Arene Functionalization",
+    "authors": "Meunier, P. et al.",
+    "year": 2021,
+    "journal": "Adv. Catal. Lett.",
+    "topic": "misc_catalysis",
+    "abstract": "A removable pyridine-based directing group enables palladium-catalyzed ortho C-H functionalization of arylacetic acid derivatives with high site selectivity. The directing group is installed and removed in one step each, and the overall sequence was applied to introduce iodide, acetoxy, and alkenyl substituents at the previously inaccessible ortho position of 12 substrates."
+  }
+]

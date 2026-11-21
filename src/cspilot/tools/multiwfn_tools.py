@@ -1,4 +1,5 @@
 """Local, allowlisted Multiwfn 3.8 analyses; never accept raw menu input."""
+
 from __future__ import annotations
 
 import json
@@ -24,13 +25,18 @@ MENU_MAP = {
 
 
 def analyze_wavefunction(
-    input_path: str | Path, workdir: str | Path, analysis: str = "mulliken",
+    input_path: str | Path,
+    workdir: str | Path,
+    analysis: str = "mulliken",
     timeout: int = 120,
 ) -> dict[str, Any]:
     """Analyze a GBW (converted in isolation), Molden or formatted checkpoint file."""
     result: dict[str, Any] = {
-        "success": False, "tool": "multiwfn_analysis", "error": None,
-        "metadata": {"menu_version": "3.8", "analysis": analysis}, "files": {},
+        "success": False,
+        "tool": "multiwfn_analysis",
+        "error": None,
+        "metadata": {"menu_version": "3.8", "analysis": analysis},
+        "files": {},
     }
     try:
         if analysis not in MENU_MAP:
@@ -41,7 +47,9 @@ def analyze_wavefunction(
         if not source.is_file():
             raise ValueError(f"Wavefunction file does not exist: {source}")
         if source.suffix.lower() not in {".gbw", ".molden", ".input", ".fch", ".fchk"}:
-            raise ValueError("Use .gbw, .molden, .molden.input, .fch or .fchk; .out is not a wavefunction")
+            raise ValueError(
+                "Use .gbw, .molden, .molden.input, .fch or .fchk; .out is not a wavefunction"
+            )
         settings = load_settings()
         binary = shutil.which(settings.multiwfn_command)
         if not binary:
@@ -49,7 +57,10 @@ def analyze_wavefunction(
         root = make_run_dir(Path(workdir).resolve(), f"multiwfn-{analysis}")
         result["workdir"] = str(root)
         result["source_file"] = str(source)
-        local = root / ("wavefunction" + (".molden.input" if source.name.endswith(".molden.input") else source.suffix))
+        local = root / (
+            "wavefunction"
+            + (".molden.input" if source.name.endswith(".molden.input") else source.suffix)
+        )
         shutil.copy2(source, local)
         if source.suffix.lower() == ".gbw":
             converter = shutil.which(settings.orca_2mkl_command)
@@ -58,9 +69,16 @@ def analyze_wavefunction(
                 candidate = Path(orca).with_name("orca_2mkl") if orca else None
                 converter = str(candidate) if candidate and candidate.is_file() else None
             if not converter:
-                raise ValueError("GBW conversion needs ORCA_2MKL_COMMAND or orca_2mkl beside ORCA_COMMAND")
-            converted = subprocess.run([converter, "wavefunction", "-molden"], cwd=root,
-                                       capture_output=True, text=True, timeout=timeout)
+                raise ValueError(
+                    "GBW conversion needs ORCA_2MKL_COMMAND or orca_2mkl beside ORCA_COMMAND"
+                )
+            converted = subprocess.run(
+                [converter, "wavefunction", "-molden"],
+                cwd=root,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+            )
             log = root / "conversion.log"
             log.write_text(converted.stdout + converted.stderr, encoding="utf-8")
             result["files"]["conversion_log"] = str(log)
@@ -74,8 +92,15 @@ def analyze_wavefunction(
         result["files"]["menu"] = str(commands)
         env = {**os.environ, "OMP_NUM_THREADS": "1", "OMP_STACKSIZE": "200M"}
         env.setdefault("Multiwfnpath", str(Path(binary).resolve().parent))
-        process = subprocess.run([binary, str(local), "-nt", "1"], input=script,
-                                 capture_output=True, text=True, cwd=root, env=env, timeout=timeout)
+        process = subprocess.run(
+            [binary, str(local), "-nt", "1"],
+            input=script,
+            capture_output=True,
+            text=True,
+            cwd=root,
+            env=env,
+            timeout=timeout,
+        )
         output = root / "multiwfn.out"
         output.write_text(process.stdout, encoding="utf-8")
         stderr = root / "multiwfn.err"
@@ -83,7 +108,9 @@ def analyze_wavefunction(
         result["files"].update(output=str(output), stderr=str(stderr))
         result["metadata"]["returncode"] = process.returncode
         if process.returncode:
-            raise ValueError(f"Multiwfn exited with code {process.returncode}; see output and stderr")
+            raise ValueError(
+                f"Multiwfn exited with code {process.returncode}; see output and stderr"
+            )
         if not re.search(r"Version\s+3\.8\b", process.stdout):
             raise ValueError("Unvalidated Multiwfn version; expected 3.8")
         if analysis == "mayer":

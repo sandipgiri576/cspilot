@@ -1,0 +1,108 @@
+{
+  "success": true,
+  "tool": "answer_literature_question",
+  "error": null,
+  "metadata": {},
+  "question": "Which solvents are reported for Suzuki coupling?",
+  "answer": "The literature reports the following solvents (or solvent mixtures) as suitable for Suzuki\u2011type cross\u2011coupling reactions:\n\n| Solvent or solvent mixture | Source |\n|----------------------------|--------|\n| THF | [1] |\n| 1,4\u2011Dioxane | [1] |\n| DMF | [1] |\n| Toluene | [1], [3] |\n| Ethanol | [1], [2], [5] |\n| Ethanol\u202f/\u202fwater (3:1, 4:1, or other ratios) | [2], [3], [4], [5] |\n| THF\u202f/\u202fwater | [4], [5] |\n| Dioxane\u202f/\u202fwater | [3], [5] |\n| Acetonitrile (in mixtures) | [4] |\n\nThus, the solvents reported for Suzuki coupling include THF, 1,4\u2011dioxane, DMF, toluene, ethanol, and water (often as a co\u2011solvent or in mixed systems such as THF/water, dioxane/water, or ethanol/water).",
+  "model": "openai/gpt-oss-20b",
+  "matches": [
+    {
+      "chunk_id": "C002:0",
+      "document_id": "C002",
+      "text": "The rate of transmetalation in Pd-catalyzed Suzuki coupling was studied across a panel of solvents including THF, 1,4-dioxane, DMF, toluene, and ethanol, each with an aqueous co-solvent. Kinetic profiling showed that polar aprotic solvents (DMF, dioxane) accelerate boronate formation but can promote protodeboronation of heteroaryl boronic acids at elevated temperature. Toluene/water biphasic systems gave the slowest but most selective transmetalation, useful for sensitive substrates. Ethanol/water mixtures balanced rate and selectivity for most benchmark couplings. The study provides a practical solvent-selection guide for chemists optimizing Suzuki couplings on unfamiliar substrates.",
+      "title": "Solvent Effects on Transmetalation Rates in Suzuki-Type Cross-Coupling",
+      "doi": null,
+      "url": null,
+      "source": "/home/chemgiri/project/cspilot/data/demo/chemistry_abstracts.json",
+      "page": null,
+      "score": 0.7209770083427429
+    },
+    {
+      "chunk_id": "C003:0",
+      "document_id": "C003",
+      "text": "A ligand-free Pd(OAc)2-catalyzed Suzuki coupling protocol is described that operates in ethanol/water (3:1) at room temperature. The absence of phosphine ligands simplifies purification and reduces cost. Aryl bromides and iodides couple with arylboronic acids in yields of 65-92% using K3PO4 as base. Aryl chlorides remained largely unreactive under these mild, ligand-free conditions, indicating that oxidative addition, not solvent choice, is rate-limiting for less activated electrophiles. This work highlights ethanol/water as a sustainable solvent system for Suzuki couplings of activated aryl halides.",
+      "title": "Ligand-Free Suzuki Coupling in Ethanol-Water Mixtures",
+      "doi": null,
+      "url": null,
+      "source": "/home/chemgiri/project/cspilot/data/demo/chemistry_abstracts.json",
+      "page": null,
+      "score": 0.618584930896759
+    },
+    {
+      "chunk_id": "C005:0",
+      "document_id": "C005",
+      "text": "This comparative study examines solvent requirements for Buchwald-Hartwig amination and Suzuki-Miyaura coupling when performed sequentially on the same substrate without intermediate purification. Toluene proved compatible with both transformations, while dioxane/water mixtures used for Suzuki coupling required careful drying before the subsequent amination step. A one-pot toluene-based protocol combining both couplings is described, avoiding solvent switches and improving overall yield of a biaryl-amine building block from 58% (stepwise, two solvents) to 79% (one-pot, toluene only).",
+      "title": "Buchwald-Hartwig Amination versus Suzuki Coupling: A Solvent Compatibility Study",
+      "doi": null,
+      "url": null,
+      "source": "/home/chemgiri/project/cspilot/data/demo/chemistry_abstracts.json",
+      "page": null,
+      "score": 0.6129897832870483
+    },
+    {
+      "chunk_id": "C004:0",
+      "document_id": "C004",
+      "text": "A continuous-flow reactor was developed for Suzuki-Miyaura coupling of pharmaceutically relevant heteroaryl fragments. THF/water was selected as the flow-compatible solvent system after screening dioxane, DMF, and acetonitrile mixtures, based on solubility of both the palladium catalyst and inorganic base. Residence times of 4-6 minutes at 100 C gave conversions exceeding 90% for pyridyl and pyrimidyl boronates. The flow process reduced catalyst loading from 3 mol% (batch) to 0.5 mol% while maintaining yield, illustrating how solvent and reactor engineering jointly improve process efficiency for cross-coupling steps in drug synthesis.",
+      "title": "Continuous-Flow Suzuki-Miyaura Coupling for Pharmaceutical Intermediates",
+      "doi": null,
+      "url": null,
+      "source": "/home/chemgiri/project/cspilot/data/demo/chemistry_abstracts.json",
+      "page": null,
+      "score": 0.5913196206092834
+    },
+    {
+      "chunk_id": "C001:0",
+      "document_id": "C001",
+      "text": "We report a broadly applicable protocol for Suzuki-Miyaura cross-coupling of aryl chlorides with boronic acids using a Pd/XPhos precatalyst system. Reactions proceed efficiently in dioxane/water (4:1) at 60-80 C with K2CO3 as base, reaching full conversion within 2 hours for electron-neutral and electron-rich substrates. Electron-poor aryl chlorides required switching to a THF/water mixture with Cs2CO3 to suppress protodeboronation. Ethanol/water was also evaluated and gave comparable yields for sterically unhindered couplings, offering a greener alternative to dioxane. The method tolerates free amines, esters, and unprotected phenols, and was demonstrated on 24 substrates with isolated yields of 74-96%.",
+      "title": "Aqueous-Compatible Suzuki-Miyaura Couplings Using Pd/XPhos Precatalysts",
+      "doi": null,
+      "url": null,
+      "source": "/home/chemgiri/project/cspilot/data/demo/chemistry_abstracts.json",
+      "page": null,
+      "score": 0.47820454835891724
+    }
+  ],
+  "citations": [
+    {
+      "number": 1,
+      "title": "Solvent Effects on Transmetalation Rates in Suzuki-Type Cross-Coupling",
+      "doi": null,
+      "url": null,
+      "source": "/home/chemgiri/project/cspilot/data/demo/chemistry_abstracts.json",
+      "page": null
+    },
+    {
+      "number": 2,
+      "title": "Ligand-Free Suzuki Coupling in Ethanol-Water Mixtures",
+      "doi": null,
+      "url": null,
+      "source": "/home/chemgiri/project/cspilot/data/demo/chemistry_abstracts.json",
+      "page": null
+    },
+    {
+      "number": 3,
+      "title": "Buchwald-Hartwig Amination versus Suzuki Coupling: A Solvent Compatibility Study",
+      "doi": null,
+      "url": null,
+      "source": "/home/chemgiri/project/cspilot/data/demo/chemistry_abstracts.json",
+      "page": null
+    },
+    {
+      "number": 4,
+      "title": "Continuous-Flow Suzuki-Miyaura Coupling for Pharmaceutical Intermediates",
+      "doi": null,
+      "url": null,
+      "source": "/home/chemgiri/project/cspilot/data/demo/chemistry_abstracts.json",
+      "page": null
+    },
+    {
+      "number": 5,
+      "title": "Aqueous-Compatible Suzuki-Miyaura Couplings Using Pd/XPhos Precatalysts",
+      "doi": null,
+      "url": null,
+      "source": "/home/chemgiri/project/cspilot/data/demo/chemistry_abstracts.json",
+      "page": null
+    }
+  ]
+}

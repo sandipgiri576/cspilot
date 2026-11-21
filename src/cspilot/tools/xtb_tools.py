@@ -14,6 +14,7 @@ def optimize_with_xtb(
     charge: int,
     uhf: int,
 ) -> tuple[bool, str, ProcessResult | None, dict[str, str]]:
+    """Optimize a structure with the configured xTB executable."""
     if not executable_available(settings.xtb_command):
         return False, f"Executable not found: {settings.xtb_command}", None, {}
 

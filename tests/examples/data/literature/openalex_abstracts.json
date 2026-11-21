@@ -1,0 +1,625 @@
+[
+  {
+    "id": "W2899908754",
+    "title": "The application of DFT in catalysis and adsorption reaction system",
+    "authors": [
+      "Weijing Ding",
+      "Zhou Wei-hong",
+      "Zhang Xiaodong",
+      "Zhao Baofeng",
+      "Lei Chen",
+      "Sun Laizhi",
+      "Shuangxia Yang",
+      "Guan Haibin",
+      "Guanyi Chen",
+      "Zhu Liang",
+      "Ge Song"
+    ],
+    "year": 2018,
+    "journal": "Energy Procedia",
+    "doi": "https://doi.org/10.1016/j.egypro.2018.09.106",
+    "url": "https://doi.org/10.1016/j.egypro.2018.09.106",
+    "open_access_url": null,
+    "abstract": "Density function theory (DFT) can be used to investigate the mechanisms of complex catalysis and adsorption reactions. On this basis, the application of DFT in catalysis/adsorption reaction system is summarized in this paper. Then it puts forward ideas for research, explores the DFT simulation of CO2 adsorption and tar removal in biomass thermal conversion and eventually lays a foundation for experimental and theoretical exploration."
+  },
+  {
+    "id": "W3144749657",
+    "title": "Density Functional Theory (DFT) Calculations and Catalysis",
+    "authors": [
+      "Yong-Kul Lee"
+    ],
+    "year": 2021,
+    "journal": "Catalysts",
+    "doi": "https://doi.org/10.3390/catal11040454",
+    "url": "https://doi.org/10.3390/catal11040454",
+    "open_access_url": "https://www.mdpi.com/2073-4344/11/4/454/pdf?version=1617938930",
+    "abstract": "Catalysis plays a fundamental role in the establishment of sustainable chemical technologies that are efficient in terms of energy and atoms [...]"
+  },
+  {
+    "id": "W7167794749",
+    "title": "DFT in Surface Science and Catalysis",
+    "authors": [
+      "Mohammd Ammar Syaahiran Alim",
+      "Roshan Thotagamuge"
+    ],
+    "year": 2026,
+    "journal": "Springer eBooks",
+    "doi": "https://doi.org/10.1007/978-981-95-9745-1_7",
+    "url": "https://doi.org/10.1007/978-981-95-9745-1_7",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2889969478",
+    "title": "Synergistic Application of XPS and DFT to Investigate Metal Oxide Surface Catalysis",
+    "authors": [
+      "Quang Thang Tr\u1ecbnh",
+      "Kartavya Bhola",
+      "Prince Nana Amaniampong",
+      "Fran\u00e7ois J\u00e9r\u00f4me",
+      "Samir H. Mushrif"
+    ],
+    "year": 2018,
+    "journal": "The Journal of Physical Chemistry C",
+    "doi": "https://doi.org/10.1021/acs.jpcc.8b05499",
+    "url": "https://doi.org/10.1021/acs.jpcc.8b05499",
+    "open_access_url": null,
+    "abstract": "To investigate metal oxide surface catalysis, determining an appropriate Hubbard U -correction term is a challenge for the density functional theory (DFT) community and identifying realistic reaction intermediates and their corresponding X-ray photoelectron spectroscopy (XPS) shifts is a challenge for experimental researchers, when these methods are used independently. In this study, using CuO as a model transition metal oxide, we demonstrate that when DFT and XPS are applied synergistically, the determination of the U value and the identification of adsorbate/intermediate species on the surface (and their XPS shifts) can be done simultaneously. The experimental O 1s spectra of the as-synthesized CuO 2D-nanoleaves shows the presence of four different peaks with core level binding energies (CLBEs) of 529.7, 531.4, 533.2, and 534.6 eV. DFT is used to calculate the CLBE shifts for probable adsorbed moieties, in various adsorption configurations, on both, clean and vacancy defect containing surfaces. Comparison of experimental and theoretical CLBEs across the entire U value range of 0\u20139 eV narrows down the list to only four moieties, namely, O 2 in the \u03b7 1 (O) configuration, H 2 O at the surface oxygen vacancy site, and adsorbed HCO 3 and HCO 2 (resembling adsorbed HCO 3 ). Finally, the U value of 4\u20134.5 eV reproduces the experimental CLBE shifts correctly and thus, establishes these experimental XPS spectral peaks to the adsorbates and their geometries. The integrated approach elucidated in this article, results in the identification of adsorbates/intermediates (and their CLBEs) for the experimental XPS spectral analysis and the determination of an appropriate U value concurrently, to study metal oxide surface catalysis."
+  },
+  {
+    "id": "W7115704075",
+    "title": "DFT in catalysis: Complex equations for practical computing applications in chemistry",
+    "authors": [
+      "Artur Brotons\u2010Rufes",
+      "Sergio Posada P\u00e9rez",
+      "Albert Poater"
+    ],
+    "year": 2025,
+    "journal": "Digital Chemical Engineering",
+    "doi": "https://doi.org/10.1016/j.dche.2025.100285",
+    "url": "https://doi.org/10.1016/j.dche.2025.100285",
+    "open_access_url": null,
+    "abstract": "Density Functional Theory (DFT) has become the cornerstone of modern computational catalysis, providing a practical balance between accuracy and efficiency in describing molecular structure, bonding, and reactivity. This review presents a comprehensive overview of DFT methodology, from its quantum-mechanical foundations and basis-set construction to the hierarchy of exchange\u2013correlation functionals defined by Jacob\u2019s ladder. We discuss how DFT enables mechanistic elucidation of homogeneous and heterogeneous catalytic processes, highlighting benchmark studies that compare functional performance across representative reactions and transition states. Key interpretative tools, such as bond order analysis (Mayer, Wiberg, AIM/QTAIM), Natural Bond Orbital (NBO) theory, Energy Decomposition Analysis (EDA), and Non-Covalent Interaction (NCI) plots, are introduced as essential descriptors linking electronic structure to reactivity. The review also explores the integration of DFT with machine learning, microkinetic modeling, and automated reaction discovery, outlining recent advances toward predictive catalysis. Collectively, this work provides both conceptual and practical guidance for applying DFT to catalytic problems, emphasizing methodological awareness, descriptor-based interpretation, and emerging data-driven strategies for rational catalyst design. However, the main take-home message is that for DFT calculations, while in-depth methodological expertise is not essential, a clear comprehension of the theory\u2019s practical application is crucial."
+  },
+  {
+    "id": "W1999364643",
+    "title": "Tungsten Oxide in Catalysis and Photocatalysis: Hints from DFT",
+    "authors": [
+      "Cristiana Di Valentin",
+      "Fenggong Wang",
+      "Gianfranco Pacchioni"
+    ],
+    "year": 2013,
+    "journal": "Topics in Catalysis",
+    "doi": "https://doi.org/10.1007/s11244-013-0147-6",
+    "url": "https://doi.org/10.1007/s11244-013-0147-6",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2980612353",
+    "title": "Multihole water oxidation catalysis on haematite photoanodes revealed by operando spectroelectrochemistry and DFT",
+    "authors": [
+      "Camilo Arturo Mesa",
+      "Laia Franc\u00e0s",
+      "Ke Yang",
+      "Pablo Garrido\u2010Barros",
+      "Ernest Pastor",
+      "Yimeng Ma",
+      "Andreas Kafizas",
+      "Timothy E. Rosser",
+      "Matthew T. Mayer",
+      "Erwin Reisner",
+      "Micha\u00ebl Gr\u00e4tzel",
+      "V\u00edctor S. Batista",
+      "James Robert Durrant"
+    ],
+    "year": 2019,
+    "journal": "Nature Chemistry",
+    "doi": "https://doi.org/10.1038/s41557-019-0347-1",
+    "url": "https://doi.org/10.1038/s41557-019-0347-1",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2063575643",
+    "title": "DFT calculations of EPR parameters of transition metal complexes: Implications for catalysis",
+    "authors": [
+      "Alexander C. Saladino",
+      "Sarah C. Larsen"
+    ],
+    "year": 2005,
+    "journal": "Catalysis Today",
+    "doi": "https://doi.org/10.1016/j.cattod.2005.04.018",
+    "url": "https://doi.org/10.1016/j.cattod.2005.04.018",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2251697413",
+    "title": "Tungsten oxide in catalysis and photocatlysis: hints from DFT",
+    "authors": [
+      "Gianfranco Pacchioni"
+    ],
+    "year": 2013,
+    "journal": "BOA (University of Milano-Bicocca)",
+    "doi": null,
+    "url": "http://hdl.handle.net/10281/51074",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2263049908",
+    "title": "DFT as a Powerful Predictive Tool in Photoredox Catalysis: Redox Potentials and Mechanistic Analysis",
+    "authors": [
+      "Taye Beyene Demissie",
+      "Kenneth Ruud",
+      "J\u00f8rn H. Hansen"
+    ],
+    "year": 2015,
+    "journal": "Organometallics",
+    "doi": "https://doi.org/10.1021/acs.organomet.5b00582",
+    "url": "https://doi.org/10.1021/acs.organomet.5b00582",
+    "open_access_url": null,
+    "abstract": "Visible-light photoredox catalysis has come forth as a powerful activation mode in chemical synthesis, affording the development of a multitude of new strategies for molecular construction. However, detailed mechanistic knowledge of the various subprocesses involved is lacking, and new tools for addressing this are needed to drive innovation forward in the area. Herein, we describe predictions of ground- and excited-state redox potentials of ruthenium and iridium photocatalysts using nonrelativistic and scalar relativistic zero-order regular approximation density functional theory (DFT) methods. The computed redox potentials were correlated with experimental values and found to reproduce them well. Relativistic corrections were found to be important to reproduce experimental data. Moreover, the computational protocol allows us to estimate redox potentials that are not currently available in the literature or are difficult to determine experimentally. The mechanistic details of the photocatalyzed C\u2013H functionalization of 1-methylindole with diethyl bromomalonate were also studied using the validated DFT method. We demonstrate how DFT can predict the experimentally observed redox behavior of common photocatalysts and mechanistic details of the C\u2013H functionalization process. This work demonstrates that DFT can be a powerful tool for innovation and design in the field of visible-light photoredox catalysis by predicting redox properties and mechanistic behavior."
+  },
+  {
+    "id": "W2089841522",
+    "title": "DFT studies on key intermediates in thiamin catalysis",
+    "authors": [
+      "Rudolf Friedemann",
+      "Kai Tittmann",
+      "Ralph Peter Golbik",
+      "Gerhard H\u00fcbner"
+    ],
+    "year": 2004,
+    "journal": "International Journal of Quantum Chemistry",
+    "doi": "https://doi.org/10.1002/qua.20132",
+    "url": "https://doi.org/10.1002/qua.20132",
+    "open_access_url": null,
+    "abstract": "The diphosphate ester (ThDP) of thiamin (vitamin B1) is an important cofactor of enzymes within the carbohydrate metabolism. From experiments of site\u2010specific variants and nuclear magnetic resonance (NMR) studies, it is known that the protonation of the N1\u2032 atom is a significant step in the coenzyme activation by the enzymatic environment. Therefore, we have performed density functional theory (DFT) calculations on the B3LYP/6\u201031G* level of N1\u2032H and N1\u2032CH3 thiamin as model systems to study the protonation and methylation effect on the structure and the electronic properties of the 4\u2032\u2010amino group. The relaxed rotational barriers related to the C4\u2032\u20104\u2032N bond are correlated with findings of 1H NMR studies and proton/deuterium exchange experiments. Moreover, the effect of N1\u2032 protonation was studied in more detail on the hydroxyethyl\u2010thiamin carbanion (HETh\u2212), a key intermediate during catalysis of some ThDP\u2010dependent enzymes. The relaxed rotational barriers related to the C2\uf8ffC2\u03b1 bond and the reaction coordinates of the proton transfer 4\u2032N\uf8ffH\u2192C2\u03b1 of HETh\u2212 and N1\u2032H\u2010HETh\u2212 show that they are significantly determined by the protonation at N1\u2032 of HETh\u2212. The influence of the apoenzyme environment on the active coenzyme conformation is modeled in a very simple way. The characteristic torsion angles \u03a6T and \u03a6P are considered to be restricted in terms of their values in the corresponding enzyme as well as free optimization parameters. Frequency calculations were performed to characterize the minima and transition state structures, respectively. The applicability of the DFT method was checked by comparing calculations on the MP2\u2010HF\u2010SCF/6\u201031G* level. \u00a9 2004 Wiley Periodicals, Inc. Int J Quantum Chem, 2004"
+  },
+  {
+    "id": "W1501098776",
+    "title": "Applications of Hybrid DFT/Molecular Mechanics to Homogeneous Catalysis",
+    "authors": [
+      "Gregori Ujaque",
+      "Feliu Maseras"
+    ],
+    "year": 2004,
+    "journal": "Structure and bonding",
+    "doi": "https://doi.org/10.1007/b97938",
+    "url": "https://doi.org/10.1007/b97938",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2790374402",
+    "title": "DFT study of stabilization effects on N-doped graphene for ORR catalysis",
+    "authors": [
+      "Mateusz Reda",
+      "Heine Anton Hansen",
+      "Tejs Vegge"
+    ],
+    "year": 2018,
+    "journal": "Catalysis Today",
+    "doi": "https://doi.org/10.1016/j.cattod.2018.02.015",
+    "url": "https://doi.org/10.1016/j.cattod.2018.02.015",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2084274248",
+    "title": "Theoretical (DFT) Insights into the Mechanism of Copper-Catalyzed Cyclopropanation Reactions. Implications for Enantioselective Catalysis",
+    "authors": [
+      "Jos\u00e9 Mar\u00eda Fraile",
+      "Jos\u00e9 Ignacio Garc\u00eda",
+      "V\u00edctor Mart\u00ednez\u2010Merino",
+      "Jose Antonio Mayoral",
+      "Luis Salvatella"
+    ],
+    "year": 2001,
+    "journal": "Journal of the American Chemical Society",
+    "doi": "https://doi.org/10.1021/ja003695c",
+    "url": "https://doi.org/10.1021/ja003695c",
+    "open_access_url": null,
+    "abstract": "The mechanism of the copper(I)-catalyzed cyclopropanation reaction has been extensively investigated for a medium-size reaction model by means of B3LYP/6-31G(d) calculations. The starting ethylene complex of the N,N'-dimethylmalonaldiimine--copper (I) catalyst undergoes a ligand exchange with methyl diazoacetate to yield a reaction intermediate, which subsequently undergoes nitrogen extrusion to generate a copper--carbene complex. The cyclopropanation step takes place through a direct carbene insertion of the metal--carbene species to yield a catalyst--product complex, which can finally regenerate the starting complex. The stereochemical predictions of a more realistic model (by considering a chiral bis(oxazoline)--copper (I) catalyst) have been rationalized in terms of steric repulsions, showing good agreement with experimental data."
+  },
+  {
+    "id": "W2034576058",
+    "title": "para\u2010Functionalized NCN\u2010Pincer Palladium( II ) Complexes: Synthesis, Catalysis and DFT Calculations",
+    "authors": [
+      "Harmen P. Dijkstra",
+      "Martijn Q. Slagt",
+      "Aidan R. McDonald",
+      "C.A. Kruithof",
+      "Robert Kreiter",
+      "Allison M. Mills",
+      "Martin Lutz",
+      "Anton L. Spek",
+      "Wim Klopper",
+      "G.P.M. Van Klink",
+      "Gerard van Koten"
+    ],
+    "year": 2003,
+    "journal": "European Journal of Inorganic Chemistry",
+    "doi": "https://doi.org/10.1002/ejic.200390113",
+    "url": "https://doi.org/10.1002/ejic.200390113",
+    "open_access_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/ejic.200390113",
+    "abstract": "Several para\u2010substituted NCN\u2010pincer palladium(II) complexes (1a\u2212g and 6a\u2212g) {NCN = [C6H3(CH2NMe2)2\u20102,6]\u2212, para = 4\u2010position} have been prepared and the electronic influences of the para substituents were studied in catalysis as well as by DFT calculations (B3LYP/LANL2DZ). From DFT calculations, it was found that the para substituent exerts only a minor effect on the partial charge, investigated by means of the Mulliken population analysis, at the palladium(II) center. Also, when the para\u2010functionalized, cationic NCN\u2212PdII complexes 6a\u2212g were applied as Lewis acid catalysts in the double Michael reaction between methyl vinyl ketone and ethyl \u03b1\u2010cyanoacetate, only small differences in the activities of the various catalysts were observed. These results, when translated to immobilized multipincer catalysts, imply that various para functionalities can be used for immobilization of the pincer\u2212metal complexes without affecting the catalytic activity of the individual sites. The application of a number of shape\u2010persistent nanosize (NCN\u2212PdII)n complexes (7, n = 3; 8, n = 3; 9, n = 8; 10, n = 12) as homogeneous catalysts in the same Michael reaction, confirmed this expectation. For complexes 7, 8 and 9, the catalytic activity per PdII center was found to be the same as for the monopincer analogs. Only dodecakis(NCN\u2212PdII) complex 10 showed an almost threefold enhancement in catalytic activity per PdII center, which is ascribed to the high catalyst concentration at the periphery of this material. (\u00a9 Wiley\u2010VCH Verlag GmbH & Co. KGaA, 69451 Weinheim, Germany, 2003)"
+  },
+  {
+    "id": "W1984447682",
+    "title": "A Computational and Conceptual DFT Study of the Reactivity of Anionic Compounds: Implications for Enzymatic Catalysis",
+    "authors": [
+      "Goedele Roos",
+      "Stefan Loverix",
+      "Frank De Proft",
+      "L. Wyns",
+      "Paul Geerlings"
+    ],
+    "year": 2003,
+    "journal": "The Journal of Physical Chemistry A",
+    "doi": "https://doi.org/10.1021/jp034376l",
+    "url": "https://doi.org/10.1021/jp034376l",
+    "open_access_url": null,
+    "abstract": "We present a DFT study on the reactivity of an alkoxide and a thiolate toward the neutral and all ionic forms of arsenate and phosphate. The isolated neutral, mono-, di-, and trianionic arsenate/phosphate (electrophiles) and thiolate/methanolate (nucleophiles) species are used as model systems of reacting partners in the enzymatic reactions catalyzed by arsenate reductase and phosphatase. The onset of the displacement reaction at the electrophilic center by the attacking nucleophile is described by the DFT descriptor local softness, applied in a HSAB context. The instability of multiply charged anions in gas phase necessitates the use of a solvent model with an appropriate dielectric constant mimicking the enzymatic environment. Gas-phase and solvent-reactivity studies of isolated compounds indicate that the nucleophilic attack of a thiolate during the first catalysis step of arsenate reductase (ArsC) and low molecular weight phosphatase (LMWPTPase) preferably occurs via the dianionic arsenate and phosphate. This computational approach confirms and supplements earlier experimental data."
+  },
+  {
+    "id": "W4295288606",
+    "title": "DFT Studies of Transition Metal Catalysis.",
+    "authors": [
+      "Richard P. Muller"
+    ],
+    "year": 2020,
+    "journal": "OSTI OAI (U.S. Department of Energy Office of Scientific and Technical Information)",
+    "doi": null,
+    "url": "https://www.osti.gov/biblio/1725741",
+    "open_access_url": "https://www.osti.gov/servlets/purl/1725741",
+    "abstract": "My research focuses on developing computational techniques to make density functional theory calculations faster and more accurate, as well as applying these techniques to understand chemical catalysis.I will present a brief overview of my research interests, and will then describe work on the reduction of oxygen by cofacial metalloporphyrins.This study is part of the Sandia Bio Micro Fuel Cell Program, and hopes to focus on a simple system to understand aspects of oxygen reduction in biological and fuel cell systems."
+  },
+  {
+    "id": "W1977350943",
+    "title": "A DFT Study on Electronic Structures and Catalysis of Ag12O6/Ag(111) for Ethylene Epoxidation",
+    "authors": [
+      "Wang Gao",
+      "Ming Zhao",
+      "Qing Jiang"
+    ],
+    "year": 2007,
+    "journal": "The Journal of Physical Chemistry C",
+    "doi": "https://doi.org/10.1021/jp0684729",
+    "url": "https://doi.org/10.1021/jp0684729",
+    "open_access_url": null,
+    "abstract": "The electronic structure characteristics of P (4 \u00d7 4) or Ag 12 O 6 /Ag(111) overlayer structure and its catalysis for ethylene epoxidation are determined using Density Functional Theory (DFT). The adsorption characteristic of ethylene is obtained according to the partial density of state (PDOS) of Ag 12 O 6 /Ag(111) overlayer. Moreover, the relative energetic diagrams for the ethylene oxidation process at different adsorption sites are determined using linear synchronous transit/quadratic synchronous transit (LST/QST) tools in DMOL 3 code, which show reaction mechanisms and associated barriers for the complete catalytic cycle of conversion of ethylene to ethylene epoxide."
+  },
+  {
+    "id": "W2950443370",
+    "title": "DFT Calculations of EPR Parameters of Transition Metal Complexes: Implications for Catalysis",
+    "authors": [
+      "Alexander C. Saladino",
+      "Sarah C. Larsen"
+    ],
+    "year": 2005,
+    "journal": "ChemInform",
+    "doi": "https://doi.org/10.1002/chin.200537219",
+    "url": "https://doi.org/10.1002/chin.200537219",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2161005123",
+    "title": "Progress in Carbonylative\u2010Heck Reactions of Aryl Bromides: Catalysis and DFT Studies",
+    "authors": [
+      "Xiao\u2010Feng Wu",
+      "Haijun Jiao",
+      "Helfried Neumann",
+      "Matthias Beller"
+    ],
+    "year": 2011,
+    "journal": "ChemCatChem",
+    "doi": "https://doi.org/10.1002/cctc.201000356",
+    "url": "https://doi.org/10.1002/cctc.201000356",
+    "open_access_url": null,
+    "abstract": "Improved palladium\u2010catalyzed carbonylative Heck coupling reactions of aryl bromides with styrenes are described. Applying a [{(cinnamyl)PdCl}2]/PPh3 catalyst system, >20 chalcones with various functional groups were synthesized in 45\u201390 % yield. The reaction mechanism of this coupling reaction was studied by detailed DFT computations, which show that the carbonylation step is reversible."
+  },
+  {
+    "id": "W2951681262",
+    "title": "ChemInform Abstract: Tungsten Oxide in Catalysis and Photocatalysis: Hints from DFT",
+    "authors": [
+      "Cristiana Di Valentin",
+      "Fenggong Wang",
+      "Gianfranco Pacchioni"
+    ],
+    "year": 2013,
+    "journal": "ChemInform",
+    "doi": "https://doi.org/10.1002/chin.201349221",
+    "url": "https://doi.org/10.1002/chin.201349221",
+    "open_access_url": null,
+    "abstract": "Review: 106 refs."
+  },
+  {
+    "id": "W2562799037",
+    "title": "DFT study on the effects of catalysis by \u03b2-cyclodextrin in the reaction of p-nitrophenyl acetate",
+    "authors": [
+      "Yamei Cheng",
+      "Xueye Wang",
+      "Weiwei Li",
+      "Dan Chang"
+    ],
+    "year": 2017,
+    "journal": "Journal of Molecular Modeling",
+    "doi": "https://doi.org/10.1007/s00894-016-3197-4",
+    "url": "https://doi.org/10.1007/s00894-016-3197-4",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W3128748833",
+    "title": "Single-atom Catalysis on a Silica Support: A DFT study",
+    "authors": [
+      "Xavier Deraet"
+    ],
+    "year": 2019,
+    "journal": "VUBIR (Vrije Universiteit Brussel)",
+    "doi": null,
+    "url": "https://biblio.vub.ac.be/vubir/singleatom-catalysis-on-a-silica-support-a-dft-study(883da568-8f5b-48db-a5e8-2baead4d0139).html",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W7154825909",
+    "title": "The Future of Foundation Machine Learning Potentials and DFT in Homogeneous Catalysis: Competition or Synergy?",
+    "authors": [
+      "Maxime Ferrer",
+      "Julen Mun\u00e1rriz",
+      "Thijs Stuyver",
+      "Rub\u00e9n Laplaza"
+    ],
+    "year": 2026,
+    "journal": "Chemistry - A European Journal",
+    "doi": "https://doi.org/10.1002/chem.71022",
+    "url": "https://doi.org/10.1002/chem.71022",
+    "open_access_url": null,
+    "abstract": "While DFT is the computational method of choice for mechanistic insight in homogeneous catalysis, the recent rise of foundation-level machine learning interatomic potentials (MLIPs) invites reconsideration: are we approaching competition, or a deeper synergy? These pretrained, fast surrogates are able to map reaction space, sample conformers, and flag likely transition states, potentially displacing routine low-level DFT. Yet their reliability hinges on calibrated uncertainty, transferability across ligand and oxidation-state manifolds, and faithful treatment of long-range polarization, solvation, and open-shell or multireference character. We argue that the near future will likely be contested: MLIPs will handle everyday exploratory tasks, while DFT and higher-level methods will anchor electronic effects, validate high-stakes predictions, and resolve edge cases. If supported by FAIR catalysis datasets, standardized workflows, and robust error quantification, the two approaches will coevolve, enabling scalable, predictive discovery without sacrificing rigor or interpretability."
+  },
+  {
+    "id": "W2036685573",
+    "title": "Ab initio and DFT calculations on the initial step in thiamin catalysis",
+    "authors": [
+      "Rudolf Friedemann",
+      "Stefan Naumann"
+    ],
+    "year": 2003,
+    "journal": "Journal of Molecular Structure THEOCHEM",
+    "doi": "https://doi.org/10.1016/s0166-1280(03)00174-x",
+    "url": "https://doi.org/10.1016/s0166-1280(03)00174-x",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2481462635",
+    "title": "Modeling of homogeneous catalysis: from dft to qspr approaches",
+    "authors": [
+      "Sonia Aguado-Ullate"
+    ],
+    "year": 2012,
+    "journal": "Rovira & Virgili repository",
+    "doi": null,
+    "url": "https://hdl.handle.net/20.500.11797/TDX1042",
+    "open_access_url": "https://www.tdx.cat/bitstream/10803/79119/1/tesis.pdf",
+    "abstract": "Catalysis is a field of science that explores solutions to environmental problems such as pollution, elimination of waste generated in the process of materials synthesis or regeneration of natural resources. In the present Thesis, we have reported a DFT study on the N-H \u03c3-bond activation of ammonia by the \u00b53-alkylidyne titanium species using the [{Ti(\u03b75-C5H5)(\u00b5-O)}3(\u00b53-CH)] model complex. Afterwards, we have combined the TS-based approach and qualitative analysis through a newly defined molecular descriptor (distance-weighted volume, VW), in order to analyze the asymmetric hydroformylation of styrene catalyzed by Rh-binaphos complexes. Using our previous mechanistic knowledge, we have presented a QSPR study to predict the activity and the enantioselectivity in the hydroformylation of styrene catalyzed by Rh-diphosphane complexes. We have also developed a new methodology to predict enantioselectivity based on the quantitative quadrant-diagram representation of the catalysts and 3D-QSSR modeling; and we have applied it in the asymmetric cyclopropanation of alkenes catalyzed by copper complexes."
+  },
+  {
+    "id": "W4401956899",
+    "title": "Combining DFT and experimental studies in enantioselective catalysis: From rationalization to prediction",
+    "authors": [
+      "Maria Biosca",
+      "Mar\u00eda Besora",
+      "Feliu Maseras",
+      "\u00d2scar P\u00e0mies",
+      "Montserrat Di\u00e9guez"
+    ],
+    "year": 2024,
+    "journal": "Advances in catalysis",
+    "doi": "https://doi.org/10.1016/bs.acat.2024.08.002",
+    "url": "https://doi.org/10.1016/bs.acat.2024.08.002",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W1967738510",
+    "title": "A DFT investigation of the potential of porous cages for the catalysis of ammonia borane dehydrogenation",
+    "authors": [
+      "Amrita Pal",
+      "Kumar Vanka"
+    ],
+    "year": 2011,
+    "journal": "Chemical Communications",
+    "doi": "https://doi.org/10.1039/c1cc13285g",
+    "url": "https://doi.org/10.1039/c1cc13285g",
+    "open_access_url": null,
+    "abstract": "Full DFT based quantum mechanical studies reveal that zero dimensional porous structures, especially the newly proposed phosphorus incorporated organic cages, can be excellent catalysts for the dehydrogenation of ammonia borane."
+  },
+  {
+    "id": "W7216672945",
+    "title": "DFT Characterization of the Relevance of Transition Metals in Catalysis",
+    "authors": [
+      "Eleonora Ascrizzi"
+    ],
+    "year": null,
+    "journal": "Institutional Research Information System University of Turin (University of Turin)",
+    "doi": null,
+    "url": "https://hdl.handle.net/2318/2088012",
+    "open_access_url": null,
+    "abstract": "This thesis presents a computational investigation of two candidate systems for electrochemical water splitting: FeO/Au and MoS2/Au. Density functional theory is employed to analyze their structural and electronic properties, with particular emphasis on their reactivity toward water and the influence of factors such as local symmetry, defects, and doping. The project was carried out in collaboration with the experimental group of Prof. Stefano Agnoli, enabling direct comparison between theoretical predictions and experimental observations. The results demonstrate how atomic-scale features can impact catalytic performance, contributing to the rational design of eicient, earth-abundant electrocatalysts."
+  },
+  {
+    "id": "W4299325374",
+    "title": "Heterogeneous Catalysis: what do we learn from DFT ?",
+    "authors": [
+      "Philippe Sautet"
+    ],
+    "year": 2014,
+    "journal": "HAL",
+    "doi": null,
+    "url": "https://hal.science/hal-02062717",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W7145700409",
+    "title": "DFT Study of CO Behavior on Pt Catalysis",
+    "authors": [
+      "\u525b\u826f \u4e95\u4e0a",
+      "Takayoshi Inoue"
+    ],
+    "year": 2005,
+    "journal": "Institutional Repositories DataBase (IRDB)",
+    "doi": null,
+    "url": "http://t2r2.star.titech.ac.jp/cgi-bin/publicationinfo.cgi?q_publication_content_number=CTT100406485",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2006014999",
+    "title": "Unravelling the Nature of Gold Surface Sites by Combining IR Spectroscopy and DFT Calculations. Implications in Catalysis",
+    "authors": [
+      "Merc\u00e8 Boronat",
+      "Patricia Concepci\u00f3n",
+      "Avelino Corma"
+    ],
+    "year": 2009,
+    "journal": "The Journal of Physical Chemistry C",
+    "doi": "https://doi.org/10.1021/jp905157r",
+    "url": "https://doi.org/10.1021/jp905157r",
+    "open_access_url": null,
+    "abstract": "A combination of XPS, IR spectroscopy of adsorbed CO, and DFT calculations has allowed us to identify different gold sites on Au/TiO 2 catalysts, and to analyze the electronic and structural changes induced on the supported gold nanoparticles when adsorbing CO. The characteristics of low coordinated neutral Au 0, slightly positively charged Au \u03b4+, and cationic Au III species have been studied, and the IR bands associated with CO adsorbed on these species have been determined. The shift in the \u03bdCO frequency not only depends on the charge on the particle or on the particular gold atom to which CO binds but also on the degree of coordination of gold atoms, that is, particle shape, and the capability of CO to modify this particle shape. It has been unequivocally shown by combining IR/DFT results and H/D isotopic exchange experiments that, among the different gold species identified, only the low coordinated neutral gold atoms not involved in Au\u2212O\u2212Ti linkages are responsible for H 2 dissociation on Au/TiO 2 catalysts."
+  },
+  {
+    "id": "W2018769837",
+    "title": "Global DFT-Based Reactivity Indicators: An Assessment of Theoretical Procedures in Zeolite Catalysis",
+    "authors": [
+      "Karen Hemelsoet",
+      "David Lesthaeghe",
+      "V\u00e9ronique Van Speybroeck",
+      "Michel Waroquier"
+    ],
+    "year": 2007,
+    "journal": "The Journal of Physical Chemistry C",
+    "doi": "https://doi.org/10.1021/jp0656227",
+    "url": "https://doi.org/10.1021/jp0656227",
+    "open_access_url": null,
+    "abstract": "The dependence of global reactivity descriptors on electronic structure method as well as basis set is investigated for typical reactions in zeolite catalysis. This research is especially focused on hard\u2212hard interactions between small probe molecules (such as chloromethane, methanol, ethylene, and propene) and different zeolite clusters containing both oxygen and amine functionalities. The performance of novel hybrid metafunctionals (such as BMK and MPWB1K) on crucial reactivity predictors is assessed through comparison with both Hartree\u2212Fock and B3-LYP results. For the complex bifunctional zeolite systems, we find accurate results using any of the DFT functionals, in conjunction with a basis set of at least double-\u03b6 quality further augmented with both polarization and diffuse functions. Reactivity sequences, based on global softness differences as well as activation hardness values, are generally found to be independent of the level of theory whenever a DFT functional is used."
+  },
+  {
+    "id": "W3207878589",
+    "title": "Adsorption and catalysis of Bi-doped Fe2O3 on gas products of HMX decomposition: A DFT study",
+    "authors": [
+      "Xiurong Yang",
+      "Chi Zhang",
+      "Zhaoqi Guo",
+      "Hongxu Gao",
+      "Shiyao Niu",
+      "Fengqi Zhao",
+      "Haixia Ma"
+    ],
+    "year": 2021,
+    "journal": "Applied Surface Science",
+    "doi": "https://doi.org/10.1016/j.apsusc.2021.151545",
+    "url": "https://doi.org/10.1016/j.apsusc.2021.151545",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W4381849589",
+    "title": "Chapter 5. The correspondence of calorimetric studies with DFT simulations in heterogeneous catalysis",
+    "authors": [
+      "Mar\u00eda\u2010Guadalupe C\u00e1rdenas\u2010Galindo",
+      "Brent E. Handy"
+    ],
+    "year": 2023,
+    "journal": "De Gruyter eBooks",
+    "doi": "https://doi.org/10.1515/9783110590449-005",
+    "url": "http://dx.doi.org/10.1515/9783110590449-005",
+    "open_access_url": null,
+    "abstract": "Molecular modeling, being computationally intensive, started with simple molecules and several atom clusters. Given that surface sites in heterogeneous catalysts involve complex structure, multielement mixtures, the effects of coverage, coadsorbates, and support interaction, simulations must continue to evolve in sophistication. An essential aspect is to build and validate these models with direct experimental evidence from calorimetric and spectroscopic results. In this regard, experimental heats of adsorption from single-crystal adsorption calorimetry and Tian-Calvet microcalorimetry on porous catalysts serves to benchmark the energies predicted by density functional theory (DFT) simulations, which are dependent upon the particular exchange functionals. The development of energy of adsorption databases is a key to improve the sophistication of DFT simulations. Adsorption databases to-date have focused on single crystal metal surfaces. Experience with modeling the energetics of even simple molecule adsorption on single crystal and supported metal catalyst surfaces has motivated the development of increasingly sophisticated DFT models. The particular case study of CO adsorption documents the challenges associated with developing DFT models that agree with experimental energetics. Studies with zeolites have shown that the van der Waals term associated with adsorbate-wall interactions must be incorporated into the DFT model for better agreement between prediction and experimental calorimetric data. This interaction is specific to the micropore structure and quantifying its contribution serves with heat of adsorption data to quantify the energetics of reactive intermediates in microporous structures."
+  },
+  {
+    "id": "W2591728647",
+    "title": "A kinetic study of hydrocarbon reactivity on palladium catalysis through a DFT approach",
+    "authors": [
+      "Valeria Bertani",
+      "S. Carr\u00e0",
+      "Cavallotti Carlo",
+      "Maurizio Masi"
+    ],
+    "year": 2002,
+    "journal": "Virtual Community of Pathological Anatomy (University of Castilla La Mancha)",
+    "doi": null,
+    "url": "http://hdl.handle.net/11311/271523",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2913625414",
+    "title": "Catalysis performance of nonpromoted and co-promoted MoS2 catalysts on a hydrodesulfurization reaction: A DFT study",
+    "authors": [
+      "Meng Zheng",
+      "Liang Zhao",
+      "Liyuan Cao",
+      "Chunyun Zhang",
+      "Jinsen Gao",
+      "Chunming Xu"
+    ],
+    "year": 2019,
+    "journal": "Molecular Catalysis",
+    "doi": "https://doi.org/10.1016/j.mcat.2019.01.026",
+    "url": "https://doi.org/10.1016/j.mcat.2019.01.026",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W2756024256",
+    "title": "A DFT Guided/Experimental Approach to Asymmetric Allylation and Phase-Transfer Catalysis",
+    "authors": [
+      "Roya Mirabdolbaghi"
+    ],
+    "year": 2014,
+    "journal": "Brock University Digital Repository (Brock University)",
+    "doi": null,
+    "url": "http://hdl.handle.net/10464/5688",
+    "open_access_url": null,
+    "abstract": "The Dudding group is interested in the application of Density Functional Theory (DFT) in developing asymmetric methodologies, and thus the focus of this dissertation will be on the integration of these approaches. Several interrelated subsets of computer aided design and implementation in catalysis have been addressed during the course of these studies. The first of the aims rested upon the advancement of methodologies for the synthesis of biological active C(1)-chiral 3-methylene-indan-1-ols, which in practice lead to the use of a sequential asymmetric Yamamoto-Sakurai-Hosomi allylation/Mizoroki Heck reaction sequence. An important aspect of this work was the utilization of ortho-substituted arylaldehyde reagents which are known to be a problematic class of substrates for existing asymmetric allylation approaches. The second phase of my research program lead to the further development of asymmetric allylation methods using o-arylaldehyde substrates for synthesis of chiral C(3)-substituted phthalides. Apart from the de novo design of these chemistries in silico, which notably utilized water-tolerant, inexpensive, and relatively environmental benign indium metal, this work represented the first computational study of a stereoselective indium-mediated process. Following from these discoveries was the advent of a related, yet catalytic, Ag(I)-catalyzed approach for preparing C(3)-substituted phthalides that from a practical standpoint was complementary in many ways. Not only did this new methodology build upon my earlier work with the integrated (experimental/computational) use of the Ag(I)-catalyzed asymmetric methods in synthesis, it provided fundamental insight arrived at through DFT calculations, regarding the Yamamoto-Sakurai-Hosomi allylation. The development of ligands for unprecedented asymmetric Lewis base catalysis, especially asymmetric allylations using silver and indium metals, followed as a natural extension from these earlier discoveries. To this end, forthcoming as well was the advancement of a family of disubstituted (N-cyclopropenium guanidine/N-imidazoliumyl substituted cyclopropenylimine) nitrogen adducts that has provided fundamental insight into chemical bonding and offered an unprecedented class of phase transfer catalysts (PTC) having far-reaching potential. Salient features of these disubstituted nitrogen species is unprecedented finding of a cyclopropenium based C-H\u2022\u2022\u2022\u03c0aryl interaction, as well, the presence of a highly dissociated anion projected them to serve as a catalyst promoting fluorination reactions. Attracted by the timely development of these disubstituted nitrogen adducts my last studies as a PhD scholar has addressed the utility of one of the synthesized disubstituted nitrogen adducts as a valuable catalyst for benzylation of the Schiff base N-diphenyl methylene glycine ethyl ester. Additionally, the catalyst was applied for benzylic fluorination, emerging from this exploration was successful fluorination of benzyl bromide and its derivatives in high yields. A notable feature of this protocol is column-free purification of the product and recovery of the catalyst to use in a further reaction sequence."
+  },
+  {
+    "id": "W3033670004",
+    "title": "Galantamine derivatives: Synthesis, NMR study, DFT calculations and application in asymmetric catalysis",
+    "authors": [
+      "Irena Philipova",
+      "Georgi Stavrakov",
+      "Vladimir D. Dimitrov",
+      "Nikolay Georgiev Vassilev"
+    ],
+    "year": 2020,
+    "journal": "Journal of Molecular Structure",
+    "doi": "https://doi.org/10.1016/j.molstruc.2020.128568",
+    "url": "https://doi.org/10.1016/j.molstruc.2020.128568",
+    "open_access_url": null,
+    "abstract": null
+  },
+  {
+    "id": "W3213057202",
+    "title": "Catalysis and autocatalysis in urea methanolysis with formation of O-methyl carbamate: A DFT study",
+    "authors": [
+      "A. Ya. Samuilov",
+      "Ya. D. Samuilov"
+    ],
+    "year": 2021,
+    "journal": "Chemical Physics Letters",
+    "doi": "https://doi.org/10.1016/j.cplett.2021.139196",
+    "url": "https://doi.org/10.1016/j.cplett.2021.139196",
+    "open_access_url": null,
+    "abstract": null
+  }
+]

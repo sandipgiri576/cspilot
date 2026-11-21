@@ -125,7 +125,9 @@ def test_verify_nwpesse_rejects_non_numeric_lowest_energy(tmp_path):
     verification = verify_tool_result(result, str(tmp_path))
 
     assert verification["verified"] is False
-    assert any("lowest_energy" in issue and "not numeric" in issue for issue in verification["issues"])
+    assert any(
+        "lowest_energy" in issue and "not numeric" in issue for issue in verification["issues"]
+    )
 
 
 def test_generate_report_for_nwpesse_omits_irrelevant_thermochemistry(tmp_path):

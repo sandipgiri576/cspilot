@@ -29,6 +29,7 @@ def run_mace_to_orca(
     nprocs: int = 1,
     settings: Settings | None = None,
 ) -> dict[str, Any]:
+    """Optimize with MACE, then run an ORCA single-point calculation."""
     settings, workdir = init_workflow_run("mace-orca", settings)
     result = base_workflow_result("mace-orca", input_xyz, workdir)
 

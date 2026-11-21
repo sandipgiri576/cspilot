@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "tool": "build_rag_index",
+  "error": null,
+  "metadata": {},
+  "output_dir": "/home/chemgiri/project/cspilot/data/rag",
+  "document_count": 40,
+  "chunk_count": 40,
+  "generated_files": [
+    "/home/chemgiri/project/cspilot/data/rag/chunks.json",
+    "/home/chemgiri/project/cspilot/data/rag/index.faiss",
+    "/home/chemgiri/project/cspilot/data/rag/config.json"
+  ]
+}

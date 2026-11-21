@@ -1,3 +1,5 @@
+"""Register, constrain, invoke, and normalize model-facing scientific tools."""
+
 from __future__ import annotations
 
 import asyncio
@@ -69,12 +71,17 @@ _TOOL_GROUPS = {
     "nwpesse": [parse_cluster_formula_tool, nwpesse_global_minimum_search_tool],
     "analysis": [find_result_json_tool, get_property_from_result_tool, multiwfn_analysis_tool],
     "thermo": [
-        molecule_name_to_xyz_tool, smiles_to_xyz_tool,
-        run_xtb_orca_frequency_workflow, find_result_json_tool, get_property_from_result_tool,
+        molecule_name_to_xyz_tool,
+        smiles_to_xyz_tool,
+        run_xtb_orca_frequency_workflow,
+        find_result_json_tool,
+        get_property_from_result_tool,
     ],
 }
 _TOOLS = {tool.name: tool for tools in _TOOL_GROUPS.values() for tool in tools}
-_active_allowed_tools: ContextVar[set[str] | None] = ContextVar("active_allowed_tools", default=None)
+_active_allowed_tools: ContextVar[set[str] | None] = ContextVar(
+    "active_allowed_tools", default=None
+)
 _TOOL_ARG_ALLOWLIST: dict[str, set[str]] = {
     "multiwfn_analysis_tool": {"input_path", "analysis"},
     "inspect_structure": {"xyz_path"},
@@ -84,7 +91,15 @@ _TOOL_ARG_ALLOWLIST: dict[str, set[str]] = {
     "run_xtb_orca_workflow": {"xyz_path", "method", "basis", "charge", "mult", "uhf", "nprocs"},
     "molecule_name_to_xyz_tool": {"name", "output_path", "num_confs"},
     "molecule_name_to_smiles_tool": {"name"},
-    "run_xtb_orca_frequency_workflow": {"xyz_path", "method", "basis", "charge", "mult", "uhf", "nprocs"},
+    "run_xtb_orca_frequency_workflow": {
+        "xyz_path",
+        "method",
+        "basis",
+        "charge",
+        "mult",
+        "uhf",
+        "nprocs",
+    },
     "smiles_to_xyz_tool": {"smiles", "output_path", "num_confs", "forcefield"},
     "stk_build_from_smiles_tool": {"smiles", "output_path"},
     "stk_building_block_from_file_tool": {"input_path", "output_path"},
@@ -101,7 +116,15 @@ _TOOL_ARG_ALLOWLIST: dict[str, set[str]] = {
 
 
 def get_allowed_tools(profile: str | None = None, user_request: str = "") -> list[str]:
-    """Return tool names permitted for the current or requested profile."""
+    """Return tool names permitted for a profile and request.
+
+    Args:
+        profile: Explicit profile, or ``None`` to use the active execution context.
+        user_request: Original request used by conditional tool-group selection.
+
+    Returns:
+        Ordered names of tools available to the selected profile.
+    """
     if profile is None:
         active = _active_allowed_tools.get()
         if active is not None:
@@ -113,24 +136,52 @@ def get_allowed_tools(profile: str | None = None, user_request: str = "") -> lis
 
 
 def set_allowed_profile(profile: str, user_request: str = "") -> Token[set[str] | None]:
+    """Set the allowlisted profile for the current execution context."""
     return _active_allowed_tools.set(set(get_allowed_tools(profile, user_request)))
 
 
 def reset_allowed_profile(token: Token[set[str] | None]) -> None:
+    """Restore the previous tool-allowlist context."""
     _active_allowed_tools.reset(token)
 
 
 def get_tool_catalog(profile: str, user_request: str = "") -> list[dict[str, Any]]:
-    """Expose the selected profile's registered tool contracts."""
+    """Return JSON schemas for tools available to a profile.
+
+    Args:
+        profile: Planner profile whose tool permissions should be used.
+        user_request: Original request used for conditional permissions.
+
+    Returns:
+        Tool names, descriptions, and JSON parameter schemas.
+    """
     return [
-        {"name": name, "description": _TOOLS[name].description,
-         "parameters": _TOOLS[name].params_json_schema}
+        {
+            "name": name,
+            "description": _TOOLS[name].description,
+            "parameters": _TOOLS[name].params_json_schema,
+        }
         for name in get_allowed_tools(profile, user_request)
     ]
 
 
-def call_tool(tool_name: str, args: dict[str, Any], workdir: str, *, confine_outputs: bool = False) -> dict[str, Any]:
-    """Call one allowlisted function tool; reject arbitrary tool or shell execution."""
+def call_tool(
+    tool_name: str, args: dict[str, Any], workdir: str, *, confine_outputs: bool = False
+) -> dict[str, Any]:
+    """Call one allowlisted tool through the deterministic registry.
+
+    Args:
+        tool_name: Registered tool name.
+        args: Structured, JSON-compatible tool arguments.
+        workdir: Directory used for generated artifacts and relative paths.
+        confine_outputs: Whether generated outputs must remain inside ``workdir``.
+
+    Returns:
+        A JSON-safe result containing the stable tool-result envelope.
+
+    Raises:
+        ValueError: If the tool is unknown, disallowed, or arguments are not a mapping.
+    """
     # The deterministic executor does not use remote Agents SDK tracing. Disabling
     # it here also prevents tool invocation from waiting on a trace exporter.
     set_tracing_disabled(disabled=True)
@@ -147,8 +198,12 @@ def call_tool(tool_name: str, args: dict[str, Any], workdir: str, *, confine_out
         normalized_args = _resolve_workdir_paths(normalized_args, root)
         if confine_outputs:
             for key in ("output_path", "output_file"):
-                if key in normalized_args and not Path(normalized_args[key]).resolve().is_relative_to(root.resolve()):
-                    raise ValueError("Independent child outputs must stay inside the child's workdir")
+                if key in normalized_args and not Path(
+                    normalized_args[key]
+                ).resolve().is_relative_to(root.resolve()):
+                    raise ValueError(
+                        "Independent child outputs must stay inside the child's workdir"
+                    )
         arguments = json.dumps(normalized_args)
         context = ToolContext(
             context=None,
@@ -162,9 +217,7 @@ def call_tool(tool_name: str, args: dict[str, Any], workdir: str, *, confine_out
             # FunctionTool runs synchronous functions in a worker thread. Some
             # chemistry libraries are not safe to initialize there, so the
             # deterministic executor invokes the original function directly.
-            raw_function = inspect.getclosurevars(invoker._invoke_tool_impl).nonlocals[
-                "the_func"
-            ]
+            raw_function = inspect.getclosurevars(invoker._invoke_tool_impl).nonlocals["the_func"]
             output = raw_function(**normalized_args)
         else:
             output = asyncio.run(invoker(context, arguments))
@@ -182,37 +235,57 @@ def call_tool(tool_name: str, args: dict[str, Any], workdir: str, *, confine_out
 
 
 def normalize_tool_result(tool_name: str, result: Any) -> dict[str, Any]:
-    """Normalize arbitrary tool output into a JSON-serializable dictionary."""
+    """Normalize tool output into the stable, JSON-safe result contract.
+
+    Args:
+        tool_name: Registered name of the invoked tool.
+        result: Raw result returned by the tool wrapper.
+
+    Returns:
+        A dictionary containing ``success``, ``tool``, ``error``, and ``metadata``.
+    """
     if isinstance(result, dict):
-        return _json_safe(result)
+        return _with_result_envelope(tool_name, _json_safe(result))
     if isinstance(result, str):
         try:
             parsed = json.loads(result)
         except json.JSONDecodeError:
             if result.lower().startswith("an error occurred while running the tool"):
-                return {"success": False, "tool": tool_name, "error": result}
-            return {"success": True, "tool": tool_name, "message": result}
+                payload = {"success": False, "error": result}
+            else:
+                payload = {"success": True, "message": result}
+            return _with_result_envelope(tool_name, payload)
         if isinstance(parsed, dict):
-            return _json_safe(parsed)
-        return {"success": True, "tool": tool_name, "value": _json_safe(parsed)}
+            return _with_result_envelope(tool_name, _json_safe(parsed))
+        return _with_result_envelope(tool_name, {"success": True, "value": _json_safe(parsed)})
     if isinstance(result, Path):
-        return {"success": True, "tool": tool_name, "path": str(result)}
+        return _with_result_envelope(tool_name, {"success": True, "path": str(result)})
     if isinstance(result, bool):
-        return {"success": True, "tool": tool_name, "value": result}
+        return _with_result_envelope(tool_name, {"success": True, "value": result})
     if isinstance(result, Real):
-        return {"success": True, "tool": tool_name, "value": result}
+        return _with_result_envelope(tool_name, {"success": True, "value": result})
     if result is None:
-        return {"success": False, "tool": tool_name, "error": "Tool returned None"}
-    return {
-        "success": False,
-        "tool": tool_name,
-        "error": f"Unsupported result type: {type(result).__name__}",
-        "repr": repr(result),
-    }
+        return _with_result_envelope(tool_name, {"success": False, "error": "Tool returned None"})
+    return _with_result_envelope(
+        tool_name,
+        {
+            "success": False,
+            "error": f"Unsupported result type: {type(result).__name__}",
+            "repr": repr(result),
+        },
+    )
 
 
 def normalize_tool_args(tool_name: str, args: dict[str, Any]) -> dict[str, Any]:
-    """Normalize common planner aliases to registered function-tool argument names."""
+    """Normalize planner aliases to canonical registered arguments.
+
+    Args:
+        tool_name: Registered tool name.
+        args: Arguments proposed by the planner.
+
+    Returns:
+        JSON-safe arguments containing only allowlisted keys when configured.
+    """
     normalized = dict(args)
     if "output_file" in normalized and "output_path" not in normalized:
         normalized["output_path"] = normalized.pop("output_file")
@@ -261,8 +334,9 @@ def _path_in_workdir(value: Any, root: Path, must_exist: bool) -> Any:
 
 def _prefers_input_path(tool_name: str) -> bool:
     lowered = tool_name.lower()
-    return ("building_block_from_file" in lowered or "export_to_xyz" in lowered
-            or "multiwfn" in lowered)
+    return (
+        "building_block_from_file" in lowered or "export_to_xyz" in lowered or "multiwfn" in lowered
+    )
 
 
 def _json_safe(value: Any) -> Any:
@@ -275,3 +349,21 @@ def _json_safe(value: Any) -> Any:
     if isinstance(value, Path):
         return str(value)
     return value
+
+
+def _with_result_envelope(tool_name: str, payload: dict[str, Any]) -> dict[str, Any]:
+    """Add required result fields without discarding tool-specific data."""
+    normalized = dict(payload)
+    status = str(normalized.get("status", "")).lower()
+    inferred_failure = status in {"failed", "skipped"} or bool(normalized.get("error"))
+    normalized.setdefault("success", not inferred_failure)
+    normalized.setdefault("tool", tool_name)
+    normalized.setdefault("error", None)
+    metadata = normalized.get("metadata")
+    if metadata is None:
+        normalized["metadata"] = {}
+    elif not isinstance(metadata, dict):
+        normalized["metadata"] = {"original_metadata": _json_safe(metadata)}
+    else:
+        normalized["metadata"] = _json_safe(metadata)
+    return normalized

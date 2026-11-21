@@ -1,0 +1,17 @@
+{
+  "verified": false,
+  "issues": [
+    "Execution result did not report success=true.",
+    "Step 1 did not report success=true.",
+    "Step 1: Tool returned success=false.",
+    "Step 1: Tool returned error: ValueError: The length of orientations must match either the length of repeating_unit or the total number of vertices.",
+    "Step 2 did not report success=true.",
+    "Step 2: Tool returned success=false.",
+    "Step 2: Tool returned error: ValueError: The length of orientations must match either the length of repeating_unit or the total number of vertices.",
+    "Requested SMILES was not returned by a tool.",
+    "Step 1: ValueError: The length of orientations must match either the length of repeating_unit or the total number of vertices.",
+    "Step 2: ValueError: The length of orientations must match either the length of repeating_unit or the total number of vertices.",
+    "Agent stopped: max_retries."
+  ],
+  "workdir": "/home/chemgiri/project/cspilot/tests/examples/run-polymer"
+}

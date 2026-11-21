@@ -15,6 +15,7 @@ def optimize_with_mace(
     fmax: float = 0.05,
     steps: int = 200,
 ) -> tuple[bool, str, dict[str, Any]]:
+    """Optimize a structure with a local MACE model."""
     try:
         from mace.calculators import MACECalculator
     except ImportError:

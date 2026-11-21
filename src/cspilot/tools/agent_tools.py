@@ -16,6 +16,7 @@ from cspilot.tools.mol_tools import (
     smiles_to_xyz,
     validate_smiles,
 )
+from cspilot.tools.multiwfn_tools import analyze_wavefunction
 from cspilot.tools.nwpesse_tools import parse_cluster_formula
 from cspilot.tools.opi_orca_tools import orca_single_point
 from cspilot.tools.result_tools import find_result_json, get_property_from_result
@@ -43,18 +44,18 @@ def multiwfn_analysis_tool(input_path: str, analysis: str = "mulliken") -> dict[
     Supply an observed ORCA GBW path or an existing Molden/FCH wavefunction.
     GBW conversion uses orca_2mkl. Raw menu commands are not accepted.
     """
-    from cspilot.tools.multiwfn_tools import analyze_wavefunction
-
     return analyze_wavefunction(input_path, _agent_workdir.get(), analysis)
 
 
 def set_agent_workdir(workdir: Path | str) -> Token[Path]:
+    """Set the active agent work directory for the current context."""
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
     return _agent_workdir.set(workdir)
 
 
 def reset_agent_workdir(token: Token[Path]) -> None:
+    """Restore the agent work directory represented by a context token."""
     _agent_workdir.reset(token)
 
 
@@ -370,7 +371,9 @@ def stk_build_from_smiles_tool(
     result = stk_build_from_smiles(smiles, output_path)
     result["tool"] = "stk_build_from_smiles_tool"
     result["smiles"] = smiles
-    result["output_file"] = str(result.get("output_file") or result.get("output_path") or output_path)
+    result["output_file"] = str(
+        result.get("output_file") or result.get("output_path") or output_path
+    )
     result["generated_files"] = list(
         dict.fromkeys([*result.get("generated_files", []), result["output_file"]])
     )
@@ -496,7 +499,11 @@ def nwpesse_global_minimum_search_tool(
         fragment_dir: Optional directory containing fragment xyz files.
         timeout: External NWPESSe timeout in seconds.
     """
-    root = _agent_workdir.get() / Path(workdir).name if not Path(workdir).is_absolute() else Path(workdir)
+    root = (
+        _agent_workdir.get() / Path(workdir).name
+        if not Path(workdir).is_absolute()
+        else Path(workdir)
+    )
     fragment_records = _parse_fragment_strings(fragments or [])
     return nwpesse_global_minimum_search(
         formula=formula,

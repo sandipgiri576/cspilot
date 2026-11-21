@@ -1,7 +1,8 @@
 """Turn a multi-molecule request into a bounded, validated set of independent jobs."""
+
 from __future__ import annotations
 
-from typing import Literal
+from typing import Any, Literal
 
 from agents import Agent, AgentOutputSchema, FunctionTool, ModelSettings, Runner
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -10,6 +11,8 @@ from cspilot.llm import create_llm_model
 
 
 class Subtask(BaseModel):
+    """Describe one independent molecular calculation or analysis."""
+
     model_config = ConfigDict(extra="forbid")
     id: str = Field(pattern=r"^[a-z][a-z0-9_]{0,39}$")
     request: str = Field(min_length=1, max_length=4000)
@@ -22,6 +25,8 @@ class Subtask(BaseModel):
 
 
 class Decomposition(BaseModel):
+    """Describe a bounded set of independent scientific subtasks."""
+
     model_config = ConfigDict(extra="forbid")
     kind: Literal["collection", "reaction", "conformers"] = "collection"
     property: Literal["enthalpy", "gibbs_free_energy", "final_energy_hartree"] = "enthalpy"
@@ -30,18 +35,25 @@ class Decomposition(BaseModel):
     phase: Literal["gas"] = "gas"
     temperature_kelvin: float = 298.15
     pressure_atm: float = 1.0
-    subtasks: list[Subtask] | None = Field(default=None, min_length=1, max_length=8,
-        description="One job per independent molecule/species; null only when blocked_reason is set.")
+    subtasks: list[Subtask] | None = Field(
+        default=None,
+        min_length=1,
+        max_length=8,
+        description="One job per independent molecule/species; null only when blocked_reason is set.",
+    )
     blocked_reason: str | None = None
 
     @model_validator(mode="after")
     def validate_jobs(self) -> Decomposition:
+        """Validate subtask identities and supported aggregation conditions."""
         if self.blocked_reason:
             if self.subtasks:
                 raise ValueError("Blocked decompositions cannot schedule jobs")
             return self
         if not self.subtasks or len({s.id for s in self.subtasks}) != len(self.subtasks):
-            raise ValueError("Nonblocked requests MUST include 1-8 subtasks with unique safe IDs; create one per species")
+            raise ValueError(
+                "Nonblocked requests MUST include 1-8 subtasks with unique safe IDs; create one per species"
+            )
         if self.temperature_kelvin != 298.15 or self.pressure_atm != 1.0:
             raise ValueError("This first version supports only 298.15 K and 1 atm")
         if self.kind == "reaction":
@@ -50,23 +62,40 @@ class Decomposition(BaseModel):
             if any(not s.smiles for s in self.subtasks):
                 raise ValueError("Reaction species require SMILES for identity and balance checks")
         if self.kind == "conformers":
-            if len(self.subtasks) < 2 or any(not s.input_xyz or not s.smiles for s in self.subtasks):
-                raise ValueError("Conformer comparison needs explicit XYZ files and molecular SMILES")
+            if len(self.subtasks) < 2 or any(
+                not s.input_xyz or not s.smiles for s in self.subtasks
+            ):
+                raise ValueError(
+                    "Conformer comparison needs explicit XYZ files and molecular SMILES"
+                )
             if len({(s.smiles, s.charge, s.mult) for s in self.subtasks}) != 1:
                 raise ValueError("Conformers must have the same identity, charge and multiplicity")
         return self
 
 
-async def decompose_request(request: str, model: str | None = None,
-                            base_url: str | None = None) -> Decomposition:
-    async def submit(context, arguments: str) -> str:
+async def decompose_request(
+    request: str, model: str | None = None, base_url: str | None = None
+) -> Decomposition:
+    """Decompose a request into independent, structured scientific subtasks."""
+
+    async def submit(context: Any, arguments: str) -> str:
+        """Validate and serialize a model-submitted decomposition."""
         return Decomposition.model_validate_json(arguments).model_dump_json()
 
     agent = Agent(
-        name="cspilot_decomposer", model=create_llm_model(model=model, base_url=base_url),
-        tools=[FunctionTool(name="submit_decomposition", description="Submit independent jobs or a blocked reason.",
-                            params_json_schema=AgentOutputSchema(Decomposition).json_schema(), on_invoke_tool=submit)],
-        model_settings=ModelSettings(tool_choice="required", parallel_tool_calls=False, max_tokens=4096),
+        name="cspilot_decomposer",
+        model=create_llm_model(model=model, base_url=base_url),
+        tools=[
+            FunctionTool(
+                name="submit_decomposition",
+                description="Submit independent jobs or a blocked reason.",
+                params_json_schema=AgentOutputSchema(Decomposition).json_schema(),
+                on_invoke_tool=submit,
+            )
+        ],
+        model_settings=ModelSettings(
+            tool_choice="required", parallel_tool_calls=False, max_tokens=4096
+        ),
         tool_use_behavior="stop_on_first_tool",
         instructions="""Decompose the request into at most eight INDEPENDENT scientific agent jobs.
 Do not calculate or invent results. Each child has an iterative allowlisted tool loop.
@@ -115,5 +144,9 @@ Call submit_decomposition once. Do not write prose or schema definitions.
         except Exception as exc:
             if attempt:
                 raise
-            prompt = request + "\nPrevious decomposition was invalid. Correct the schema, do not execute jobs.\n" + " ".join(str(exc).split())[:1500]
+            prompt = (
+                request
+                + "\nPrevious decomposition was invalid. Correct the schema, do not execute jobs.\n"
+                + " ".join(str(exc).split())[:1500]
+            )
     raise RuntimeError("No decomposition produced")

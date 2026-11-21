@@ -10,7 +10,9 @@ from cspilot.config import Settings, load_settings
 from cspilot.utils.runner import make_run_dir
 
 
-def init_workflow_run(workflow_name: str, settings: Settings | None = None) -> tuple[Settings, Path]:
+def init_workflow_run(
+    workflow_name: str, settings: Settings | None = None
+) -> tuple[Settings, Path]:
     settings = settings or load_settings()
     return settings, make_run_dir(settings.runs_dir, workflow_name)
 

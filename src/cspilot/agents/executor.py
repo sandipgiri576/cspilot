@@ -30,9 +30,7 @@ def execute_plan(plan: dict[str, Any], workdir: str) -> dict[str, Any]:
         issues.extend(f"Step {index}: {issue}" for issue in verification["issues"])
         if result.get("success") is False or result.get("status") == "failed":
             error = str(
-                result.get("error")
-                or result.get("message")
-                or "Tool returned failure status."
+                result.get("error") or result.get("message") or "Tool returned failure status."
             )
             issues.append(f"Step {index}: {error}")
             execution_result = {

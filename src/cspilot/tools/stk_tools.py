@@ -60,7 +60,9 @@ def stk_building_block_from_file(input_path: str, output_path: str | None = None
             _write_molecule_with_fallback(molecule, output, smiles=None, metadata=metadata)
         return _finalize(_result(tool, True, output, None, metadata), anchor=input_file)
     except Exception as exc:
-        return _finalize(_result(tool, False, output, _format_error(exc), metadata), anchor=input_file)
+        return _finalize(
+            _result(tool, False, output, _format_error(exc), metadata), anchor=input_file
+        )
 
 
 def stk_linear_polymer_from_smiles(
@@ -191,7 +193,9 @@ def stk_export_to_xyz(input_path: str, output_path: str) -> dict[str, Any]:
             metadata["fallback"] = "rdkit"
             return _finalize(_result(tool, True, output, None, metadata), anchor=input_file)
         except Exception as exc:
-            return _finalize(_result(tool, False, output, _format_error(exc), metadata), anchor=input_file)
+            return _finalize(
+                _result(tool, False, output, _format_error(exc), metadata), anchor=input_file
+            )
 
 
 def _import_stk() -> Any:

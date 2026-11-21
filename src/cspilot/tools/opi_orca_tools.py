@@ -20,6 +20,7 @@ TASK_OPT_FREQ = "opt_freq"
 
 
 def opi_available() -> bool:
+    """Return whether the optional OPI package is installed."""
     return importlib.util.find_spec("opi") is not None
 
 
@@ -34,6 +35,7 @@ def orca_single_point(
     *,
     orca_command: str | None = None,
 ) -> dict[str, Any]:
+    """Run an ORCA single-point energy calculation."""
     return _run_orca_task(
         xyz_path=xyz_path,
         workdir=workdir,
@@ -58,6 +60,7 @@ def orca_optimize(
     *,
     orca_command: str | None = None,
 ) -> dict[str, Any]:
+    """Run an ORCA geometry optimization."""
     return _run_orca_task(
         xyz_path=xyz_path,
         workdir=workdir,
@@ -83,6 +86,7 @@ def orca_frequency(
     orca_command: str | None = None,
     optimize: bool = False,
 ) -> dict[str, Any]:
+    """Run an ORCA frequency calculation, optionally after optimization."""
     return _run_orca_task(
         xyz_path=xyz_path,
         workdir=workdir,
@@ -97,6 +101,7 @@ def orca_frequency(
 
 
 def parse_orca_result(output_path: Path | str) -> dict[str, Any]:
+    """Parse available properties and termination status from ORCA output."""
     output_path = Path(output_path)
     result: dict[str, Any] = {
         "output_path": str(output_path),
@@ -131,6 +136,7 @@ def write_orca_input(
     task: str = TASK_SP,
     nprocs: int = 1,
 ) -> Path:
+    """Write an ORCA input file through OPI and return its path."""
     calc = _build_calculator(
         xyz_path=structure_path,
         workdir=run_dir,
@@ -154,6 +160,7 @@ def single_point_with_orca(
     charge: int,
     mult: int,
 ) -> tuple[bool, str, ProcessResult | None, dict[str, Any]]:
+    """Run a single-point calculation using workflow-compatible arguments."""
     result = orca_single_point(
         xyz_path=input_file,
         workdir=run_dir,
@@ -394,7 +401,9 @@ def _parse_orca_text(output_path: Path) -> dict[str, Any]:
     pressure = _last_float_match(r"Pressure\s+\.\.\.\s+([-+]?\d+(?:\.\d+)?)", text)
     if temperature is not None:
         properties["temperature_kelvin"] = temperature
-        entropy_term = _last_float_match(r"Final entropy term\s+\.\.\.\s+([-+]?\d+(?:\.\d+)?)", text)
+        entropy_term = _last_float_match(
+            r"Final entropy term\s+\.\.\.\s+([-+]?\d+(?:\.\d+)?)", text
+        )
         if entropy_term is not None and temperature > 0:
             properties["entropy_hartree_per_kelvin"] = entropy_term / temperature
     if pressure is not None:
@@ -503,4 +512,7 @@ def _orca_executable_available(command: str) -> tuple[bool, str | None]:
     normalized_version_text = version_text.lower()
     if "program version" in normalized_version_text and "orca" in normalized_version_text:
         return True, None
-    return False, f"Executable at '{executable}' does not look like the ORCA quantum chemistry binary."
+    return (
+        False,
+        f"Executable at '{executable}' does not look like the ORCA quantum chemistry binary.",
+    )

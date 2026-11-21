@@ -19,12 +19,18 @@ from cspilot.tools.registry import get_allowed_tools
 from cspilot.workflows.xtb_to_orca_freq import run_xtb_to_orca_freq
 
 
-@pytest.mark.parametrize("prompt,profile", [
-    ("what is the SMILES string of caffine?", "chem"),
-    ("what is the gibbs free enegy of benzene at orca with r2scan-3c", "thermo"),
-    ("Optimize geometry and compute thermochemistry like Gibbs free energy, enthalpy, etc.", "thermo"),
-    ("extract Gibbs free energy from previous result.json", "analysis"),
-])
+@pytest.mark.parametrize(
+    "prompt,profile",
+    [
+        ("what is the SMILES string of caffine?", "chem"),
+        ("what is the gibbs free enegy of benzene at orca with r2scan-3c", "thermo"),
+        (
+            "Optimize geometry and compute thermochemistry like Gibbs free energy, enthalpy, etc.",
+            "thermo",
+        ),
+        ("extract Gibbs free energy from previous result.json", "analysis"),
+    ],
+)
 def test_request_routes(prompt, profile):
     assert route_request(prompt)["specialist"] == profile
     tools = get_allowed_tools(profile)
@@ -35,23 +41,30 @@ def test_request_routes(prompt, profile):
 
 
 def test_smiles_lookup_does_not_require_geometry(tmp_path):
-    result = {"tool_name": "molecule_name_to_smiles_tool", "success": True,
-              "smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C"}
+    result = {
+        "tool_name": "molecule_name_to_smiles_tool",
+        "success": True,
+        "smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+    }
     verification = verify_execution({"success": True, "steps": [result]}, str(tmp_path))
     assert verification["verified"]
     assert verify_request_completion("SMILES of caffeine", result) == []
 
 
 def test_geometry_alone_cannot_complete_thermochemistry():
-    issues = verify_request_completion("compute thermochemistry", {"success": True, "xyz_path": "a.xyz"})
+    issues = verify_request_completion(
+        "compute thermochemistry", {"success": True, "xyz_path": "a.xyz"}
+    )
     assert any("gibbs_free_energy" in issue for issue in issues)
     assert any("enthalpy" in issue for issue in issues)
 
 
 def test_plain_clarification_is_blocked_not_finished():
-    decision = planner.AgentDecision.model_validate({
-        "summary": "Please specify the molecule or XYZ file.",
-    })
+    decision = planner.AgentDecision.model_validate(
+        {
+            "summary": "Please specify the molecule or XYZ file.",
+        }
+    )
     assert decision.action == "blocked"
     assert planner.AgentDecision.model_validate({"action": {"action": "finish"}}).action == "finish"
 
@@ -62,8 +75,10 @@ def test_path_handoff_only_repairs_same_unambiguous_filename(tmp_path):
     actual = tmp_path / "generated" / "water.xyz"
     actual.parent.mkdir()
     actual.write_text("3\nwater\nO 0 0 0\nH 0 0 1\nH 0 1 0\n")
-    state = {"workdir": str(tmp_path), "observations": [{"verification": {"verified": True},
-              "result": {"xyz_path": str(actual)}}]}
+    state = {
+        "workdir": str(tmp_path),
+        "observations": [{"verification": {"verified": True}, "result": {"xyz_path": str(actual)}}],
+    }
     decision = {"tool": "inspect_structure", "args": {"xyz_path": "water.xyz"}}
     assert _repair_observed_handoff(decision, state)["args"]["xyz_path"] == str(actual)
     decision["args"]["xyz_path"] = "methane.xyz"
@@ -71,21 +86,30 @@ def test_path_handoff_only_repairs_same_unambiguous_filename(tmp_path):
 
 
 def test_summary_only_after_observations_requires_explicit_model_decision(monkeypatch):
-    outputs = iter(['{"summary":"Water inspected"}', '{"action":"finish","summary":"All requested inspection completed"}'])
+    outputs = iter(
+        [
+            '{"summary":"Water inspected"}',
+            '{"action":"finish","summary":"All requested inspection completed"}',
+        ]
+    )
 
     async def run(*args, **kwargs):
         return SimpleNamespace(final_output=next(outputs))
 
     monkeypatch.setattr(planner, "create_llm_model", lambda **kwargs: "mock")
     monkeypatch.setattr(planner.Runner, "run", run)
-    decision = asyncio.run(planner.decide_next_action("inspect water", [{"result": {"formula": "H2O"}}]))
+    decision = asyncio.run(
+        planner.decide_next_action("inspect water", [{"result": {"formula": "H2O"}}])
+    )
     assert decision["action"] == "finish"
     with pytest.raises(StopIteration):
         next(outputs)
 
 
 def test_summary_recovery_cannot_invent_a_tool(monkeypatch):
-    outputs = iter(['{"summary":"work remains"}', '{"action":"tool","tool":"shell","args":{"cmd":"echo hi"}}'])
+    outputs = iter(
+        ['{"summary":"work remains"}', '{"action":"tool","tool":"shell","args":{"cmd":"echo hi"}}']
+    )
 
     async def run(*args, **kwargs):
         return SimpleNamespace(final_output=next(outputs))
@@ -97,11 +121,16 @@ def test_summary_recovery_cannot_invent_a_tool(monkeypatch):
 
 
 def test_report_method_comes_from_calculation_parameters():
-    execution = {"steps": [{
-        "parameters": {"method": "r2scan-3c", "basis": "method-defined"},
-        "result": {"properties": {"gibbs_free_energy": -232.1,
-                                  "energies": {"method": "SCF"}}},
-    }]}
+    execution = {
+        "steps": [
+            {
+                "parameters": {"method": "r2scan-3c", "basis": "method-defined"},
+                "result": {
+                    "properties": {"gibbs_free_energy": -232.1, "energies": {"method": "SCF"}}
+                },
+            }
+        ]
+    }
     report = terminal_report(execution, {"verified": True})
     assert "Method: r2scan-3c" in report
     assert "Method: SCF" not in report
@@ -130,8 +159,14 @@ def test_native_selection_does_not_execute_the_tool(monkeypatch, tmp_path):
 def test_orca_opt_freq_uses_composite_basis(tmp_path):
     xyz = tmp_path / "water.xyz"
     xyz.write_text("3\nwater\nO 0 0 0\nH 0 0 1\nH 0 1 0\n")
-    result = orca_frequency(xyz, tmp_path / "orca", "r2scan-3c", "def2-SVP",
-                            optimize=True, orca_command=str(tmp_path / "missing"))
+    result = orca_frequency(
+        xyz,
+        tmp_path / "orca",
+        "r2scan-3c",
+        "def2-SVP",
+        optimize=True,
+        orca_command=str(tmp_path / "missing"),
+    )
     text = Path(result["files"]["input"]).read_text().lower()
     assert "!opt" in text and "!freq" in text
     assert "r2scan-3c" in text and "def2-svp" not in text
@@ -177,7 +212,12 @@ def test_thermochemistry_parser_and_verifier(monkeypatch, tmp_path):
     assert parsed["properties"]["enthalpy"] == -232.0
     assert parsed["properties"]["energy_unit"] == "Eh"
     assert parsed["properties"]["temperature_kelvin"] == 298.15
-    result = {"task": "opt_freq", "status": "ok", "files": {"output": str(output)}, "result": parsed}
+    result = {
+        "task": "opt_freq",
+        "status": "ok",
+        "files": {"output": str(output)},
+        "result": parsed,
+    }
     assert verify_tool_result(result, str(tmp_path))["verified"]
     parsed["properties"]["imaginary_frequency_count"] = 1
     assert not verify_tool_result(result, str(tmp_path))["verified"]
@@ -185,17 +225,36 @@ def test_thermochemistry_parser_and_verifier(monkeypatch, tmp_path):
 
 def test_bare_prompt_uses_agent_and_shows_only_relevant_results(monkeypatch, tmp_path):
     async def decide(request, observations, **kwargs):
-        return {"action": "finish"} if observations else {
-            "action": "tool", "tool": "molecule_name_to_smiles_tool", "args": {"name": "caffeine"}}
+        return (
+            {"action": "finish"}
+            if observations
+            else {
+                "action": "tool",
+                "tool": "molecule_name_to_smiles_tool",
+                "args": {"name": "caffeine"},
+            }
+        )
 
     monkeypatch.setattr("cspilot.graph.decide_next_action", decide)
-    monkeypatch.setattr("cspilot.graph.call_tool", lambda *args: {
-        "tool_name": "molecule_name_to_smiles_tool", "success": True,
-        "name": "caffeine", "smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C", "source": "PubChem",
-    })
-    result = CliRunner().invoke(app, [
-        "what is the SMILES string of caffine?", "--workdir", str(tmp_path), "--no-pretty",
-    ])
+    monkeypatch.setattr(
+        "cspilot.graph.call_tool",
+        lambda *args: {
+            "tool_name": "molecule_name_to_smiles_tool",
+            "success": True,
+            "name": "caffeine",
+            "smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+            "source": "PubChem",
+        },
+    )
+    result = CliRunner().invoke(
+        app,
+        [
+            "what is the SMILES string of caffine?",
+            "--workdir",
+            str(tmp_path),
+            "--no-pretty",
+        ],
+    )
     assert result.exit_code == 0, result.output
     assert "SMILES: CN1" in result.output
     assert "Verification: passed" in result.output

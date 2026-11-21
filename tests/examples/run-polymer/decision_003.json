@@ -1,0 +1,11 @@
+{
+  "action": "tool",
+  "tool": "stk_linear_polymer_from_smiles_tool",
+  "args": {
+    "monomer_smiles": "BrC=CBr",
+    "num_repeating_units": 2,
+    "output_path": "polymer.xyz",
+    "repeating_unit": "BromoFactory,BromoFactory"
+  },
+  "summary": ""
+}

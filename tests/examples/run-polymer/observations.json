@@ -1,0 +1,80 @@
+[
+  {
+    "step": 1,
+    "action": {
+      "action": "tool",
+      "tool": "stk_linear_polymer_from_smiles_tool",
+      "args": {
+        "monomer_smiles": "BrC=CBr",
+        "num_repeating_units": 2,
+        "output_path": "polymer.xyz",
+        "repeating_unit": "???"
+      },
+      "summary": ""
+    },
+    "result": {
+      "tool_name": "stk_linear_polymer_from_smiles_tool",
+      "success": false,
+      "tool": "stk_linear_polymer_from_smiles",
+      "output_path": "/home/chemgiri/project/cspilot/tests/examples/run-polymer/polymer.xyz",
+      "error": "ValueError: The length of orientations must match either the length of repeating_unit or the total number of vertices.",
+      "metadata": {
+        "monomer_smiles": "BrC=CBr",
+        "topology": "linear",
+        "repeating_unit": "???",
+        "num_repeating_units": 2,
+        "functional_groups": [
+          "BromoFactory"
+        ]
+      },
+      "result_json": "/home/chemgiri/project/cspilot/tests/examples/run-polymer/polymer_stk_linear_polymer_from_smiles_result.json"
+    },
+    "verification": {
+      "verified": false,
+      "issues": [
+        "Tool returned success=false.",
+        "Tool returned error: ValueError: The length of orientations must match either the length of repeating_unit or the total number of vertices.",
+        "ValueError: The length of orientations must match either the length of repeating_unit or the total number of vertices."
+      ]
+    }
+  },
+  {
+    "step": 2,
+    "action": {
+      "action": "tool",
+      "tool": "stk_linear_polymer_from_smiles_tool",
+      "args": {
+        "monomer_smiles": "BrC=CBr",
+        "num_repeating_units": 2,
+        "output_path": "polymer.xyz",
+        "repeating_unit": "BrC=CBr"
+      },
+      "summary": ""
+    },
+    "result": {
+      "tool_name": "stk_linear_polymer_from_smiles_tool",
+      "success": false,
+      "tool": "stk_linear_polymer_from_smiles",
+      "output_path": "/home/chemgiri/project/cspilot/tests/examples/run-polymer/polymer.xyz",
+      "error": "ValueError: The length of orientations must match either the length of repeating_unit or the total number of vertices.",
+      "metadata": {
+        "monomer_smiles": "BrC=CBr",
+        "topology": "linear",
+        "repeating_unit": "BrC=CBr",
+        "num_repeating_units": 2,
+        "functional_groups": [
+          "BromoFactory"
+        ]
+      },
+      "result_json": "/home/chemgiri/project/cspilot/tests/examples/run-polymer/polymer_stk_linear_polymer_from_smiles_result.json"
+    },
+    "verification": {
+      "verified": false,
+      "issues": [
+        "Tool returned success=false.",
+        "Tool returned error: ValueError: The length of orientations must match either the length of repeating_unit or the total number of vertices.",
+        "ValueError: The length of orientations must match either the length of repeating_unit or the total number of vertices."
+      ]
+    }
+  }
+]

@@ -1,3 +1,5 @@
+"""Build and run the bounded single-agent LangGraph orchestration loop."""
+
 from __future__ import annotations
 
 import asyncio
@@ -22,6 +24,7 @@ def _write_json(path: Path, payload: Any) -> None:
 
 
 def router_node(state: CspilotState) -> dict[str, Any]:
+    """Select and persist the deterministic specialist route."""
     route = route_request(state["user_request"], profile=state["profile"])
     _write_json(Path(state["workdir"]) / "route.json", route)
     return {"profile": str(route["specialist"]), "route": route}
@@ -30,11 +33,20 @@ def router_node(state: CspilotState) -> dict[str, Any]:
 def planner_node(state: CspilotState) -> dict[str, Any]:
     """Choose one action with the complete observation history."""
     try:
-        decision = AgentDecision.model_validate(asyncio.run(with_model_clients(decide_next_action(
-            state["user_request"], state.get("observations", []),
-            profile=state["profile"], workdir=state["workdir"],
-            model=state.get("model"), base_url=state.get("base_url"),
-        )))).model_dump(mode="json")
+        decision = AgentDecision.model_validate(
+            asyncio.run(
+                with_model_clients(
+                    decide_next_action(
+                        state["user_request"],
+                        state.get("observations", []),
+                        profile=state["profile"],
+                        workdir=state["workdir"],
+                        model=state.get("model"),
+                        base_url=state.get("base_url"),
+                    )
+                )
+            )
+        ).model_dump(mode="json")
         _write_json(
             Path(state["workdir"]) / f"decision_{len(state.get('observations', [])) + 1:03d}.json",
             decision,
@@ -42,11 +54,14 @@ def planner_node(state: CspilotState) -> dict[str, Any]:
         return {"decision": decision}
     except Exception as exc:
         message = f"Decision failed: {type(exc).__name__}: {exc}"
-        return {"decision": {"action": "blocked", "summary": message},
-                "errors": [*state["errors"], message]}
+        return {
+            "decision": {"action": "blocked", "summary": message},
+            "errors": [*state["errors"], message],
+        }
 
 
 def decide_node(state: CspilotState) -> dict[str, Any]:
+    """Return a stop reason when the decision or execution budget is terminal."""
     decision = state.get("decision") or {"action": "blocked"}
     reason = None
     if decision["action"] != "tool":
@@ -66,11 +81,18 @@ def executor_node(state: CspilotState) -> dict[str, Any]:
     plan = {"steps": [*(state.get("plan") or {"steps": []})["steps"], step]}
     token = set_allowed_profile(state["profile"], state["user_request"])
     try:
-        result = call_tool(step["tool"], step["args"], state["workdir"],
-                           **({"confine_outputs": True} if state.get("isolate_outputs") else {}))
+        result = call_tool(
+            step["tool"],
+            step["args"],
+            state["workdir"],
+            **({"confine_outputs": True} if state.get("isolate_outputs") else {}),
+        )
     except Exception as exc:
-        result = {"tool_name": step["tool"], "success": False,
-                  "error": f"{type(exc).__name__}: {exc}"}
+        result = {
+            "tool_name": step["tool"],
+            "success": False,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
     finally:
         reset_allowed_profile(token)
     _write_json(Path(state["workdir"]) / "plan.json", plan)
@@ -103,38 +125,55 @@ def _repair_observed_handoff(decision: dict[str, Any], state: CspilotState) -> d
 
 
 def observe_node(state: CspilotState) -> dict[str, Any]:
+    """Verify one tool result and append it to the observation history."""
     result = state["pending_result"] or {}
     verification = verify_tool_result(result, state["workdir"])
     failed = result.get("success") is False or result.get("status") in {"failed", "skipped"}
     if failed:
-        verification = {"verified": False, "issues": [
-            *verification.get("issues", []),
-            str(result.get("error") or result.get("message") or "Tool failed"),
-        ]}
+        verification = {
+            "verified": False,
+            "issues": [
+                *verification.get("issues", []),
+                str(result.get("error") or result.get("message") or "Tool failed"),
+            ],
+        }
     observation = {
         "step": len((state["plan"] or {})["steps"]),
-        "action": state["decision"], "result": result, "verification": verification,
+        "action": state["decision"],
+        "result": result,
+        "verification": verification,
     }
     observations = [*state.get("observations", []), observation]
-    execution = {"success": all(o["verification"]["verified"] for o in observations),
-                 "workdir": state["workdir"], "steps": [o["result"] for o in observations]}
+    execution = {
+        "success": all(o["verification"]["verified"] for o in observations),
+        "workdir": state["workdir"],
+        "steps": [o["result"] for o in observations],
+    }
     _write_json(Path(state["workdir"]) / "observations.json", observations)
     _write_json(Path(state["workdir"]) / "execution_result.json", execution)
-    return {"observations": observations, "execution_result": execution,
-            "pending_result": None,
-            "retry_count": state["retry_count"] + int(not verification["verified"])}
+    return {
+        "observations": observations,
+        "execution_result": execution,
+        "pending_result": None,
+        "retry_count": state["retry_count"] + int(not verification["verified"]),
+    }
 
 
 def verifier_node(state: CspilotState) -> dict[str, Any]:
+    """Verify the complete execution against tool and request requirements."""
     execution = state.get("execution_result") or {
-        "success": False, "workdir": state["workdir"], "steps": [],
+        "success": False,
+        "workdir": state["workdir"],
+        "steps": [],
     }
     verification = verify_execution(execution, state["workdir"])
     issues = list(verification.get("issues", []))
     issues.extend(verify_request_completion(state["user_request"], execution))
     for observation in state.get("observations", []):
-        issues.extend(f"Step {observation['step']}: {issue}"
-                      for issue in observation["verification"].get("issues", []))
+        issues.extend(
+            f"Step {observation['step']}: {issue}"
+            for issue in observation["verification"].get("issues", [])
+        )
     if state.get("stop_reason") != "finish":
         issues.append(f"Agent stopped: {state.get('stop_reason')}.")
         if (state.get("decision") or {}).get("action") == "blocked":
@@ -142,8 +181,11 @@ def verifier_node(state: CspilotState) -> dict[str, Any]:
     if not execution["steps"]:
         issues.append("No tool results support task completion.")
     issues.extend(state["errors"])
-    verification = {"verified": not issues, "issues": list(dict.fromkeys(issues)),
-                    "workdir": state["workdir"]}
+    verification = {
+        "verified": not issues,
+        "issues": list(dict.fromkeys(issues)),
+        "workdir": state["workdir"],
+    }
     execution = {**execution, "success": verification["verified"]}
     _write_json(Path(state["workdir"]) / "execution_result.json", execution)
     _write_json(Path(state["workdir"]) / "verification_result.json", verification)
@@ -151,23 +193,32 @@ def verifier_node(state: CspilotState) -> dict[str, Any]:
 
 
 def reporter_node(state: CspilotState) -> dict[str, Any]:
+    """Generate and persist a deterministic report from execution JSON."""
     report = generate_report(
-        state["user_request"], state["plan"] or {"steps": []},
-        state["execution_result"] or {}, state["verification_result"] or {},
-        html=state["html"], profile=state["profile"],
+        state["user_request"],
+        state["plan"] or {"steps": []},
+        state["execution_result"] or {},
+        state["verification_result"] or {},
+        html=state["html"],
+        profile=state["profile"],
     )
     path = Path(state["workdir"]) / ("final_report.html" if state["html"] else "final_report.md")
     path.write_text(report, encoding="utf-8")
     return {"final_report": report}
 
 
-def build_graph(agent_mode: str = "single"):
+def build_graph(agent_mode: str = "single") -> Any:
+    """Compile the single-agent graph with optional specialist routing."""
     if agent_mode not in {"single", "multi"}:
         raise ValueError("agent_mode must be 'single' or 'multi'.")
     graph = StateGraph(CspilotState)
     for name, node in (
-        ("planner", planner_node), ("decide", decide_node), ("tool", executor_node),
-        ("observe", observe_node), ("verifier", verifier_node), ("reporter", reporter_node),
+        ("planner", planner_node),
+        ("decide", decide_node),
+        ("tool", executor_node),
+        ("observe", observe_node),
+        ("verifier", verifier_node),
+        ("reporter", reporter_node),
     ):
         graph.add_node(name, node)
     if agent_mode == "multi":
@@ -177,8 +228,11 @@ def build_graph(agent_mode: str = "single"):
     else:
         graph.add_edge(START, "planner")
     graph.add_edge("planner", "decide")
-    graph.add_conditional_edges("decide", lambda s: "stop" if s.get("stop_reason") else "tool",
-                                {"stop": "verifier", "tool": "tool"})
+    graph.add_conditional_edges(
+        "decide",
+        lambda s: "stop" if s.get("stop_reason") else "tool",
+        {"stop": "verifier", "tool": "tool"},
+    )
     graph.add_edge("tool", "observe")
     graph.add_edge("observe", "planner")
     graph.add_edge("verifier", "reporter")
@@ -187,30 +241,80 @@ def build_graph(agent_mode: str = "single"):
 
 
 def run_graph_agent(
-    user_request: str, workdir: str | Path, profile: str = "chem",
-    agent_mode: str = "single", html: bool = False, max_retries: int = 1,
-    model: str | None = None, base_url: str | None = None, max_steps: int = 8,
-    multiagent: bool = False, workers: int = 1,
+    user_request: str,
+    workdir: str | Path,
+    profile: str = "chem",
+    agent_mode: str = "single",
+    html: bool = False,
+    max_retries: int = 1,
+    model: str | None = None,
+    base_url: str | None = None,
+    max_steps: int = 8,
+    multiagent: bool = False,
+    workers: int = 1,
     isolate_outputs: bool = False,
 ) -> CspilotState:
+    """Run a bounded graph agent and persist its final state.
+
+    Args:
+        user_request: Natural-language scientific request.
+        workdir: Directory for decisions, results, verification, and reports.
+        profile: Tool and instruction profile used by the planner.
+        agent_mode: ``single`` or legacy specialist-routing ``multi`` mode.
+        html: Whether the final report should be HTML instead of Markdown.
+        max_retries: Maximum failed or unverified tool attempts.
+        model: Optional OpenRouter model override.
+        base_url: Optional OpenRouter-compatible endpoint override.
+        max_steps: Maximum tool actions in each agent loop.
+        multiagent: Whether to use independent child-agent decomposition.
+        workers: Maximum concurrent independent child loops.
+        isolate_outputs: Whether generated outputs must remain in ``workdir``.
+
+    Returns:
+        Final graph state containing execution, verification, and report data.
+    """
     if multiagent:
         from cspilot.multiagent import run_multiagent
 
         if profile not in {"chem", "auto"} or agent_mode != "single":
-            raise ValueError("multiagent uses chemistry child loops, not specialist routing overrides")
-        return run_multiagent(user_request, workdir, html=html, model=model, base_url=base_url,
-                              max_steps=max_steps, max_retries=max_retries, workers=workers)
+            raise ValueError(
+                "multiagent uses chemistry child loops, not specialist routing overrides"
+            )
+        return run_multiagent(
+            user_request,
+            workdir,
+            html=html,
+            model=model,
+            base_url=base_url,
+            max_steps=max_steps,
+            max_retries=max_retries,
+            workers=workers,
+        )
     if workers != 1:
         raise ValueError("workers requires multiagent=True")
     root = Path(workdir).resolve()
     root.mkdir(parents=True, exist_ok=True)
     state: CspilotState = {
-        "user_request": user_request, "workdir": str(root), "profile": profile,
-        "agent_mode": agent_mode, "model": model, "base_url": base_url, "route": None,
-        "html": html, "max_retries": max_retries, "retry_count": 0, "max_steps": max_steps,
-        "plan": {"steps": []}, "execution_result": None, "verification_result": None,
-        "final_report": None, "errors": [], "observations": [], "decision": None,
-        "stop_reason": None, "pending_result": None,
+        "user_request": user_request,
+        "workdir": str(root),
+        "profile": profile,
+        "agent_mode": agent_mode,
+        "model": model,
+        "base_url": base_url,
+        "route": None,
+        "html": html,
+        "max_retries": max_retries,
+        "retry_count": 0,
+        "max_steps": max_steps,
+        "plan": {"steps": []},
+        "execution_result": None,
+        "verification_result": None,
+        "final_report": None,
+        "errors": [],
+        "observations": [],
+        "decision": None,
+        "stop_reason": None,
+        "pending_result": None,
         "isolate_outputs": isolate_outputs,
     }
     try:
@@ -220,7 +324,9 @@ def run_graph_agent(
             raise ValueError("max_steps must be positive and max_retries nonnegative.")
         # Retain completed observations if orchestration itself fails.
         for update in build_graph(agent_mode).stream(
-            state, config={"recursion_limit": 4 * max_steps + 12}, stream_mode="updates",
+            state,
+            config={"recursion_limit": 4 * max_steps + 12},
+            stream_mode="updates",
         ):
             for values in update.values():
                 state.update(values)

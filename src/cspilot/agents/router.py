@@ -21,12 +21,18 @@ def route_request(user_request: str, profile: str = "auto") -> dict[str, Any]:
         }
 
     lowered = user_request.lower()
-    stored = any(term in lowered for term in ("extract", "parse", "previous", "latest result", ".json", "stored"))
+    stored = any(
+        term in lowered
+        for term in ("extract", "parse", "previous", "latest result", ".json", "stored")
+    )
     if stored:
         selected = get_profile("analysis")
-        return {"success": True, "specialist": "analysis",
-                "reason": "Request explicitly refers to stored results.",
-                "allowed_tool_groups": list(selected.allowed_tool_groups)}
+        return {
+            "success": True,
+            "specialist": "analysis",
+            "reason": "Request explicitly refers to stored results.",
+            "allowed_tool_groups": list(selected.allowed_tool_groups),
+        }
     routes = [
         (
             "stk",
@@ -35,7 +41,17 @@ def route_request(user_request: str, profile: str = "auto") -> dict[str, Any]:
         ),
         (
             "thermo",
-            ("heat of combustion", "nhoc", "combustion", "enthalpy", "thermochemistry", "therochem", "gibbs", "free energy", "free enegy"),
+            (
+                "heat of combustion",
+                "nhoc",
+                "combustion",
+                "enthalpy",
+                "thermochemistry",
+                "therochem",
+                "gibbs",
+                "free energy",
+                "free enegy",
+            ),
             "Request asks for thermochemistry or reaction-energy reporting.",
         ),
         (
@@ -45,12 +61,30 @@ def route_request(user_request: str, profile: str = "auto") -> dict[str, Any]:
         ),
         (
             "materials",
-            ("material", "materials", "jarvis", "al2o3", "crystal", "formation energy", "band gap database"),
+            (
+                "material",
+                "materials",
+                "jarvis",
+                "al2o3",
+                "crystal",
+                "formation energy",
+                "band gap database",
+            ),
             "Request asks for materials or crystal search.",
         ),
         (
             "chem",
-            ("xtb", "orca", "mace", "ase", "optimize", "optimise", "frequency", "single point", "sp calculation"),
+            (
+                "xtb",
+                "orca",
+                "mace",
+                "ase",
+                "optimize",
+                "optimise",
+                "frequency",
+                "single point",
+                "sp calculation",
+            ),
             "Request asks for a computational chemistry calculation.",
         ),
     ]

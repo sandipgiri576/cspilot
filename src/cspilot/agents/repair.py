@@ -1,3 +1,5 @@
+"""Repair failed plans through deterministic rules and bounded model fallback."""
+
 from __future__ import annotations
 
 import asyncio
@@ -15,11 +17,15 @@ from cspilot.tools.registry import get_allowed_tools
 
 
 class RepairStep(BaseModel):
+    """Represent one tool step in a repaired execution plan."""
+
     tool: str
     args: dict[str, Any] = Field(default_factory=dict)
 
 
 class RepairedPlan(BaseModel):
+    """Represent a validated sequence of repaired tool steps."""
+
     steps: list[RepairStep] = Field(default_factory=list)
 
 
@@ -58,7 +64,11 @@ def repair_plan(
         llm_result = _llm_repair(user_request, original_plan, execution_result, root)
         if llm_result.get("success"):
             return llm_result
-        return _failure("Execution failure was not a missing input file and LLM repair failed.", original_plan, llm_result)
+        return _failure(
+            "Execution failure was not a missing input file and LLM repair failed.",
+            original_plan,
+            llm_result,
+        )
 
     missing_path = _missing_input_path(failed["step"])
     existing = _find_existing_xyz(root, missing_path, execution_result, failed["index"])
@@ -87,7 +97,9 @@ def repair_plan(
     llm_result = _llm_repair(user_request, original_plan, execution_result, root)
     if llm_result.get("success"):
         return llm_result
-    return _failure("No deterministic repair was available and LLM repair failed.", original_plan, llm_result)
+    return _failure(
+        "No deterministic repair was available and LLM repair failed.", original_plan, llm_result
+    )
 
 
 def _clean_plan(plan: dict[str, Any]) -> dict[str, Any]:
@@ -113,12 +125,18 @@ def _failed_step(plan: dict[str, Any], execution_result: dict[str, Any]) -> dict
     steps = execution_result.get("steps")
     if isinstance(steps, list):
         for idx, result in enumerate(steps):
-            if isinstance(result, dict) and result.get("success") is False and idx < len(plan.get("steps", [])):
+            if (
+                isinstance(result, dict)
+                and result.get("success") is False
+                and idx < len(plan.get("steps", []))
+            ):
                 return {"index": idx, "step": plan["steps"][idx]}
     return None
 
 
-def _looks_like_missing_input_failure(execution_result: dict[str, Any], step: dict[str, Any]) -> bool:
+def _looks_like_missing_input_failure(
+    execution_result: dict[str, Any], step: dict[str, Any]
+) -> bool:
     args = step.get("args") if isinstance(step.get("args"), dict) else {}
     if not any(key in args for key in INPUT_KEYS):
         return False
@@ -167,7 +185,11 @@ def _find_existing_xyz(
                 candidates.append(path)
 
     candidates.extend(_latest_xyz_from_workdir(workdir))
-    unique = list(dict.fromkeys(path.resolve() for path in candidates if path.suffix.lower() == ".xyz" and path.exists()))
+    unique = list(
+        dict.fromkeys(
+            path.resolve() for path in candidates if path.suffix.lower() == ".xyz" and path.exists()
+        )
+    )
     if not unique:
         return None
     if missing_name:
@@ -394,7 +416,9 @@ async def _run_repair_agent(prompt: str, model: Any) -> Any:
 
 def _uses_only_allowed_tools(plan: dict[str, Any], allowed_tools: list[str]) -> bool:
     allowed = set(allowed_tools)
-    return all(step.get("tool") in allowed for step in plan.get("steps", []) if isinstance(step, dict))
+    return all(
+        step.get("tool") in allowed for step in plan.get("steps", []) if isinstance(step, dict)
+    )
 
 
 def _write_repair_attempt(workdir: Path, plan: dict[str, Any]) -> Path:
@@ -411,7 +435,9 @@ def _resolve_path(workdir: Path, path: str) -> Path:
     return workdir / candidate
 
 
-def _failure(message: str, plan: dict[str, Any], details: dict[str, Any] | None = None) -> dict[str, Any]:
+def _failure(
+    message: str, plan: dict[str, Any], details: dict[str, Any] | None = None
+) -> dict[str, Any]:
     return {
         "success": False,
         "repaired_plan": plan,

@@ -16,6 +16,7 @@ MACE_MODEL=/path/to/model.model
 OPENROUTER_API_KEY=your_openrouter_key
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 OPENROUTER_MODEL=openai/gpt-oss-20b:free
+RAG_MODEL=openai/gpt-oss-20b:free
 ```
 
 ## Implemented Variables
@@ -32,6 +33,7 @@ OPENROUTER_MODEL=openai/gpt-oss-20b:free
 | `OPENROUTER_API_KEY` | OpenRouter model backend | required for model-backed commands |
 | `OPENROUTER_BASE_URL` | OpenRouter-compatible client | `https://openrouter.ai/api/v1` |
 | `OPENROUTER_MODEL` | OpenRouter model | `openai/gpt-oss-20b:free` |
+| `RAG_MODEL` | literature RAG answer model | falls back to `OPENROUTER_MODEL` |
 
 OPI may also recognize `OPI_ORCA` and `ORCA_PATH` internally. CSPilot CLI
 settings use `ORCA_COMMAND`.

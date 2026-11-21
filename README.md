@@ -24,6 +24,7 @@ and clean terminal/report output. Documentation is under developement and can be
 - Local Multiwfn Mulliken/Hirshfeld charges and Mayer bond orders from ORCA GBW.
 - Rich terminal summaries plus Markdown or HTML reports.
 - Machine-readable JSON outputs for plans, steps, execution, verification, and final state.
+- Local chemistry-literature RAG over JSON, JSONL, PDFs, and OpenAlex metadata.
 
 ## 🚀 Quick Start
 
@@ -48,6 +49,7 @@ Optional extras:
 python -m pip install -e ".[stk]"
 python -m pip install -e ".[mace]"
 python -m pip install -e ".[docs]"
+python -m pip install -e ".[rag]"
 ```
 
 First command:
@@ -112,6 +114,20 @@ Bare prompts use the tool agent: `cspilot "what is the SMILES string of caffeine
 New Gibbs/enthalpy requests use ORCA optimization plus frequencies. The terminal
 shows returned answers and verification; full diagnostic reports remain saved.
 Use `cspilot search "..."` for general explanations without tool execution.
+
+## 📚 Literature RAG
+
+Build a local literature index, then print an OpenRouter-grounded answer with
+numbered source passages:
+
+```bash
+cspilot rag index data/demo/chemistry_abstracts.json --output-dir data/rag
+cspilot rag query "Which solvents are reported for Suzuki coupling?" --index-dir data/rag
+```
+
+Use `--retrieve-only` to inspect FAISS matches without an API call. OpenAlex
+metadata can be collected with `cspilot rag openalex`. See the
+[RAG documentation](docs/rag.md) for input formats and artifact details.
 
 ## ⚙️ Configuration
 
